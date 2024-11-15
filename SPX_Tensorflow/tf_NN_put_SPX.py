@@ -39,18 +39,15 @@ logging.disable(logging.WARNING)
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
 
 show = False
-num_epochs = 50000
+num_epochs = 30000
 print_epochs = 2500
 save_epochs = 10000
-
-print_epochs = 250
-save_epochs = 1000
 
 #NN Params
 gaussian_phi = 0.5
 gaussian_eta = 0.5
 num_res_blocks = 3
-div_lr = 4
+div_lr = 1
 lr = 10**-3
 load_nn = False
 
@@ -65,6 +62,8 @@ S0 = 2859.53
 r_ = 0.023
 # number of samples
 M  = 10**4
+# number of time steps
+N_t = 3000
 # size of time step
 dt = 10**-3
 
@@ -78,22 +77,14 @@ ldups = [1,0]
 
 all_repricings = []
 
-#t_min = 0.055, t_max = 2.585, k_min = 0.3789, k_max = 1.318
-
-min_max = [[0,3], [1000,4000]]
-
-def main(ldup, min_max):
-
-    ts, ks = min_max[0], min_max[1]
-    t_min, t_max = ts[0], ts[1]
-    k_min, k_max = ks[0], ks[1]
+def main(ldup):
 
     repricings = []
     print ('')
-    print (ldup, k_min, k_max)
+    print (ldup)
 
-    identifier = f'19may2019_spx_ldup_{ldup}_{k_min}_{k_max}'
-    identifier = f'testttt_19may2019_spx_ldup_{ldup}_{k_min}_{k_max}'
+    identifier = f'19may2019_spx_ldup_{ldup}'
+    identifier = f'cpu_19may2019_spx_ldup_{ldup}'
 
     if load_nn:
         folder_name_load = f'SPX_Trained_NN'
@@ -158,40 +149,41 @@ def main(ldup, min_max):
 
             return T_nn, K_nn, phi_ref, sigma_loc_ref, ids
 
+        def get_min_max(self, T_nn, K_nn):
+            t_min = tf.reduce_min(T_nn)
+            t_max = tf.reduce_max(T_nn)
+            k_min = tf.reduce_min(K_nn)
+            k_max = tf.reduce_max(K_nn)
+
+            self.t_max = t_max
+            self.k_max = k_max
+
+            return t_min, t_max, k_min, k_max
+
         def scale_data(self, T_nn, K_nn):
 
-            t_nn = T_nn
-            k_nn = tf.exp(-r*T_nn) * K_nn
+            t_nn = T_nn / self.t_max
+            k_nn = tf.exp(-r*T_nn) * K_nn / self.k_max
 
             if show:
                 print(f't_min = {tf.reduce_min(t_nn)}, t_max = {tf.reduce_max(t_nn)}, k_min = {tf.reduce_min(k_nn)}, k_max = {tf.reduce_max(k_nn)}')
-
-            return t_nn, k_nn
-
-        def get_scaled_data(self, t_nn, k_nn):
-
-            t_min_ = tf.reduce_min(t_nn)
-            t_max_ = tf.reduce_max(t_nn)
-            k_min_ = tf.reduce_min(k_nn)
-            k_max_ = tf.reduce_max(k_nn)
-
-            t_tilde = t_nn / t_max
-            k_tilde = (k_nn - k_min) / (k_max - k_min)
+                
+            t_tilde = t_nn
+            k_tilde = k_nn
 
             x = [t_tilde, k_tilde]
-            y = [t_min_, t_max_, k_min_, k_max_]
 
-            return x, y
+            return x
 
     processdata = LoadData()
 
     T_nn, K_nn, phi_ref, sigma_loc_ref, ids = processdata.read_csv(data_filename)
     processdata.save_phi_exact(phi_ref)
-    t_nn, k_nn = processdata.scale_data(T_nn, K_nn)
-    phi_tilde_ref = phi_ref / ((k_nn) * tf.exp(r * t_nn))
-    x, y = processdata.get_scaled_data(t_nn, k_nn)
+    phi_tilde_ref = phi_ref / K_nn
+
+    t_min, t_max, k_min, k_max = processdata.get_min_max(T_nn, K_nn)
+    x = processdata.scale_data(T_nn, K_nn)
     t_tilde, k_tilde = x 
-    t_min_, t_max_, k_min_, k_max_ = y
 
     class PhysicsModel(tf.keras.Model):
         def __init__(self, lambda_pde=1.0):
@@ -284,7 +276,7 @@ def main(ldup, min_max):
 
         def neural_phi_tilde(self, t_tilde, k_tilde):
             phi_nn_ = self.NN_phi_tilde(tf.concat([t_tilde, k_tilde], axis=1))
-            return phi_nn_
+            return (1 - tf.exp(-k_tilde * phi_nn_))
 
         def neural_eta_tilde(self, t_tilde, k_tilde):
             eta_nn_ = self.NN_eta_tilde(tf.concat([t_tilde, k_tilde], axis=1))
@@ -293,44 +285,46 @@ def main(ldup, min_max):
         def neural_phi(self, T, K):
             T_nn = tf.cast(tf.reshape(T, [-1,1]), dtype=data_type)
             K_nn = tf.cast(tf.reshape(K, [-1,1]), dtype=data_type)
-            t_nn, k_nn = processdata.scale_data(T_nn, K_nn)
-            x, y = processdata.get_scaled_data(t_nn, k_nn)
+            x = processdata.scale_data(T_nn, K_nn)
             t_tilde, k_tilde = x 
-            phi_nn_ = (k_min + (k_max - k_min) * k_tilde) * tf.exp(r * t_max * t_tilde) * self.neural_phi_tilde(t_tilde, k_tilde)
+            phi_nn_ = K_nn * self.neural_phi_tilde(t_tilde, k_tilde)
             return phi_nn_
 
         def neural_sigma(self, T, K):
             T_nn = tf.cast(tf.reshape(T, [-1,1]), dtype=data_type)
             K_nn = tf.cast(tf.reshape(K, [-1,1]), dtype=data_type)
-            t_nn, k_nn = processdata.scale_data(T_nn, K_nn)
-            x, y = processdata.get_scaled_data(t_nn, k_nn)
+            x = processdata.scale_data(T_nn, K_nn)
             t_tilde, k_tilde = x 
             sigma_nn = tf.sqrt(2*self.neural_eta_tilde(t_tilde, k_tilde)/(t_max))
             return tf.squeeze(sigma_nn)
 
+        def clip(self, y):
+            x = tf.stop_gradient(tf.reduce_mean(y**2)/y**2)
+            return tf.clip_by_value(x, clip_value_min=0.1, clip_value_max=10)
+
+        def weight(self, y):
+            return 1 + self.clip(y)/tf.reduce_mean(self.clip(y))
+
         def loss_phi_cal(self):
             phi_tilde_nn = self.neural_phi_tilde(t_tilde, k_tilde)
-            weight_1 = tf.clip_by_value(tf.stop_gradient(tf.reduce_mean(tf.abs(phi_tilde_ref)) / tf.abs(phi_tilde_ref)),
-                                        clip_value_min=0.1, clip_value_max=10)
-            loss_phi_ = tf.reduce_mean(weight_1 * tf.square(phi_tilde_nn - phi_tilde_ref))
+            loss_phi_ = tf.reduce_mean(self.weight(phi_tilde_ref) * tf.square(phi_tilde_nn - phi_tilde_ref))
 
-            # Boundary condition
-            t_tilde_0 = tf.cast(tf.reshape(np.full(128, 0), [-1, 1]), dtype=data_type)
-            k_tilde_0 = tf.random.uniform(shape=[128, 1], minval=0, maxval=1, dtype=data_type)
-            phi_tilde_0 = tf.nn.relu((k_min + (k_max - k_min)*k_tilde_0)/S_0  - 1)
+            # impose boundary condition
+            t_tilde_0 = tf.cast(tf.reshape(np.full(128, 0), [-1,1]), dtype=data_type)
+            k_tilde_0 = tf.random.uniform(shape = [128, 1], minval=0, maxval=1, dtype=data_type)
+            phi_tilde_0 = tf.nn.relu((1/S_0) * k_max*k_tilde_0 - 1)
+            loss_bc_ = tf.reduce_mean(self.weight(phi_tilde_0) * tf.square((self.neural_phi_tilde(t_tilde_0, k_tilde_0) - phi_tilde_0)))
 
-            weight_2 = tf.clip_by_value(tf.stop_gradient(tf.reduce_mean(tf.abs(phi_tilde_0)) / tf.abs(phi_tilde_0)),
-                                        clip_value_min=0.1, clip_value_max=10)
-            loss_bc_ = tf.reduce_mean(weight_2 * tf.square((self.neural_phi_tilde(t_tilde_0, k_tilde_0) - phi_tilde_0)))
             return loss_phi_ + loss_bc_
 
         def loss_dupire_cal(self):
-            t_tilde_0 = tf.cast(tf.reshape(np.full(128, 0), [-1, 1]), dtype=data_type)
-            t_tilde_1 = tf.cast(tf.reshape(np.full(128, 1), [-1, 1]), dtype=data_type)
-            k_tilde_0 = tf.cast(tf.reshape(np.full(128, 0), [-1, 1]), dtype=data_type)
-            k_tilde_1 = tf.cast(tf.reshape(np.full(128, 1), [-1, 1]), dtype=data_type)
-            t_tilde_bulk = tf.random.uniform(shape=[128 * 128, 1], minval=0, maxval=1, dtype=data_type)
-            k_tilde_bulk = tf.random.uniform(shape=[128 * 128, 1], minval=0, maxval=1, dtype=data_type)
+
+            t_tilde_0 = tf.cast(tf.reshape(np.full(128, 0), [-1,1]), dtype=data_type)
+            t_tilde_1 = tf.cast(tf.reshape(np.full(128, 1), [-1,1]), dtype=data_type)
+            k_tilde_0 = tf.cast(tf.reshape(np.full(128, 0), [-1,1]), dtype=data_type)
+            k_tilde_1 = tf.cast(tf.reshape(np.full(128, 1), [-1,1]), dtype=data_type)
+            t_tilde_bulk = tf.random.uniform(shape = [128*128, 1], minval=0, maxval=1, dtype=data_type)
+            k_tilde_bulk = tf.random.uniform(shape = [128*128, 1], minval=0, maxval=1, dtype=data_type)
 
             t_tilde_random = tf.concat([t_tilde_0, t_tilde_1, t_tilde_bulk], axis=0)
             k_tilde_random = tf.concat([k_tilde_bulk, k_tilde_0, k_tilde_1], axis=0)
@@ -340,17 +334,24 @@ def main(ldup, min_max):
                 with tf.GradientTape(persistent=True) as tape_1:
                     tape_1.watch(t_tilde_random)
                     tape_1.watch(k_tilde_random)
+
                     phi_tilde_ = self.neural_phi_tilde(t_tilde_random, k_tilde_random)
+
                 grad_phi_t_tilde = tape_1.gradient(phi_tilde_, t_tilde_random)
                 grad_phi_k_tilde = tape_1.gradient(phi_tilde_, k_tilde_random)
-            grad_phi_kk_tilde = tape_2.gradient(grad_phi_k_tilde, k_tilde_random)
-            eta_tilde_ = self.neural_eta_tilde(t_tilde_random, k_tilde_random)
-            dupire_eqn = grad_phi_t_tilde - eta_tilde_ * (k_min / (k_max - k_min) + k_tilde_random)**2 * grad_phi_kk_tilde
 
-            weight_ = tf.clip_by_value(tf.stop_gradient(tf.reduce_mean(tf.abs(grad_phi_t_tilde)) / tf.abs(grad_phi_t_tilde)),
-                                       clip_value_min=0.1, clip_value_max=10)
-            loss_dupire_ = tf.reduce_mean(weight_ * tf.square(dupire_eqn))
-            loss_reg_ = tf.reduce_mean(weight_ * tf.nn.relu(-grad_phi_t_tilde * grad_phi_kk_tilde))
+            grad_phi_kk_tilde = tape_2.gradient(grad_phi_k_tilde, k_tilde_random)
+
+            eta_tilde_ = self.neural_eta_tilde(t_tilde_random, k_tilde_random)
+
+            dupire_eqn = grad_phi_t_tilde - eta_tilde_ * k_tilde_random**2 * grad_phi_kk_tilde
+
+            loss_dupire_ = tf.reduce_mean(self.weight(grad_phi_t_tilde) * tf.square(dupire_eqn))
+
+            arb_eqn = grad_phi_t_tilde - r * t_max * k_tilde_random * tf.nn.relu(grad_phi_k_tilde)
+
+            loss_reg_ = tf.reduce_mean(self.weight(grad_phi_t_tilde) * tf.square(tf.nn.relu(-arb_eqn)))
+
             return loss_dupire_, loss_reg_
 
         @tf.function
@@ -395,8 +396,7 @@ def main(ldup, min_max):
             T_nn_ = tf.reshape(T_, [-1, 1])
             K_nn_ = tf.reshape(K_, [-1, 1])
 
-            t_nn_, k_nn_ = processdata.scale_data(T_nn_, K_nn_)
-            x_, _ = processdata.get_scaled_data(t_nn_, k_nn_)
+            x_ = processdata.scale_data(T_nn_, K_nn_)
             t_tilde_, k_tilde_ = x_ 
 
             # Obtain model predictions for option prices and local volatility
@@ -433,7 +433,7 @@ def main(ldup, min_max):
             fig = plt.figure(figsize=[24, 8], dpi=450)
 
             # Neural option price surface plot
-            phi_nn_ = (k_min + (k_max - k_min) * k_tilde_) * tf.exp(r * t_max * t_tilde_) * physics.neural_phi_tilde(t_tilde_, k_tilde_)
+            phi_nn_ = K_nn_ * physics.neural_phi_tilde(t_tilde_, k_tilde_)
 
             ax1 = fig.add_subplot(131, projection='3d')
             ax1.plot_surface(tf.reshape(K_nn_, [N, m]), tf.reshape(T_nn_, [N, m]), tf.reshape(phi_nn_, [N, m]), cmap=plt.cm.RdBu_r)
@@ -480,8 +480,7 @@ def main(ldup, min_max):
             ax_2.set_zlabel('sec_term', labelpad=12, fontsize=16)
 
             # Plot weight surface for Dupire equation scaling
-            weight_surf = tf.clip_by_value(tf.stop_gradient(tf.reduce_mean(tf.abs(grad_phi_t_tilde)) / tf.abs(grad_phi_t_tilde)),
-                                           clip_value_min=0.1, clip_value_max=10)
+            weight_surf = physics.weight(grad_phi_t_tilde)
 
             ax_3 = fig.add_subplot(1, 3, 3, projection='3d')
             ax_3.plot_surface(tf.reshape(K_nn_, [N, m]), tf.reshape(T_nn_, [N, m]), tf.reshape(weight_surf, [N, m]), cmap=cm.inferno)
@@ -520,8 +519,8 @@ def main(ldup, min_max):
             fig, ax = plt.subplots(1, 2, figsize=[12, 2], dpi=450)
 
             # Compare neural and exact option prices
-            ax[0].plot((k_min + (k_max - k_min) * k_tilde) * tf.exp(r * t_max * t_tilde) * phi_tilde_ref, label='Exact option price')
-            ax[0].plot((k_min + (k_max - k_min) * k_tilde) * tf.exp(r * t_max * t_tilde) * physics.neural_phi_tilde(t_tilde, k_tilde), label='Neural option price')
+            ax[0].plot(K_nn * phi_tilde_ref, label='Exact option price')
+            ax[0].plot(K_nn * physics.neural_phi_tilde(t_tilde, k_tilde), label='Neural option price')
             ax[0].legend(loc='upper right')
 
             # Compare neural and reference local volatilities
@@ -551,10 +550,8 @@ def main(ldup, min_max):
             if NN_phi_tilde == None and NN_eta_tilde == None:
                 NN_phi_tilde, NN_eta_tilde = processdata.load_nn(folder_name_load, iter_)
 
-            N_t = int((t_max - t_min)//dt)
-
             S_0 = tf.reshape(tf.constant(S0, dtype=data_type),[-1,1])
-            t_all = tf.cast(tf.reshape(np.linspace(0, t_max, N_t), [-1,1]), dtype=data_type)
+            t_all = tf.cast(tf.reshape(np.linspace(0, N_t*dt, N_t), [-1,1]), dtype=data_type)
             S_list = [tf.cast(tf.reshape(np.full(M, S_0[0]), [1,M]), dtype=data_type)]
             dW_list = tf.cast(tf.concat([np.random.normal(0,1, size=[N_t,1]) * np.sqrt(dt) for i in range(M)], axis=1), dtype=data_type)
 
@@ -566,16 +563,16 @@ def main(ldup, min_max):
                 dW_now = dW_list[i]
                 S_new = self.S_next_cal(t_now, S_now, dW_now)
                 S_list.append(S_new)
+
             S_matrix = tf.concat(S_list, axis=0)
-
+            
             time_1 = time.time()
-
             time_taken = time_1 - time_0
-
+            
             return time_taken, t_all, S_matrix
 
         def plot_reprice_paths(self, time_taken, t_all, S_matrix, iter_):
-            print(f'S_t obtained by solving local volatility SDE M = {M} times from t = [0, {t_max}], computation time = {time_taken}')
+            print(f'S_t obtained by solving local volatility SDE M = {M} times from t = [0, {N_t*dt}], computation time = {time_taken}')
             fig, ax = plt.subplots(figsize=[6, 2], dpi = 450)
             plt.plot(t_all, S_matrix[:,:1024], lw='0.1')
             plt.savefig(os.path.join(dirname,f'reprice_paths_{iter_}.png'))
@@ -585,23 +582,17 @@ def main(ldup, min_max):
 
         def get_S_matrix(self, t_all, S_matrix):
 
-            t_all_min = int(t_min_//dt)
-            t_all_max = int(t_max_//dt)
-
-            t_all = t_all[t_all_min:t_all_max]
-
             # Consider m_ strikes per maturity
-            N_ = len(t_all)
+            N_ = int(t_max*N_t/3) - int(t_min*N_t/3)
             m_ = 200
 
-            T = tf.repeat(tf.reshape(t_all, [-1,1]), m_, axis=1)
-            K = tf.cast(tf.repeat(tf.reshape(np.linspace(k_min_, k_max_, m_), [1,-1]), len(T), axis=0), dtype=data_type)
-
+            T = tf.repeat(tf.reshape(t_all[int(t_min*N_t/3):int(t_max*N_t/3)], [-1,1]), m_, axis=1)
+            K = tf.cast(tf.repeat(tf.reshape(np.linspace(k_min, k_max, m_), [1,-1]), len(T), axis=0), dtype=data_type)
+            
             T_nn = tf.reshape(T, [-1,1])
             K_nn = tf.reshape(K, [-1,1])
 
-            t_nn, k_nn = processdata.scale_data(T_nn, K_nn)
-            x, y = processdata.get_scaled_data(t_nn, k_nn)
+            x = processdata.scale_data(T_nn, K_nn)
             t_tilde, k_tilde = x 
 
             S_T = S_matrix
@@ -860,15 +851,15 @@ def main(ldup, min_max):
     if load_nn:
         error_sigma, rmse_sigma, rmse_fit = trainer.eval()
     else:
-        # trainer.test()
+        trainer.test()
         rmse_sigma_list, error_sigma_list = trainer.run()
         trainer.make_plots(rmse_sigma_list, error_sigma_list)
 
     reprice_ = reprice.repricing(iter_='final', NN_phi_tilde=physics.NN_phi_tilde, NN_eta_tilde=physics.NN_eta_tilde, _plots=True)
     repricings.append(['final', float(np.array(reprice_))])
-    all_repricings.append([ldup, t_max, k_min, k_max, repricings])
+    all_repricings.append([ldup, repricings])
 
 for ldup in ldups:
-    main(ldup, min_max)
+    main(ldup)
 
 print (all_repricings)
