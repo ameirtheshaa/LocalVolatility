@@ -50,7 +50,7 @@ ldups = [1,0]
 gaussian_phi = 0.5
 gaussian_eta = 0.5
 num_res_blocks = 3
-div_lr = 1
+div_lr = 10
 lr = 10**-3
 
 #Plotting params
@@ -80,7 +80,7 @@ def main(ldup, date_S0):
 
     data_filename = f'dataTrain_{date_}.csv'
     data_path = os.path.join('.', data_filename)
-    identifier = f'{date_.split("_")[0]}aug_ldup_{ldup}'
+    identifier = f'batch_call_DAX_{date_.split("_")[0]}aug_ldup_{ldup}'
 
     folder_name_load = f'{identifier}_{datetime.datetime.now().strftime("%Y_%m_%d_%H_%M")}'
     folder_name_save = f'{identifier}_{datetime.datetime.now().strftime("%Y_%m_%d_%H_%M")}'
@@ -166,6 +166,27 @@ def main(ldup, date_S0):
 
             return x
 
+        def get_min_max_random(self, t_nn, k_nn, T_nn):
+            t_min_random = tf.reduce_min(t_nn).numpy()
+            t_max_random = tf.reduce_max(t_nn).numpy()
+            k_min_random = tf.reduce_min(k_nn).numpy()
+            k_max_random = tf.reduce_max(tf.exp(-r*T_nn)).numpy()
+
+            print (f't_min_random = {t_min_random}, t_max_random = {t_max_random}')
+            print (f'k_min_random = {k_min_random}, k_max_random = {k_max_random}')
+
+            t_min_random = math.floor(tf.reduce_min(t_nn).numpy()*100)/100
+            t_max_random = math.ceil(tf.reduce_max(t_nn).numpy()*100)/100
+            k_min_random = math.floor(tf.reduce_min(k_nn).numpy()*100)/100
+            k_max_random = math.ceil(tf.reduce_max(tf.exp(-r*T_nn)).numpy()*100)/100
+
+            print (f't_min_random = {t_min_random}, t_max_random = {t_max_random}')
+            print (f'k_min_random = {k_min_random}, k_max_random = {k_max_random}')
+
+            x = [t_min_random, t_max_random, k_min_random, k_max_random]
+
+            return x
+
     processdata = LoadData()
 
     T_nn, K_nn, phi_ref, sigma_loc_ref, ids = processdata.read_csv(data_filename)
@@ -175,6 +196,8 @@ def main(ldup, date_S0):
     t_min, t_max, k_min, k_max = processdata.get_min_max(T_nn, K_nn)
     x = processdata.scale_data(T_nn, K_nn)
     t_tilde, k_tilde = x 
+    x_random = processdata.get_min_max_random(t_tilde, k_tilde, T_nn)
+    [t_min_random, t_max_random, k_min_random, k_max_random] = x_random
 
     class PhysicsModel(tf.keras.Model):
         def __init__(self, lambda_pde=1.0):
@@ -215,7 +238,7 @@ def main(ldup, date_S0):
             input_ = tf.keras.Input(shape=(2,))
 
             noisy_input = tf.keras.layers.GaussianNoise(self.gaussian_phi)(input_)
-            dense_in = tf.keras.layers.Dense(units, activation=activation, use_bias=False, kernel_initializer='glorot_normal')(noisy_input)
+            dense_in = tf.keras.layers.Dense(units, activation=activation, use_bias=False)(noisy_input)
 
             # Apply the specified number of residual blocks
             x = dense_in
@@ -241,7 +264,7 @@ def main(ldup, date_S0):
             input_ = tf.keras.Input(shape=(2,))
 
             noisy_input = tf.keras.layers.GaussianNoise(self.gaussian_eta)(input_)
-            dense_in = tf.keras.layers.Dense(units, activation='tanh', use_bias=False, kernel_initializer='glorot_normal')(noisy_input)
+            dense_in = tf.keras.layers.Dense(units, activation='tanh', use_bias=False)(noisy_input)
 
             # Apply the specified number of residual blocks
             x = dense_in
@@ -265,7 +288,8 @@ def main(ldup, date_S0):
 
         def neural_phi_tilde(self, t_tilde, k_tilde):
             phi_nn_ = self.NN_phi_tilde(tf.concat([t_tilde, k_tilde], axis=1))
-            return (1 - tf.exp((k_tilde - 1) * phi_nn_))
+            # return (1 - tf.exp((k_tilde - 1) * phi_nn_))
+            return (1 - tf.exp(-phi_nn_))
 
         def neural_eta_tilde(self, t_tilde, k_tilde):
             eta_nn_ = self.NN_eta_tilde(tf.concat([t_tilde, k_tilde], axis=1))
@@ -300,7 +324,7 @@ def main(ldup, date_S0):
 
             # impose boundary condition
             t_tilde_0 = tf.cast(tf.reshape(np.full(128, 0), [-1,1]), dtype=data_type)
-            k_tilde_0 = tf.random.uniform(shape = [128, 1], minval=0, maxval=1, dtype=data_type)
+            k_tilde_0 = tf.random.uniform(shape = [128, 1], minval=k_min_random, maxval=k_max_random, dtype=data_type)
             phi_tilde_0 = tf.nn.relu(1 - (1/S_0) * k_max*k_tilde_0)
             loss_bc_ = tf.reduce_mean(self.weight(phi_tilde_0) * tf.square((self.neural_phi_tilde(t_tilde_0, k_tilde_0) - phi_tilde_0)))
 
@@ -308,12 +332,12 @@ def main(ldup, date_S0):
 
         def loss_dupire_cal(self):
 
-            t_tilde_0 = tf.cast(tf.reshape(np.full(128, 0), [-1,1]), dtype=data_type)
-            t_tilde_1 = tf.cast(tf.reshape(np.full(128, 1), [-1,1]), dtype=data_type)
-            k_tilde_0 = tf.cast(tf.reshape(np.full(128, 0), [-1,1]), dtype=data_type)
-            k_tilde_1 = tf.cast(tf.reshape(np.full(128, 1), [-1,1]), dtype=data_type)
-            t_tilde_bulk = tf.random.uniform(shape = [128*128, 1], minval=0, maxval=1, dtype=data_type)
-            k_tilde_bulk = tf.random.uniform(shape = [128*128, 1], minval=0, maxval=1, dtype=data_type)
+            t_tilde_0 = tf.cast(tf.reshape(np.full(128, t_min_random), [-1,1]), dtype=data_type)
+            t_tilde_1 = tf.cast(tf.reshape(np.full(128, t_max_random), [-1,1]), dtype=data_type)
+            k_tilde_0 = tf.cast(tf.reshape(np.full(128, k_min_random), [-1,1]), dtype=data_type)
+            k_tilde_1 = tf.cast(tf.reshape(np.full(128, k_max_random), [-1,1]), dtype=data_type)
+            t_tilde_bulk = tf.random.uniform(shape = [128*128, 1], minval=t_min_random, maxval=t_max_random, dtype=data_type)
+            k_tilde_bulk = tf.random.uniform(shape = [128*128, 1], minval=k_min_random, maxval=k_max_random, dtype=data_type)
 
             t_tilde_random = tf.concat([t_tilde_0, t_tilde_1, t_tilde_bulk], axis=0)
             k_tilde_random = tf.concat([k_tilde_bulk, k_tilde_0, k_tilde_1], axis=0)
@@ -774,7 +798,7 @@ def main(ldup, date_S0):
                     learning_rate_ /= 1.1
 
                     physics.optimizer_NN_phi.learning_rate.assign(learning_rate_)
-                    physics.optimizer_NN_eta.learning_rate.assign(learning_rate_/div_lr)
+                    physics.optimizer_NN_eta.learning_rate.assign(learning_rate_)
 
                 if iter_ % save_epochs == 0 and iter_ != 0:
                     plotter.plot_res(loss_phi_list, loss_dupire_list, loss_reg_list, error_sigma_list, iter_)
