@@ -8,7 +8,7 @@ config["lambda_ini"] = torch.tensor(1e-3, dtype=torch.float32)
 config["lambda_pde"] = torch.tensor(1e-1, dtype=torch.float32)
 config["boundary_epsilon"] = 0.1
 
-config["mc_load"] = True
+config["mc_load"] = False #Use True to re-use past MC Runs
 # config["nn_params"]["num_epochs"] = 1
 
 for key, value in config.items():
