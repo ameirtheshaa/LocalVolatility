@@ -1,0 +1,97 @@
+{
+  "timestamp": "2025-11-01T16:35:09.238445",
+  "config": {
+    "mode": "all",
+    "skip_if_exists": true,
+    "verbose": true,
+    "S0": 1000.0,
+    "r": 0.04,
+    "volatility_config": {
+      "model_type": "custom",
+      "sigma_base": 0.3,
+      "t_shift": 0.1,
+      "x_shift": 0.1,
+      "custom_volatility_func": "<function constant_vol at 0x7f7c6e990720>"
+    },
+    "data_generation": true,
+    "M_train": 1000000,
+    "N_t_train": 1000,
+    "dt_train": 0.001,
+    "N_strikes": 20,
+    "N_maturities": 10,
+    "K_min": 500.0,
+    "K_max": 3000.0,
+    "T_min": 0.3,
+    "T_max": 1.5,
+    "save_training_data": true,
+    "training": true,
+    "num_epochs": 30000,
+    "print_epochs": 2500,
+    "save_epochs": 10000,
+    "num_res_blocks": 3,
+    "units": 64,
+    "activation": "tanh",
+    "gaussian_noise_phi": 0.5,
+    "gaussian_noise_eta": 0.5,
+    "lr_phi": 0.001,
+    "lr_eta": 0.001,
+    "lr_decay_rate": 1.1,
+    "lr_decay_steps": 2000,
+    "lambda_pde": 1.0,
+    "lambda_reg": 1.0,
+    "analysis": true,
+    "analysis_config": {
+      "extract_density_from_option_prices": true,
+      "fit_lognormal_distribution": true,
+      "compute_higher_moments": true,
+      "run_mc_with_nn_volatility": true,
+      "n_paths_analysis": 25000,
+      "dt_analysis": 0.001,
+      "T_analysis": [
+        0.25,
+        0.5,
+        0.75,
+        1.0,
+        1.5,
+        2.0
+      ]
+    },
+    "plot_config": {
+      "enable_training_plots": true,
+      "plot_option_surfaces": true,
+      "plot_option_error": true,
+      "plot_volatility_surfaces": true,
+      "plot_volatility_error": true,
+      "plot_dupire_gradients": true,
+      "plot_loss_curves": true,
+      "plot_error_metrics": true,
+      "enable_pdf_plots": true,
+      "plot_pdf_k_space": true,
+      "plot_pdf_log_space": true,
+      "plot_pdf_gaussian_space": true,
+      "save_png": true,
+      "save_pdf": true,
+      "save_svg": false,
+      "dpi": 450,
+      "style": "publication"
+    },
+    "output_dir": "synthetic_paper_large_dataset_constant_vol"
+  },
+  "scaling": {
+    "S0": 1000.0,
+    "r": 0.04,
+    "t_max": 1.5,
+    "k_min": 500.0,
+    "k_max": 3000.0
+  },
+  "volatility": {
+    "model_type": "custom",
+    "parameters": {
+      "model_type": "custom",
+      "sigma_base": 0.3,
+      "t_shift": 0.1,
+      "x_shift": 0.1,
+      "custom_volatility_func": "<function constant_vol at 0x7f7c6e990720>"
+    }
+  }
+}

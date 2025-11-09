@@ -64,6 +64,60 @@ python local_vol_model.py
 
 Set parameters for maturity, strike, and volatility constraints in the script to customize model predictions. The output provides real-time tracking of training metrics and loss values.
 
+### 4. `Synthetic_Data_Tensorflow_Advanced`
+
+This folder contains a sophisticated, production-ready implementation of the Dupire local volatility pipeline using deep neural networks. This is an advanced version that provides a complete end-to-end pipeline with comprehensive analysis tools, analytical validation, and extensive documentation.
+
+#### Features
+
+- **Complete Pipeline**: Modular architecture with data generation, model training, and PDF analysis stages
+- **Physics-Informed Neural Networks**: Neural networks that satisfy Dupire's PDE constraints
+- **Analytical Validation**: Comparison tools against Black-Scholes analytical solutions
+- **Comprehensive PDF Analysis**: Three-panel validation (strike space, log space, Gaussian space)
+- **Flexible Configuration**: Extensive configuration system supporting multiple volatility models
+- **Example Scripts**: Ready-to-use examples for common use cases
+- **Pre-trained Models**: Included models for quick validation without training
+
+#### Quick Start
+
+**Instant Analysis (No Training - 30 seconds):**
+
+Analyze pre-trained models immediately:
+
+```bash
+cd Synthetic_Data_Tensorflow_Advanced
+pip install -r requirements.txt
+python examples/run_analysis_only.py --model-dir models/example_pretrained
+```
+
+**Training:**
+
+```bash
+# Quick test (100 epochs, ~2 minutes)
+python examples/run_quick_test.py
+
+# Full training (30,000 epochs, ~30-60 minutes)
+python examples/run_full_training.py
+```
+
+#### What This Code Does
+
+The pipeline implements a complete workflow for Dupire local volatility calibration:
+
+1. **Data Generation**: Monte Carlo simulation with known local volatility
+2. **Model Training**: Neural network calibration using Dupire PDE
+3. **PDF Analysis**: Validation through probability density function comparison
+
+The implementation uses two neural networks:
+- **NN_phi**: Learns option prices C(T,K)
+- **NN_eta**: Learns local volatility squared σ²(T,K)
+
+These networks are trained to satisfy Dupire's PDE: ∂C/∂T = (1/2)K²σ²(K,T) ∂²C/∂K²
+
+#### Documentation
+
+For comprehensive documentation, examples, configuration options, and mathematical details, see [Synthetic_Data_Tensorflow_Advanced/README.md](Synthetic_Data_Tensorflow_Advanced/README.md).
+
 ## Installation
 
 1. Clone the repository:
