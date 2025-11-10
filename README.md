@@ -131,6 +131,32 @@ For comprehensive documentation, examples, configuration options, and mathematic
    pip install -r requirements.txt
    ```
 
+## References
+
+This repository builds upon foundational work in local volatility modeling and stochastic finance. We acknowledge the following key references:
+
+1. **Dupire, B. (1994)**. "Pricing with a smile." *Risk Magazine*, 7(1), 18-20.
+   - Original formulation of the local volatility model and Dupire's partial differential equation
+
+2. **Privault, N. (2022)**. "Introduction to Stochastic Finance" (2nd ed).
+   - Comprehensive mathematical background on stochastic processes and financial mathematics
+
+3. **Wang, Z., et al. (2025)**. "Deep self-consistent learning of local volatility."
+   - Neural network approach to Dupire local volatility calibration using physics-informed deep learning
+
+### Citation
+
+If you use this code in your research, please cite:
+
+```bibtex
+@software{local_volatility_neural_networks,
+  title={Local Volatility Modeling with Neural Networks},
+  author={Wang, Zhe and Shaa, Ameir and Privault, Nicolas and Guet, Claude},
+  year={2025},
+  url={https://github.com/ameirtheshaa/LocalVolatility}
+}
+```
+
 ## Contributing
 
 Contributions are welcome! Feel free to fork the repository, submit issues, or create pull requests to improve the functionality or accuracy of the models.
