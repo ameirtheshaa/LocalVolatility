@@ -1319,6 +1319,84 @@ class PDFAnalyzer:
 
         return density
 
+    def _raw_model_density(self, T: float, K_grid: np.ndarray) -> np.ndarray:
+        """
+        Raw e^(rT) * ∂²C_NN/∂K² on the given K-grid — no clipping, no
+        normalisation. The clip+rescale in extract_model_implied_density
+        destroys the absolute scale required by the IBP mean diagnostic.
+        """
+        t_tilde, k_tilde = self.prepare_data_for_nn(T, K_grid)
+
+        with tf.GradientTape(persistent=True) as tape_outer:
+            tape_outer.watch(k_tilde)
+            with tf.GradientTape(persistent=True) as tape_inner:
+                tape_inner.watch(k_tilde)
+                phi_tilde = self.nn_phi(tf.concat([t_tilde, k_tilde], axis=1))
+            grad_phi_k_tilde = tape_inner.gradient(phi_tilde, k_tilde)
+        grad_phi_kk_tilde = tape_outer.gradient(grad_phi_k_tilde, k_tilde)
+
+        dk_tilde_dK = np.exp(-self.config.r * T) / self.k_max
+        grad_phi_KK = (grad_phi_kk_tilde.numpy().flatten()
+                       * (dk_tilde_dK ** 2) * self.config.S0)
+        return np.exp(self.config.r * T) * grad_phi_KK
+
+    def compute_mean_diagnostics(self, T: float, K_grid_plot: np.ndarray,
+                                 mc_samples: np.ndarray) -> Dict[str, float]:
+        """
+        Three quantities that must agree by integration by parts:
+
+            (i)   e^(rT) ∫₀^∞ K · ∂²C_NN/∂K² dK   (mean of NN density)
+            (ii)  e^(rT) · C_NN(K=0, T)            (call at K=0)
+            (iii) E[S_T] from MC samples
+
+        Under no-arbitrage all three equal S₀·e^(rT). Disagreements
+        localise where the KDE-vs-NN deviation in the PDF plots comes
+        from:
+          (i) vs (ii)   → density integration / NN curvature mismatch
+          (ii) vs (iii) → NN_phi boundary at K=0 or NN-vs-MC inconsistency
+
+        Diagnostic (i) is reported on two grids: a wide [0, K_tail]
+        grid that respects the IBP identity, and the existing plot
+        K-grid so we can see how much of any gap is windowing.
+
+        (ii) evaluates NN_phi outside its trained K-range (down to
+        K=0); a large gap with (iii) implicitly tests boundary-fit
+        quality.
+        """
+        # (i) wide grid starting at K=0
+        K_max_plot = float(K_grid_plot[-1])
+        K_tail = max(5.0 * self.config.S0 * np.exp(self.config.r * T),
+                     5.0 * K_max_plot)
+        K_wide = np.linspace(0.0, K_tail, 5000, dtype=np.float64)
+        density_wide = self._raw_model_density(T, K_wide)
+        mean_nn_density_wide = float(np.trapz(K_wide * density_wide, K_wide))
+        tail_mass_check = float(density_wide[-1] * K_wide[-1])
+
+        # (i') existing plot grid
+        density_plot = self._raw_model_density(T, K_grid_plot)
+        mean_nn_density_plot = float(np.trapz(K_grid_plot * density_plot,
+                                              K_grid_plot))
+
+        # (ii) e^(rT) * C_NN(K=0, T); C = S0 * phi_tilde
+        K_zero = np.array([0.0], dtype=np.float64)
+        t_tilde_z, k_tilde_z = self.prepare_data_for_nn(T, K_zero)
+        phi_tilde_zero = self.nn_phi(tf.concat([t_tilde_z, k_tilde_z], axis=1))
+        c_nn_at_zero = float(phi_tilde_zero.numpy().flatten()[0]) * self.config.S0
+        spot_call = float(np.exp(self.config.r * T) * c_nn_at_zero)
+
+        # (iii) E[S_T] from MC
+        mean_mc = float(np.mean(mc_samples)) if mc_samples.size > 0 else float('nan')
+
+        return {
+            'mean_nn_density_wide': mean_nn_density_wide,
+            'mean_nn_density_plot': mean_nn_density_plot,
+            'spot_call':            spot_call,
+            'mean_mc':              mean_mc,
+            'theoretical_ref':      float(self.config.S0 * np.exp(self.config.r * T)),
+            'K_tail':               float(K_tail),
+            'tail_mass_check':      tail_mass_check,
+        }
+
     def fit_lognormal_corrected_method(self, K_grid: np.ndarray,
                                       f_vals: np.ndarray) -> Tuple:
         """
@@ -1464,6 +1542,25 @@ class PDFAnalyzer:
             # Extract model-implied density
             print(f"  Extracting NN model-implied density...")
             model_density = self.extract_model_implied_density(T, K_grid)
+
+            # IBP mean diagnostic: (i) ≈ (ii) ≈ (iii) ≈ S₀·e^(rT)
+            diagnostics = self.compute_mean_diagnostics(T, K_grid, mc_used)
+            ref = diagnostics['theoretical_ref']
+            print(f"  Mean diagnostics (all should ≈ S₀·e^(rT) = {ref:.4f}):")
+            print(f"    (i)   e^(rT)∫K·∂²C/∂K² dK [wide]:  "
+                  f"{diagnostics['mean_nn_density_wide']:.4f}"
+                  f"  | err = {diagnostics['mean_nn_density_wide']-ref:+.4f}")
+            print(f"    (i')  e^(rT)∫K·∂²C/∂K² dK [plot]:  "
+                  f"{diagnostics['mean_nn_density_plot']:.4f}"
+                  f"  | err = {diagnostics['mean_nn_density_plot']-ref:+.4f}")
+            print(f"    (ii)  e^(rT)·C_NN(K=0):            "
+                  f"{diagnostics['spot_call']:.4f}"
+                  f"  | err = {diagnostics['spot_call']-ref:+.4f}")
+            print(f"    (iii) mean(S_T) from MC:           "
+                  f"{diagnostics['mean_mc']:.4f}"
+                  f"  | err = {diagnostics['mean_mc']-ref:+.4f}")
+            print(f"    [tail-mass check (K·f at K_tail={diagnostics['K_tail']:.0f}): "
+                  f"{diagnostics['tail_mass_check']:.2e}]")
 
             # --- PANEL 1: K-SPACE ---
             ax1 = axes[i, 0]
@@ -1613,13 +1710,32 @@ class PDFAnalyzer:
                 ax3.grid(True, alpha=0.4, linestyle='--')
                 ax3.set_facecolor(COLORS['background'])
 
+                # IBP mean diagnostic annotation
+                diag_text = (
+                    f"IBP mean check (ref S0*exp(rT) = {ref:.2f})\n"
+                    f" (i)  int K*f dK [wide]: {diagnostics['mean_nn_density_wide']:.2f}  "
+                    f"(err {diagnostics['mean_nn_density_wide']-ref:+.2f})\n"
+                    f" (i') int K*f dK [plot]: {diagnostics['mean_nn_density_plot']:.2f}  "
+                    f"(err {diagnostics['mean_nn_density_plot']-ref:+.2f})\n"
+                    f" (ii)  exp(rT)*C_NN(0):   {diagnostics['spot_call']:.2f}  "
+                    f"(err {diagnostics['spot_call']-ref:+.2f})\n"
+                    f" (iii) mean(S_T) MC:      {diagnostics['mean_mc']:.2f}  "
+                    f"(err {diagnostics['mean_mc']-ref:+.2f})"
+                )
+                ax3.text(0.02, 0.98, diag_text, transform=ax3.transAxes,
+                         fontsize=8, family='monospace', verticalalignment='top',
+                         bbox=dict(boxstyle='round,pad=0.4',
+                                   facecolor='lightyellow', alpha=0.85,
+                                   edgecolor='gray'))
+
                 # Store both MC and model parameters for completeness
                 results[T] = {
                     'mu_mc': mu_mc, 'sigma_mc': sigma_mc,
                     'mu_model': mu_model, 'sigma_model': sigma_model,
                     'mean_K': mean_K, 'var_K': var_K,
                     'correlation': corr, 'skewness': skew_mc, 'excess_kurtosis': kurt_mc,
-                    'x_mc_mean': x_mc_mean, 'x_mc_std': x_mc_std
+                    'x_mc_mean': x_mc_mean, 'x_mc_std': x_mc_std,
+                    **diagnostics,
                 }
 
                 # Validation check
