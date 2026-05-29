@@ -1,3 +1,11 @@
 plots/mc_data_regen/
 *.npz
 models/runs/k0_bc_*/
+
+# Internal WIP files (not for public repo)
+REPLY_TO_NICOLAS.md
+HANDOFF.md
+CLAUDE.md
+examples/check_1mk_factor.py
+plots/nn_1mk_check/
+presentation/
