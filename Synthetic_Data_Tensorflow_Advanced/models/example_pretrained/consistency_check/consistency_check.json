@@ -1,0 +1,60 @@
+{
+  "model_dir": "models/example_pretrained",
+  "phi_mapping": "transformed",
+  "n_paths": 25000,
+  "mc_seed": 42,
+  "S0": 1000.0,
+  "r": 0.04,
+  "maturities": [
+    0.5,
+    1.0,
+    1.5
+  ],
+  "per_maturity": {
+    "0.5000": {
+      "M_1": 948.8675134711556,
+      "M_2": 948.9276608990626,
+      "M_3": 1018.2543287311767,
+      "M_ref": 1020.2013400267558,
+      "pct_err_M1": -6.992132215169354,
+      "pct_err_M2": -6.986236572265623,
+      "pct_err_M3": -0.19084578888399586,
+      "delta_M12_pct": 0.006338462918244754,
+      "delta_M13_pct": 6.814291214109779,
+      "K_tail": 11572.08426586959,
+      "tail_mass_check": 1.7480942562804087e-06,
+      "mean_nn_density_plot": 965.1296035879217,
+      "interpretation": "Delta_M13 > 2% \u2192 soft Dupire constraint is too weak; M_1 << M_3 \u2192 density left-shifted vs MC; vol network implies higher mean"
+    },
+    "1.0000": {
+      "M_1": 967.6582642439741,
+      "M_2": 967.7429149998983,
+      "M_3": 1038.194958855512,
+      "M_ref": 1040.8107741923882,
+      "pct_err_M1": -7.028415900592147,
+      "pct_err_M2": -7.02028274536133,
+      "pct_err_M3": -0.25132477504433937,
+      "delta_M12_pct": 0.008747235925168555,
+      "delta_M13_pct": 6.794166549344085,
+      "K_tail": 13920.875166829608,
+      "tail_mass_check": 8.362245683104207e-06,
+      "mean_nn_density_plot": 874.0816846594453,
+      "interpretation": "Delta_M13 > 2% \u2192 soft Dupire constraint is too weak; M_1 << M_3 \u2192 density left-shifted vs MC; vol network implies higher mean"
+    },
+    "1.5000": {
+      "M_1": 982.4941912133653,
+      "M_2": 982.9543788903418,
+      "M_3": 1054.3605400729753,
+      "M_ref": 1061.8365465453596,
+      "pct_err_M1": -7.472181626271136,
+      "pct_err_M2": -7.428842782974239,
+      "pct_err_M3": -0.704063774853789,
+      "delta_M12_pct": 0.04681678894355147,
+      "delta_M13_pct": 6.8161075958548185,
+      "K_tail": 14133.91092757334,
+      "tail_mass_check": 0.00016870665571652396,
+      "mean_nn_density_plot": 795.9578860167786,
+      "interpretation": "Delta_M13 > 2% \u2192 soft Dupire constraint is too weak; M_1 << M_3 \u2192 density left-shifted vs MC; vol network implies higher mean"
+    }
+  }
+}

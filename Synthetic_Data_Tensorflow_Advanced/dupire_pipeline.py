@@ -576,6 +576,7 @@ class DupireNeuralModel(tf.keras.Model):
         self.data = data_generator
         self.lambda_pde = config.lambda_pde
         self.lambda_reg = config.lambda_reg
+        self.lambda_k0 = config.lambda_k0
         self.num_res_blocks = config.num_res_blocks
         self.activation = config.activation
         self.gaussian_phi = config.gaussian_noise_phi
@@ -724,21 +725,23 @@ class DupireNeuralModel(tf.keras.Model):
         """Adaptive weight function to balance loss contributions"""
         return 1 + self.clip(y) / tf.reduce_mean(self.clip(y))
 
-    def loss_phi_cal(self, t_tilde, k_tilde, phi_tilde_ref, k_min_random, k_max_random):
+    def loss_phi_cal(self, t_tilde, k_tilde, phi_tilde_ref,
+                     t_min_random, t_max_random, k_min_random, k_max_random):
         """
-        Data fitting loss + boundary condition loss
+        Data fitting loss + boundary condition losses
 
-        L_phi = L_data + L_bc
+        L_phi = L_data + L_bc_t0 + λ_k0 * L_bc_k0
 
         where:
         - L_data: Fit NN to observed option prices
-        - L_bc: Enforce initial condition φ(k, 0) = (S₀ - K)^+
+        - L_bc_t0: Enforce initial condition φ(k, 0) = (S₀ - K)^+ at t=0
+        - L_bc_k0: Enforce C_NN(0, T) = S₀ (φ_tilde = 1 at K=0) for IBP identity
         """
         # Data fitting loss
         phi_tilde_nn = self.neural_phi_tilde(t_tilde, k_tilde)
         loss_phi = tf.reduce_mean(self.weight(phi_tilde_ref) * tf.square(phi_tilde_nn - phi_tilde_ref))
 
-        # Boundary condition loss
+        # T=0 payoff boundary (existing)
         M1 = 128
         t_tilde_0 = tf.zeros([M1, 1], dtype=data_type)
         k_tilde_0 = tf.random.uniform(shape=[M1, 1], minval=k_min_random, maxval=k_max_random, dtype=data_type)
@@ -747,7 +750,18 @@ class DupireNeuralModel(tf.keras.Model):
             self.weight(phi_tilde_0) * tf.square(self.neural_phi_tilde(t_tilde_0, k_tilde_0) - phi_tilde_0)
         )
 
-        return loss_phi + loss_bc
+        # K=0 call boundary: C(0,T) = S₀  =>  φ_tilde(T, 0) = 1
+        M_k0 = 128
+        t_tilde_k0 = tf.random.uniform(
+            shape=[M_k0, 1], minval=t_min_random, maxval=t_max_random, dtype=data_type)
+        k_tilde_k0 = tf.zeros([M_k0, 1], dtype=data_type)
+        phi_tilde_k0_target = tf.ones([M_k0, 1], dtype=data_type)
+        phi_tilde_k0_nn = self.neural_phi_tilde(t_tilde_k0, k_tilde_k0)
+        loss_k0 = tf.reduce_mean(
+            self.weight(phi_tilde_k0_target) * tf.square(phi_tilde_k0_nn - phi_tilde_k0_target)
+        )
+
+        return loss_phi + loss_bc + self.lambda_k0 * loss_k0
 
     def loss_dupire_cal(self, t_min_random, t_max_random, k_min_random, k_max_random):
         """
@@ -813,7 +827,9 @@ class DupireNeuralModel(tf.keras.Model):
             lambda_reg = self.lambda_reg
 
         with tf.GradientTape(persistent=True) as tape:
-            loss_phi = self.loss_phi_cal(t_tilde, k_tilde, phi_tilde_ref, k_min_random, k_max_random)
+            loss_phi = self.loss_phi_cal(
+                t_tilde, k_tilde, phi_tilde_ref,
+                t_min_random, t_max_random, k_min_random, k_max_random)
             loss_dupire, loss_reg = self.loss_dupire_cal(t_min_random, t_max_random, k_min_random, k_max_random)
             loss_total = loss_phi + lambda_pde * loss_dupire + lambda_reg * loss_reg
 
@@ -862,6 +878,7 @@ class ModelTrainer:
         print(f"Epochs: {self.config.num_epochs}")
         print(f"Lambda PDE: {self.config.lambda_pde}")
         print(f"Lambda Reg: {self.config.lambda_reg}")
+        print(f"Lambda K=0: {self.config.lambda_k0}")
         print(f"Learning rate (phi): {self.config.lr_phi}")
         print(f"Learning rate (eta): {self.config.lr_eta}")
 
@@ -1080,11 +1097,19 @@ class PDFAnalyzer:
     """
 
     def __init__(self, nn_phi: tf.keras.Model, nn_eta: tf.keras.Model,
-                 config: DupirePipelineConfig, metadata: Dict):
+                 config: DupirePipelineConfig, metadata: Dict,
+                 phi_mapping: str = 'transformed',
+                 figure_label: Optional[str] = None):
         self.nn_phi = nn_phi
         self.nn_eta = nn_eta
         self.config = config
         self.metadata = metadata
+        if phi_mapping not in ('transformed', 'legacy'):
+            raise ValueError(f"phi_mapping must be 'transformed' or 'legacy', got {phi_mapping!r}")
+        self.phi_mapping = phi_mapping
+        self.figure_label = figure_label
+        self.training_T_min = None
+        self.training_T_max = None
 
         # Extract scaling parameters from metadata
         if 'scaling' in metadata:
@@ -1113,6 +1138,18 @@ class PDFAnalyzer:
         k_tilde_tensor = tf.reshape(tf.constant(k_tilde, dtype=data_type), [-1, 1])
 
         return t_tilde_tensor, k_tilde_tensor
+
+    def phi_tilde_from_nn(self, t_tilde: tf.Tensor, k_tilde: tf.Tensor) -> tf.Tensor:
+        """
+        Map raw NN_phi output to normalized option price phi_tilde.
+
+        transformed: phi_tilde = 1 - exp(-NN_phi) (matches DupireNeuralModel training)
+        legacy:      phi_tilde = NN_phi raw output (pre-correction diagnostic bug)
+        """
+        phi_nn = self.nn_phi(tf.concat([t_tilde, k_tilde], axis=1))
+        if self.phi_mapping == 'legacy':
+            return phi_nn
+        return 1.0 - tf.exp(-phi_nn)
 
     def get_neural_local_volatility(self, t: float, S: np.ndarray) -> np.ndarray:
         """
@@ -1290,8 +1327,7 @@ class PDFAnalyzer:
             tape_outer.watch(k_tilde)
             with tf.GradientTape(persistent=True) as tape_inner:
                 tape_inner.watch(k_tilde)
-                # Get option price from neural network
-                phi_tilde = self.nn_phi(tf.concat([t_tilde, k_tilde], axis=1))
+                phi_tilde = self.phi_tilde_from_nn(t_tilde, k_tilde)
 
             # First derivative
             grad_phi_k_tilde = tape_inner.gradient(phi_tilde, k_tilde)
@@ -1331,7 +1367,7 @@ class PDFAnalyzer:
             tape_outer.watch(k_tilde)
             with tf.GradientTape(persistent=True) as tape_inner:
                 tape_inner.watch(k_tilde)
-                phi_tilde = self.nn_phi(tf.concat([t_tilde, k_tilde], axis=1))
+                phi_tilde = self.phi_tilde_from_nn(t_tilde, k_tilde)
             grad_phi_k_tilde = tape_inner.gradient(phi_tilde, k_tilde)
         grad_phi_kk_tilde = tape_outer.gradient(grad_phi_k_tilde, k_tilde)
 
@@ -1380,7 +1416,7 @@ class PDFAnalyzer:
         # (ii) e^(rT) * C_NN(K=0, T); C = S0 * phi_tilde
         K_zero = np.array([0.0], dtype=np.float64)
         t_tilde_z, k_tilde_z = self.prepare_data_for_nn(T, K_zero)
-        phi_tilde_zero = self.nn_phi(tf.concat([t_tilde_z, k_tilde_z], axis=1))
+        phi_tilde_zero = self.phi_tilde_from_nn(t_tilde_z, k_tilde_z)
         c_nn_at_zero = float(phi_tilde_zero.numpy().flatten()[0]) * self.config.S0
         spot_call = float(np.exp(self.config.r * T) * c_nn_at_zero)
 
@@ -1450,7 +1486,8 @@ class PDFAnalyzer:
         return mu, sigma, mean_K, var_K, x_vals, g_vals
 
     def create_enhanced_pdf_analysis(self, mc_data: Dict[float, np.ndarray],
-                                    T_values: Optional[List[float]] = None) -> Tuple[Figure, Dict]:
+                                    T_values: Optional[List[float]] = None,
+                                    figure_label: Optional[str] = None) -> Tuple[Figure, Dict]:
         """
         Generate publication-quality PDF analysis plots
 
@@ -1479,9 +1516,15 @@ class PDFAnalyzer:
         fig.patch.set_facecolor('white')
 
         # Title
-        fig.suptitle(
-            'PDF Analysis: Neural Network Synthetic Local Volatility Model\n' +
+        label = figure_label if figure_label is not None else self.figure_label
+        title_lines = [
+            'PDF Analysis: Neural Network Synthetic Local Volatility Model',
             r'Monte Carlo with $dS_t = rS_t dt + \sigma_{NN}(t,S)S_t dW_t$',
+        ]
+        if label:
+            title_lines.append(label)
+        fig.suptitle(
+            '\n'.join(title_lines),
             fontsize=18, fontweight='bold', color=COLORS['text'], y=0.98
         )
 
@@ -1543,8 +1586,13 @@ class PDFAnalyzer:
             print(f"  Extracting NN model-implied density...")
             model_density = self.extract_model_implied_density(T, K_grid)
 
-            # IBP mean diagnostic: (i) ≈ (ii) ≈ (iii) ≈ S₀·e^(rT)
-            diagnostics = self.compute_mean_diagnostics(T, K_grid, mc_used)
+            # IBP mean diagnostic: (i) ≈ (ii) ≈ (iii) ≈ S₀·e^(rT).
+            # Pass the FULL mc_samples here (not the [k_min, k_max]-trimmed
+            # mc_used): the IBP identity compares to the unconditional forward
+            # S_0·e^(rT), so M_3 must be the unconditional MC mean. The trimmed
+            # mc_used gives the in-window mean, which is asymmetrically biased
+            # once the local-vol surface develops a heavy right tail.
+            diagnostics = self.compute_mean_diagnostics(T, K_grid, mc_samples)
             ref = diagnostics['theoretical_ref']
             print(f"  Mean diagnostics (all should ≈ S₀·e^(rT) = {ref:.4f}):")
             print(f"    (i)   e^(rT)∫K·∂²C/∂K² dK [wide]:  "
@@ -1569,6 +1617,14 @@ class PDFAnalyzer:
                     label='Monte Carlo')
             ax1.plot(K_grid, model_density, color=COLORS['model'], linewidth=3,
                     label='NN Model', zorder=10)
+            # KDE of MC samples in K-space — matches the "Analytical" green-dashed
+            # overlay in the user's reference figures (Scott's rule bandwidth).
+            try:
+                kde_K = gaussian_kde(mc_used)
+                ax1.plot(K_grid, kde_K(K_grid), color=COLORS['kde'], linewidth=2,
+                        linestyle='--', label='Analytical', zorder=9)
+            except (ValueError, np.linalg.LinAlgError):
+                pass
             ax1.set_xlabel('Strike Price $K$', fontsize=12, fontweight='bold')
             ax1.set_ylabel('Density $f(K)$', fontsize=12, fontweight='bold')
             ax1.set_title(f'Strike Distribution (T = {T:.2f})',
@@ -1589,6 +1645,14 @@ class PDFAnalyzer:
             log_density = model_density * K_grid  # Jacobian |dK/d(ln K)| = K
             ax2.plot(log_K, log_density, color=COLORS['model'], linewidth=3,
                     label='NN Model', zorder=10)
+            # KDE of MC log-returns — matches the "Analytical" overlay in the
+            # user's reference figures.
+            try:
+                kde_logK = gaussian_kde(log_samples)
+                ax2.plot(log_K, kde_logK(log_K), color=COLORS['kde'], linewidth=2,
+                        linestyle='--', label='Analytical', zorder=9)
+            except (ValueError, np.linalg.LinAlgError):
+                pass
             ax2.set_xlabel(r'$\ln$(Strike Price)', fontsize=12, fontweight='bold')
             ax2.set_ylabel(r'Density $f(\ln K)$', fontsize=12, fontweight='bold')
             ax2.set_title(f'Log-Normal Distribution (T = {T:.2f})',
@@ -1889,6 +1953,24 @@ class DupirePipeline:
         model = DupireNeuralModel(self.config, data_gen)
         model.build_models()
 
+        if self.config.init_model_dir:
+            init_dir = self.config.init_model_dir
+            for fname, target in [
+                (['NN_phi_final.keras', 'NN_phi.keras'], model.NN_phi_tilde),
+                (['NN_eta_final.keras', 'NN_eta.keras'], model.NN_eta_tilde),
+            ]:
+                loaded = None
+                for name in fname:
+                    path = os.path.join(init_dir, name)
+                    if os.path.exists(path):
+                        loaded = tf.keras.models.load_model(path)
+                        break
+                if loaded is not None:
+                    target.set_weights(loaded.get_weights())
+                    print(f"  ✓ Warm-started {target.name} from {init_dir}")
+                else:
+                    print(f"  ⚠️  No weights found in {init_dir} for {fname[0]}")
+
         # Setup trainer and visualizer
         trainer = ModelTrainer(model, self.config)
         visualizer = TrainingVisualizer(self.config, self.output_dir) if self.config.plot_config.enable_training_plots else None
@@ -1968,7 +2050,12 @@ class DupirePipeline:
         valid_T = sorted(valid_T)
 
         # Create analyzer
-        analyzer = PDFAnalyzer(nn_phi, nn_eta, self.config, metadata)
+        phi_mapping = getattr(self.config, 'phi_mapping', 'transformed')
+        figure_label = getattr(self.config, 'figure_label', None)
+        analyzer = PDFAnalyzer(
+            nn_phi, nn_eta, self.config, metadata,
+            phi_mapping=phi_mapping,
+            figure_label=figure_label)
         analyzer.training_T_min = train_T_min
         analyzer.training_T_max = train_T_max
 
@@ -2009,7 +2096,8 @@ class DupirePipeline:
         if self.config.plot_config.enable_pdf_plots:
             fig, results = analyzer.create_enhanced_pdf_analysis(
                 mc_data,
-                valid_T
+                valid_T,
+                figure_label=figure_label,
             )
 
             # Save plots
@@ -2096,6 +2184,8 @@ Examples:
                        help='Number of training epochs (default: 30000)')
     parser.add_argument('--ldup', type=float, default=None,
                        help='Lambda for Dupire PDE loss (default: 1.0)')
+    parser.add_argument('--lambda-k0', dest='lambda_k0', type=float, default=None,
+                       help='Lambda for K=0 call boundary C(0,T)=S0 (default: 10.0)')
     parser.add_argument('--num-res-blocks', type=int, default=None,
                        help='Number of residual blocks (default: 3)')
     parser.add_argument('--lr', type=float, default=None,
@@ -2140,6 +2230,8 @@ Examples:
         config.num_epochs = args.num_epochs
     if args.ldup is not None:
         config.lambda_pde = args.ldup
+    if args.lambda_k0 is not None:
+        config.lambda_k0 = args.lambda_k0
     if args.num_res_blocks is not None:
         config.num_res_blocks = args.num_res_blocks
     if args.lr is not None:

@@ -708,6 +708,13 @@ class DupirePipelineConfig:
     #
     # Recommended: 1.0 (usually sufficient)
 
+    lambda_k0: float = 10.0
+    # Weight for K=0 call boundary: C_NN(0, T) = S₀  (φ_tilde = 1 at k_tilde=0)
+    # Addresses IBP diagnostic failure when NN_phi extrapolates below K_min.
+
+    init_model_dir: Optional[str] = None
+    # If set, load NN_phi/NN_eta weights from this directory before training (fine-tune)
+
     # =========================================================================
     # STAGE 3: ANALYSIS
     # =========================================================================

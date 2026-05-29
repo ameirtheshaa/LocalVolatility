@@ -1,0 +1,3 @@
+plots/mc_data_regen/
+*.npz
+models/runs/k0_bc_*/
