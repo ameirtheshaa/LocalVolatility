@@ -9,3 +9,6 @@ CLAUDE.md
 examples/check_1mk_factor.py
 plots/nn_1mk_check/
 presentation/
+
+# Large MC simulation arrays — kept locally but not tracked
+mc_arrays/
