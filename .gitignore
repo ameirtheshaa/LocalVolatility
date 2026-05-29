@@ -1,2 +1,6 @@
 Synthetic_Data_Tensorflow_Advanced/models/runs/synthetic_paper_large_dataset_constant_vol/training_data.npz
 Synthetic_Data_Tensorflow_Advanced/models/runs/synthetic_paper_large_dataset_constant_vol_HPC/training_data.npz
+
+# Python
+__pycache__/
+*.pyc

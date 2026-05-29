@@ -1,0 +1,177 @@
+% Nicolas IBP story — figure-forward slides
+
+\begin{frame}{Setup: Dupire PINN pipeline}
+    \textbf{Networks:}
+    \begin{itemize}
+        \item \texttt{NN\_phi}: normalized call price $\tilde\varphi(T,K)$
+        \item \texttt{NN\_eta}: local volatility squared $\tilde\eta(T,K)$
+    \end{itemize}
+    \vspace{0.25cm}
+    \textbf{PDF analysis} (three panels per maturity $T$):
+    \begin{enumerate}
+        \item Strike space $f(K)$ --- MC histogram vs NN density
+        \item Log-strike $f(\ln K)$
+        \item Gaussian space --- KDE of MC vs NN (standardized)
+    \end{enumerate}
+    \vspace{0.2cm}
+    {\small Training map: $\tilde\varphi = 1 - e^{-\mathrm{NN}_\phi}$ \quad (not raw $\mathrm{NN}_\phi$).}
+\end{frame}
+
+\begin{frame}{What Nicolas sees ($T=1.0$, pretrained)}
+    \begin{center}
+        \includegraphics[width=0.92\linewidth,height=0.72\textheight,keepaspectratio]{ibp_pretrained_T1_gaussian.png}
+    \end{center}
+    \vspace{-0.15cm}
+    {\footnotesize Gaussian panel: KDE of MC (blue) vs NN model (orange). Visible shape mismatch motivates the mean check.}
+\end{frame}
+
+\begin{frame}{Nicolas's concern (integration by parts)}
+    Mean of the NN-implied risk-neutral density:
+    \[
+        e^{rT}\int_0^\infty K\,\frac{\partial^2 C_{\mathrm{NN}}}{\partial K^2}\,dK
+    \]
+    Integration by parts (with $C\to 0$ as $K\to\infty$):
+    \[
+        = e^{rT}\,C_{\mathrm{NN}}(0,T) = \mathbb{E}[S_T]
+    \]
+    Under no-arbitrage, all three should equal the forward $S_0 e^{rT}$.
+    \vspace{0.2cm}
+    \begin{block}{Question}
+        Where does the visible KDE--NN deviation come from if these means agree?
+    \end{block}
+\end{frame}
+
+\begin{frame}{Three-way diagnostic test}
+    Compute separately at each maturity $T$:
+    \begin{center}
+        \begin{tabular}{cl}
+            \toprule
+            Label & Quantity \\
+            \midrule
+            (i)   & $e^{rT}\displaystyle\int_0^\infty K\,\frac{\partial^2 C_{\mathrm{NN}}}{\partial K^2}\,dK$ \\
+            (ii)  & $e^{rT}\,C_{\mathrm{NN}}(0,T)$ \\
+            (iii) & $\mathbb{E}[S_T]$ from MC with $\sigma_{\mathrm{NN}}(t,S)$ \\
+            ref   & $S_0 e^{rT}$ \\
+            \bottomrule
+        \end{tabular}
+    \end{center}
+    \vspace{0.15cm}
+    {\small Implemented in \texttt{compute\_mean\_diagnostics}; yellow box on Panel~3. For (i) use \textbf{unclipped} $\partial^2 C/\partial K^2$ (no normalise-to-1).}
+\end{frame}
+
+\begin{frame}{Finding 1: IBP holds in our code}
+    At every $T$, \textbf{(i) $\equiv$ (ii)} to machine precision ($\sim 6\times 10^{-5}$ relative).
+    \vspace{0.3cm}
+    \begin{itemize}
+        \item Autodiff and numerical integration are consistent
+        \item The breakdown is \textbf{not} a wrong $\partial^2 C/\partial K^2$ formula
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Pre-correction: legacy $\tilde\varphi$ bug ($T=1.0$)}
+    \begin{center}
+        \includegraphics[width=0.92\linewidth,height=0.68\textheight,keepaspectratio]{ibp_pre_correction_T1_gaussian.png}
+    \end{center}
+    {\footnotesize Analysis used raw $\mathrm{NN}_\phi$ as $\tilde\varphi$ instead of $1-e^{-\mathrm{NN}_\phi}$. Inflates (i) and (ii) $\approx 2.7\times$ ref.}
+\end{frame}
+
+\begin{frame}{Pretrained: corrected $\tilde\varphi$ ($T=1.0$ row)}
+    \begin{center}
+        \includegraphics[width=0.95\linewidth,height=0.70\textheight,keepaspectratio]{ibp_pretrained_T1_row.png}
+    \end{center}
+    {\footnotesize Panel~3: yellow box lists (i), (i$'$), (ii), (iii) vs ref. Same MC paths as pre-correction slide.}
+\end{frame}
+
+\begin{frame}{Three-way check (synthetic baseline, \texttt{models/example\_pretrained})}
+    \footnotesize
+    \setlength{\tabcolsep}{4pt}
+    \centering
+    \begin{tabular}{r r r r r r r r r r}
+        \toprule
+        $T$ & $M_{\mathrm{ref}}$ & $M_1$ & \%err & $M_2$ & \%err & $M_3$ & \%err & $\Delta M_{12}\%$ & $\Delta M_{13}\%$ \\
+        \midrule
+        0.5 & 1020.20 &  948.87 & $-6.99$ &  948.93 & $-6.99$ & 1018.25 & $-0.19$ & 0.006 & 6.814 \\
+        1.0 & 1040.81 &  967.66 & $-7.03$ &  967.74 & $-7.02$ & 1038.19 & $-0.25$ & 0.009 & 6.794 \\
+        1.5 & 1061.84 &  982.49 & $-7.47$ &  982.95 & $-7.43$ & 1054.36 & $-0.70$ & 0.047 & 6.816 \\
+        \bottomrule
+    \end{tabular}
+
+    \vspace{0.4em}
+    \scriptsize
+    \begin{itemize}
+        \item $M_1 \equiv M_2$ to $<\!0.05\%$ everywhere $\Rightarrow$ IBP identity exact.
+        \item $M_3$ within $0.7\%$ of forward $\Rightarrow$ NN$_\eta$ MC well-calibrated.
+        \item $M_1, M_2 \approx 7\%$ below forward $\Rightarrow$ NN$_\varphi$ undershoots near $K=0$.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{$\Delta M_{12}$ and $\Delta M_{13}$ as a function of maturity}
+    \centering
+    \includegraphics[width=0.78\textwidth]{ibp_deltas_vs_T.png}
+
+    \vspace{0.3em}
+    \scriptsize
+    $\Delta M_{12}$ is at numerical-noise level (IBP exact);
+    $\Delta M_{13}\!\approx\!7\%$ across all maturities $\Rightarrow$
+    price $\leftrightarrow$ vol gap concentrated in $\mathrm{NN}_\varphi$ at small $K$.
+\end{frame}
+
+\begin{frame}{Solution: $K=0$ boundary penalty + wider strikes}
+    \begin{itemize}
+        \item Penalty $|C_{\mathrm{NN}}(0,T)-S_0|$ in \texttt{loss\_phi\_cal} ($\lambda_{K0}=10$)
+        \item Training strikes $K_{\min}=100$ (was 500)
+        \item Retrain $\rightarrow$ \texttt{models/runs/k0\_bc\_retrain}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Retrained: $K_0$ BC ($T=1.0$)}
+    \begin{center}
+        \includegraphics[width=0.92\linewidth,height=0.68\textheight,keepaspectratio]{ibp_retrained_T1_gaussian.png}
+    \end{center}
+    {\footnotesize $T=1.0$: (i)=1030.7, (ii)=1033.7, (iii)=1038.1, ref=1040.8 (within $\sim$1\%).}
+\end{frame}
+
+\begin{frame}{Before / after: Gaussian panel at $T=1.0$}
+    \begin{center}
+        \includegraphics[width=0.98\linewidth,height=0.78\textheight,keepaspectratio]{ibp_gaussian_triptych_T1.png}
+    \end{center}
+    {\footnotesize Left: legacy $\tilde\varphi$ (pre-correction). Centre: pretrained corrected. Right: retrained $K_0$ BC.}
+\end{frame}
+
+\begin{frame}{Full comparison: pre-correction}
+    \begin{center}
+        \includegraphics[width=0.98\linewidth,height=0.82\textheight,keepaspectratio]{ibp_pre_correction_full.png}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Full comparison: pretrained (corrected)}
+    \begin{center}
+        \includegraphics[width=0.98\linewidth,height=0.82\textheight,keepaspectratio]{ibp_pretrained_full.png}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Full comparison: retrained}
+    \begin{center}
+        \includegraphics[width=0.98\linewidth,height=0.82\textheight,keepaspectratio]{ibp_retrained_full.png}
+    \end{center}
+\end{frame}
+
+\begin{frame}{Summary}
+    \begin{itemize}
+        \item \textbf{IBP autodiff $+$ integration are exact:} $M_1 \equiv M_2$ to $<\!0.05\%$ at every $T$.
+        \item \textbf{NN$_\eta$ MC is well-calibrated:} $M_3$ within $0.7\%$ of $S_0 e^{rT}$ at every $T$.
+        \medskip
+        \item[\textcolor{ntugold}{\textbullet}] \textbf{Diagnostic fix.} The earlier \texttt{mean\_mc} values \\
+              ($1042.19$ at $T=0.5$, etc.) were the in-window MC mean: \\
+              \texttt{create\_enhanced\_pdf\_analysis} inadvertently passed the \\
+              $[K_{\min},K_{\max}]$-trimmed sample to the IBP $M_3$ computation. \\
+              The MC develops a heavy right tail under the local-vol surface, so \\
+              asymmetric trimming biased $M_3$ upward by $\sim\!2\%$. Patched at \\
+              \texttt{dupire\_pipeline.py:1590} (\texttt{mc\_used}~$\to$~\texttt{mc\_samples}); \\
+              the corrected unconditional mean is $1018.25$.
+        \medskip
+        \item \textbf{Residual KDE-vs-NN deviation:} dominated by NN$_\varphi$ undershoot near $K = 0$ \\
+              ($M_1 \approx M_2 \approx 7\%$ below forward).
+        \item \textbf{Fix:} K$=$0 boundary penalty in the loss (\texttt{models/runs/k0\_bc\_retrain}) brings all three legs within $\sim\!1\%$ at $T \in \{0.5, 1.0\}$.
+    \end{itemize}
+\end{frame}
