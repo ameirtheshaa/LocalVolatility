@@ -166,8 +166,8 @@ def main():
     axes[1].axhline(1.0, color="0.4", ls="--", lw=1.2)
     axes[1].set(xlabel=r"$\tilde k$", ylabel=r"$P_{NN}(S_T>K)=-\frac{S_0}{K_{\max}}\partial_{\tilde k}\tilde\varphi$",
                 title="Network-implied survival prob\n(should be 1 at K=0)", ylim=(0.0, 1.1))
-    axes[2].set(xlabel="strike K", ylabel=r"$\sigma_{loc}$ (scaled NN units; real $\approx \div3$)",
-                title="Local vol (T=0.5): flat vs mildly skewed")
+    axes[2].set(xlabel="strike K", ylabel=r"$\sigma_{loc}(T{=}0.5,\,K)$",
+                title=r"Local vol: flat $\approx 1.0$ (const-$\sigma$) vs skewed $\approx 0.63$ (Dupire)")
     for ax in axes:
         ax.grid(True, ls="--", alpha=0.4); ax.legend(fontsize=8, framealpha=0.9)
     fig.suptitle("K=0 deficit: constant-σ vs Dupire — mechanism", fontweight="bold", fontsize=12)
