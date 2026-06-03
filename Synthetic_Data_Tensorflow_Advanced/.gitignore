@@ -9,17 +9,16 @@ CLAUDE.md
 examples/check_1mk_factor.py
 plots/nn_1mk_check/
 
-# presentation/: now tracked (sources + figures + rendered decks); ignore only LaTeX build artifacts
-presentation/*.aux
-presentation/*.log
-presentation/*.nav
-presentation/*.out
-presentation/*.snm
-presentation/*.toc
-presentation/*.fls
-presentation/*.fdb_latexmk
-presentation/*.synctex.gz
-presentation/.DS_Store
+# Presentation decks — WIP, local only (gitignored by default)
+presentation/
+
+# This session's K=0 diagnostics — WIP, local only
+examples/check_k0_discrepancy.py
+plots/nn_k0_check/const_vol/
+plots/nn_k0_check/dupire/
+plots/nn_k0_check/k0_discrepancy.json
+plots/nn_k0_check/k0_discrepancy.png
+plots/nn_k0_check/k0_discrepancy.pdf
 
 # Large MC simulation arrays — kept locally but not tracked
 mc_arrays/
