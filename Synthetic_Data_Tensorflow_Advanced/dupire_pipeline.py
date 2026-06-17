@@ -229,6 +229,19 @@ data_type_nn = tf.float32
 tf.keras.backend.set_floatx('float32')
 tf.random.set_seed(42)
 
+
+def tf_trapz(y, x):
+    """
+    Graph-safe composite-trapezoidal integral ∫ y dx (the tf analog of
+    numpy.trapz), for the MZ martingale/mass density integrals inside
+    train_step's GradientTape. y, x are 1-D tensors of equal length.
+    """
+    y = tf.reshape(y, [-1])
+    x = tf.reshape(x, [-1])
+    dx = x[1:] - x[:-1]
+    avg = 0.5 * (y[1:] + y[:-1])
+    return tf.reduce_sum(dx * avg)
+
 # Configure matplotlib for publication-quality plots
 plt.style.use('seaborn-v0_8-whitegrid')
 plt.rcParams['figure.facecolor'] = 'white'
@@ -545,6 +558,138 @@ class DataGenerator:
 
         return t_tilde, k_tilde
 
+    def from_market_csv(self, csv_path: str, *,
+                        S0: Optional[float] = None,
+                        r: Optional[float] = None,
+                        T_max: Optional[float] = None,
+                        K_max: Optional[float] = None,
+                        option_type: Optional[int] = None,
+                        phi_norm: str = 's0'):
+        """
+        MZ-Dupire Step 4a: real-market-data ingestion.
+
+        Ports SPX_Tensorflow/tf_NN_put_SPX.py::read_csv to this pipeline's
+        (t̃, k̃, φ̃_ref, scaling) contract. Reads the legacy SPX schema
+        ('Maturity', 'Strike', 'Option\\nprice', 'Option\\ntype', plus the
+        'locvol' / 'Implied\\nvol.' truth columns), filters by option type,
+        and normalises to the NN's scaled coordinates.
+
+        Scaling (consistent with DataGenerator.scale_data / loss_phi_cal BCs):
+            t̃   = T / T_max
+            k̃   = e^{-rT} · K / K_max
+            φ̃   = φ / S0       (phi_norm='s0', DEFAULT — matches the WSPG25
+                                 DupireNeuralModel where C = S0·φ̃ and the K=0 /
+                                 payoff boundary conditions in loss_phi_cal are
+                                 S0-based; this is the consistent choice for THIS
+                                 model and is required for λ=0 == WSPG25.)
+                 φ / K_max     (phi_norm='k_max', the LITERAL legacy SPX
+                                 tf_NN_put_SPX convention; provided for parity but
+                                 it is NOT consistent with this model's BCs.)
+
+        T_max / K_max default to the DATA max maturity / strike (legacy
+        get_min_max behaviour) when not supplied. S0 / r default to config.
+        The implied-vol / locvol column is returned aside as the σ reference
+        (kept for the held-out σ-RMSE check; never used in training).
+
+        Returns a dict:
+            {'T_nn','K_nn','phi_ref','phi_tilde_ref','t_tilde','k_tilde',
+             'sigma_ref','locvol_flag','option_type','scaling':{S0,r,t_max,
+             k_max,k_min,phi_norm,n_rows}}
+        which stage2_train_models consumes directly.
+        """
+        import pandas as pd
+
+        S0 = float(self.config.S0 if S0 is None else S0)
+        r = float(self.config.r if r is None else r)
+        option_type = int(getattr(self.config, 'market_option_type', 2)
+                          if option_type is None else option_type)
+
+        if not os.path.exists(csv_path):
+            raise FileNotFoundError(f"Market CSV not found: {csv_path}")
+
+        df = pd.read_csv(csv_path)
+
+        # Resolve columns robustly: the SPX export uses embedded newlines
+        # ('Option\nprice', 'Option\ntype', 'Implied\nvol.').
+        def _find_col(cands):
+            norm = {c.replace('\n', ' ').strip().lower(): c for c in df.columns}
+            for cand in cands:
+                key = cand.replace('\n', ' ').strip().lower()
+                if key in norm:
+                    return norm[key]
+            return None
+
+        col_T = _find_col(['Maturity'])
+        col_K = _find_col(['Strike'])
+        col_phi = _find_col(['Option price', 'Option\nprice'])
+        col_type = _find_col(['Option type', 'Option\ntype'])
+        col_iv = _find_col(['Implied vol.', 'Implied\nvol.', 'ImpVolCalibrated'])
+        col_locvol = _find_col(['locvol'])
+
+        missing = [n for n, c in [('Maturity', col_T), ('Strike', col_K),
+                                  ('Option price', col_phi)] if c is None]
+        if missing:
+            raise KeyError(f"Market CSV {csv_path} missing required columns: {missing}; "
+                           f"found {list(df.columns)}")
+
+        # Option-type filter (legacy: keep rows where Option type == option_type)
+        if col_type is not None:
+            mask = df[col_type].astype('float64').round().astype('int64') == option_type
+            df = df.loc[mask].reset_index(drop=True)
+        if len(df) == 0:
+            raise ValueError(f"No rows with Option type == {option_type} in {csv_path}")
+
+        T_arr = df[col_T].to_numpy(dtype=np.float64)
+        K_arr = df[col_K].to_numpy(dtype=np.float64)
+        phi_arr = df[col_phi].to_numpy(dtype=np.float64)
+        sigma_arr = (df[col_iv].to_numpy(dtype=np.float64) if col_iv is not None
+                     else np.full_like(T_arr, np.nan))
+        locvol_arr = (df[col_locvol].to_numpy(dtype=np.float64) if col_locvol is not None
+                      else np.full_like(T_arr, np.nan))
+
+        # Data-driven scaling bounds (legacy get_min_max). Allow override.
+        t_max = float(T_arr.max() if T_max is None else T_max)
+        k_max = float(K_arr.max() if K_max is None else K_max)
+        k_min = float(K_arr.min())
+
+        # Push scaling into the config so the model / analyzer use the SAME
+        # normalisation everywhere (scale_data, neural_phi, _density_tf).
+        self.config.T_max = t_max
+        self.config.K_max = k_max
+        self.config.K_min = k_min
+        self.config.S0 = S0
+        self.config.r = r
+
+        T_nn = tf.reshape(tf.constant(T_arr, dtype=data_type), [-1, 1])
+        K_nn = tf.reshape(tf.constant(K_arr, dtype=data_type), [-1, 1])
+        phi_ref = tf.reshape(tf.constant(phi_arr, dtype=data_type), [-1, 1])
+
+        t_tilde = T_nn / t_max
+        k_tilde = tf.exp(-r * T_nn) * K_nn / k_max
+
+        if phi_norm == 's0':
+            phi_tilde_ref = phi_ref / S0
+        elif phi_norm == 'k_max':
+            phi_tilde_ref = phi_ref / k_max
+        else:
+            raise ValueError(f"phi_norm must be 's0' or 'k_max', got {phi_norm!r}")
+
+        print(f"  ✓ Loaded market CSV: {csv_path}")
+        print(f"    {len(df)} rows (Option type=={option_type}); "
+              f"T∈[{T_arr.min():.3f},{t_max:.3f}], K∈[{k_min:.1f},{k_max:.1f}], "
+              f"φ∈[{phi_arr.min():.3f},{phi_arr.max():.3f}]")
+        print(f"    Scaling: S0={S0}, r={r}, T_max={t_max:.4f}, K_max={k_max:.1f}, "
+              f"phi_norm={phi_norm}")
+
+        return {
+            'T_nn': T_nn, 'K_nn': K_nn, 'phi_ref': phi_ref,
+            'phi_tilde_ref': phi_tilde_ref, 't_tilde': t_tilde, 'k_tilde': k_tilde,
+            'sigma_ref': sigma_arr, 'locvol_flag': locvol_arr,
+            'option_type': option_type,
+            'scaling': {'S0': S0, 'r': r, 't_max': t_max, 'k_max': k_max,
+                        'k_min': k_min, 'phi_norm': phi_norm, 'n_rows': int(len(df))},
+        }
+
 
 # =============================================================================
 # [3] STAGE 2: MODEL TRAINING
@@ -578,6 +723,13 @@ class DupireNeuralModel(tf.keras.Model):
         self.lambda_pde = config.lambda_pde
         self.lambda_reg = config.lambda_reg
         self.lambda_k0 = config.lambda_k0
+        # MZ-Dupire framing-4 "Step 4 Lite" weights (default 0.0 ⇒ WSPG25 baseline)
+        self.lambda_mart = getattr(config, 'lambda_mart', 0.0)
+        self.lambda_pos = getattr(config, 'lambda_pos', 0.0)
+        self.lambda_mz = getattr(config, 'lambda_mz', 0.0)  # reserved, unused this round
+        self.mart_kgrid_n = getattr(config, 'mart_kgrid_n', 256)
+        self.mart_kgrid_kmax_mult = getattr(config, 'mart_kgrid_kmax_mult', 1.5)
+        self.w_mass_mart = getattr(config, 'w_mass_mart', 1.0)
         self.num_res_blocks = config.num_res_blocks
         self.activation = config.activation
         self.gaussian_phi = config.gaussian_noise_phi
@@ -654,8 +806,13 @@ class DupireNeuralModel(tf.keras.Model):
             if getattr(self.config, 'ansatz', 'one_minus_exp') == 'one_minus_exp'
             else None
         )
-        output_ = tf.keras.layers.Dense(1, activation=phi_out_activation, use_bias=True,
-                                        dtype="float32")(dense_out)
+        # dtype intentionally omitted — inherits from tf.keras.backend.floatx() so that
+        # run_mz_pinn_ablation.py --dtype float64 gets a fully float64 model.  With the
+        # default floatx='float32' (used by run_mz_pinn_train.py) behaviour is unchanged.
+        # (The merged exp_k commit hardcoded dtype="float32" here; keeping it would have
+        # regressed the float64 ablation path, so the two sides are combined rather than
+        # one taken.)
+        output_ = tf.keras.layers.Dense(1, activation=phi_out_activation, use_bias=True)(dense_out)
 
         model = tf.keras.models.Model(inputs=input_, outputs=output_)
         return model
@@ -678,7 +835,8 @@ class DupireNeuralModel(tf.keras.Model):
 
         # Final dense layers
         dense_out = tf.keras.layers.Dense(units, activation=activation, use_bias=True)(x)
-        output_ = tf.keras.layers.Dense(1, activation='softplus', use_bias=True, dtype="float32")(dense_out)
+        # dtype intentionally omitted — inherits from tf.keras.backend.floatx().
+        output_ = tf.keras.layers.Dense(1, activation='softplus', use_bias=True)(dense_out)
 
         model = tf.keras.models.Model(inputs=input_, outputs=output_)
         return model
@@ -807,6 +965,112 @@ class DupireNeuralModel(tf.keras.Model):
 
         return loss_phi + loss_bc
 
+    # =====================================================================
+    # MZ-Dupire framing-4 "Step 4 Lite": martingale + mass + positivity
+    # ---------------------------------------------------------------------
+    # GRAPH-SAFE clones of the post-hoc IBP diagnostics (_raw_model_density /
+    # compute_mean_diagnostics). NO .numpy(), all tf ops, so they sit inside
+    # train_step's GradientTape and route gradients into NN_phi. Default
+    # weights are 0 ⇒ these contribute nothing (the strict-extension control).
+    # =====================================================================
+    def _density_tf(self, T):
+        """
+        Graph-safe model-implied risk-neutral density f(K) = e^{rT}·∂²C_NN/∂K²
+        on a bounded wide K-grid, at a single maturity T (python/tf scalar).
+
+        Mirrors _raw_model_density exactly but with tf-only ops (nested
+        tf.GradientTape, tf.linspace, no .numpy()):
+            φ̃ = neural_phi_tilde(t̃, k̃),  C = S0·φ̃
+            t̃ = T/T_max,  k̃ = e^{-rT}·K/K_max,  ∂k̃/∂K = e^{-rT}/K_max
+            ∂²C/∂K² = ∂²φ̃/∂k̃² · (∂k̃/∂K)² · S0
+            f(K)    = e^{rT} · ∂²C/∂K²
+
+        Returns (K_grid, f) with f the UNCLIPPED, UN-normalised density and
+        K_grid the matching strike grid (both shape [N,1]) — the caller forms
+        the mass / first-moment / positivity penalties by trapezoid.
+        """
+        T = tf.cast(T, data_type)
+        r = tf.cast(self.config.r, data_type)
+        S0 = tf.cast(self.config.S0, data_type)
+        K_max = tf.cast(self.config.K_max, data_type)
+        T_max = tf.cast(self.config.T_max, data_type)
+
+        N = int(self.mart_kgrid_n)
+        K_hi = self.mart_kgrid_kmax_mult * K_max
+        # Wide K-grid in original strike space, K ∈ [0, K_hi] — the same K=0
+        # start as compute_mean_diagnostics' wide IBP grid (the density and its
+        # ∫f / ∫Kf integrals are finite at K=0: φ̃ is a bounded softplus output
+        # and ∂k̃/∂K = e^{-rT}/K_max is finite). Smoke-tested NaN-free.
+        K_grid = tf.reshape(tf.linspace(tf.zeros([], data_type), K_hi, N), [-1, 1])
+
+        # Scale to NN coordinates (same map as DataGenerator.scale_data)
+        disc = tf.exp(-r * T)
+        t_tilde = tf.fill([N, 1], T / T_max)
+        k_tilde = disc * K_grid / K_max
+
+        with tf.GradientTape(persistent=True) as tape_outer:
+            tape_outer.watch(k_tilde)
+            with tf.GradientTape(persistent=True) as tape_inner:
+                tape_inner.watch(k_tilde)
+                phi_tilde = self.neural_phi_tilde(t_tilde, k_tilde)
+            grad_phi_k_tilde = tape_inner.gradient(phi_tilde, k_tilde)
+        grad_phi_kk_tilde = tape_outer.gradient(grad_phi_k_tilde, k_tilde)
+
+        dk_tilde_dK = disc / K_max
+        grad_phi_KK = grad_phi_kk_tilde * (dk_tilde_dK ** 2) * S0
+        f = tf.exp(r * T) * grad_phi_KK
+        return K_grid, f
+
+    def loss_martingale_cal(self, t_max_random):
+        """
+        Risk-neutral martingale (first-moment) + mass soft constraint:
+
+            L_mart = ((∫ K f dK − F) / F)²  +  w_mass·(∫ f dK − 1)²
+
+        where F = S0·e^{rT} is the risk-neutral forward price.
+
+        The first-moment term is DIMENSIONLESS (relative residual, O(1)) so that
+        a single λ_mart ≈ 1.0 is on the same scale as L_phi without any
+        λ-tuning sweep. The mass term (∫f−1)² is already O(1) and is kept as-is.
+
+        f = e^{rT}·∂²C_NN/∂K² (graph-safe _density_tf); ∫ K f dK = E[S_T]
+        directly (f already carries e^{rT}). Evaluated at the longest trained
+        maturity T = t_max_random · T_max (where tail truncation / martingale
+        drift bites hardest).
+        """
+        T = tf.cast(t_max_random, data_type) * tf.cast(self.config.T_max, data_type)
+        r = tf.cast(self.config.r, data_type)
+        S0 = tf.cast(self.config.S0, data_type)
+
+        K_grid, f = self._density_tf(T)
+        Kf = tf.reshape(K_grid, [-1]) * tf.reshape(f, [-1])
+        f_flat = tf.reshape(f, [-1])
+        K_flat = tf.reshape(K_grid, [-1])
+
+        # trapezoid integrals (tf, graph-safe)
+        mass = tf_trapz(f_flat, K_flat)
+        mean = tf_trapz(Kf, K_flat)  # = ∫ K f dK = E[S_T] already (f carries e^{rT})
+
+        target_mean = S0 * tf.exp(r * T)
+        # RELATIVE first-moment residual: dimensionless, O(1), λ_mart≈1 works directly.
+        loss_mean = tf.square((mean - target_mean) / target_mean)
+        loss_mass = tf.square(mass - tf.cast(1.0, data_type))
+        return loss_mean + tf.cast(self.w_mass_mart, data_type) * loss_mass
+
+    def loss_positivity_cal(self, t_max_random):
+        """
+        Explicit positivity (no-butterfly-arbitrage) penalty:
+
+            L_pos = mean( relu(−∂²C_NN/∂K²)² ).
+
+        The martingale+mass term does NOT guarantee f≥0 pointwise (Codex's
+        correction); this penalises negative convexity (negative density)
+        directly. Re-uses the SAME _density_tf ∂²C/∂K² so it is one extra eval.
+        """
+        T = tf.cast(t_max_random, data_type) * tf.cast(self.config.T_max, data_type)
+        _, f = self._density_tf(T)  # f = e^{rT}·∂²C/∂K²; sign(f)=sign(∂²C/∂K²)
+        return tf.reduce_mean(tf.square(tf.nn.relu(-tf.reshape(f, [-1]))))
+
     def loss_dupire_cal(self, t_min_random, t_max_random, k_min_random, k_max_random):
         """
         Dupire PDE loss + arbitrage penalty
@@ -859,16 +1123,34 @@ class DupireNeuralModel(tf.keras.Model):
     @tf.function
     def train_step(self, t_tilde, k_tilde, phi_tilde_ref,
                    t_min_random, t_max_random, k_min_random, k_max_random,
-                   lambda_pde=None, lambda_reg=None):
+                   lambda_pde=None, lambda_reg=None,
+                   lambda_mart=0.0, lambda_pos=0.0,
+                   lambda_pos_scale=None):
         """
         Single training step
 
-        Updates both NN_phi and NN_eta networks
+        Updates both NN_phi and NN_eta networks.
+
+        Step-4-Lite extension: if lambda_mart>0 or lambda_pos>0, add the
+        graph-safe MZ martingale+mass / positivity penalties (on NN_phi only).
+        lambda_mart and lambda_pos are PYTHON scalars (not tensors) so that the
+        @tf.function trace at lambda_mart==lambda_pos==0.0 is STRUCTURALLY
+        IDENTICAL to the WSPG25 baseline — the density evals are never even
+        added to the graph. This is the strict-extension control:
+        λ_mart=λ_pos=0 ⇒ byte-identical loss_total / grads to the original code.
+
+        lambda_pos_scale (optional tf.Tensor): a scalar in [0,1] that scales
+        lambda_pos in-graph (for the λ_pos warmup). Defaults to 1.0 (no scaling).
+        Passing it as a TF tensor avoids retracing on every warmup step — the
+        python float lambda_pos itself stays fixed (only one trace per on/off),
+        and the warmup ramp is a tensor multiplication inside the graph.
         """
         if lambda_pde is None:
             lambda_pde = self.lambda_pde
         if lambda_reg is None:
             lambda_reg = self.lambda_reg
+        if lambda_pos_scale is None:
+            lambda_pos_scale = tf.constant(1.0, dtype=data_type)
 
         with tf.GradientTape(persistent=True) as tape:
             loss_phi = self.loss_phi_cal(
@@ -877,13 +1159,176 @@ class DupireNeuralModel(tf.keras.Model):
             loss_dupire, loss_reg = self.loss_dupire_cal(t_min_random, t_max_random, k_min_random, k_max_random)
             loss_total = loss_phi + lambda_pde * loss_dupire + lambda_reg * loss_reg
 
+            # ---- MZ Step-4-Lite: martingale + mass + positivity on NN_phi ----
+            # Python-level gate: at λ=0 these branches are NOT traced, so the
+            # graph (and thus loss_total / its gradient) is unchanged.
+            loss_mart = tf.constant(0.0, dtype=data_type)
+            loss_pos = tf.constant(0.0, dtype=data_type)
+            if lambda_mart != 0.0:
+                loss_mart = self.loss_martingale_cal(t_max_random)
+                loss_total = loss_total + tf.cast(lambda_mart, data_type) * loss_mart
+            if lambda_pos != 0.0:
+                loss_pos = self.loss_positivity_cal(t_max_random)
+                # lambda_pos_scale carries the warmup ramp as a TF tensor — no
+                # retracing even though the scale changes each warmup epoch.
+                loss_total = loss_total + tf.cast(lambda_pos, data_type) * lambda_pos_scale * loss_pos
+
         grads_NN_phi = tape.gradient(loss_total, self.NN_phi_tilde.trainable_variables)
         grads_NN_eta = tape.gradient(loss_dupire, self.NN_eta_tilde.trainable_variables)
 
         self.optimizer_NN_phi.apply_gradients(zip(grads_NN_phi, self.NN_phi_tilde.trainable_variables))
         self.optimizer_NN_eta.apply_gradients(zip(grads_NN_eta, self.NN_eta_tilde.trainable_variables))
 
-        return loss_phi, loss_dupire, loss_reg
+        return loss_phi, loss_dupire, loss_reg, loss_mart, loss_pos
+
+    # =========================================================================
+    # PAIRED-SEED ABLATION HOOKS — frozen-collocation variants
+    # =========================================================================
+    # These allow run_mz_pinn_ablation.py to sample collocation ONCE per seed
+    # and reuse the identical points for Arm A (λ=0) and Arm B (λ>0), so the
+    # paired delta (B−A) is free of collocation noise. The original train_step /
+    # loss_*_cal are untouched; the single-run driver (run_mz_pinn_train.py)
+    # continues to use the resampling path.
+    # =========================================================================
+
+    def sample_frozen_collocation(self, t_min, t_max, k_min, k_max):
+        """
+        Sample all stochastic collocation / boundary points used by
+        loss_phi_cal + loss_dupire_cal in one shot. Call once per seed;
+        pass the returned dict to train_step_frozen for both arms.
+
+        Sizes mirror the originals:
+            bc_t0 : k_tilde_0 — M1=128 T=0 boundary samples
+            bc_k0 : t_tilde_k0 — M_k0=128 K=0 boundary time samples
+            bulk   : (t_tilde_bulk, k_tilde_bulk) — M2*M2=16384 interior samples
+        """
+        M1, M_k0, M2 = 128, 128, 128
+        dt = data_type
+        k_bc_t0 = tf.random.uniform([M1, 1], minval=k_min, maxval=k_max, dtype=dt)
+        t_bc_k0 = tf.random.uniform([M_k0, 1], minval=t_min, maxval=t_max, dtype=dt)
+        t_bulk = tf.random.uniform([M2 * M2, 1], minval=t_min, maxval=t_max, dtype=dt)
+        k_bulk = tf.random.uniform([M2 * M2, 1], minval=k_min, maxval=k_max, dtype=dt)
+        return {"k_bc_t0": k_bc_t0, "t_bc_k0": t_bc_k0,
+                "t_bulk": t_bulk, "k_bulk": k_bulk}
+
+    def loss_phi_cal_frozen(self, t_tilde, k_tilde, phi_tilde_ref,
+                             t_min_random, t_max_random, k_min_random, k_max_random,
+                             frozen_coll):
+        """
+        loss_phi_cal using pre-sampled boundary tensors from frozen_coll,
+        so Arm A and Arm B see identical BC collocation points.
+        """
+        phi_tilde_nn = self.neural_phi_tilde(t_tilde, k_tilde)
+        loss_phi = tf.reduce_mean(self.weight(phi_tilde_ref) * tf.square(phi_tilde_nn - phi_tilde_ref))
+
+        # T=0 payoff boundary — frozen
+        k_tilde_0 = frozen_coll["k_bc_t0"]
+        M1 = k_tilde_0.shape[0]
+        t_tilde_0 = tf.zeros([M1, 1], dtype=data_type)
+        phi_tilde_0 = tf.nn.relu(1 - (1.0 / self.config.S0) * self.config.K_max * k_tilde_0)
+        loss_bc = tf.reduce_mean(
+            self.weight(phi_tilde_0) * tf.square(self.neural_phi_tilde(t_tilde_0, k_tilde_0) - phi_tilde_0))
+
+        # K=0 call boundary — frozen
+        t_tilde_k0 = frozen_coll["t_bc_k0"]
+        M_k0 = t_tilde_k0.shape[0]
+        k_tilde_k0 = tf.zeros([M_k0, 1], dtype=data_type)
+        phi_tilde_k0_target = tf.ones([M_k0, 1], dtype=data_type)
+        phi_tilde_k0_nn = self.neural_phi_tilde(t_tilde_k0, k_tilde_k0)
+        loss_k0 = tf.reduce_mean(
+            self.weight(phi_tilde_k0_target) * tf.square(phi_tilde_k0_nn - phi_tilde_k0_target))
+
+        return loss_phi + loss_bc + self.lambda_k0 * loss_k0
+
+    def loss_dupire_cal_frozen(self, t_min_random, t_max_random, k_min_random, k_max_random,
+                                frozen_coll):
+        """
+        loss_dupire_cal using pre-sampled bulk interior tensors from frozen_coll.
+        """
+        M2 = 128
+        # Cast scalars to data_type so tf.fill produces tensors of the right dtype
+        # (Python floats default to float32 in tf.fill; frozen_coll is data_type).
+        t_min_r = tf.cast(t_min_random, data_type)
+        t_max_r = tf.cast(t_max_random, data_type)
+        k_min_r = tf.cast(k_min_random, data_type)
+        k_max_r = tf.cast(k_max_random, data_type)
+        t_tilde_0 = tf.fill([M2, 1], t_min_r)
+        t_tilde_1 = tf.fill([M2, 1], t_max_r)
+        k_tilde_0 = tf.fill([M2, 1], k_min_r)
+        k_tilde_1 = tf.fill([M2, 1], k_max_r)
+        t_tilde_bulk = frozen_coll["t_bulk"]
+        k_tilde_bulk = frozen_coll["k_bulk"]
+
+        t_tilde_random = tf.concat([t_tilde_0, t_tilde_1, t_tilde_bulk], axis=0)
+        k_tilde_random = tf.concat([k_tilde_bulk, k_tilde_0, k_tilde_1], axis=0)
+
+        with tf.GradientTape(persistent=True) as tape_2:
+            tape_2.watch(k_tilde_random)
+            with tf.GradientTape(persistent=True) as tape_1:
+                tape_1.watch(t_tilde_random)
+                tape_1.watch(k_tilde_random)
+                phi_tilde = self.neural_phi_tilde(t_tilde_random, k_tilde_random)
+            grad_phi_t_tilde = tape_1.gradient(phi_tilde, t_tilde_random)
+            grad_phi_k_tilde = tape_1.gradient(phi_tilde, k_tilde_random)
+        grad_phi_kk_tilde = tape_2.gradient(grad_phi_k_tilde, k_tilde_random)
+
+        eta_tilde = self.neural_eta_tilde(t_tilde_random, k_tilde_random)
+        dupire_eqn = grad_phi_t_tilde - eta_tilde * k_tilde_random ** 2 * grad_phi_kk_tilde
+        loss_dupire = tf.reduce_mean(self.weight(grad_phi_t_tilde) * tf.square(dupire_eqn))
+
+        arb_eqn = (grad_phi_t_tilde
+                   - self.config.r * self.config.T_max * k_tilde_random
+                   * tf.nn.relu(grad_phi_k_tilde))
+        loss_reg = tf.reduce_mean(self.weight(grad_phi_t_tilde) * tf.square(tf.nn.relu(-arb_eqn)))
+
+        return loss_dupire, loss_reg
+
+    def train_step_frozen(self, t_tilde, k_tilde, phi_tilde_ref,
+                           t_min_random, t_max_random, k_min_random, k_max_random,
+                           frozen_coll,
+                           lambda_pde=None, lambda_reg=None,
+                           lambda_mart=0.0, lambda_pos=0.0,
+                           lambda_pos_scale=None):
+        """
+        Paired-ablation training step: uses pre-sampled frozen_coll so
+        Arm A (λ=0) and Arm B (λ>0) see exactly the same collocation points.
+        Same loss assembly logic as train_step; NOT decorated with @tf.function
+        so it runs in eager mode (sufficient for the ablation's CPU smoke test
+        and avoids retracing on frozen_coll inputs).
+        """
+        if lambda_pde is None:
+            lambda_pde = self.lambda_pde
+        if lambda_reg is None:
+            lambda_reg = self.lambda_reg
+        if lambda_pos_scale is None:
+            lambda_pos_scale = tf.constant(1.0, dtype=data_type)
+
+        with tf.GradientTape(persistent=True) as tape:
+            loss_phi = self.loss_phi_cal_frozen(
+                t_tilde, k_tilde, phi_tilde_ref,
+                t_min_random, t_max_random, k_min_random, k_max_random,
+                frozen_coll)
+            loss_dupire, loss_reg = self.loss_dupire_cal_frozen(
+                t_min_random, t_max_random, k_min_random, k_max_random, frozen_coll)
+            loss_total = loss_phi + lambda_pde * loss_dupire + lambda_reg * loss_reg
+
+            loss_mart = tf.constant(0.0, dtype=data_type)
+            loss_pos = tf.constant(0.0, dtype=data_type)
+            if lambda_mart != 0.0:
+                loss_mart = self.loss_martingale_cal(t_max_random)
+                loss_total = loss_total + tf.cast(lambda_mart, data_type) * loss_mart
+            if lambda_pos != 0.0:
+                loss_pos = self.loss_positivity_cal(t_max_random)
+                loss_total = (loss_total
+                              + tf.cast(lambda_pos, data_type) * lambda_pos_scale * loss_pos)
+
+        grads_NN_phi = tape.gradient(loss_total, self.NN_phi_tilde.trainable_variables)
+        grads_NN_eta = tape.gradient(loss_dupire, self.NN_eta_tilde.trainable_variables)
+
+        self.optimizer_NN_phi.apply_gradients(zip(grads_NN_phi, self.NN_phi_tilde.trainable_variables))
+        self.optimizer_NN_eta.apply_gradients(zip(grads_NN_eta, self.NN_eta_tilde.trainable_variables))
+
+        return loss_phi, loss_dupire, loss_reg, loss_mart, loss_pos
 
 
 class ModelTrainer:
@@ -923,6 +1368,8 @@ class ModelTrainer:
         print(f"Lambda PDE: {self.config.lambda_pde}")
         print(f"Lambda Reg: {self.config.lambda_reg}")
         print(f"Lambda K=0: {self.config.lambda_k0}")
+        print(f"Lambda Mart: {self.model.lambda_mart}")
+        print(f"Lambda Pos: {self.model.lambda_pos}")
         print(f"Learning rate (phi): {self.config.lr_phi}")
         print(f"Learning rate (eta): {self.config.lr_eta}")
 
@@ -933,31 +1380,67 @@ class ModelTrainer:
         loss_phi_list = []
         loss_dupire_list = []
         loss_reg_list = []
+        loss_mart_list = []
+        loss_pos_list = []
         error_sigma_list = []
         rmse_sigma_list = []
 
         lambda_pde = tf.constant(self.config.lambda_pde, dtype=data_type)
         lambda_reg = tf.constant(self.config.lambda_reg, dtype=data_type)
+        # PYTHON floats (not tensors): the train_step gate branches on them at
+        # trace time, so λ_mart=λ_pos=0 ⇒ baseline graph (strict-extension).
+        lambda_mart = float(self.model.lambda_mart)
+        lambda_pos_target = float(self.model.lambda_pos)
+        # Pass the fixed python float (0.0 or target) to train_step; the warmup
+        # scale is a TF tensor so @tf.function only traces twice (off/on), never
+        # once per warmup step. This avoids the retracing warning.
+        lambda_pos_py = lambda_pos_target  # fixed python scalar (either 0 or target)
+
+        # λ_pos warmup: ramp linearly from 0 → 1.0 over the first 15% of epochs.
+        # Early second-derivative penalties oversmooth; deferring them lets the
+        # price fit establish first. λ_mart stays constant.
+        # At λ_pos_target=0 the ramp is trivially 0 throughout (baseline preserved).
+        warmup_epochs = max(1, int(0.15 * self.config.num_epochs))
+
+        # Synthetic data carries an exact σ(t,x); real-market data does not.
+        has_exact_sigma = getattr(self.config, 'volatility_config', None) is not None and \
+            not bool(getattr(self.config, 'real_data', False))
 
         start_time = time.time()
 
         for iter_ in range(self.config.num_epochs + 1):
-            # Training step
-            loss_phi, loss_dupire, loss_reg = self.model.train_step(
+            # λ_pos linear warmup via a TF tensor scale (avoids @tf.function retracing).
+            if lambda_pos_target == 0.0:
+                pos_scale = tf.constant(0.0, dtype=data_type)
+            elif iter_ < warmup_epochs:
+                pos_scale = tf.constant(float(iter_) / float(warmup_epochs), dtype=data_type)
+            else:
+                pos_scale = tf.constant(1.0, dtype=data_type)
+
+            # Training step — lambda_pos_py is a fixed python float (no retracing);
+            # the warmup ramp is carried by lambda_pos_scale (TF tensor, in-graph).
+            loss_phi, loss_dupire, loss_reg, loss_mart, loss_pos = self.model.train_step(
                 t_tilde, k_tilde, phi_tilde_ref,
                 t_min_random, t_max_random, k_min_random, k_max_random,
-                lambda_pde, lambda_reg
+                lambda_pde, lambda_reg, lambda_mart, lambda_pos_py,
+                lambda_pos_scale=pos_scale,
             )
 
             loss_phi_list.append(loss_phi)
             loss_dupire_list.append(loss_dupire)
             loss_reg_list.append(loss_reg)
+            loss_mart_list.append(loss_mart)
+            loss_pos_list.append(loss_pos)
 
-            # Compute relative error of local volatility
-            sigma_exact = tf.sqrt(2 * self.model.exact_eta_tilde(t_tilde, k_tilde) / self.config.T_max)
-            sigma_nn = tf.sqrt(2 * self.model.neural_eta_tilde(t_tilde, k_tilde) / self.config.T_max)
-            error_sigma = tf.reduce_mean(tf.abs(sigma_exact - sigma_nn) / sigma_exact)
-            rmse_sigma = tf.sqrt(tf.reduce_mean(tf.square(1 - sigma_nn / sigma_exact)))
+            # Compute relative error of local volatility (synthetic only)
+            if has_exact_sigma:
+                sigma_exact = tf.sqrt(2 * self.model.exact_eta_tilde(t_tilde, k_tilde) / self.config.T_max)
+                sigma_nn = tf.sqrt(2 * self.model.neural_eta_tilde(t_tilde, k_tilde) / self.config.T_max)
+                error_sigma = tf.reduce_mean(tf.abs(sigma_exact - sigma_nn) / sigma_exact)
+                rmse_sigma = tf.sqrt(tf.reduce_mean(tf.square(1 - sigma_nn / sigma_exact)))
+            else:
+                error_sigma = tf.constant(float('nan'), dtype=data_type)
+                rmse_sigma = tf.constant(float('nan'), dtype=data_type)
             error_sigma_list.append(error_sigma)
             rmse_sigma_list.append(rmse_sigma)
 
@@ -965,8 +1448,12 @@ class ModelTrainer:
             if iter_ % self.config.print_epochs == 0:
                 rmse_fit = tf.sqrt(tf.reduce_mean(tf.square(self.model.neural_phi(T_nn, K_nn) - phi_ref)))
                 elapsed = time.time() - start_time
+                pos_scale_val = float(pos_scale.numpy())
+                warmup_str = (f" [pos_warmup:{pos_scale_val:.3f}x{lambda_pos_target:.3f}]"
+                              if lambda_pos_target > 0 and iter_ < warmup_epochs else "")
                 print(f"  Epoch {iter_:5d} | L_phi: {loss_phi:.4f} | L_dup: {loss_dupire:.4f} | " +
-                      f"σ_err: {error_sigma:.4f} | RMSE: {rmse_fit:.4f} | {elapsed:.1f}s")
+                      f"L_mart: {loss_mart:.4e} | L_pos: {loss_pos:.4e} | " +
+                      f"σ_err: {error_sigma:.4f} | RMSE: {rmse_fit:.4f} | {elapsed:.1f}s{warmup_str}")
 
             # Learning rate decay
             if iter_ % self.config.lr_decay_steps == 0 and iter_ != 0:
@@ -2120,17 +2607,35 @@ class DupirePipeline:
         data_gen = DataGenerator(self.config)
         data_path = os.path.join(self.output_dir, 'training_data.npz')
 
-        if os.path.exists(data_path):
+        if getattr(self.config, 'real_data', False):
+            # ---- MZ Step 4a: real market data ----
+            # from_market_csv mutates config.{S0,r,T_max,K_max,K_min} to the
+            # data-driven scaling, which save_metadata() (called at the end of
+            # this stage) then serialises — so the scaling is recorded there.
+            csv_path = self.config.market_csv
+            if not csv_path:
+                raise ValueError("config.real_data=True but config.market_csv is unset")
+            market = data_gen.from_market_csv(csv_path)
+            T_nn, K_nn, phi_ref = market['T_nn'], market['K_nn'], market['phi_ref']
+            phi_tilde_ref = market['phi_tilde_ref']
+            t_tilde, k_tilde = market['t_tilde'], market['k_tilde']
+            # Save the σ reference aside (held out — never used in training)
+            if not os.path.exists(self.output_dir):
+                os.makedirs(self.output_dir)
+            np.savez(os.path.join(self.output_dir, 'market_sigma_ref.npz'),
+                     T=T_nn.numpy(), K=K_nn.numpy(),
+                     sigma_ref=market['sigma_ref'], locvol_flag=market['locvol_flag'])
+        elif os.path.exists(data_path):
             T_nn, K_nn, phi_ref = data_gen.load_training_data(self.output_dir)
+            phi_tilde_ref = phi_ref / self.config.S0
+            t_tilde, k_tilde = data_gen.scale_data(T_nn, K_nn)
         else:
             print("  Training data not found, generating...")
             T_nn, K_nn, phi_ref = data_gen.get_training_data()
             if self.config.save_training_data:
                 data_gen.save_training_data(self.output_dir)
-
-        # Scale data
-        phi_tilde_ref = phi_ref / self.config.S0
-        t_tilde, k_tilde = data_gen.scale_data(T_nn, K_nn)
+            phi_tilde_ref = phi_ref / self.config.S0
+            t_tilde, k_tilde = data_gen.scale_data(T_nn, K_nn)
 
         # Get random sampling bounds
         t_min = tf.reduce_min(t_tilde).numpy()

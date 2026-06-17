@@ -712,8 +712,69 @@ class DupirePipelineConfig:
     # Weight for K=0 call boundary: C_NN(0, T) = S₀  (φ_tilde = 1 at k_tilde=0)
     # Addresses IBP diagnostic failure when NN_phi extrapolates below K_min.
 
+    # -------------------------------------------------------------------------
+    # MZ-Dupire framing-4 "Step 4 Lite": martingale + mass + positivity weights
+    # -------------------------------------------------------------------------
+    # ALL DEFAULT TO 0.0 so the loss assembly reproduces the WSPG25 baseline
+    # EXACTLY (the strict-extension control). The Step-4 ablation flips
+    # lambda_mart / lambda_pos on; lambda_mz stays 0 / unused this round.
+    lambda_mart: float = 0.0
+    # Weight for the risk-neutral martingale + mass soft constraint (RELATIVE form):
+    #   L_mart = ((∫K f dK − F)/F)²  +  w_mass·(∫f dK − 1)²
+    # where F = S0·e^{rT} is the risk-neutral forward and
+    # f = e^{rT}·∂²C_NN/∂K² is the model-implied density on a wide K-grid.
+    # The first-moment term is dimensionless (O(1)), so λ_mart ≈ 1.0 works
+    # directly — no λ sweep needed. Pins E[S_T]=F (first moment) and ∫f=1
+    # (mass) jointly. λ=0 ⇒ off (strict-extension control preserved).
+
+    lambda_pos: float = 0.0
+    # Weight for the explicit positivity penalty  L_pos = mean(relu(−∂²C/∂K²)²).
+    # The mart+mass term does NOT guarantee f≥0 pointwise (Codex's correction):
+    # this penalises the convexity violations (negative density) directly. Uses
+    # the SAME _density_tf ∂²C/∂K² eval as L_mart so it is one extra forward eval.
+    # λ=0 ⇒ off.
+
+    lambda_mz: float = 0.0
+    # RESERVED for the Step-4c L_MZ energy-closure loss (the per-maturity κ4/E_tail
+    # target-matching term). NOT WIRED this round — stays 0 and unused. The 4c
+    # decision is gated by examples/run_mz_target_gap.py first.
+
+    mart_kgrid_n: int = 256
+    # Number of K-grid points for the _density_tf martingale/mass/positivity grid.
+    # Bounded (graph-safe) so the nested-GradientTape density eval stays cheap.
+
+    mart_kgrid_kmax_mult: float = 1.5
+    # The martingale K-grid runs K ∈ [0, mart_kgrid_kmax_mult · K_max]. A value
+    # >1 widens past the trained strike range so the ∫K f dK first-moment integral
+    # captures the upper tail mass that the data grid truncates.
+
+    w_mass_mart: float = 1.0
+    # Relative weight of the mass term (∫f−1)² inside L_mart vs the first-moment
+    # term. 1.0 = equal weight. Kept as a config knob; the headline ablation uses
+    # the default. (Not in the task's required-knob list but needed to express the
+    # documented L_mart = mean + w_mass·mass formula; defaulting to 1.0 is inert.)
+
     init_model_dir: Optional[str] = None
     # If set, load NN_phi/NN_eta weights from this directory before training (fine-tune)
+
+    # -------------------------------------------------------------------------
+    # Real-market-data ingestion (MZ-Dupire Step 4a)
+    # -------------------------------------------------------------------------
+    real_data: bool = False
+    # If True, stage2 loads training data from market_csv via
+    # DataGenerator.from_market_csv instead of synthetic Monte-Carlo. There is
+    # no exact σ(t,x) for real data, so the synthetic σ-RMSE diagnostic is
+    # skipped and the held-aside 'locvol' / implied-vol column is the reference.
+    market_csv: Optional[str] = None
+    # Path to the training market CSV (e.g. ../SPX_Tensorflow/trainingDataSet.csv)
+    # when real_data=True. Columns: Maturity, Strike, Option price, Option type,
+    # Implied vol., locvol (legacy SPX schema).
+    market_csv_test: Optional[str] = None
+    # Optional held-out market CSV (e.g. testingDataSet.csv) for holdout fit.
+    market_option_type: int = 2
+    # Option-type filter applied to the CSV (legacy SPX convention: 2 = puts,
+    # matching tf_NN_put_SPX.py's self.option_type). Set to the call code to use
+    # calls. Rows with a different Option type are dropped.
 
     # =========================================================================
     # STAGE 3: ANALYSIS
