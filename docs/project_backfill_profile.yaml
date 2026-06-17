@@ -1,0 +1,34 @@
+project:
+  name: LocalVolatility
+  root: .
+  aliases:
+    - LocalVolatility
+    - localvolatility
+
+reads:
+  required:
+    - README.md
+    - docs/AGENT_HANDOFF.md
+    - docs/EXPERIMENT_LOG.md
+    - docs/FILE_CATALOG.md
+    - docs/ENVIRONMENT.md
+    - docs/DAX_ANALYSIS.md
+    - Synthetic_Data_Tensorflow_Advanced/README.md
+  onboarding_docs:
+    - docs/DAX_ANALYSIS.md
+    - Synthetic_Data_Tensorflow_Advanced/docs/QUICK_START.md
+
+durable_docs:
+  experiment_log: docs/EXPERIMENT_LOG.md
+  file_catalog: docs/FILE_CATALOG.md
+  handoff: docs/AGENT_HANDOFF.md
+
+archives:
+  transcript_globs:
+    - ~/.claude/projects/**/*LocalVolatility*/**/*.jsonl
+    - ~/.cursor/projects/**/*LocalVolatility*/**/*.jsonl
+    - ~/.claude/projects/**/*localvolatility*/**/*.jsonl
+    - ~/.cursor/projects/**/*localvolatility*/**/*.jsonl
+  repo_exports:
+    - "*.jsonl"
+  continuation_dirs: []
