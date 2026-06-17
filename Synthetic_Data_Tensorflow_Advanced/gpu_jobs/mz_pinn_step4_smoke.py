@@ -86,7 +86,7 @@ def run_paired_seed(seed: int):
     k_max = float(tf.reduce_max(k_tilde).numpy())
 
     # --- Build reference model → capture init weights ---
-    model0 = DupireNeuralModel(cfg0)
+    model0 = DupireNeuralModel(cfg0, dg)
     _dummy = model0(tf.zeros([1, 2], dtype=data_type), training=False)
     init_ws = [layer.get_weights() for layer in model0.layers]
     del model0
@@ -94,7 +94,7 @@ def run_paired_seed(seed: int):
     arm_results = {}
     for arm, (lm, lp) in [("A", (0.0, 0.0)), ("B", (1.0, 1.0))]:
         cfg = _build_cfg(lm, lp)
-        model = DupireNeuralModel(cfg)
+        model = DupireNeuralModel(cfg, dg)
         _dummy = model(tf.zeros([1, 2], dtype=data_type), training=False)
         # Restore same init weights
         for layer, ws in zip(model.layers, init_ws):
