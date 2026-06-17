@@ -87,18 +87,20 @@ def run_paired_seed(seed: int):
 
     # --- Build reference model → capture init weights ---
     model0 = DupireNeuralModel(cfg0, dg)
-    _dummy = model0(tf.zeros([1, 2], dtype=data_type), training=False)
-    init_ws = [layer.get_weights() for layer in model0.layers]
+    model0.build_models()
+    # Capture sub-network weights for deterministic paired-arm comparison
+    init_phi_ws = model0.NN_phi_tilde.get_weights()
+    init_eta_ws = model0.NN_eta_tilde.get_weights()
     del model0
 
     arm_results = {}
     for arm, (lm, lp) in [("A", (0.0, 0.0)), ("B", (1.0, 1.0))]:
         cfg = _build_cfg(lm, lp)
         model = DupireNeuralModel(cfg, dg)
-        _dummy = model(tf.zeros([1, 2], dtype=data_type), training=False)
-        # Restore same init weights
-        for layer, ws in zip(model.layers, init_ws):
-            layer.set_weights(ws)
+        model.build_models()
+        # Restore same init weights so both arms start identically
+        model.NN_phi_tilde.set_weights(init_phi_ws)
+        model.NN_eta_tilde.set_weights(init_eta_ws)
 
         trainer = ModelTrainer(model, cfg)
         t0 = time.perf_counter()
