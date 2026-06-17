@@ -1,0 +1,160 @@
+Launching: C:\ProgramData\anaconda3\envs\tf216\python.exe C:\mcp_jobs\scripts\mz_pinn_step4_smoke.py
+2026-06-17 12:53:35.018029: I tensorflow/core/util/port.cc:113] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2026-06-17 12:53:35.748259: I tensorflow/core/util/port.cc:113] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2026-06-17 12:53:38.913741: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 AVX512F AVX512_VNNI FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+Running on CPU: /physical_device:CPU:0
+======================================================================
+MZ-Dupire Step 4 â€” GPU smoke train
+  N_SEEDS=2  N_EPOCHS=200
+  GPU: []
+======================================================================
+
+=== Seed 0 ===
+
+  Generating Monte Carlo paths with exact local volatility...
+    Simulating 400 paths with 1000 time steps (dt=0.001)...
+    âœ“ MC completed in 1.00s
+    Final S range: [123.5, 4369.4]
+
+  Extracting training data from MC paths...
+    Grid: 4 maturities Ã— 16 strikes = 64 data points
+    Price range: [0.00, 531.09]
+
+  Building neural networks...
+    NN_phi_tilde: 30,465 parameters
+    NN_eta_tilde: 30,465 parameters
+    Total: 60,930 parameters
+
+  Building neural networks...
+    NN_phi_tilde: 30,465 parameters
+    NN_eta_tilde: 30,465 parameters
+    Total: 60,930 parameters
+
+================================================================================
+TRAINING NEURAL NETWORKS
+================================================================================
+Epochs: 200
+Lambda PDE: 1.0
+Lambda Reg: 1.0
+Lambda K=0: 10.0
+Lambda Mart: 0.0
+Lambda Pos: 0.0
+Learning rate (phi): 0.0001
+Learning rate (eta): 0.0001
+  Epoch     0 | L_phi: 5.0220 | L_dup: 0.0498 | L_mart: 0.0000e+00 | L_pos: 0.0000e+00 | Ïƒ_err: 0.6379 | RMSE: 556.4989 | 8.9s
+  Epoch    50 | L_phi: 0.9466 | L_dup: 0.2164 | L_mart: 0.0000e+00 | L_pos: 0.0000e+00 | Ïƒ_err: 0.5113 | RMSE: 260.2538 | 20.0s
+  Epoch   100 | L_phi: 0.2583 | L_dup: 0.0879 | L_mart: 0.0000e+00 | L_pos: 0.0000e+00 | Ïƒ_err: 0.2516 | RMSE: 117.6056 | 31.9s
+  Epoch   150 | L_phi: 0.0891 | L_dup: 0.0362 | L_mart: 0.0000e+00 | L_pos: 0.0000e+00 | Ïƒ_err: 0.1903 | RMSE: 59.5683 | 44.4s
+  Epoch   200 | L_phi: 0.0464 | L_dup: 0.0196 | L_mart: 0.0000e+00 | L_pos: 0.0000e+00 | Ïƒ_err: 0.1926 | RMSE: 45.9272 | 55.9s
+  âœ“ Saved checkpoint: NN_phi_200.keras, NN_eta_200.keras
+
+âœ“ Training completed in 56.0s (0.9 min)
+  Seed 0 Arm A: phi=4.4621e-02 dup=2.0220e-02 mart=0.0000e+00 pos=0.0000e+00 (56.0s)
+
+  Building neural networks...
+    NN_phi_tilde: 30,465 parameters
+    NN_eta_tilde: 30,465 parameters
+    Total: 60,930 parameters
+
+================================================================================
+TRAINING NEURAL NETWORKS
+================================================================================
+Epochs: 200
+Lambda PDE: 1.0
+Lambda Reg: 1.0
+Lambda K=0: 10.0
+Lambda Mart: 1.0
+Lambda Pos: 1.0
+Learning rate (phi): 0.0001
+Learning rate (eta): 0.0001
+  Epoch     0 | L_phi: 5.0220 | L_dup: 0.0498 | L_mart: 2.4218e+00 | L_pos: 2.8845e-10 | Ïƒ_err: 0.6379 | RMSE: 554.1624 | 9.0s [pos_warmup:0.000x1.000]
+  Epoch    50 | L_phi: 1.0533 | L_dup: 0.1422 | L_mart: 8.4015e-01 | L_pos: 1.0501e-08 | Ïƒ_err: 0.5553 | RMSE: 197.7295 | 21.6s
+  Epoch   100 | L_phi: 0.4300 | L_dup: 0.0350 | L_mart: 5.0235e-01 | L_pos: 8.5087e-08 | Ïƒ_err: 0.2809 | RMSE: 36.8815 | 33.9s
+  Epoch   150 | L_phi: 0.2423 | L_dup: 0.0424 | L_mart: 1.4701e-01 | L_pos: 2.8065e-07 | Ïƒ_err: 0.1975 | RMSE: 86.8556 | 45.5s
+  Epoch   200 | L_phi: 0.1595 | L_dup: 0.0422 | L_mart: 3.8238e-02 | L_pos: 8.8294e-07 | Ïƒ_err: 0.1898 | RMSE: 126.0464 | 56.9s
+  âœ“ Saved checkpoint: NN_phi_200.keras, NN_eta_200.keras
+
+âœ“ Training completed in 57.0s (1.0 min)
+  Seed 0 Arm B: phi=1.4187e-01 dup=4.4512e-02 mart=3.8973e-02 pos=9.0515e-07 (57.0s)
+
+=== Seed 1 ===
+
+  Generating Monte Carlo paths with exact local volatility...
+    Simulating 400 paths with 1000 time steps (dt=0.001)...
+    âœ“ MC completed in 1.33s
+    Final S range: [123.5, 4369.4]
+
+  Extracting training data from MC paths...
+    Grid: 4 maturities Ã— 16 strikes = 64 data points
+    Price range: [0.00, 531.09]
+
+  Building neural networks...
+    NN_phi_tilde: 30,465 parameters
+    NN_eta_tilde: 30,465 parameters
+    Total: 60,930 parameters
+
+  Building neural networks...
+    NN_phi_tilde: 30,465 parameters
+    NN_eta_tilde: 30,465 parameters
+    Total: 60,930 parameters
+
+================================================================================
+TRAINING NEURAL NETWORKS
+================================================================================
+Epochs: 200
+Lambda PDE: 1.0
+Lambda Reg: 1.0
+Lambda K=0: 10.0
+Lambda Mart: 0.0
+Lambda Pos: 0.0
+Learning rate (phi): 0.0001
+Learning rate (eta): 0.0001
+  Epoch     0 | L_phi: 5.3501 | L_dup: 0.0207 | L_mart: 0.0000e+00 | L_pos: 0.0000e+00 | Ïƒ_err: 0.5683 | RMSE: 485.8302 | 7.1s
+  Epoch    50 | L_phi: 1.0989 | L_dup: 0.1693 | L_mart: 0.0000e+00 | L_pos: 0.0000e+00 | Ïƒ_err: 0.5752 | RMSE: 273.4039 | 18.5s
+  Epoch   100 | L_phi: 0.2372 | L_dup: 0.0762 | L_mart: 0.0000e+00 | L_pos: 0.0000e+00 | Ïƒ_err: 0.3179 | RMSE: 116.6227 | 30.2s
+  Epoch   150 | L_phi: 0.0840 | L_dup: 0.0322 | L_mart: 0.0000e+00 | L_pos: 0.0000e+00 | Ïƒ_err: 0.2368 | RMSE: 55.9694 | 43.2s
+  Epoch   200 | L_phi: 0.0440 | L_dup: 0.0192 | L_mart: 0.0000e+00 | L_pos: 0.0000e+00 | Ïƒ_err: 0.2515 | RMSE: 45.2280 | 54.8s
+  âœ“ Saved checkpoint: NN_phi_200.keras, NN_eta_200.keras
+
+âœ“ Training completed in 54.9s (0.9 min)
+  Seed 1 Arm A: phi=4.3657e-02 dup=1.9108e-02 mart=0.0000e+00 pos=0.0000e+00 (54.9s)
+
+  Building neural networks...
+    NN_phi_tilde: 30,465 parameters
+    NN_eta_tilde: 30,465 parameters
+    Total: 60,930 parameters
+
+================================================================================
+TRAINING NEURAL NETWORKS
+================================================================================
+Epochs: 200
+Lambda PDE: 1.0
+Lambda Reg: 1.0
+Lambda K=0: 10.0
+Lambda Mart: 1.0
+Lambda Pos: 1.0
+Learning rate (phi): 0.0001
+Learning rate (eta): 0.0001
+  Epoch     0 | L_phi: 5.3501 | L_dup: 0.0207 | L_mart: 2.1793e+00 | L_pos: 6.8721e-11 | Ïƒ_err: 0.5683 | RMSE: 483.2402 | 8.5s [pos_warmup:0.000x1.000]
+  Epoch    50 | L_phi: 1.1359 | L_dup: 0.1086 | L_mart: 8.4355e-01 | L_pos: 9.7723e-09 | Ïƒ_err: 0.5719 | RMSE: 201.9962 | 20.1s
+  Epoch   100 | L_phi: 0.4358 | L_dup: 0.0261 | L_mart: 4.1288e-01 | L_pos: 1.0869e-07 | Ïƒ_err: 0.3191 | RMSE: 30.6053 | 33.0s
+  Epoch   150 | L_phi: 0.2377 | L_dup: 0.0518 | L_mart: 9.1609e-02 | L_pos: 4.4454e-07 | Ïƒ_err: 0.2352 | RMSE: 99.0418 | 44.9s
+  Epoch   200 | L_phi: 0.1304 | L_dup: 0.0382 | L_mart: 3.0934e-02 | L_pos: 1.4043e-06 | Ïƒ_err: 0.2609 | RMSE: 133.4351 | 56.3s
+  âœ“ Saved checkpoint: NN_phi_200.keras, NN_eta_200.keras
+
+âœ“ Training completed in 56.4s (0.9 min)
+  Seed 1 Arm B: phi=1.2222e-01 dup=3.9358e-02 mart=2.8642e-02 pos=1.4245e-06 (56.4s)
+
+======================================================================
+OVERALL PASS = True
+  all_mart_nonzero_B = True
+  all_pos_nonzero_B = True
+  all_no_nan_A = True
+  all_no_nan_B = True
+  all_baseline_arm_A = True
+Written: mz_pinn_step4_smoke.json
+======================================================================
+=== JSON_RESULTS_BEGIN ===
+{"n_seeds": 2, "n_epochs": 200, "all_mart_nonzero_B": true, "all_pos_nonzero_B": true, "all_no_nan_A": true, "all_no_nan_B": true, "all_baseline_arm_A": true, "per_seed": [{"seed": 0, "arm_A": {"lambda_mart": 0.0, "lambda_pos": 0.0, "loss_phi": 0.04462125897407532, "loss_dup": 0.020219571888446808, "loss_mart": 0.0, "loss_pos": 0.0, "mart_nonzero": false, "pos_nonzero": false, "any_nan": false, "elapsed_s": 55.961967599985655}, "arm_B": {"lambda_mart": 1.0, "lambda_pos": 1.0, "loss_phi": 0.14187471568584442, "loss_dup": 0.044511765241622925, "loss_mart": 0.038972944021224976, "loss_pos": 9.051522624758945e-07, "mart_nonzero": true, "pos_nonzero": true, "any_nan": false, "elapsed_s": 57.03383380000014}, "mart_nonzero_B": true, "pos_nonzero_B": true, "no_nan_A": true, "no_nan_B": true, "baseline_arm_A_ok": true}, {"seed": 1, "arm_A": {"lambda_mart": 0.0, "lambda_pos": 0.0, "loss_phi": 0.043657347559928894, "loss_dup": 0.019108181819319725, "loss_mart": 0.0, "loss_pos": 0.0, "mart_nonzero": false, "pos_nonzero": false, "any_nan": false, "elapsed_s": 54.86213239998324}, "arm_B": {"lambda_mart": 1.0, "lambda_pos": 1.0, "loss_phi": 0.12222041189670563, "loss_dup": 0.03935832530260086, "loss_mart": 0.02864159271121025, "loss_pos": 1.4245188140193932e-06, "mart_nonzero": true, "pos_nonzero": true, "any_nan": false, "elapsed_s": 56.36193429998821}, "mart_nonzero_B": true, "pos_nonzero_B": true, "no_nan_A": true, "no_nan_B": true, "baseline_arm_A_ok": true}], "PASS": true}
+=== JSON_RESULTS_END ===
