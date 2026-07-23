@@ -1,0 +1,498 @@
+% journal_dec10_onward.tex — simplified: date+plot, then model and observations
+% Template matches journal_shared.tex (NTU Beamer).
+% Build: cd presentation && pdflatex journal_dec10_onward.tex
+\documentclass[aspectratio=169,11pt]{beamer}
+
+\usetheme{default}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}[frame number]
+
+\usepackage{booktabs}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{mathtools}
+\usepackage{bm}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,positioning,calc,arrows.meta}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\graphicspath{{figures/}{figures/dec10_onward/}{figures/nn_k0/}}
+
+\definecolor{ntunavy}{RGB}{0,32,91}
+\definecolor{ntudarkblue}{RGB}{0,20,60}
+\definecolor{ntured}{RGB}{192,32,38}
+\definecolor{ntugold}{RGB}{255,204,0}
+\definecolor{ntulightblue}{RGB}{100,150,200}
+
+\setbeamercolor{background canvas}{bg=ntunavy}
+\setbeamercolor{normal text}{fg=white}
+\setbeamercolor{frametitle}{fg=white}
+\setbeamercolor{title}{fg=white}
+\setbeamercolor{subtitle}{fg=ntugold}
+\setbeamercolor{author}{fg=ntugold}
+\setbeamercolor{institute}{fg=white}
+\setbeamercolor{date}{fg=ntured}
+\setbeamercolor{item}{fg=ntugold}
+\setbeamercolor{structure}{fg=ntugold}
+\setbeamercolor{block title}{fg=white,bg=ntured}
+\setbeamercolor{block body}{fg=white,bg=ntunavy!70!black}
+
+\setbeamerfont{title}{size=\Large,series=\bfseries}
+\setbeamerfont{frametitle}{size=\large,series=\bfseries}
+\setbeamertemplate{itemize item}{\scriptsize\raise1.5pt\hbox{\textbullet}}
+\setbeamertemplate{itemize subitem}{\scriptsize\raise1.5pt\hbox{\textendash}}
+
+\newcommand{\gold}[1]{{\color{ntugold}#1}}
+\newcommand{\red}[1]{{\color{ntured}#1}}
+
+\setbeamertemplate{background}{
+    \begin{tikzpicture}[remember picture,overlay]
+        \shade[left color=ntunavy,right color=ntudarkblue,shading angle=-45]
+            (current page.north west) rectangle (current page.south east);
+        \fill[ntured]
+            (current page.north west) --
+            ([xshift=1.8cm]current page.north west) --
+            ([yshift=-2.7cm]current page.north west) -- cycle;
+        \fill[ntured!85!black]
+            ([yshift=-2.2cm]current page.north west) --
+            ([xshift=1.4cm,yshift=-2.2cm]current page.north west) --
+            ([yshift=-4.0cm]current page.north west) -- cycle;
+    \end{tikzpicture}
+}
+
+\defbeamertemplate*{title page}{ntu}[1][]
+{
+    \begin{tikzpicture}[remember picture,overlay]
+        \shade[left color=ntunavy,right color=ntudarkblue!90!ntunavy,shading angle=-30]
+            (current page.north west) rectangle (current page.south east);
+        \fill[ntured]
+            (current page.north west) --
+            ([xshift=2.2cm]current page.north west) --
+            ([yshift=-3.3cm]current page.north west) -- cycle;
+        \IfFileExists{ntu_logo.jpg}{
+            \node[anchor=north west] at ([xshift=0.5cm,yshift=-0.4cm]current page.north west) {
+                \includegraphics[height=1.2cm]{ntu_logo.jpg}
+            };
+        }{}
+        \node[anchor=north west, text width=11cm, font=\fontsize{11}{13}\selectfont\bfseries]
+            at ([xshift=2.8cm,yshift=-2.0cm]current page.north west) {
+            \textcolor{ntugold}{Dupire PINN --- plots emailed to N.\ Privault}
+        };
+        \node[anchor=north west, text width=11cm]
+            at ([xshift=2.8cm,yshift=-2.7cm]current page.north west) {
+            {\fontsize{19}{23}\selectfont\bfseries\color{white}\inserttitle}
+        };
+        \node[anchor=north west, text width=11cm, font=\fontsize{12}{14}\selectfont\bfseries]
+            at ([xshift=2.8cm,yshift=-5.2cm]current page.north west) {
+            \textcolor{ntugold}{\insertsubtitle}
+        };
+        \node[anchor=north west, text width=11cm, font=\fontsize{8}{10}\selectfont]
+            at ([xshift=2.8cm,yshift=-6.1cm]current page.north west) {
+            \textcolor{white}{\insertinstitute}
+        };
+        \node[anchor=north west, font=\fontsize{10}{12}\selectfont\bfseries]
+            at ([xshift=2.8cm,yshift=-7.1cm]current page.north west) {
+            \textcolor{ntured}{\insertdate}
+        };
+    \end{tikzpicture}
+}
+
+\setbeamertemplate{frametitle}{
+    \vspace{0.3cm}
+    \hspace{2.5cm}{\usebeamerfont{frametitle}\insertframetitle}
+    \vspace{0.1cm}
+}
+
+\title{Dec.\ 2025 PDF emails\\\& the $\tilde\varphi$ fix}
+\subtitle{Wang Z., Shaa A., Privault N., Guet C.}
+\author{Ameir Shaa}
+\date{10/12/2025 \;$\to$\; 29/05/2026}
+\institute{Each case: plot page, then model and observations}
+
+\begin{document}
+\maketitle
+
+% ============================================================
+% 1. Synthetic non-const local vol --- emailed 10/12/2025 (run 07/12/2025)
+% ============================================================
+
+\begin{frame}{07/12/2025 --- synthetic non-const local vol}
+  \begin{center}
+    \includegraphics[width=0.98\linewidth,height=0.78\textheight,keepaspectratio]{pdf_analysis_20251207_180813.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}{07/12/2025 --- model and observations}
+  \begin{columns}[T]
+    \begin{column}{0.52\linewidth}
+      \gold{Model / data}
+      \begin{itemize}\small
+        \item Synthetic prices (not market quotes)
+        \item Local vol (manuscript \S4.1):
+              $\sigma(x,t)=0.3+ye^{-y}$,
+              $y=(t{+}0.1)\sqrt{x{+}0.1}$
+        \item $S_0=1000$, $r=0.02$, $K\in[500,3000]$
+        \item $T\in\{0.25,0.50,0.75,1.00\}$
+        \item $\sigma_{\mathrm{MC}}\approx0.24,0.38,0.50,0.59$
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.46\linewidth}
+      \gold{Observations}
+      \begin{itemize}\small
+        \item NN tracks MC / analytical in-sample
+        \item Systematic mismatch in Gaussian space near low $K$, growing with $T$
+        \item Raises whether the implied density mean matches $\mathbb{E}[S_T]$ (IBP)
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ============================================================
+% DAX --- emailed 22/12/2025 (runs 12/12/2025)
+% ============================================================
+
+\begin{frame}{12/12/2025 --- DAX 7 Aug 2001}
+  \begin{center}
+    \includegraphics[width=0.98\linewidth,height=0.78\textheight,keepaspectratio]{pdf_analysis_20251212_003155.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}{12/12/2025 --- DAX 7 Aug: model and observations}
+  \begin{columns}[T]
+    \begin{column}{0.52\linewidth}
+      \gold{Model / data}
+      \begin{itemize}\small
+        \item Market: DAX index options, 7 Aug 2001
+        \item Spot $S_0=5752.51$
+        \item $K\in[4000,9000]$
+        \item $T\in\{0.12,0.20,0.37,0.60,0.87\}$
+        \item Two PINNs ($\mathrm{NN}_\varphi$, $\mathrm{NN}_\eta$) on market quotes
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.46\linewidth}
+      \gold{Observations}
+      \begin{itemize}\small
+        \item Same NN-vs-MC density shift as on synthetic
+        \item Stronger at longer $T$ (skew / kurtosis grow)
+        \item Confirms the issue is not synthetic-only
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{12/12/2025 --- DAX 8 Aug 2001}
+  \begin{center}
+    \includegraphics[width=0.98\linewidth,height=0.78\textheight,keepaspectratio]{pdf_analysis_20251212_230526.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}{12/12/2025 --- DAX 8 Aug: model and observations}
+  \begin{columns}[T]
+    \begin{column}{0.52\linewidth}
+      \gold{Model / data}
+      \begin{itemize}\small
+        \item Market: DAX index options, 8 Aug 2001
+        \item Spot $S_0=5614.51$
+        \item Same $K$ / $T$ grid as 7 Aug
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.46\linewidth}
+      \gold{Observations}
+      \begin{itemize}\small
+        \item Same structural fingerprint day-to-day
+        \item Not an artefact of one spot / one day
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{12/12/2025 --- DAX 9 Aug 2001}
+  \begin{center}
+    \includegraphics[width=0.98\linewidth,height=0.78\textheight,keepaspectratio]{pdf_analysis_20251212_230550.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}{12/12/2025 --- DAX 9 Aug: model and observations}
+  \begin{columns}[T]
+    \begin{column}{0.52\linewidth}
+      \gold{Model / data}
+      \begin{itemize}\small
+        \item Market: DAX index options, 9 Aug 2001
+        \item Spot $S_0=5512.28$
+        \item Same $K$ / $T$ grid as 7--8 Aug
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.46\linewidth}
+      \gold{Observations}
+      \begin{itemize}\small
+        \item Third consecutive day, same mismatch
+        \item Motivates a mean identity check that does not rely on eye-balling densities
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ============================================================
+% Before fix (legacy map), synthetic --- May 2026 diagnostics
+% ============================================================
+
+\begin{frame}{25/05/2026 --- before $\tilde\varphi$ fix (synthetic)}
+  \begin{center}
+    \includegraphics[width=0.98\linewidth,height=0.78\textheight,keepaspectratio]{syn_pre_correction.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}{25/05/2026 --- before fix: model and observations}
+  \begin{columns}[T]
+    \begin{column}{0.52\linewidth}
+      \gold{Model / data}
+      \begin{itemize}\small
+        \item Same trained nets; \red{analysis bug}
+        \item Training: $\tilde\varphi=1-e^{-\mathrm{NN}_\varphi}$
+        \item Legacy analysis used
+              $\tilde\varphi_{\mathrm{wrong}}=\mathrm{NN}_\varphi$
+        \item Synthetic pretrained surface
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.46\linewidth}
+      \gold{Observations}
+      \begin{itemize}\small
+        \item IBP means (i),(ii) $\sim\!2.7\times$ the forward
+              (e.g.\ $\sim\!2715$ vs $\sim\!1020$)
+        \item Density shape looks wrong because the wrong
+              object is differentiated
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ============================================================
+% After fix --- synthetic transformed
+% ============================================================
+
+\begin{frame}{29/05/2026 --- after $\tilde\varphi$ fix (synthetic)}
+  \begin{center}
+    \includegraphics[width=0.98\linewidth,height=0.78\textheight,keepaspectratio]{syn_pretrained.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}{29/05/2026 --- after fix (synthetic): model and observations}
+  \begin{columns}[T]
+    \begin{column}{0.52\linewidth}
+      \gold{Model / data}
+      \begin{itemize}\small
+        \item Same nets; analysis now uses
+              $\tilde\varphi=1-e^{-\mathrm{NN}_\varphi}$
+        \item Synthetic pretrained (non-const local-vol surface)
+        \item IBP: (i)$=e^{rT}\!\int\!K\partial_K^2C$,
+              (ii)$=e^{rT}C(0)$, (iii)$=\mathbb{E}[S_T]$
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.46\linewidth}
+      \gold{Observations}
+      \begin{itemize}\small
+        \item (i)$\equiv$(ii) --- IBP / autodiff chain is fine
+        \item Residual $\sim\!7\%$ below forward remains
+        \item That residual is \gold{$K{=}0$}: $\mathrm{NN}_\varphi$
+              cannot reach $\tilde\varphi(0)=1$
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ============================================================
+% After fix --- DAX transformed (three days)
+% ============================================================
+
+\begin{frame}{29/05/2026 --- after $\tilde\varphi$ fix (DAX 7 Aug)}
+  \begin{center}
+    \includegraphics[width=0.98\linewidth,height=0.78\textheight,keepaspectratio]{dax_7aug_pretrained.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}{29/05/2026 --- after fix (DAX 7 Aug): model and observations}
+  \begin{columns}[T]
+    \begin{column}{0.52\linewidth}
+      \gold{Model / data}
+      \begin{itemize}\small
+        \item Same DAX 7 Aug market data as Dec.\ emails
+        \item Density extracted with transformed $\tilde\varphi$
+        \item Spot $S_0=5752.51$
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.46\linewidth}
+      \gold{Observations}
+      \begin{itemize}\small
+        \item Map fix removes the $\sim\!5.7\times$ inflation
+        \item Residual vs forward only $\sim\!0.3\%$
+        \item Same $K{=}0$ mechanism, much smaller on DAX
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{29/05/2026 --- after $\tilde\varphi$ fix (DAX 8 Aug)}
+  \begin{center}
+    \includegraphics[width=0.98\linewidth,height=0.78\textheight,keepaspectratio]{dax_8aug_pretrained.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}{29/05/2026 --- after fix (DAX 8 Aug): model and observations}
+  \begin{columns}[T]
+    \begin{column}{0.52\linewidth}
+      \gold{Model / data}
+      \begin{itemize}\small
+        \item DAX 8 Aug 2001, $S_0=5614.51$
+        \item Transformed $\tilde\varphi$ map
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.46\linewidth}
+      \gold{Observations}
+      \begin{itemize}\small
+        \item Same after-fix pattern as 7 Aug
+        \item (i)$\approx$(ii); tiny residual vs forward
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{29/05/2026 --- after $\tilde\varphi$ fix (DAX 9 Aug)}
+  \begin{center}
+    \includegraphics[width=0.98\linewidth,height=0.78\textheight,keepaspectratio]{dax_9aug_pretrained.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}{29/05/2026 --- after fix (DAX 9 Aug): model and observations}
+  \begin{columns}[T]
+    \begin{column}{0.52\linewidth}
+      \gold{Model / data}
+      \begin{itemize}\small
+        \item DAX 9 Aug 2001, $S_0=5512.28$
+        \item Transformed $\tilde\varphi$ map
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.46\linewidth}
+      \gold{Observations}
+      \begin{itemize}\small
+        \item Consistent across all three days
+        \item Map bug fixed; leftover is $K{=}0$
+              (large synthetic, small DAX)
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ============================================================
+% 23/07/2026 --- the K=0 fix: exp_k ansatz + retrained runs
+% ============================================================
+
+\begin{frame}{23/07/2026 --- the $K{=}0$ fix: \texttt{exp\_k} ansatz}
+  \begin{columns}[T]
+    \begin{column}{0.54\linewidth}
+      \gold{The ansatz change}
+      \begin{itemize}\small
+        \item Old: $\tilde\varphi = 1-e^{-N_c}$, $N_c=\mathrm{softplus}\ge0$ ---
+              open at 1, so $C_{\mathrm{NN}}(0,T)<S_0$ structurally
+        \item New: $\tilde\varphi = \exp(-k\,M)$,\;
+              $M=\mathrm{softplus}(a+kH)$,\;
+              $a=\log(e^{K_{\max}/S_0}-1)$,\; $H$ linear
+        \item $\tilde\varphi(0)=e^{0}=1 \;\Rightarrow\; C_{\mathrm{NN}}(0,T)=S_0$ \red{exactly}
+        \item $M(\cdot,0)=K_{\max}/S_0 \;\Rightarrow\;$ correct deep-ITM slope $+$ unit mass
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.42\linewidth}
+      \gold{Why the old form couldn't}
+      \begin{itemize}\small
+        \item $\tilde\varphi(0)=1 \Leftrightarrow N_c(0)\to+\infty$: softplus never reaches it
+        \item Existing soft penalty $\lambda_{k0}$: gradient $\propto e^{-2N_c}\to0$ as $\tilde\varphi\to1$ --- cannot close the gap
+        \item \texttt{exp\_k} puts the exact boundary at $K{=}0$ \emph{by construction} (no penalty, no extra loss)
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{23/07/2026 --- after \texttt{exp\_k} fix (synthetic non-const local vol, retrained)}
+  \begin{center}
+    \includegraphics[width=0.98\linewidth,height=0.78\textheight,keepaspectratio]{expk_nonconst.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}{23/07/2026 --- after fix (non-const local vol): model and observations}
+  \begin{columns}[T]
+    \begin{column}{0.52\linewidth}
+      \gold{Model / data}
+      \begin{itemize}\small
+        \item Retrained from scratch, ansatz $=$ \texttt{exp\_k}
+        \item $\sigma(x,t)=0.3+ye^{-y}$;\; $S_0{=}1000$, $r{=}0.04$
+        \item 30k epochs;\; $\mathrm{NN}_\eta$ vol err $\approx2.1\%$
+      \end{itemize}
+      \gold{IBP three-way\; (all should $=S_0e^{rT}$)}
+      \begin{center}\scriptsize
+      \begin{tabular}{rrrr}
+        \toprule
+        $T$ & (i) $\int Kf\,dK$ & (ii) $C(0)$ & (iii) MC \\
+        \midrule
+        0.25 & 1010.05 & 1010.05 & 1009.63 \\
+        0.50 & 1020.20 & 1020.20 & 1019.75 \\
+        0.75 & 1030.45 & 1030.45 & 1029.58 \\
+        1.00 & 1040.81 & 1040.81 & 1037.28 \\
+        \bottomrule
+      \end{tabular}
+      \end{center}
+    \end{column}
+    \begin{column}{0.44\linewidth}
+      \gold{Observations}
+      \begin{itemize}\small
+        \item (ii) $=S_0e^{rT}$ \red{exactly}: $K{=}0$ deficit removed by construction
+        \item (i) [wide density integral] now $=$ forward to $\pm10^{-4}$ (was $\sim\!7\%$ below)
+        \item (iii) MC mean matches within noise; NN density tracks MC at all $T$
+        \item Caveat: (ii) is now \emph{tautological} --- the real evidence is (i), (iii), and the density shape
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{23/07/2026 --- old ansatz vs \texttt{exp\_k}: density overlay}
+  \begin{center}
+    \includegraphics[width=0.98\linewidth,height=0.80\textheight,keepaspectratio]{overlay_density_before_after.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}{23/07/2026 --- density overlay: model and observations}
+  \begin{columns}[T]
+    \begin{column}{0.50\linewidth}
+      \gold{Setup} (controlled, same $r{=}0.04$)
+      \begin{itemize}\small
+        \item Same non-const local vol, matched $T$
+        \item old $1-e^{-N_c}$ (blue) vs \texttt{exp\_k} $e^{-kM}$ (red); MC (grey)
+        \item $C_{\mathrm{NN}}(0)$: old $=903,895,883,868$;\; \texttt{exp\_k} $=1000$
+      \end{itemize}
+      \gold{In-window density difference}
+      \begin{center}\scriptsize
+      \begin{tabular}{rr}
+        \toprule
+        $T$ & $L_1$ rel.\ diff \\
+        \midrule
+        0.25 & 2.1\% \\
+        0.50 & 3.3\% \\
+        0.75 & 5.5\% \\
+        1.00 & 8.1\% \\
+        \bottomrule
+      \end{tabular}
+      \end{center}
+    \end{column}
+    \begin{column}{0.46\linewidth}
+      \gold{Observations}
+      \begin{itemize}\small
+        \item OTM side ($K\gtrsim1000$): curves coincide --- data-rich, ansatz-agnostic
+        \item Deep-ITM shoulder ($K\lesssim1000$): they diverge, growing with $T$
+        \item There \red{\texttt{exp\_k} tracks the MC; old undershoots} --- its $C(0)$ deficit starves the left density of mass
+        \item Old undershoots \emph{despite more data} (1M vs 200k paths) $\Rightarrow$ ansatz, not sampling
+        \item Fix lifts the under-represented deep-ITM density toward the truth
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\end{document}
