@@ -1260,16 +1260,26 @@ class PDFAnalyzer:
             print(f"  SDE: dS_t = r*S_t*dt + σ_NN(t,S)*S_t*dW_t")
 
         T_max_sim = max(T_values)
-        n_steps = int(n_paths)
+        # Number of Euler-Maruyama steps is set by the simulation horizon and dt,
+        # NOT by the path count. The +1 makes the last step's t_current land at or
+        # past T_max_sim, so the maturity check below (t_current >= T - dt/2) fires
+        # inside the loop for every requested T.
+        n_steps = int(np.ceil(T_max_sim / dt)) + 1
 
         results = {}
 
         # Initialize paths
         S_current = np.full(n_paths, self.config.S0, dtype=np.float32)
 
-        # Generate Brownian increments
+        # Brownian increments are drawn one step at a time, inside the loop.
+        # This is bit-identical to the single `size=(n_steps, n_paths)` draw it
+        # replaces: NumPy fills a 2-D normal draw in C (row-major) order, so
+        # n_steps consecutive draws of `n_paths` consume the same stream in the
+        # same order as one (n_steps, n_paths) draw from the same seed. Drawing
+        # per step avoids materialising the whole (n_steps, n_paths) block —
+        # ~8 GB of float64 at the defaults (1001 steps × 10**6 paths).
         np.random.seed(42)
-        dW = np.random.normal(0, np.sqrt(dt), size=(n_steps, n_paths))
+        sqrt_dt = np.sqrt(dt)
 
         saved_maturities = set()
 
@@ -1280,18 +1290,31 @@ class PDFAnalyzer:
         for i in range(n_steps):
             t_current = i * dt
 
+            # Brownian increment for this step (see stream note above).
+            dW_i = np.random.normal(0, sqrt_dt, size=n_paths)
+
             # Query NN for local volatility at current (t, S)
             sigma_local = self.get_neural_local_volatility(t_current, S_current)
 
             # Euler-Maruyama step
             drift = self.config.r * S_current * dt
-            diffusion = sigma_local * S_current * dW[i]
+            diffusion = sigma_local * S_current * dW_i
             S_current = S_current + drift + diffusion
 
             # Ensure positive stock prices
             S_current = np.maximum(S_current, 0.01)
 
-            # Check if we've reached any target maturities
+            # Check if we've reached any target maturities.
+            #
+            # Known one-step offset (pre-existing, deliberately left as is):
+            # `t_current` is the time BEFORE this iteration's Euler step, but the
+            # test runs AFTER it, so `S_current` here is S at t_current + dt.
+            # The array stored for maturity T is therefore S at t = T + dt.
+            # The implied bias in sigma is sqrt(1 + dt/T) — about 0.2% at
+            # T = 0.25 and 0.05% at T = 1.0 with dt = 1e-3 — i.e. negligible
+            # next to the MC standard error, so it is not corrected here.
+            # Fixing it would shift every stored maturity and invalidate
+            # comparisons against previously generated figures.
             for T in T_values:
                 if T not in saved_maturities and t_current >= T - dt/2:
                     results[T] = S_current.copy()
