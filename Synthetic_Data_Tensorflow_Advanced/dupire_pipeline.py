@@ -1085,6 +1085,47 @@ def load_trained_models(model_dir: str) -> Tuple[tf.keras.Model, tf.keras.Model,
     return nn_phi, nn_eta, metadata
 
 
+# Which volatility surface a set of Monte Carlo paths was simulated under.
+# The PDF-analysis figures state the SDE in their subtitle, so the wrong
+# provenance silently mislabels the plot (paths from training data were
+# generated under the ground-truth σ, NOT under σ_NN).
+MC_PROVENANCE_NN = 'nn_repriced'        # paths simulated under the learned σ_NN
+MC_PROVENANCE_TRUTH = 'ground_truth'    # paths simulated under DataGenerator.exact_sigma
+MC_PROVENANCE_UNKNOWN = 'unknown'       # provenance not recorded — do not assert one
+
+MC_PROVENANCE_SDE_LINES = {
+    MC_PROVENANCE_NN: (
+        r'Monte Carlo under learned $\sigma_{NN}$: '
+        r'$dS_t = rS_t dt + \sigma_{NN}(t,S_t)S_t dW_t$'
+    ),
+    MC_PROVENANCE_TRUTH: (
+        r'Monte Carlo under ground-truth $\sigma$: '
+        r'$dS_t = rS_t dt + \sigma(t,S_t/S_0)S_t dW_t$'
+    ),
+    MC_PROVENANCE_UNKNOWN: (
+        r'Monte Carlo with $dS_t = rS_t dt + \sigma(t,S_t)S_t dW_t$ '
+        r'(volatility surface unrecorded)'
+    ),
+}
+
+
+def mc_provenance_sde_line(provenance: Optional[str]) -> str:
+    """
+    Map an MC provenance tag to the SDE line shown in figure subtitles.
+
+    Unrecognised or missing provenance falls back to the neutral 'unrecorded'
+    line rather than asserting a surface the paths may not have been drawn from.
+    """
+    if provenance is None:
+        return MC_PROVENANCE_SDE_LINES[MC_PROVENANCE_UNKNOWN]
+    if provenance not in MC_PROVENANCE_SDE_LINES:
+        raise ValueError(
+            f"Unknown MC provenance {provenance!r}; expected one of "
+            f"{sorted(MC_PROVENANCE_SDE_LINES)}"
+        )
+    return MC_PROVENANCE_SDE_LINES[provenance]
+
+
 class PDFAnalyzer:
     """
     Analyzes probability density functions from trained models
@@ -1094,6 +1135,11 @@ class PDFAnalyzer:
         extract_model_implied_density(): Get PDF from option prices
         fit_lognormal_corrected_method(): Fit log-normal distribution
         create_enhanced_pdf_analysis(): Generate three-panel plots
+
+    MC provenance:
+        Both MC-producing methods record which volatility surface the paths
+        came from on ``self.mc_provenance``; create_enhanced_pdf_analysis()
+        uses it to render the correct SDE in the figure subtitle.
     """
 
     def __init__(self, nn_phi: tf.keras.Model, nn_eta: tf.keras.Model,
@@ -1110,6 +1156,9 @@ class PDFAnalyzer:
         self.figure_label = figure_label
         self.training_T_min = None
         self.training_T_max = None
+        # Set by whichever MC method last produced paths; consumed by
+        # create_enhanced_pdf_analysis() to label the SDE correctly.
+        self.mc_provenance: Optional[str] = None
 
         # Extract scaling parameters from metadata
         if 'scaling' in metadata:
@@ -1170,7 +1219,9 @@ class PDFAnalyzer:
 
     def extract_mc_samples_from_training_data(self, data_path: str,
                                              T_values: List[float],
-                                             verbose: bool = True) -> Dict[float, np.ndarray]:
+                                             verbose: bool = True,
+                                             provenance: str = MC_PROVENANCE_TRUTH
+                                             ) -> Dict[float, np.ndarray]:
         """
         Extract Monte Carlo samples from saved training data
 
@@ -1183,10 +1234,23 @@ class PDFAnalyzer:
             data_path: Path to training_data.npz file
             T_values: List of maturities to extract
             verbose: Print progress
+            provenance: Which volatility surface produced the paths in
+                `data_path`. Defaults to MC_PROVENANCE_TRUTH, correct for
+                training_data.npz (written by DataGenerator.run_mc under
+                exact_sigma). Pass MC_PROVENANCE_NN when reading an .npz of
+                NN-repriced paths in the same schema — e.g. the
+                `repriced_mc.npz` written by examples/run_regenerate_mc.py.
 
         Returns:
             Dictionary mapping maturity T -> final stock prices S_T
         """
+        if provenance not in MC_PROVENANCE_SDE_LINES:
+            raise ValueError(
+                f"Unknown MC provenance {provenance!r}; expected one of "
+                f"{sorted(MC_PROVENANCE_SDE_LINES)}"
+            )
+        self.mc_provenance = provenance
+
         if verbose:
             print(f"\n{'='*80}")
             print("EXTRACTING MC SAMPLES FROM TRAINING DATA")
@@ -1245,6 +1309,8 @@ class PDFAnalyzer:
         Returns:
             Dictionary mapping maturity T -> final stock prices S_T
         """
+        self.mc_provenance = MC_PROVENANCE_NN
+
         if n_paths is None:
             n_paths = self.config.analysis_config.n_paths_analysis
         if dt is None:
@@ -1510,7 +1576,8 @@ class PDFAnalyzer:
 
     def create_enhanced_pdf_analysis(self, mc_data: Dict[float, np.ndarray],
                                     T_values: Optional[List[float]] = None,
-                                    figure_label: Optional[str] = None) -> Tuple[Figure, Dict]:
+                                    figure_label: Optional[str] = None,
+                                    mc_provenance: Optional[str] = None) -> Tuple[Figure, Dict]:
         """
         Generate publication-quality PDF analysis plots
 
@@ -1522,6 +1589,12 @@ class PDFAnalyzer:
         Args:
             mc_data: Monte Carlo data (dict mapping T -> stock prices)
             T_values: List of maturities to plot
+            figure_label: Extra suptitle line (defaults to self.figure_label)
+            mc_provenance: Which volatility surface produced `mc_data`, one of
+                MC_PROVENANCE_NN / MC_PROVENANCE_TRUTH / MC_PROVENANCE_UNKNOWN.
+                Defaults to self.mc_provenance, recorded by whichever MC method
+                ran. If neither is set, the subtitle states that the surface is
+                unrecorded instead of asserting σ_NN.
 
         Returns:
             (fig, results): Figure object and results dictionary
@@ -1540,9 +1613,10 @@ class PDFAnalyzer:
 
         # Title
         label = figure_label if figure_label is not None else self.figure_label
+        provenance = mc_provenance if mc_provenance is not None else self.mc_provenance
         title_lines = [
             'PDF Analysis: Neural Network Synthetic Local Volatility Model',
-            r'Monte Carlo with $dS_t = rS_t dt + \sigma_{NN}(t,S)S_t dW_t$',
+            mc_provenance_sde_line(provenance),
         ]
         if label:
             title_lines.append(label)
@@ -2084,6 +2158,7 @@ class DupirePipeline:
 
         # Determine MC data source: reuse training data or run new simulation
         mc_data = None
+        mc_provenance = None
 
         if self.config.analysis_config.reuse_training_mc and os.path.exists(data_path):
             # Reuse training MC paths (exact volatility, all M_train samples)
@@ -2095,10 +2170,13 @@ class DupirePipeline:
                     valid_T,
                     verbose=True
                 )
+                # Training paths come from DataGenerator.exact_sigma, not σ_NN.
+                mc_provenance = MC_PROVENANCE_TRUTH
             except Exception as e:
                 print(f"  ⚠️  Failed to extract training data: {e}")
                 print(f"  Falling back to new MC simulation with NN volatility")
                 mc_data = None
+                mc_provenance = None
 
         if mc_data is None and self.config.analysis_config.run_mc_with_nn_volatility:
             # Run new MC simulation with NN-predicted volatility
@@ -2111,6 +2189,7 @@ class DupirePipeline:
                 valid_T,
                 verbose=True
             )
+            mc_provenance = MC_PROVENANCE_NN
         elif mc_data is None:
             print("  Skipping MC simulation (disabled in config)")
             return
@@ -2121,6 +2200,7 @@ class DupirePipeline:
                 mc_data,
                 valid_T,
                 figure_label=figure_label,
+                mc_provenance=mc_provenance,
             )
 
             # Save plots

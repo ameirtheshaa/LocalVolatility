@@ -17,7 +17,7 @@ import matplotlib.pyplot as plt
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from config import DupirePipelineConfig
-from dupire_pipeline import PDFAnalyzer, load_trained_models
+from dupire_pipeline import MC_PROVENANCE_NN, PDFAnalyzer, load_trained_models
 
 
 def save_figure(fig, out_dir: str, dpi: int = 450) -> None:
@@ -34,7 +34,14 @@ def save_figure(fig, out_dir: str, dpi: int = 450) -> None:
 
 
 def run_plot_set(analyzer: PDFAnalyzer, mc_data: dict, T_values: list,
-                 out_dir: str, figure_label: str, config: DupirePipelineConfig) -> dict:
+                 out_dir: str, figure_label: str, config: DupirePipelineConfig,
+                 mc_provenance: str = MC_PROVENANCE_NN) -> dict:
+    """Plot `mc_data` with `analyzer`.
+
+    `mc_provenance` must be passed explicitly because the analyzer plotting the
+    data is not always the one that simulated it (the pretrained sets reuse one
+    MC across two analyzers), so analyzer.mc_provenance may be unset.
+    """
     print(f"\n{'='*80}")
     print(f"Plot set: {figure_label}")
     print(f"Output: {out_dir}")
@@ -42,7 +49,8 @@ def run_plot_set(analyzer: PDFAnalyzer, mc_data: dict, T_values: list,
     print(f"{'='*80}")
 
     fig, results = analyzer.create_enhanced_pdf_analysis(
-        mc_data, T_values=T_values, figure_label=figure_label)
+        mc_data, T_values=T_values, figure_label=figure_label,
+        mc_provenance=mc_provenance)
     save_figure(fig, out_dir, dpi=config.plot_config.dpi)
 
     summary_path = os.path.join(out_dir, 'diagnostics.json')

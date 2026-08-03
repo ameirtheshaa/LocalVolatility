@@ -11,11 +11,17 @@ Two MC sources:
                                    (paths generated during data
                                    generation with the ground-truth σ).
 
+The figure subtitle states the SDE the paths were simulated under, so the
+source must be labelled correctly. For --mc-source data that is normally the
+ground-truth σ, but run_regenerate_mc.py also writes NN-repriced paths in the
+same .npz schema (repriced_mc.npz); --data-vol resolves which.
+
 Usage:
     python examples/run_reproduce_user_plots.py \\
         --model-dir <PATH> \\
         --mc-source {repriced,data} \\
         [--training-data PATH] \\
+        [--data-vol {auto,ground-truth,nn}] \\
         [--maturities 0.25 0.5 0.75 1.0] \\
         [--n-paths 25000] \\
         [--output-dir DIR]
@@ -33,7 +39,8 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from config import DupirePipelineConfig
-from dupire_pipeline import PDFAnalyzer, load_trained_models
+from dupire_pipeline import (MC_PROVENANCE_NN, MC_PROVENANCE_TRUTH, PDFAnalyzer,
+                             load_trained_models)
 
 
 def resolve_model_dir(raw_path: str) -> str:
@@ -50,6 +57,22 @@ def resolve_model_dir(raw_path: str) -> str:
     if '/' not in normalized:
         return os.path.normpath(os.path.join('models', 'runs', normalized))
     return os.path.normpath(raw_path)
+
+
+def resolve_data_provenance(data_path: str, choice: str) -> str:
+    """Which volatility surface generated the paths in `data_path`.
+
+    'auto' keys off the filename: run_regenerate_mc.py writes NN-repriced paths
+    to repriced_mc.npz, while training_data.npz and data_mc.npz hold
+    ground-truth paths. Pass --data-vol explicitly for other filenames.
+    """
+    if choice == 'nn':
+        return MC_PROVENANCE_NN
+    if choice == 'ground-truth':
+        return MC_PROVENANCE_TRUTH
+    if 'repriced' in os.path.basename(data_path).lower():
+        return MC_PROVENANCE_NN
+    return MC_PROVENANCE_TRUTH
 
 
 def _check_data_file(path: str) -> None:
@@ -88,6 +111,13 @@ def main() -> int:
     parser.add_argument('--training-data', default=None,
                         help="Optional explicit path to training_data.npz. "
                              "Defaults to <model-dir>/training_data.npz.")
+    parser.add_argument('--data-vol', choices=['auto', 'ground-truth', 'nn'],
+                        default='auto',
+                        help="For --mc-source data: which volatility surface "
+                             "generated the .npz paths, used for the figure's "
+                             "SDE subtitle. auto (default) = nn if the filename "
+                             "contains 'repriced' (run_regenerate_mc.py's "
+                             "repriced_mc.npz), else ground-truth.")
     parser.add_argument('--maturities', type=float, nargs='+',
                         default=[0.25, 0.5, 0.75, 1.0],
                         help='Maturities (default: 0.25 0.5 0.75 1.0).')
@@ -136,17 +166,21 @@ def main() -> int:
 
     if args.mc_source == 'repriced':
         mc_data = analyzer.simulate_paths_with_nn_volatility(T_values, verbose=True)
+        mc_provenance = MC_PROVENANCE_NN
     else:
         data_path = args.training_data or os.path.join(model_dir, 'training_data.npz')
         _check_data_file(data_path)
+        mc_provenance = resolve_data_provenance(data_path, args.data_vol)
         print(f"\nReading training-data MC from: {data_path}")
+        print(f"  Path provenance: {mc_provenance}  (--data-vol {args.data_vol})")
         mc_data = analyzer.extract_mc_samples_from_training_data(
-            data_path, T_values, verbose=True)
+            data_path, T_values, verbose=True, provenance=mc_provenance)
 
     print()
     fig, results = analyzer.create_enhanced_pdf_analysis(
         mc_data, T_values=T_values,
-        figure_label=f'MC source: {args.mc_source}')
+        figure_label=f'MC source: {args.mc_source}',
+        mc_provenance=mc_provenance)
 
     dpi = getattr(config.plot_config, 'dpi', 300)
     png_path = os.path.join(out_dir, 'pdf_analysis.png')
@@ -174,12 +208,13 @@ def main() -> int:
             return str(value)
 
     payload = {
-        'model_dir':   model_dir,
-        'mc_source':   args.mc_source,
-        'phi_mapping': args.phi_mapping,
-        'n_paths':     args.n_paths,
-        'maturities':  T_values,
-        'results':     {f"{T:.4f}": _serialise(d) for T, d in results.items()},
+        'model_dir':      model_dir,
+        'mc_source':      args.mc_source,
+        'mc_provenance':  mc_provenance,
+        'phi_mapping':    args.phi_mapping,
+        'n_paths':        args.n_paths,
+        'maturities':     T_values,
+        'results':        {f"{T:.4f}": _serialise(d) for T, d in results.items()},
     }
     with open(json_path, 'w', encoding='utf-8') as f:
         json.dump(payload, f, indent=2)
