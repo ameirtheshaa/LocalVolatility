@@ -3,7 +3,14 @@
   "mc_source": "data",
   "mc_provenance": "nn_repriced",
   "phi_mapping": "transformed",
-  "n_paths": 25000,
+  "n_mc_samples": 100000,
+  "n_mc_samples_by_maturity": {
+    "0.2500": 100000,
+    "0.5000": 100000,
+    "0.7500": 100000,
+    "1.0000": 100000
+  },
+  "n_paths_requested": null,
   "maturities": [
     0.25,
     0.5,
