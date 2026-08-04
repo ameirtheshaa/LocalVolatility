@@ -263,6 +263,7 @@ def save_metadata(config: DupirePipelineConfig, output_dir: str):
 
     metadata = {
         'timestamp': datetime.datetime.now().isoformat(),
+        'ansatz': getattr(config, 'ansatz', 'one_minus_exp'),
         'config': config_dict,
         'scaling': {
             'S0': config.S0,
@@ -608,12 +609,33 @@ class DupireNeuralModel(tf.keras.Model):
         added = tf.keras.layers.Add()([input_tensor, activation_2])
         return added
 
+    # Ansatz values this class can TRAIN. PDFAnalyzer can READ more than this: it also
+    # handles 'one_minus_exp_1mk' (paper eq. 3.9) so the 5 existing control models can be
+    # analysed. But the training path here does NOT implement 1mk -- net_phi_tilde would
+    # build a linear output where 1mk needs softplus, neural_phi_tilde would apply the exp_k
+    # map, and loss_phi_cal would skip the K=0 penalty on the grounds that exp_k satisfies it
+    # by construction (1mk violates it by 9.5-13%). Training with that tag would therefore
+    # build an exp_k model while save_metadata recorded 'one_minus_exp_1mk', which is the same
+    # silent metadata-vs-reality mismatch this resolution exists to prevent, inverted.
+    # Refuse rather than mislabel; 1mk training lives in
+    # nn_boundary_deficit_results/dax_expk/scripts/dupire_pipeline_with_1mk_ansatz.py.
+    TRAINABLE_ANSATZ = ('one_minus_exp', 'exp_k')
+
+    def _validate_training_ansatz(self):
+        a = getattr(self.config, 'ansatz', 'one_minus_exp')
+        if a not in self.TRAINABLE_ANSATZ:
+            raise ValueError(
+                f"ansatz={a!r} cannot be TRAINED by DupireNeuralModel (trainable: "
+                f"{list(self.TRAINABLE_ANSATZ)}). PDFAnalyzer can still READ it. For "
+                f"one_minus_exp_1mk use dax_expk/scripts/dupire_pipeline_with_1mk_ansatz.py.")
+
     def net_phi_tilde(self, num_res_blocks=3, units=64, activation='tanh'):
         """
         Build neural network for normalized option price
 
         Maps (t_tilde, k_tilde) → φ_tilde ∈ R+
         """
+        self._validate_training_ansatz()
         input_ = tf.keras.Input(shape=(2,))
 
         noisy_input = tf.keras.layers.GaussianNoise(self.gaussian_phi)(input_)
@@ -626,7 +648,14 @@ class DupireNeuralModel(tf.keras.Model):
 
         # Final dense layers
         dense_out = tf.keras.layers.Dense(units, activation=activation, use_bias=True)(x)
-        output_ = tf.keras.layers.Dense(1, activation='softplus', use_bias=True, dtype="float32")(dense_out)
+        # exp_k ansatz -> linear raw output H; one_minus_exp -> softplus output N_c
+        phi_out_activation = (
+            'softplus'
+            if getattr(self.config, 'ansatz', 'one_minus_exp') == 'one_minus_exp'
+            else None
+        )
+        output_ = tf.keras.layers.Dense(1, activation=phi_out_activation, use_bias=True,
+                                        dtype="float32")(dense_out)
 
         model = tf.keras.models.Model(inputs=input_, outputs=output_)
         return model
@@ -681,12 +710,23 @@ class DupireNeuralModel(tf.keras.Model):
 
     def neural_phi_tilde(self, t_tilde, k_tilde):
         """
-        Compute normalized option price from NN
+        Compute normalized option price phi_tilde from NN_phi.
 
-        φ_tilde = 1 - exp(-NN_φ)
+        ansatz='exp_k' (default):
+            phi_tilde = exp(-k_tilde * M),  M = softplus(a + k_tilde * H),
+            a = log(e^{K_max/S0} - 1), H = raw (linear) network output.
+            => phi_tilde(k_tilde=0) = 1 exactly  (C_NN(0,T) = S0), and
+               M(.,0) = K_max/S0  => correct deep-ITM slope and unit mass.
+        ansatz='one_minus_exp' (legacy):
+            phi_tilde = 1 - exp(-N_c),  N_c = softplus output (open at 1).
         """
-        phi_nn = self.NN_phi_tilde(tf.concat([t_tilde, k_tilde], axis=1))
-        return (1 - tf.exp(-phi_nn))
+        raw = self.NN_phi_tilde(tf.concat([t_tilde, k_tilde], axis=1))
+        if getattr(self.config, 'ansatz', 'one_minus_exp') == 'one_minus_exp':
+            return 1.0 - tf.exp(-raw)
+        y = self.config.K_max / self.config.S0
+        a = float(y + np.log1p(-np.exp(-y)))
+        M = tf.nn.softplus(a + k_tilde * raw)
+        return tf.exp(-k_tilde * M)
 
     def neural_eta_tilde(self, t_tilde, k_tilde):
         """Compute normalized local volatility squared from NN"""
@@ -750,18 +790,22 @@ class DupireNeuralModel(tf.keras.Model):
             self.weight(phi_tilde_0) * tf.square(self.neural_phi_tilde(t_tilde_0, k_tilde_0) - phi_tilde_0)
         )
 
-        # K=0 call boundary: C(0,T) = S₀  =>  φ_tilde(T, 0) = 1
-        M_k0 = 128
-        t_tilde_k0 = tf.random.uniform(
-            shape=[M_k0, 1], minval=t_min_random, maxval=t_max_random, dtype=data_type)
-        k_tilde_k0 = tf.zeros([M_k0, 1], dtype=data_type)
-        phi_tilde_k0_target = tf.ones([M_k0, 1], dtype=data_type)
-        phi_tilde_k0_nn = self.neural_phi_tilde(t_tilde_k0, k_tilde_k0)
-        loss_k0 = tf.reduce_mean(
-            self.weight(phi_tilde_k0_target) * tf.square(phi_tilde_k0_nn - phi_tilde_k0_target)
-        )
+        # K=0 call boundary: C(0,T) = S₀  =>  φ_tilde(T, 0) = 1.
+        # For ansatz='exp_k' this holds by construction (φ_tilde(k=0)=exp(0)=1), so the
+        # penalty is an exact no-op (zero residual and zero gradient) and is skipped.
+        if getattr(self.config, 'ansatz', 'one_minus_exp') == 'one_minus_exp':
+            M_k0 = 128
+            t_tilde_k0 = tf.random.uniform(
+                shape=[M_k0, 1], minval=t_min_random, maxval=t_max_random, dtype=data_type)
+            k_tilde_k0 = tf.zeros([M_k0, 1], dtype=data_type)
+            phi_tilde_k0_target = tf.ones([M_k0, 1], dtype=data_type)
+            phi_tilde_k0_nn = self.neural_phi_tilde(t_tilde_k0, k_tilde_k0)
+            loss_k0 = tf.reduce_mean(
+                self.weight(phi_tilde_k0_target) * tf.square(phi_tilde_k0_nn - phi_tilde_k0_target)
+            )
+            return loss_phi + loss_bc + self.lambda_k0 * loss_k0
 
-        return loss_phi + loss_bc + self.lambda_k0 * loss_k0
+        return loss_phi + loss_bc
 
     def loss_dupire_cal(self, t_min_random, t_max_random, k_min_random, k_max_random):
         """
@@ -1085,6 +1129,47 @@ def load_trained_models(model_dir: str) -> Tuple[tf.keras.Model, tf.keras.Model,
     return nn_phi, nn_eta, metadata
 
 
+# Which volatility surface a set of Monte Carlo paths was simulated under.
+# The PDF-analysis figures state the SDE in their subtitle, so the wrong
+# provenance silently mislabels the plot (paths from training data were
+# generated under the ground-truth σ, NOT under σ_NN).
+MC_PROVENANCE_NN = 'nn_repriced'        # paths simulated under the learned σ_NN
+MC_PROVENANCE_TRUTH = 'ground_truth'    # paths simulated under DataGenerator.exact_sigma
+MC_PROVENANCE_UNKNOWN = 'unknown'       # provenance not recorded — do not assert one
+
+MC_PROVENANCE_SDE_LINES = {
+    MC_PROVENANCE_NN: (
+        r'Monte Carlo under learned $\sigma_{NN}$: '
+        r'$dS_t = rS_t dt + \sigma_{NN}(t,S_t)S_t dW_t$'
+    ),
+    MC_PROVENANCE_TRUTH: (
+        r'Monte Carlo under ground-truth $\sigma$: '
+        r'$dS_t = rS_t dt + \sigma(t,S_t/S_0)S_t dW_t$'
+    ),
+    MC_PROVENANCE_UNKNOWN: (
+        r'Monte Carlo with $dS_t = rS_t dt + \sigma(t,S_t)S_t dW_t$ '
+        r'(volatility surface unrecorded)'
+    ),
+}
+
+
+def mc_provenance_sde_line(provenance: Optional[str]) -> str:
+    """
+    Map an MC provenance tag to the SDE line shown in figure subtitles.
+
+    Unrecognised or missing provenance falls back to the neutral 'unrecorded'
+    line rather than asserting a surface the paths may not have been drawn from.
+    """
+    if provenance is None:
+        return MC_PROVENANCE_SDE_LINES[MC_PROVENANCE_UNKNOWN]
+    if provenance not in MC_PROVENANCE_SDE_LINES:
+        raise ValueError(
+            f"Unknown MC provenance {provenance!r}; expected one of "
+            f"{sorted(MC_PROVENANCE_SDE_LINES)}"
+        )
+    return MC_PROVENANCE_SDE_LINES[provenance]
+
+
 class PDFAnalyzer:
     """
     Analyzes probability density functions from trained models
@@ -1094,22 +1179,63 @@ class PDFAnalyzer:
         extract_model_implied_density(): Get PDF from option prices
         fit_lognormal_corrected_method(): Fit log-normal distribution
         create_enhanced_pdf_analysis(): Generate three-panel plots
+
+    MC provenance:
+        Both MC-producing methods record which volatility surface the paths
+        came from on ``self.mc_provenance``; create_enhanced_pdf_analysis()
+        uses it to render the correct SDE in the figure subtitle.
     """
 
     def __init__(self, nn_phi: tf.keras.Model, nn_eta: tf.keras.Model,
                  config: DupirePipelineConfig, metadata: Dict,
-                 phi_mapping: str = 'transformed',
+                 phi_mapping: Optional[str] = None,
                  figure_label: Optional[str] = None):
         self.nn_phi = nn_phi
         self.nn_eta = nn_eta
         self.config = config
         self.metadata = metadata
-        if phi_mapping not in ('transformed', 'legacy'):
-            raise ValueError(f"phi_mapping must be 'transformed' or 'legacy', got {phi_mapping!r}")
+
+        # Resolve the price mapping. Priority: explicit arg > model metadata > legacy default.
+        # Model ansatz -> analyzer mapping; absence of a tag means a pre-fix model (one_minus_exp).
+        meta_ansatz = metadata.get('ansatz') if isinstance(metadata, dict) else None
+        ansatz_to_mapping = {
+            'exp_k': 'exp_k',
+            'one_minus_exp': 'transformed',
+            'one_minus_exp_1mk': 'one_minus_exp_1mk',
+        }
+        # ABSENT tag -> 'transformed': legitimate, that is what a pre-fix model is.  But an
+        # unrecognised NON-None tag must raise rather than silently fall back, or the next
+        # new ansatz repeats exactly the bug this resolution exists to fix (a 1mk model read
+        # as 'transformed' drops the (1 - k_tilde) factor and misreads the price surface).
+        if meta_ansatz is None:
+            derived_mapping = 'transformed'
+        elif meta_ansatz in ansatz_to_mapping:
+            derived_mapping = ansatz_to_mapping[meta_ansatz]
+        else:
+            raise ValueError(
+                f"Model metadata declares ansatz={meta_ansatz!r}, which has no price mapping "
+                f"in PDFAnalyzer. Known: {sorted(ansatz_to_mapping)}. Refusing to guess -- add "
+                f"the mapping in phi_tilde_from_nn rather than defaulting to 'transformed'.")
+        if phi_mapping is None:
+            phi_mapping = derived_mapping
+        else:
+            if phi_mapping not in ('transformed', 'legacy', 'exp_k', 'one_minus_exp_1mk'):
+                raise ValueError(
+                    f"phi_mapping must be one of 'transformed', 'legacy', 'exp_k', "
+                    f"'one_minus_exp_1mk', got {phi_mapping!r}")
+            # 'legacy' only reproduces the pre-correction diagnostic bug; never cross-checked.
+            if meta_ansatz is not None and phi_mapping != 'legacy' and phi_mapping != derived_mapping:
+                raise ValueError(
+                    f"phi_mapping={phi_mapping!r} disagrees with model metadata ansatz="
+                    f"{meta_ansatz!r} (expected {derived_mapping!r}). Refusing to misinterpret the "
+                    f"price surface; pass phi_mapping=None to auto-select or 'legacy' for the bug repro.")
         self.phi_mapping = phi_mapping
         self.figure_label = figure_label
         self.training_T_min = None
         self.training_T_max = None
+        # Set by whichever MC method last produced paths; consumed by
+        # create_enhanced_pdf_analysis() to label the SDE correctly.
+        self.mc_provenance: Optional[str] = None
 
         # Extract scaling parameters from metadata
         if 'scaling' in metadata:
@@ -1143,13 +1269,28 @@ class PDFAnalyzer:
         """
         Map raw NN_phi output to normalized option price phi_tilde.
 
-        transformed: phi_tilde = 1 - exp(-NN_phi) (matches DupireNeuralModel training)
-        legacy:      phi_tilde = NN_phi raw output (pre-correction diagnostic bug)
+        exp_k:            phi_tilde = exp(-k_tilde * softplus(a + k_tilde * H)),
+                          a = log(e^{K_max/S0} - 1)  (ansatz='exp_k'; C_NN(0,T)=S0 exact)
+        transformed:      phi_tilde = 1 - exp(-NN_phi)   (ansatz='one_minus_exp')
+        one_minus_exp_1mk phi_tilde = 1 - exp(-(1 - k_tilde) * NN_phi)  (paper eq. 3.9,
+                          the legacy DAX control ansatz).  This is NOT the same map as
+                          'transformed' -- it carries an extra (1 - k_tilde) factor -- so
+                          routing a 1mk model through 'transformed' misreads its price
+                          surface, the same failure mode as reading an exp_k model as
+                          'transformed'.
+        legacy:           phi_tilde = NN_phi raw output  (pre-correction diagnostic bug)
         """
-        phi_nn = self.nn_phi(tf.concat([t_tilde, k_tilde], axis=1))
+        raw = self.nn_phi(tf.concat([t_tilde, k_tilde], axis=1))
         if self.phi_mapping == 'legacy':
-            return phi_nn
-        return 1.0 - tf.exp(-phi_nn)
+            return raw
+        if self.phi_mapping == 'exp_k':
+            y = self.k_max / self.config.S0
+            a = float(y + np.log1p(-np.exp(-y)))
+            M = tf.nn.softplus(a + k_tilde * raw)
+            return tf.exp(-k_tilde * M)
+        if self.phi_mapping == 'one_minus_exp_1mk':
+            return 1.0 - tf.exp(-(1.0 - k_tilde) * raw)
+        return 1.0 - tf.exp(-raw)
 
     def get_neural_local_volatility(self, t: float, S: np.ndarray) -> np.ndarray:
         """
@@ -1170,7 +1311,9 @@ class PDFAnalyzer:
 
     def extract_mc_samples_from_training_data(self, data_path: str,
                                              T_values: List[float],
-                                             verbose: bool = True) -> Dict[float, np.ndarray]:
+                                             verbose: bool = True,
+                                             provenance: str = MC_PROVENANCE_TRUTH
+                                             ) -> Dict[float, np.ndarray]:
         """
         Extract Monte Carlo samples from saved training data
 
@@ -1183,10 +1326,23 @@ class PDFAnalyzer:
             data_path: Path to training_data.npz file
             T_values: List of maturities to extract
             verbose: Print progress
+            provenance: Which volatility surface produced the paths in
+                `data_path`. Defaults to MC_PROVENANCE_TRUTH, correct for
+                training_data.npz (written by DataGenerator.run_mc under
+                exact_sigma). Pass MC_PROVENANCE_NN when reading an .npz of
+                NN-repriced paths in the same schema — e.g. the
+                `repriced_mc.npz` written by examples/run_regenerate_mc.py.
 
         Returns:
             Dictionary mapping maturity T -> final stock prices S_T
         """
+        if provenance not in MC_PROVENANCE_SDE_LINES:
+            raise ValueError(
+                f"Unknown MC provenance {provenance!r}; expected one of "
+                f"{sorted(MC_PROVENANCE_SDE_LINES)}"
+            )
+        self.mc_provenance = provenance
+
         if verbose:
             print(f"\n{'='*80}")
             print("EXTRACTING MC SAMPLES FROM TRAINING DATA")
@@ -1245,6 +1401,8 @@ class PDFAnalyzer:
         Returns:
             Dictionary mapping maturity T -> final stock prices S_T
         """
+        self.mc_provenance = MC_PROVENANCE_NN
+
         if n_paths is None:
             n_paths = self.config.analysis_config.n_paths_analysis
         if dt is None:
@@ -1260,16 +1418,26 @@ class PDFAnalyzer:
             print(f"  SDE: dS_t = r*S_t*dt + σ_NN(t,S)*S_t*dW_t")
 
         T_max_sim = max(T_values)
-        n_steps = int(n_paths)
+        # Number of Euler-Maruyama steps is set by the simulation horizon and dt,
+        # NOT by the path count. The +1 makes the last step's t_current land at or
+        # past T_max_sim, so the maturity check below (t_current >= T - dt/2) fires
+        # inside the loop for every requested T.
+        n_steps = int(np.ceil(T_max_sim / dt)) + 1
 
         results = {}
 
         # Initialize paths
         S_current = np.full(n_paths, self.config.S0, dtype=np.float32)
 
-        # Generate Brownian increments
+        # Brownian increments are drawn one step at a time, inside the loop.
+        # This is bit-identical to the single `size=(n_steps, n_paths)` draw it
+        # replaces: NumPy fills a 2-D normal draw in C (row-major) order, so
+        # n_steps consecutive draws of `n_paths` consume the same stream in the
+        # same order as one (n_steps, n_paths) draw from the same seed. Drawing
+        # per step avoids materialising the whole (n_steps, n_paths) block —
+        # ~8 GB of float64 at the defaults (1001 steps × 10**6 paths).
         np.random.seed(42)
-        dW = np.random.normal(0, np.sqrt(dt), size=(n_steps, n_paths))
+        sqrt_dt = np.sqrt(dt)
 
         saved_maturities = set()
 
@@ -1280,18 +1448,31 @@ class PDFAnalyzer:
         for i in range(n_steps):
             t_current = i * dt
 
+            # Brownian increment for this step (see stream note above).
+            dW_i = np.random.normal(0, sqrt_dt, size=n_paths)
+
             # Query NN for local volatility at current (t, S)
             sigma_local = self.get_neural_local_volatility(t_current, S_current)
 
             # Euler-Maruyama step
             drift = self.config.r * S_current * dt
-            diffusion = sigma_local * S_current * dW[i]
+            diffusion = sigma_local * S_current * dW_i
             S_current = S_current + drift + diffusion
 
             # Ensure positive stock prices
             S_current = np.maximum(S_current, 0.01)
 
-            # Check if we've reached any target maturities
+            # Check if we've reached any target maturities.
+            #
+            # Known one-step offset (pre-existing, deliberately left as is):
+            # `t_current` is the time BEFORE this iteration's Euler step, but the
+            # test runs AFTER it, so `S_current` here is S at t_current + dt.
+            # The array stored for maturity T is therefore S at t = T + dt.
+            # The implied bias in sigma is sqrt(1 + dt/T) — about 0.2% at
+            # T = 0.25 and 0.05% at T = 1.0 with dt = 1e-3 — i.e. negligible
+            # next to the MC standard error, so it is not corrected here.
+            # Fixing it would shift every stored maturity and invalidate
+            # comparisons against previously generated figures.
             for T in T_values:
                 if T not in saved_maturities and t_current >= T - dt/2:
                     results[T] = S_current.copy()
@@ -1487,7 +1668,8 @@ class PDFAnalyzer:
 
     def create_enhanced_pdf_analysis(self, mc_data: Dict[float, np.ndarray],
                                     T_values: Optional[List[float]] = None,
-                                    figure_label: Optional[str] = None) -> Tuple[Figure, Dict]:
+                                    figure_label: Optional[str] = None,
+                                    mc_provenance: Optional[str] = None) -> Tuple[Figure, Dict]:
         """
         Generate publication-quality PDF analysis plots
 
@@ -1499,6 +1681,12 @@ class PDFAnalyzer:
         Args:
             mc_data: Monte Carlo data (dict mapping T -> stock prices)
             T_values: List of maturities to plot
+            figure_label: Extra suptitle line (defaults to self.figure_label)
+            mc_provenance: Which volatility surface produced `mc_data`, one of
+                MC_PROVENANCE_NN / MC_PROVENANCE_TRUTH / MC_PROVENANCE_UNKNOWN.
+                Defaults to self.mc_provenance, recorded by whichever MC method
+                ran. If neither is set, the subtitle states that the surface is
+                unrecorded instead of asserting σ_NN.
 
         Returns:
             (fig, results): Figure object and results dictionary
@@ -1517,9 +1705,10 @@ class PDFAnalyzer:
 
         # Title
         label = figure_label if figure_label is not None else self.figure_label
+        provenance = mc_provenance if mc_provenance is not None else self.mc_provenance
         title_lines = [
             'PDF Analysis: Neural Network Synthetic Local Volatility Model',
-            r'Monte Carlo with $dS_t = rS_t dt + \sigma_{NN}(t,S)S_t dW_t$',
+            mc_provenance_sde_line(provenance),
         ]
         if label:
             title_lines.append(label)
@@ -2050,7 +2239,7 @@ class DupirePipeline:
         valid_T = sorted(valid_T)
 
         # Create analyzer
-        phi_mapping = getattr(self.config, 'phi_mapping', 'transformed')
+        phi_mapping = getattr(self.config, 'phi_mapping', None)
         figure_label = getattr(self.config, 'figure_label', None)
         analyzer = PDFAnalyzer(
             nn_phi, nn_eta, self.config, metadata,
@@ -2061,6 +2250,7 @@ class DupirePipeline:
 
         # Determine MC data source: reuse training data or run new simulation
         mc_data = None
+        mc_provenance = None
 
         if self.config.analysis_config.reuse_training_mc and os.path.exists(data_path):
             # Reuse training MC paths (exact volatility, all M_train samples)
@@ -2072,10 +2262,13 @@ class DupirePipeline:
                     valid_T,
                     verbose=True
                 )
+                # Training paths come from DataGenerator.exact_sigma, not σ_NN.
+                mc_provenance = MC_PROVENANCE_TRUTH
             except Exception as e:
                 print(f"  ⚠️  Failed to extract training data: {e}")
                 print(f"  Falling back to new MC simulation with NN volatility")
                 mc_data = None
+                mc_provenance = None
 
         if mc_data is None and self.config.analysis_config.run_mc_with_nn_volatility:
             # Run new MC simulation with NN-predicted volatility
@@ -2088,6 +2281,7 @@ class DupirePipeline:
                 valid_T,
                 verbose=True
             )
+            mc_provenance = MC_PROVENANCE_NN
         elif mc_data is None:
             print("  Skipping MC simulation (disabled in config)")
             return
@@ -2098,6 +2292,7 @@ class DupirePipeline:
                 mc_data,
                 valid_T,
                 figure_label=figure_label,
+                mc_provenance=mc_provenance,
             )
 
             # Save plots

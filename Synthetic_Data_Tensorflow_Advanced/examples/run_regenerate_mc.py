@@ -11,8 +11,9 @@ under two source volatilities — and save both to disk.
 
 Both branches go through the same `DataGenerator.run_mc()` Euler-Maruyama loop
 (dupire_pipeline.py:366) with `np.random.seed(42)` and `n_steps = N_t_train`,
-which bypasses the simulator bug in `simulate_paths_with_nn_volatility`
-(where `n_steps = int(n_paths)`).
+so the time grid is pinned to the training grid rather than to the path count.
+(`simulate_paths_with_nn_volatility` previously set `n_steps = int(n_paths)`;
+that bug is fixed — it now uses `ceil(max(T_values)/dt) + 1` steps.)
 
 Output is written as `<basename>.npz` with keys `S_matrix [N_t, M]` (float32)
 and `t_all [N_t, 1]` (float32) — the exact schema the existing plot driver
