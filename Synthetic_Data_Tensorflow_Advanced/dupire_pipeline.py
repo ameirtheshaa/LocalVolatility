@@ -263,6 +263,7 @@ def save_metadata(config: DupirePipelineConfig, output_dir: str):
 
     metadata = {
         'timestamp': datetime.datetime.now().isoformat(),
+        'ansatz': getattr(config, 'ansatz', 'one_minus_exp'),
         'config': config_dict,
         'scaling': {
             'S0': config.S0,
@@ -608,12 +609,33 @@ class DupireNeuralModel(tf.keras.Model):
         added = tf.keras.layers.Add()([input_tensor, activation_2])
         return added
 
+    # Ansatz values this class can TRAIN. PDFAnalyzer can READ more than this: it also
+    # handles 'one_minus_exp_1mk' (paper eq. 3.9) so the 5 existing control models can be
+    # analysed. But the training path here does NOT implement 1mk -- net_phi_tilde would
+    # build a linear output where 1mk needs softplus, neural_phi_tilde would apply the exp_k
+    # map, and loss_phi_cal would skip the K=0 penalty on the grounds that exp_k satisfies it
+    # by construction (1mk violates it by 9.5-13%). Training with that tag would therefore
+    # build an exp_k model while save_metadata recorded 'one_minus_exp_1mk', which is the same
+    # silent metadata-vs-reality mismatch this resolution exists to prevent, inverted.
+    # Refuse rather than mislabel; 1mk training lives in
+    # nn_boundary_deficit_results/dax_expk/scripts/dupire_pipeline_with_1mk_ansatz.py.
+    TRAINABLE_ANSATZ = ('one_minus_exp', 'exp_k')
+
+    def _validate_training_ansatz(self):
+        a = getattr(self.config, 'ansatz', 'one_minus_exp')
+        if a not in self.TRAINABLE_ANSATZ:
+            raise ValueError(
+                f"ansatz={a!r} cannot be TRAINED by DupireNeuralModel (trainable: "
+                f"{list(self.TRAINABLE_ANSATZ)}). PDFAnalyzer can still READ it. For "
+                f"one_minus_exp_1mk use dax_expk/scripts/dupire_pipeline_with_1mk_ansatz.py.")
+
     def net_phi_tilde(self, num_res_blocks=3, units=64, activation='tanh'):
         """
         Build neural network for normalized option price
 
         Maps (t_tilde, k_tilde) → φ_tilde ∈ R+
         """
+        self._validate_training_ansatz()
         input_ = tf.keras.Input(shape=(2,))
 
         noisy_input = tf.keras.layers.GaussianNoise(self.gaussian_phi)(input_)
@@ -626,7 +648,14 @@ class DupireNeuralModel(tf.keras.Model):
 
         # Final dense layers
         dense_out = tf.keras.layers.Dense(units, activation=activation, use_bias=True)(x)
-        output_ = tf.keras.layers.Dense(1, activation='softplus', use_bias=True, dtype="float32")(dense_out)
+        # exp_k ansatz -> linear raw output H; one_minus_exp -> softplus output N_c
+        phi_out_activation = (
+            'softplus'
+            if getattr(self.config, 'ansatz', 'one_minus_exp') == 'one_minus_exp'
+            else None
+        )
+        output_ = tf.keras.layers.Dense(1, activation=phi_out_activation, use_bias=True,
+                                        dtype="float32")(dense_out)
 
         model = tf.keras.models.Model(inputs=input_, outputs=output_)
         return model
@@ -681,12 +710,23 @@ class DupireNeuralModel(tf.keras.Model):
 
     def neural_phi_tilde(self, t_tilde, k_tilde):
         """
-        Compute normalized option price from NN
+        Compute normalized option price phi_tilde from NN_phi.
 
-        φ_tilde = 1 - exp(-NN_φ)
+        ansatz='exp_k' (default):
+            phi_tilde = exp(-k_tilde * M),  M = softplus(a + k_tilde * H),
+            a = log(e^{K_max/S0} - 1), H = raw (linear) network output.
+            => phi_tilde(k_tilde=0) = 1 exactly  (C_NN(0,T) = S0), and
+               M(.,0) = K_max/S0  => correct deep-ITM slope and unit mass.
+        ansatz='one_minus_exp' (legacy):
+            phi_tilde = 1 - exp(-N_c),  N_c = softplus output (open at 1).
         """
-        phi_nn = self.NN_phi_tilde(tf.concat([t_tilde, k_tilde], axis=1))
-        return (1 - tf.exp(-phi_nn))
+        raw = self.NN_phi_tilde(tf.concat([t_tilde, k_tilde], axis=1))
+        if getattr(self.config, 'ansatz', 'one_minus_exp') == 'one_minus_exp':
+            return 1.0 - tf.exp(-raw)
+        y = self.config.K_max / self.config.S0
+        a = float(y + np.log1p(-np.exp(-y)))
+        M = tf.nn.softplus(a + k_tilde * raw)
+        return tf.exp(-k_tilde * M)
 
     def neural_eta_tilde(self, t_tilde, k_tilde):
         """Compute normalized local volatility squared from NN"""
@@ -750,18 +790,22 @@ class DupireNeuralModel(tf.keras.Model):
             self.weight(phi_tilde_0) * tf.square(self.neural_phi_tilde(t_tilde_0, k_tilde_0) - phi_tilde_0)
         )
 
-        # K=0 call boundary: C(0,T) = S₀  =>  φ_tilde(T, 0) = 1
-        M_k0 = 128
-        t_tilde_k0 = tf.random.uniform(
-            shape=[M_k0, 1], minval=t_min_random, maxval=t_max_random, dtype=data_type)
-        k_tilde_k0 = tf.zeros([M_k0, 1], dtype=data_type)
-        phi_tilde_k0_target = tf.ones([M_k0, 1], dtype=data_type)
-        phi_tilde_k0_nn = self.neural_phi_tilde(t_tilde_k0, k_tilde_k0)
-        loss_k0 = tf.reduce_mean(
-            self.weight(phi_tilde_k0_target) * tf.square(phi_tilde_k0_nn - phi_tilde_k0_target)
-        )
+        # K=0 call boundary: C(0,T) = S₀  =>  φ_tilde(T, 0) = 1.
+        # For ansatz='exp_k' this holds by construction (φ_tilde(k=0)=exp(0)=1), so the
+        # penalty is an exact no-op (zero residual and zero gradient) and is skipped.
+        if getattr(self.config, 'ansatz', 'one_minus_exp') == 'one_minus_exp':
+            M_k0 = 128
+            t_tilde_k0 = tf.random.uniform(
+                shape=[M_k0, 1], minval=t_min_random, maxval=t_max_random, dtype=data_type)
+            k_tilde_k0 = tf.zeros([M_k0, 1], dtype=data_type)
+            phi_tilde_k0_target = tf.ones([M_k0, 1], dtype=data_type)
+            phi_tilde_k0_nn = self.neural_phi_tilde(t_tilde_k0, k_tilde_k0)
+            loss_k0 = tf.reduce_mean(
+                self.weight(phi_tilde_k0_target) * tf.square(phi_tilde_k0_nn - phi_tilde_k0_target)
+            )
+            return loss_phi + loss_bc + self.lambda_k0 * loss_k0
 
-        return loss_phi + loss_bc + self.lambda_k0 * loss_k0
+        return loss_phi + loss_bc
 
     def loss_dupire_cal(self, t_min_random, t_max_random, k_min_random, k_max_random):
         """
@@ -1144,14 +1188,47 @@ class PDFAnalyzer:
 
     def __init__(self, nn_phi: tf.keras.Model, nn_eta: tf.keras.Model,
                  config: DupirePipelineConfig, metadata: Dict,
-                 phi_mapping: str = 'transformed',
+                 phi_mapping: Optional[str] = None,
                  figure_label: Optional[str] = None):
         self.nn_phi = nn_phi
         self.nn_eta = nn_eta
         self.config = config
         self.metadata = metadata
-        if phi_mapping not in ('transformed', 'legacy'):
-            raise ValueError(f"phi_mapping must be 'transformed' or 'legacy', got {phi_mapping!r}")
+
+        # Resolve the price mapping. Priority: explicit arg > model metadata > legacy default.
+        # Model ansatz -> analyzer mapping; absence of a tag means a pre-fix model (one_minus_exp).
+        meta_ansatz = metadata.get('ansatz') if isinstance(metadata, dict) else None
+        ansatz_to_mapping = {
+            'exp_k': 'exp_k',
+            'one_minus_exp': 'transformed',
+            'one_minus_exp_1mk': 'one_minus_exp_1mk',
+        }
+        # ABSENT tag -> 'transformed': legitimate, that is what a pre-fix model is.  But an
+        # unrecognised NON-None tag must raise rather than silently fall back, or the next
+        # new ansatz repeats exactly the bug this resolution exists to fix (a 1mk model read
+        # as 'transformed' drops the (1 - k_tilde) factor and misreads the price surface).
+        if meta_ansatz is None:
+            derived_mapping = 'transformed'
+        elif meta_ansatz in ansatz_to_mapping:
+            derived_mapping = ansatz_to_mapping[meta_ansatz]
+        else:
+            raise ValueError(
+                f"Model metadata declares ansatz={meta_ansatz!r}, which has no price mapping "
+                f"in PDFAnalyzer. Known: {sorted(ansatz_to_mapping)}. Refusing to guess -- add "
+                f"the mapping in phi_tilde_from_nn rather than defaulting to 'transformed'.")
+        if phi_mapping is None:
+            phi_mapping = derived_mapping
+        else:
+            if phi_mapping not in ('transformed', 'legacy', 'exp_k', 'one_minus_exp_1mk'):
+                raise ValueError(
+                    f"phi_mapping must be one of 'transformed', 'legacy', 'exp_k', "
+                    f"'one_minus_exp_1mk', got {phi_mapping!r}")
+            # 'legacy' only reproduces the pre-correction diagnostic bug; never cross-checked.
+            if meta_ansatz is not None and phi_mapping != 'legacy' and phi_mapping != derived_mapping:
+                raise ValueError(
+                    f"phi_mapping={phi_mapping!r} disagrees with model metadata ansatz="
+                    f"{meta_ansatz!r} (expected {derived_mapping!r}). Refusing to misinterpret the "
+                    f"price surface; pass phi_mapping=None to auto-select or 'legacy' for the bug repro.")
         self.phi_mapping = phi_mapping
         self.figure_label = figure_label
         self.training_T_min = None
@@ -1192,13 +1269,28 @@ class PDFAnalyzer:
         """
         Map raw NN_phi output to normalized option price phi_tilde.
 
-        transformed: phi_tilde = 1 - exp(-NN_phi) (matches DupireNeuralModel training)
-        legacy:      phi_tilde = NN_phi raw output (pre-correction diagnostic bug)
+        exp_k:            phi_tilde = exp(-k_tilde * softplus(a + k_tilde * H)),
+                          a = log(e^{K_max/S0} - 1)  (ansatz='exp_k'; C_NN(0,T)=S0 exact)
+        transformed:      phi_tilde = 1 - exp(-NN_phi)   (ansatz='one_minus_exp')
+        one_minus_exp_1mk phi_tilde = 1 - exp(-(1 - k_tilde) * NN_phi)  (paper eq. 3.9,
+                          the legacy DAX control ansatz).  This is NOT the same map as
+                          'transformed' -- it carries an extra (1 - k_tilde) factor -- so
+                          routing a 1mk model through 'transformed' misreads its price
+                          surface, the same failure mode as reading an exp_k model as
+                          'transformed'.
+        legacy:           phi_tilde = NN_phi raw output  (pre-correction diagnostic bug)
         """
-        phi_nn = self.nn_phi(tf.concat([t_tilde, k_tilde], axis=1))
+        raw = self.nn_phi(tf.concat([t_tilde, k_tilde], axis=1))
         if self.phi_mapping == 'legacy':
-            return phi_nn
-        return 1.0 - tf.exp(-phi_nn)
+            return raw
+        if self.phi_mapping == 'exp_k':
+            y = self.k_max / self.config.S0
+            a = float(y + np.log1p(-np.exp(-y)))
+            M = tf.nn.softplus(a + k_tilde * raw)
+            return tf.exp(-k_tilde * M)
+        if self.phi_mapping == 'one_minus_exp_1mk':
+            return 1.0 - tf.exp(-(1.0 - k_tilde) * raw)
+        return 1.0 - tf.exp(-raw)
 
     def get_neural_local_volatility(self, t: float, S: np.ndarray) -> np.ndarray:
         """
@@ -2147,7 +2239,7 @@ class DupirePipeline:
         valid_T = sorted(valid_T)
 
         # Create analyzer
-        phi_mapping = getattr(self.config, 'phi_mapping', 'transformed')
+        phi_mapping = getattr(self.config, 'phi_mapping', None)
         figure_label = getattr(self.config, 'figure_label', None)
         analyzer = PDFAnalyzer(
             nn_phi, nn_eta, self.config, metadata,
