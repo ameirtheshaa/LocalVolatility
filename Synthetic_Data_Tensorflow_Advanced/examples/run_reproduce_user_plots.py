@@ -26,6 +26,11 @@ Usage:
         [--n-paths 25000] \\
         [--output-dir DIR]
 
+--n-paths sizes the repriced simulation only; --mc-source data takes whatever
+sample count the .npz holds. diagnostics.json therefore reports n_mc_samples,
+measured from the MC arrays, as the count backing the figures, and keeps the
+requested knob separately as n_paths_requested (null when unused).
+
 The script writes pdf_analysis.{png,pdf} and diagnostics.json into the
 output directory. It does not modify the trained model or its training
 data; only reads them.
@@ -122,7 +127,11 @@ def main() -> int:
                         default=[0.25, 0.5, 0.75, 1.0],
                         help='Maturities (default: 0.25 0.5 0.75 1.0).')
     parser.add_argument('--n-paths', type=int, default=25000,
-                        help='MC paths for repriced source (default 25000).')
+                        help='MC paths to simulate, --mc-source repriced only '
+                             '(default 25000). Ignored by --mc-source data, '
+                             'whose sample count is fixed by the .npz; '
+                             'diagnostics.json records the count actually used '
+                             'as n_mc_samples either way.')
     parser.add_argument('--output-dir', default=None,
                         help="Where to save outputs (default: "
                              "<model-dir>/reproduce_user_plots).")
@@ -176,6 +185,20 @@ def main() -> int:
         mc_data = analyzer.extract_mc_samples_from_training_data(
             data_path, T_values, verbose=True, provenance=mc_provenance)
 
+    # Sample count actually backing the figures, measured from the returned
+    # arrays rather than taken from --n-paths. --n-paths only feeds the repriced
+    # simulator (via analysis_config.n_paths_analysis); on the --mc-source data
+    # path it is never consulted, so recording it there asserts a count the .npz
+    # does not have -- run_regenerate_mc.py writes 1,000,000 paths to
+    # data_mc.npz and 100,000 to repriced_mc.npz against a 25,000 default.
+    samples_by_T = {f"{T:.4f}": int(len(S_T)) for T, S_T in mc_data.items()}
+    distinct_counts = set(samples_by_T.values())
+    n_mc_samples = distinct_counts.pop() if len(distinct_counts) == 1 else None
+    if n_mc_samples is not None:
+        print(f'\nMC samples   : {n_mc_samples:,} per maturity')
+    else:
+        print(f'\nMC samples   : {samples_by_T}  (varies by maturity)')
+
     print()
     fig, results = analyzer.create_enhanced_pdf_analysis(
         mc_data, T_values=T_values,
@@ -207,14 +230,21 @@ def main() -> int:
                 return [_serialise(v) for v in value]
             return str(value)
 
+    # n_mc_samples is measured from the MC arrays, so it describes the figures
+    # for either source. n_paths_requested is the --n-paths knob and is null
+    # unless the repriced simulator actually consumed it; the two were one
+    # 'n_paths' field, which recorded the 25,000 default on --mc-source data
+    # runs whose .npz held 1,000,000 samples.
     payload = {
-        'model_dir':      model_dir,
-        'mc_source':      args.mc_source,
-        'mc_provenance':  mc_provenance,
-        'phi_mapping':    args.phi_mapping,
-        'n_paths':        args.n_paths,
-        'maturities':     T_values,
-        'results':        {f"{T:.4f}": _serialise(d) for T, d in results.items()},
+        'model_dir':                model_dir,
+        'mc_source':                args.mc_source,
+        'mc_provenance':            mc_provenance,
+        'phi_mapping':              args.phi_mapping,
+        'n_mc_samples':             n_mc_samples,
+        'n_mc_samples_by_maturity': samples_by_T,
+        'n_paths_requested':        args.n_paths if args.mc_source == 'repriced' else None,
+        'maturities':               T_values,
+        'results':                  {f"{T:.4f}": _serialise(d) for T, d in results.items()},
     }
     with open(json_path, 'w', encoding='utf-8') as f:
         json.dump(payload, f, indent=2)
