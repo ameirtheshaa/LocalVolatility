@@ -11,6 +11,8 @@ December 2025 workflows for validating legacy DAX call-option models (Aug 7–9,
 
 Batch entry: `run_dax_market_data.py` (`--pipeline`, `--direct`, or both).
 
+**IBP comparison (legacy vs corrected φ̃):** `examples/run_dax_ibp_comparison_plots.py` → `plots/ibp_comparison_dax/{7aug,8aug,9aug}/{pre_correction,pretrained}/` (retrained deferred).
+
 Shared logic: [`examples/dax_analysis_common.py`](../Synthetic_Data_Tensorflow_Advanced/examples/dax_analysis_common.py).
 
 ## Model and data sources

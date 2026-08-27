@@ -4,3 +4,6 @@ Synthetic_Data_Tensorflow_Advanced/models/runs/synthetic_paper_large_dataset_con
 # Python
 __pycache__/
 *.pyc
+
+# NN K=0 boundary-deficit (exp_k) results — local WIP from nn-boundary-condition-deficit worktree
+Synthetic_Data_Tensorflow_Advanced/nn_boundary_deficit_results/

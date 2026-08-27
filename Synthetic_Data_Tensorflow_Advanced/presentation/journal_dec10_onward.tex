@@ -17,7 +17,7 @@
 \usepackage{graphicx}
 \usepackage{hyperref}
 
-\graphicspath{{figures/}{figures/dec10_onward/}{figures/nn_k0/}}
+\graphicspath{{figures/}{figures/dec10_onward/}{figures/nn_k0/}{figures/fwdtest/}}
 
 \definecolor{ntunavy}{RGB}{0,32,91}
 \definecolor{ntudarkblue}{RGB}{0,20,60}
@@ -107,7 +107,7 @@
 \title{Dec.\ 2025 PDF emails\\\& the $\tilde\varphi$ fix}
 \subtitle{Wang Z., Shaa A., Privault N., Guet C.}
 \author{Ameir Shaa}
-\date{10/12/2025 \;$\to$\; 29/05/2026}
+\date{31/07/2026}
 \institute{Each case: plot page, then model and observations}
 
 \begin{document}
@@ -490,6 +490,990 @@
         \item There \red{\texttt{exp\_k} tracks the MC; old undershoots} --- its $C(0)$ deficit starves the left density of mass
         \item Old undershoots \emph{despite more data} (1M vs 200k paths) $\Rightarrow$ ansatz, not sampling
         \item Fix lifts the under-represented deep-ITM density toward the truth
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ============================================================
+% 24/07/2026 --- exp_k retrained on DAX + density resolved
+% ============================================================
+
+\begin{frame}{24/07/2026 --- \texttt{exp\_k} retrained on DAX (7 Aug shown; 8--9 Aug identical)}
+  \begin{center}
+    \includegraphics[width=0.98\linewidth,height=0.80\textheight,keepaspectratio]{dax_overlay_7aug.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}{24/07/2026 --- \texttt{exp\_k} on DAX: model and observations}
+  \begin{columns}[T]
+    \begin{column}{0.50\linewidth}
+      \gold{Model / data}
+      \begin{itemize}\small
+        \item DAX 7/8/9 Aug 2001, \texttt{exp\_k} retrained from scratch, 30k epochs
+        \item Hyperparameters $=$ manuscript (3 res-blocks, 64 units, tanh; lr $10^{-3}\!\div\!1.1$/2000; $M_1{=}128$, $M_2{=}128^2$; $\lambda_{\mathrm{ini}}{=}\lambda_{\mathrm{arb}}{=}\lambda_{\mathrm{dup}}{=}1$) --- \emph{only the ansatz differs}
+      \end{itemize}
+      \gold{$K{=}0$ deficit \;($1-C_{\mathrm{NN}}(0,T)/S_0$)}
+      \begin{center}\scriptsize
+      \begin{tabular}{rrr}
+        \toprule
+        day & legacy $1-e^{-(1-k)N_c}$ & \texttt{exp\_k} \\
+        \midrule
+        7 Aug & 0.331\% & \red{0.000\%} \\
+        8 Aug & 0.335\% & \red{0.000\%} \\
+        9 Aug & 0.300\% & \red{0.000\%} \\
+        \bottomrule
+      \end{tabular}
+      \end{center}
+    \end{column}
+    \begin{column}{0.46\linewidth}
+      \gold{Observations}
+      \begin{itemize}\small
+        \item $C_{\mathrm{NN}}(0,T)=S_0$ \red{exactly} on real data, every day and maturity --- structural, no penalty
+        \item Removes the $\sim\!0.3\%$ residual the map-fix alone left (29/05 slides)
+        \item Price fit as good as legacy: fit RMSE \texttt{exp\_k} $=2.87/4.40/2.67$ vs legacy $2.79/3.68/2.45$
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{24/07/2026 --- DAX old vs \texttt{exp\_k}: density $\varphi$ vs reprice $\eta$}
+  \begin{center}
+    \includegraphics[width=0.98\linewidth,height=0.80\textheight,keepaspectratio]{dax_bl_vs_mc.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}{24/07/2026 --- DAX reprice: model and observations}
+  \begin{columns}[T]
+    \begin{column}{0.48\linewidth}
+      \gold{Reprice RMSE} (MC through $\eta$, vs market)
+      \begin{center}\scriptsize
+      \begin{tabular}{rrr}
+        \toprule
+        day & legacy & \texttt{exp\_k} \\
+        \midrule
+        7 Aug & 2.99 & 5.59 \\
+        8 Aug & 3.48 & 10.79 \\
+        9 Aug & 2.81 & 4.29 \\
+        \bottomrule
+      \end{tabular}
+      \end{center}
+      \gold{Where the gap sits} (7 Aug, legacy $\to$ \texttt{exp\_k})
+      \begin{center}\scriptsize
+      \begin{tabular}{lrr}
+        \toprule
+        slice & legacy & \texttt{exp\_k} \\
+        \midrule
+        $T{=}0.20$ (short) & 3.91 & 9.22 \\
+        $T{=}0.87$ (long)  & 4.43 & \gold{3.99} \\
+        deep-ITM $K{<}0.85F$ & 3.87 & 12.23 \\
+        OTM $K{>}1.15F$ & 1.26 & 1.70 \\
+        \bottomrule
+      \end{tabular}
+      \end{center}
+    \end{column}
+    \begin{column}{0.48\linewidth}
+      \gold{Observations}
+      \begin{itemize}\small
+        \item Direct \emph{price} fit vs data $\approx$ legacy --- \texttt{exp\_k} does not price the market worse
+        \item Gap is \red{short-$T$ and ITM/ATM}, \emph{not} the tails: at the longest $T$ \texttt{exp\_k} matches/beats legacy. So it is \red{not} a wings/extrapolation effect
+        \item $\max|\Delta\sigma|$ always at \red{$K{=}3600$}, the lowest quoted strike: the $k{=}0$ anchor propagates through Dupire into $\eta$ at the data's left edge
+        \item Not decidable yet whether \texttt{exp\_k}'s $\eta$ is ``worse'': legacy's $\eta$ was fit to a $\varphi$ that \emph{violates} $C(0){=}S_0$, so it may compensate. Control run (same pipeline, legacy ansatz) would settle it
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{24/07/2026 --- density in Gaussian space (synthetic, MC ground truth)}
+  \begin{center}
+    \includegraphics[width=0.98\linewidth,height=0.80\textheight,keepaspectratio]{synth_gaussian.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}{24/07/2026 --- the Dec-2025 Gaussian mismatch, resolved}
+  \begin{columns}[T]
+    \begin{column}{0.52\linewidth}
+      \gold{$\sigma$ of $\ln K$: \texttt{exp\_k} vs true-$\sigma$ MC}
+      \begin{center}\scriptsize
+      \begin{tabular}{rrrrr}
+        \toprule
+        $T$ & $\sigma_{\mathrm{MC}}$ & $\sigma_{\mathrm{plot}}$ & $\sigma_{\mathrm{wide}}$ & mass \\
+        \midrule
+        0.25 & 0.241 & 0.238 & 0.247 & 0.997 \\
+        0.50 & 0.381 & 0.346 & 0.384 & 0.953 \\
+        0.75 & 0.496 & 0.399 & 0.483 & 0.875 \\
+        1.00 & 0.585 & 0.426 & 0.548 & 0.805 \\
+        \bottomrule
+      \end{tabular}
+      \end{center}
+      {\scriptsize plot$=[500,3000]$, wide$=[300,12000]$; mass $=$ fraction inside $[500,3000]$}
+    \end{column}
+    \begin{column}{0.44\linewidth}
+      \gold{Observations}
+      \begin{itemize}\small
+        \item The high-$T$ Gaussian mismatch was \red{mostly plot-window truncation}: $20$--$24\%$ of mass sits beyond $K{=}3000$ at $T{=}1$
+        \item Over the full range \texttt{exp\_k} \emph{recovers} $\sigma_{\mathrm{MC}}$ (exact to $T{=}0.75$; $94\%$ at $T{=}1$)
+        \item \texttt{exp\_k} tracks the standardized MC; old distorts (mass deficit $\to$ residual $\sim\!19\%$)
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{24/07/2026 --- DAX in Gaussian space (no ground truth)}
+  \begin{center}
+    \includegraphics[width=0.98\linewidth,height=0.80\textheight,keepaspectratio]{dax_gaussian.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}{24/07/2026 --- DAX Gaussian space \& the real-data ceiling}
+  \begin{columns}[T]
+    \begin{column}{0.50\linewidth}
+      \gold{Model / data}
+      \begin{itemize}\small
+        \item old-BL vs \texttt{exp\_k}-BL, 3 days $\times$ 3 maturities
+        \item Reference $=$ \texttt{exp\_k} reprice-$\eta$ density (calibrated $\eta$, \emph{not} true $\sigma$)
+        \item $\mathcal N(0,1)=$ pure lognormal
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.46\linewidth}
+      \gold{Observations}
+      \begin{itemize}\small
+        \item DAX density strongly \red{left-skewed} (equity crash skew): skew $-0.5\!\to\!-2.2$ with $T$
+        \item old $\approx$ \texttt{exp\_k} (both fit the identical quotes)
+        \item \red{Real-data ceiling:} fixed strikes, no true $\sigma$ $\Rightarrow$ cannot widen the window or validate accuracy. DAX gives boundary (exact) $+$ prices $+$ shape $+$ self-consistency; \emph{accuracy lives only in the synthetic case}
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ============================================================
+% 28/07/2026 --- the reprice gap, resolved
+% ============================================================
+
+\begin{frame}{28/07/2026 --- can the reprice gap be trained away? (ablation, DAX 7 Aug)}
+  \begin{columns}[T]
+    \begin{column}{0.53\linewidth}
+      \gold{Diagnosis first} ($\eta$ identifiability)
+      \begin{itemize}\small
+        \item Dupire gives $\eta=\varphi_{\tilde t}/(\tilde k^2\varphi_{\tilde k\tilde k})$ --- a \red{$0/0$} ratio where
+              curvature vanishes: no gradient signal, so \emph{no} amount of training fixes it
+        \item Where well-conditioned, $\eta$ matches $\eta_{\rm implied}[\varphi]$ to \gold{$\sim\!1\%$} ---
+              training did \red{not} fail (and \texttt{exp\_k} is \emph{more} self-consistent than legacy,
+              which is off by $15$--$48\times$ in the ill-conditioned zones)
+        \item Collocation was confined to the quoted strike range, yet MC paths spend $\sim\!1.3\%$ of
+              path-time below it
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.43\linewidth}
+      \gold{Three fixes, 30k epochs each}
+      \begin{center}\scriptsize
+      \begin{tabular}{lrr}
+        \toprule
+        variant & fit & reprice \\
+        \midrule
+        legacy-2024        &  2.79 &  3.02 \\
+        \texttt{exp\_k} baseline &  2.87 &  5.59 \\
+        A colloc$\to$0     &  2.92 & \gold{5.09} \\
+        B $\eta$-Tikhonov  & 13.19 & 21.27 \\
+        C cond.-aware      &  5.01 &  7.14 \\
+        A+B                & 11.24 & 19.31 \\
+        \bottomrule
+      \end{tabular}
+      \end{center}
+      \begin{itemize}\small
+        \item A: $-9\%$ reprice, fit unchanged --- free, keep
+        \item B, C: \red{harmful} at these $\lambda$
+        \item Gap \red{not} closed $\Rightarrow$ look elsewhere
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{28/07/2026 --- synthetic ground truth: whose $\eta$ is actually right?}
+  \begin{columns}[T]
+    \begin{column}{0.52\linewidth}
+      \gold{Why synthetic} On DAX ``which $\eta$ is right'' is \red{undecidable}. On synthetic
+      $\sigma$ is \emph{known} (eq.\ 4.1), and $\sigma_{\rm NN}=\sqrt{2\eta/T_{\max}}$ depends only on
+      $\mathrm{NN}_\eta$ --- an \gold{ansatz-independent} metric.
+      \begin{center}\scriptsize
+      \begin{tabular}{lrr}
+        \multicolumn{3}{c}{mean $|\sigma_{\rm NN}-\sigma_{\rm exact}|/\sigma_{\rm exact}$}\\
+        \toprule
+        & old $1-e^{-N_c}$ & \texttt{exp\_k} \\
+        \midrule
+        $T=0.25$ & 2.92\% & \gold{1.33\%} \\
+        $T=0.50$ & 2.21\% & \gold{0.93\%} \\
+        $T=0.75$ & 4.30\% & \gold{1.55\%} \\
+        $T=1.00$ & 5.79\% & \gold{4.32\%} \\
+        \midrule
+        ALL      & 3.81\% & \red{2.04\%} \\
+        \midrule
+        deep ITM $K{<}800$ & 6.96\% & \red{2.96\%} \\
+        ATM $800$--$1200$  & 5.33\% & \gold{2.30\%} \\
+        OTM $1200$--$2000$ & 3.78\% & \gold{0.84\%} \\
+        \bottomrule
+      \end{tabular}
+      \end{center}
+    \end{column}
+    \begin{column}{0.44\linewidth}
+      \gold{Observations}
+      \begin{itemize}\small
+        \item \texttt{exp\_k}'s local vol is \red{$\sim\!2\times$ more accurate} than the old ansatz's ---
+              at \emph{every} maturity
+        \item Largest win in \red{deep ITM} ($2.96\%$ vs $6.96\%$) --- exactly where the DAX reprice
+              looked worst
+        \item So the DAX reprice metric is \red{not} evidence that \texttt{exp\_k}'s $\eta$ is wrong:
+              it cannot separate ``better $\eta$'' from ``$\eta$ compensating for legacy's $0.33\%$
+              boundary error'' (that distortion partly cancels when repricing through the same model)
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{28/07/2026 --- ansatz or pipeline? the control run settles it}
+  \begin{columns}[T]
+    \begin{column}{0.52\linewidth}
+      \gold{Control} $=$ \emph{current} pipeline $+$ legacy $(1{-}k)$ ansatz.
+      Same validated MC for all three.
+      \begin{center}\scriptsize
+      \begin{tabular}{llrrr}
+        \toprule
+        day & model & fit & reprice & $K{=}0$ \\
+        \midrule
+        7 Aug & legacy-2024  & 2.79 & \gold{3.02} & 0.33\% \\
+              & control-2026 & 3.17 & \red{6.15}  & 11.1\% \\
+              & \texttt{exp\_k}-2026 & 2.87 & \red{5.59} & 0.00\% \\
+        \midrule
+        8 Aug & legacy-2024  & 3.68 & \gold{3.47} & 0.34\% \\
+              & control-2026 & 4.80 & \red{7.72}  & 13.8\% \\
+              & \texttt{exp\_k}-2026 & 4.40 & \red{10.79} & 0.00\% \\
+        \midrule
+        9 Aug & legacy-2024  & 2.45 & \gold{2.89} & 0.30\% \\
+              & control-2026 & 3.06 & \red{4.34}  & 11.0\% \\
+              & \texttt{exp\_k}-2026 & 2.67 & \red{4.29} & 0.00\% \\
+        \bottomrule
+      \end{tabular}
+      \end{center}
+    \end{column}
+    \begin{column}{0.44\linewidth}
+      \gold{Verdict}
+      \begin{itemize}\scriptsize
+        \item All 3 days: control lands \red{near \texttt{exp\_k}, far from legacy-2024}
+              $\Rightarrow$ the \red{PIPELINE} drives the reprice gap, \emph{not} the ansatz
+        \item Same ansatz/data/hyper-parameters: the 2026 code turns legacy's $0.33\%$ deficit into
+              \red{$11$--$14\%$} ($\sim\!30\times$)
+        \item Within the \emph{same} pipeline \texttt{exp\_k} wins on \gold{every} axis: fit (3/3),
+              boundary ($0.00\%$ vs $11$--$14\%$), reprice (2/3)
+        \item Put--call parity ($\sim\!200$ pairs/day): $r_{\rm impl}=0.041$--$0.045$,
+              market $C(0,T)/S_0=1.000$--$1.0025$ $\Rightarrow$ \gold{$C(0)=S_0$ is correct};
+              legacy's $0.33\%$ is a genuine error
+        \item \gold{Next} which 2024$\to$2026 change costs the $\sim\!2\times$? (adaptive loss weight,
+              dormant \texttt{GaussianNoise}, $\eta$ lr $=$ lr$_\varphi/10$, $\lambda_{k0}$, collocation bounds)
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ============================================================
+% 29/07/2026 --- root cause: the eta learning rate
+% ============================================================
+
+\begin{frame}{29/07/2026 --- root cause found: $\eta$ was trained $10\times$ too slowly}
+  \begin{columns}[T]
+    \begin{column}{0.48\linewidth}
+      \gold{The published models came from the \emph{notebooks}}, not \texttt{tf\_NN\_call\_DAX.py}
+      (\texttt{...ldup=1.ipynb}, cell 13):
+      \begin{center}\tiny
+      \begin{minipage}{0.97\linewidth}
+      \texttt{learning\_rate = 10**-3}\\
+      \texttt{opt\_phi.learning\_rate.assign(learning\_rate)}\\
+      \texttt{opt\_eta.learning\_rate.assign(learning\_rate)}\;\red{$\leftarrow$ SAME}
+      \end{minipage}
+      \end{center}
+      \begin{itemize}\scriptsize
+        \item No \texttt{div\_lr}, no \texttt{/10} anywhere in the notebook
+        \item Yet \emph{both} \texttt{tf\_NN\_call\_DAX.py} (\texttt{div\_lr=10}) and this pipeline
+              (hardcoded \texttt{/10}) train $\eta$ at \red{$10^{-4}$}, silently overriding
+              \texttt{config.lr\_eta}
+        \item All else verified identical: 30001 iters, $\lambda_{\rm pde}{=}\lambda_{\rm reg}{=}1$,
+              decay $/1.1$ per 2000, 3 blocks, 64 units, tanh, BN, noise $0.5$ (dormant both),
+              same \texttt{clip}/\texttt{weight}, losses, gradient targets
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.48\linewidth}
+      \gold{Test: $\eta$ lr $10^{-3}$ (published) vs $10^{-4}$}
+
+      \vspace{0.15cm}
+      \begin{center}\scriptsize
+      \begin{tabular}{lrrr}
+        \toprule
+        model & fit & repr. & $K{=}0$ \\
+        \midrule
+        legacy-2024 & 2.79 & \gold{3.02} & 0.33\% \\
+        \midrule
+        ctrl $10^{-4}$  & 3.17 & 6.15 & 11.1\% \\
+        ctrl $10^{-3}$  & 4.25 & \gold{4.09} & 11.3\% \\
+        \midrule
+        \texttt{exp\_k} $10^{-4}$ & 2.87 & 5.59 & 0.00\% \\
+        \texttt{exp\_k} $10^{-3}$ & \red{2.32} & \red{3.97} & \red{0.00\%} \\
+        \bottomrule
+      \end{tabular}
+      \end{center}
+      \vspace{0.1cm}
+      \begin{itemize}\scriptsize
+        \item Published $\eta$ lr cuts the reprice gap $\sim\!1/3$ for \gold{both} ansätze
+              $\Rightarrow$ confirmed, not noise
+        \item \texttt{exp\_k} $+$ published lr $=$ \red{best model on the board}: fit $2.32$
+              (\emph{beats} the published $2.79$), reprice $3.97$, boundary exact
+        \item Same $\eta$ lr: \texttt{exp\_k} dominates legacy ansatz on all three
+              ($2.32$/$4.25$, $3.97$/$4.09$, $0.00\%$/$11.3\%$)
+        \item \gold{Open} $\sim\!1$ pt gap remains; $\ge1$ more 2024/26 difference
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ============================================================
+% 29/07/2026 (ii) --- discrepancy reproduced and CLOSED
+% ============================================================
+
+\begin{frame}{29/07/2026 --- second regression: the collocation domain}
+  \begin{columns}[T]
+    \begin{column}{0.48\linewidth}
+      \gold{Notebook} (cells 10/11) hardcodes the \emph{unit square}:
+      \begin{center}\tiny
+      \begin{minipage}{0.97\linewidth}
+      \texttt{k\_tilde\_0 = 0 ;\; k\_tilde\_1 = 1}\\
+      \texttt{k\_tilde\_bulk = uniform(0, 1)}\\
+      \texttt{k\_tilde\_0 (BC) = uniform(0, 1)}\;\red{$\leftarrow$ reaches $k{=}0$}
+      \end{minipage}
+      \end{center}
+      \begin{itemize}\scriptsize
+        \item 2026 replaced this with the \emph{data bounding box}
+              $\tilde k\in[0.348,0.995]$ --- abandoning \red{$\sim\!35\%$} of the domain
+              (all of deep ITM, $\tilde k<$ lowest quote)
+        \item There is then \emph{no} data, \emph{no} PDE residual and \emph{no} arbitrage
+              penalty --- exactly where $\eta$ is unidentifiable and $\varphi$'s
+              extrapolation to $K{=}0$ drifts
+        \item At $\tilde k\!\to\!0$ the $T{=}0$ target
+              $\mathrm{relu}(1-\tfrac{K_{\max}}{S_0}\tilde k)\to1$ \emph{is}
+              $C(0){=}S_0$: the 2024 code was training the $K{=}0$ boundary
+              \gold{implicitly all along}
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.48\linewidth}
+      \gold{Full 2024 recipe restored} ($\eta$ lr $+$ unit square), DAX 7 Aug
+      \begin{center}\scriptsize
+      \begin{tabular}{lrrr}
+        \toprule
+        model & fit & repr. & $K{=}0$ \\
+        \midrule
+        legacy-2024 (publ.) & 2.79 & \gold{3.02} & 0.33\% \\
+        \midrule
+        ctrl  full recipe & 6.36 & \gold{3.23} & \gold{0.39\%} \\
+        \texttt{exp\_k} full recipe & \red{2.64} & \red{3.23} & \red{0.00\%} \\
+        \midrule
+        \texttt{exp\_k} $\eta$-lr only & 2.32 & 3.97 & 0.00\% \\
+        \bottomrule
+      \end{tabular}
+      \end{center}
+      \begin{itemize}\scriptsize
+        \item \gold{Discrepancy CLOSED}: the control reproduces the published model ---
+              reprice $3.23$ vs $3.02$, $K{=}0$ $0.39\%$ vs $0.33\%$
+        \item \red{\texttt{exp\_k} $+$ full recipe wins on every axis at once}: reprice
+              $3.23$ (matches published; was $5.59$), fit $2.64$ (\emph{beats} published
+              $2.79$), boundary exactly $0.00\%$
+        \item Both fixes needed: $\eta$-lr alone $3.97$ $\to$ $+$unit-square $3.23$
+        \item The ``\texttt{exp\_k} reprices worse'' caveat was a \emph{2026 pipeline
+              regression}, never the ansatz
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ============================================================
+% 30/07/2026 --- full recipe on all three days
+% ============================================================
+
+\begin{frame}{30/07/2026 --- full 2024 recipe, all three days}
+  \begin{columns}[T]
+    \begin{column}{0.52\linewidth}
+      \begin{center}\scriptsize
+      \begin{tabular}{llrrr}
+        \toprule
+        day & model & fit & repr. & $K{=}0$ \\
+        \midrule
+        7 Aug & legacy-2024 & 2.790 & \gold{3.015} & 0.331\% \\
+              & \texttt{exp\_k} full & \red{2.636} & 3.228 & \red{0.000\%} \\
+        \midrule
+        8 Aug & legacy-2024 & 3.677 & \gold{3.473} & 0.335\% \\
+              & \texttt{exp\_k} full & \red{3.071} & 4.310 & \red{0.000\%} \\
+        \midrule
+        9 Aug & legacy-2024 & 2.449 & \gold{2.891} & 0.300\% \\
+              & \texttt{exp\_k} full & \red{2.429} & 3.445 & \red{0.000\%} \\
+        \bottomrule
+      \end{tabular}
+      \end{center}
+    \end{column}
+    \begin{column}{0.44\linewidth}
+      \begin{itemize}\scriptsize
+        \item \red{Fit beaten on 3/3 days}; boundary exactly $0.000\%$ on 3/3, at every
+              quoted maturity
+        \item \gold{Not fully closed}: reprice still $+7\%$ / $+24\%$ / $+19\%$ vs the
+              published models. 7 Aug was the best case, not the typical one
+        \item So the two recovered 2024 settings ($\eta$ lr, unit square) explain
+              \emph{most} of the regression but not all of it
+        \item \gold{This motivated the next question}: every metric so far
+              (fit, reprice, $K{=}0$) is \emph{same-date}, and the reprice is
+              \emph{circular} --- it routes through the model's own $\eta$ back to the
+              quotes it was fitted to. None of them tests whether the surface
+              \emph{predicts} anything
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ============================================================
+% 30/07/2026 --- the forward-consistency test
+% ============================================================
+
+\begin{frame}[shrink=10]{30/07/2026 --- a genuine out-of-sample test, for free}
+  \begin{columns}[T]
+    \begin{column}{0.48\linewidth}
+      \gold{The observation that costs nothing.} The 7, 8 and 9 Aug files quote the
+      \emph{same five calendar expiries} with the same strike sets --- their maturities
+      differ by exactly the calendar gap:
+      \begin{center}\tiny
+      \begin{tabular}{rrr}
+        \toprule
+        7 Aug & 8 Aug & 9 Aug \\
+        \midrule
+        0.123 & 0.121 & 0.118 \\
+        0.200 & 0.197 & 0.195 \\
+        0.373 & 0.370 & 0.367 \\
+        0.603 & 0.600 & 0.597 \\
+        0.871 & 0.868 & 0.866 \\
+        \bottomrule
+      \end{tabular}
+      \end{center}
+      \begin{itemize}\scriptsize
+        \item Matched by \emph{calendar expiry} ($T_0-T_1=\Delta\tau$), not by rank;
+              residual $\le0.0007$ yr $=$ the 3-dp rounding in the files
+        \item $\Rightarrow$ three forward tests, \red{no new data, no retraining}
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.48\linewidth}
+      \gold{The test.} Take $\sigma_0(\tau,S)$ calibrated on $t_0$ \emph{only}, start at
+      the \emph{realised} later spot $S_1$, and simulate
+      \[\scriptsize
+        dS = rS\,d\tau + \sigma_0(\tau,S)\,S\,dW
+      \]
+      \vspace{-0.35cm}
+      \begin{gather*}\scriptsize
+        C_{\rm pred}(K,E)=e^{-r(\tau_E-\tau_1)}\times\\[-0.1cm]
+        \scriptstyle
+        \mathbb E\big[(S_{\tau_E}-K)^+\,\big|\,S_{\tau_1}=S_1\big]
+      \end{gather*}
+      \begin{itemize}\scriptsize
+        \item Compared against the quotes \emph{actually observed} on $t_1$.
+              \red{The only $t_1$ input is the single number $S_1$}
+        \item $dt=10^{-3}$, $M=10^5$ \emph{antithetic} paths (s.e.\ $0.58$; antithetic cut
+              it $7\times$); martingale check $\le0.021\%$
+        \item Spot moves $-2.40\%$, $-4.18\%$, $-1.82\%$ --- large enough that the
+              benchmarks disagree materially
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ============================================================
+% 30/07/2026 --- forward results
+% ============================================================
+
+\begin{frame}{30/07/2026 --- forward result: the model over-prices}
+  \begin{columns}[T]
+    \begin{column}{0.54\linewidth}
+      \begin{center}\scriptsize
+      RMSE / bias, index points, $M=10^5$
+      \vspace{0.1cm}
+
+      \begin{tabular}{lrrr}
+        \toprule
+        prediction & 7$\to$8 & 7$\to$9 & 8$\to$9 \\
+        \midrule
+        \red{LV forward (model)} & \red{7.9} & \red{17.8} & \red{11.0} \\
+                                 & \red{$+3.9$} & \red{$+13.2$} & \red{$+6.4$} \\
+        \midrule
+        sticky-strike IV & 6.4 & \gold{4.3} & 7.5 \\
+        sticky-moneyness IV & 10.0 & 9.5 & \gold{5.5} \\
+        \midrule
+        static (no change) & 75.8 & 134.5 & 59.6 \\
+        \midrule
+        \emph{in-sample floor} & \emph{2.8} & \emph{2.8} & \emph{4.1} \\
+        \emph{\quad its bias} & \emph{$-1.0$} & \emph{$-1.0$} & \emph{$-2.8$} \\
+        \bottomrule
+      \end{tabular}
+      \end{center}
+      \vspace{0.1cm}
+      {\tiny \emph{static} $=$ ``prices did not move''. The sticky-$\ast$ arms freeze
+      implied vol in $K$ (resp.\ $K/S$), then reprice by Black--Scholes at the new spot.}
+    \end{column}
+    \begin{column}{0.42\linewidth}
+      \begin{itemize}\scriptsize
+        \item \gold{The model carries real forward information}: $\sim\!10\times$ better
+              than the zero-model baseline
+        \item But it is \red{systematically biased upward} on 3/3 pairs --- it
+              \emph{over-prices}. Bias is $50$--$74\%$ of its RMSE
+        \item Both crude trader heuristics beat it, and they are far less biased
+        \item \red{Control:} the in-sample bias is $-1.0$, the \emph{opposite sign} to the
+              $+13.2$ forward bias $\Rightarrow$ the bias is \emph{produced by rolling
+              forward}, not inherited from the calibration
+        \item In implied vol (rescored on the strikes where \emph{every} method inverts,
+              $\sim\!88\%$): LV $+1.55$ vol pts vs sticky-strike $-0.08$ on 7$\to$9
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}[shrink=10]{30/07/2026 --- forward test, 7 Aug $\to$ 9 Aug ($M=10^5$)}
+  \begin{center}
+    \includegraphics[width=0.99\linewidth,height=0.74\textheight,keepaspectratio]{fwd_bench_7to9.png}
+  \end{center}
+  {\tiny Rows: prices (log axis); signed error with the $\pm2$ MC s.e.\ band --- \red{the LV
+  curve sits above zero everywhere} while every other arm straddles it; survival function
+  (corr.\ $0.989$--$0.999$). LV's cliff at the highest strikes is path exhaustion; those
+  quotes are worth $<1$ pt.}
+\end{frame}
+
+% ============================================================
+% 30/07/2026 --- mechanism
+% ============================================================
+
+\begin{frame}{30/07/2026 --- mechanism: absolute-strike anchoring}
+  \begin{columns}[T]
+    \begin{column}{0.48\linewidth}
+      \gold{Diagnostic (not a model).} Re-anchor the \emph{same} calibrated surface in
+      \emph{moneyness}, on \emph{identical} Brownian paths:
+      \[\scriptsize
+        \sigma_0(\tau,S)\;\longrightarrow\;\sigma_0\!\big(\tau,\;S\cdot S_0/S_1\big)
+      \]
+      \begin{center}\scriptsize
+      \begin{tabular}{lrr}
+        \toprule
+        pair & LV bias & re-anchored \\
+        \midrule
+        7$\to$8 & $+3.9$ & \red{$-7.7$} \\
+        7$\to$9 & $+13.2$ & \red{$-7.0$} \\
+        8$\to$9 & $+6.4$ & \red{$-2.7$} \\
+        \bottomrule
+      \end{tabular}
+      \end{center}
+      \begin{itemize}\scriptsize
+        \item \red{The bias flips sign on 3/3}; on 7$\to$9 the RMSE halves ($17.8\to9.2$)
+        \item But it \emph{over}-corrects --- on the smallest move (7$\to$8) the RMSE gets
+              \gold{worse} ($7.9\to10.4$). The truth sits \emph{between} the two
+              anchorings: the sticky-strike\,/\,sticky-delta spectrum
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.48\linewidth}
+      \gold{Why.} After the spot falls, paths sit in the \emph{low-strike} part of a
+      surface pinned at calibration $\Rightarrow$ they read the higher low-strike
+      volatility $\Rightarrow$ too much dispersion $\Rightarrow$ over-priced.
+      \begin{itemize}\scriptsize
+        \item The \gold{Hagan et al.\ (2002)} critique --- LV moves the smile
+              \emph{opposite} to spot --- in our own numbers
+        \item Corroborated by the term structure: the excess \emph{decays with maturity}
+              (next slide), as long-dated paths average the anchoring error away
+        \item \red{For the paper}: part of the residual reprice gap is a
+              local-volatility \emph{model-class} property, not calibration quality ---
+              \emph{better training cannot remove it}
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ============================================================
+% 30/07/2026 --- density
+% ============================================================
+
+\begin{frame}{30/07/2026 --- predicted vs \emph{actual} risk-neutral density}
+  \begin{center}
+    \includegraphics[width=0.99\linewidth,height=0.72\textheight,keepaspectratio]{fwd_dens_7to9.png}
+  \end{center}
+  {\tiny Red $=$ KDE of the simulated paths ($M=10^5$). Black $=$ Breeden--Litzenberger
+  density of the \emph{actual} 9 Aug quotes, via a cubic fit to the quoted implied vols in
+  log-moneyness. Grey dots $=$ the \emph{data}: one point per quoted strike,
+  $e^{r\tau}\partial^2_KC$ by 3-point difference --- $10$--$25\%$ of them are
+  \emph{negative} on this sparse grid, which is why the smoothed curve is the reference.
+  \red{Bottom row is the finding}: the market holds more mass at the money, the model more
+  in both tails. Misplaced mass $L_1=0.08$--$0.15$.}
+\end{frame}
+
+\begin{frame}[shrink=10]{30/07/2026 --- the same thing in lognormal coordinates}
+  \begin{center}
+    \includegraphics[width=0.99\linewidth,height=0.62\textheight,keepaspectratio]{fwd_logn_7to9.png}
+  \end{center}
+  {\tiny In $x=\ln(K/F_1)$ a Black--Scholes model is \emph{exactly} the dashed Gaussian
+  (top) and \emph{exactly} the dashed straight line in $z=\Phi^{-1}(F(K))$ (bottom), so
+  curvature $=$ skew and slope $=$ volatility --- and tails invisible on a linear density
+  axis are on scale. Both curves are clearly \emph{non}-lognormal and skewed the same way:
+  \gold{the model does capture the smile}. The gap is a \red{slope} difference in the
+  lower-left tail --- model$/$market log-return s.d.\ $=1.112,1.105,1.089,1.072,1.055$ at
+  $43,71,134,218,316$ d: dispersion too large by $6$--$11\%$, \emph{decaying with maturity}.
+  Where the market prices a $5\%$ chance of finishing below a level, the model says
+  \red{$7.6\%$} (43 d). ATM IV a stable $22.1$--$22.8\%$: not a vol-level artefact.}
+\end{frame}
+
+% ============================================================
+% 30/07/2026 --- long horizons: the clean experiment
+% ============================================================
+
+\begin{frame}[shrink=8]{30/07/2026 --- does the bias grow with horizon?  No}
+  \begin{columns}[T]
+    \begin{column}{0.50\linewidth}
+      \gold{The confound.} Horizon and spot move are correlated in the data, and the bias
+      depends on the move --- so a bigger bias at 60 days would prove nothing.
+      \red{4 Jul $\to$ 7 Aug is the clean experiment}: the same move, $17\times$ the horizon.
+      \begin{center}\scriptsize
+      \begin{tabular}{lrrrr}
+        \toprule
+        pair & horiz. & move & bias & in-samp. \\
+        \midrule
+        7 Aug $\to$ 9 Aug & \red{2 d} & $-4.18\%$ & \red{$+13.20$} & $-1.04$ \\
+        4 Jul $\to$ 7 Aug & \red{34 d} & $-4.38\%$ & \red{$+11.36$} & $-0.86$ \\
+        \bottomrule
+      \end{tabular}
+      \end{center}
+      \begin{itemize}\scriptsize
+        \item \red{Same error} --- if anything \emph{smaller} over 34 days
+              (RMSE $17.77$ vs $17.86$)
+        \item Maturity-matched on the target side: both price the \emph{same} August
+              quotes, so the same $45/136/220/318$-day tenors. Only the calibration date
+              differs
+        \item $\Rightarrow$ the bias is a \gold{state} effect --- how far spot has moved
+              from where the surface was pinned --- \emph{not} an accumulation effect.
+              Exactly what anchoring predicts, and not what compounding error would
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.46\linewidth}
+      \gold{All six long-horizon pairs} ($M=10^5$; RMSE / bias)
+      \begin{center}\scriptsize
+      \begin{tabular}{lrrrr}
+        \toprule
+        pair & move & LV & s-strike & static \\
+        \midrule
+        4Jul$\to$7Aug & $-4.4\%$ & 17.9 / \red{$+11.4$} & 6.9 & 187 \\
+        4Jul$\to$8Aug & $-6.7\%$ & 20.5 / $+11.8$ & 9.6 & 261 \\
+        4Jul$\to$9Aug & $-8.4\%$ & 24.7 / $+16.1$ & 7.5 & 321 \\
+        \midrule
+        8Jun$\to$7Aug & $-7.0\%$ & 25.0 / $+17.4$ & 5.9 & 322 \\
+        8Jun$\to$8Aug & $-9.3\%$ & 26.6 / $+17.3$ & 10.1 & 395 \\
+        8Jun$\to$9Aug & $-10.9\%$ & 30.8 / $+21.6$ & 5.6 & 456 \\
+        \bottomrule
+      \end{tabular}
+      \end{center}
+      \begin{itemize}\scriptsize
+        \item Move-size dependence \gold{saturates}: $+11.4\to+11.8\to+16.1$ and
+              $+17.4\to+17.3\to+21.6$. The superlinear reading from two points does
+              \emph{not} survive six
+        \item In-sample floors $3.54$ / $2.90$ with biases $-0.86$ / $-0.22$: the
+              controls hold for the new models too
+        \item Fit RMSE $3.81$ (4 Jul, 229 quotes), $2.74$ (8 Jun, 176); boundary
+              $0.0000\%$ at every maturity on both
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}[shrink=6]{30/07/2026 --- 4 Jul $\to$ 7 Aug: 34-day horizon, $-4.38\%$}
+  \begin{center}
+    \includegraphics[width=0.99\linewidth,height=0.72\textheight,keepaspectratio]{fwd_long_4jul7aug.png}
+  \end{center}
+  {\tiny Calibrated on 4 July alone; the only 7 August input is $S_1=5752.51$. Four shared
+  calendar expiries (match residual $0.0001$ yr). Middle row: \red{the LV error bulges near
+  the spot line} --- where vega lives, which is why it shows up so strongly in price RMSE.
+  Survival function corr.\ $0.995$--$0.999$.}
+\end{frame}
+
+% ============================================================
+% 30/07/2026 --- the reversal in implied-vol terms
+% ============================================================
+
+\begin{frame}[shrink=6]{30/07/2026 --- at long horizon the model \emph{wins} --- in vol terms}
+  \begin{columns}[T]
+    \begin{column}{0.52\linewidth}
+      \gold{Implied vol, RMSE (bias), vol points.} Scored only on strikes where
+      \emph{every} method inverts ($84$--$89\%$ of quotes) --- without that, LV is
+      flattered, because it returns exactly $0$ at deep-OTM strikes no path reaches and
+      those quotes silently leave \emph{its} statistics only.
+      \begin{center}\tiny
+      \begin{tabular}{lrrr}
+        \toprule
+        pair & LV fwd & s-money & s-strike \\
+        \midrule
+        7Aug$\to$8Aug \gold{(1 d)} & 1.96 & 1.63 & \gold{1.30} \\
+        7Aug$\to$9Aug \gold{(2 d)} & 2.38 & \gold{1.21} & 1.29 \\
+        \midrule
+        4Jul$\to$7Aug (34 d) & \red{2.17} & 3.16 & 3.41 \\
+        4Jul$\to$8Aug (35 d) & \red{2.62} & 3.83 & 4.03 \\
+        4Jul$\to$9Aug (36 d) & \red{2.46} & 3.22 & 3.41 \\
+        8Jun$\to$7Aug (60 d) & \red{2.99} & 4.00 & 3.90 \\
+        8Jun$\to$8Aug (61 d) & \red{3.34} & 4.81 & 4.49 \\
+        8Jun$\to$9Aug (62 d) & 3.43 & 3.71 & \gold{3.17} \\
+        \bottomrule
+      \end{tabular}
+      \end{center}
+    \end{column}
+    \begin{column}{0.44\linewidth}
+      \begin{itemize}\scriptsize
+        \item \red{LV wins 5 of 6 long-horizon pairs}, having \emph{lost} at 1--2 days.
+              \gold{The first place the model beats the naive benchmarks}
+        \item Why: the sticky arms have \emph{no dynamics} --- they freeze today's smile.
+              Over one day that is near-optimal; over $34$--$62$ days the surface really
+              evolves, and freezing degrades badly ($1.30\to3.41$) while LV degrades
+              mildly ($1.96\to2.17$)
+        \item \gold{But the two metrics disagree}: on \emph{price} RMSE sticky-strike still
+              wins at long horizon ($6.9$ vs $17.9$)
+        \item Resolution --- \emph{where} each puts its error. LV's vol error is small but
+              spread across the surface \emph{including at-the-money}, where vega is large,
+              so it costs money. Sticky-strike's vol error is larger but sits in the cheap
+              wings, where it costs almost nothing
+        \item Which metric matters depends on the use: strike-uniform IV for
+              \emph{recovering a vol surface}; vega-weighted price for \emph{hedging}.
+              Both belong in the paper
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ============================================================
+% 31/07/2026 --- Nicolas: compare against realised DAX data
+% ============================================================
+
+\begin{frame}[shrink=8]{31/07/2026 --- NP: compare against \emph{realised} DAX data}
+  Nicolas sent a histogram of $\log(\mathrm{DAX})$ over the first $316$ \emph{trading} days
+  from 7 Aug 2001, to be compared with our $\tau=0.866$ panel. Provenance checks out:
+  Yahoo's close on 2001-08-07 is $5752.5098$, \emph{exactly} our $S_0$; and the five shared
+  expiries are real third Fridays (21 Sep 01, 19 Oct 01, 21 Dec 01, 15 Mar 02, 21 Jun 02).
+
+  \medskip
+  \gold{But they are different objects}, and the difference is not cosmetic:
+  \begin{itemize}\itemsep2pt
+    \item \textbf{Occupation measure vs terminal marginal.} His pools \emph{one} path's
+          values over a window; ours is the law of $S$ at \emph{one} date. Under our own
+          model the occupation density peaks \red{$1.81\times$} higher than the terminal one
+          (theory: exactly $2\times$ for driftless BM --- early dates, when the path has not
+          yet moved, get equal weight in the histogram).
+    \item \textbf{One path, not 316 observations.} Consecutive daily readings of a random
+          walk; effective independent sample size $O(1)$, not $316$.
+    \item \textbf{Units.} ``316 days'' in our title is 316 \emph{calendar} days
+          ($\tau=0.866$, ending 19 Jun 2002 $=$ 219 td). His 316 \emph{trading} days ends
+          1 Nov 2002 $=$ 451 calendar days $=1.235$ yr --- past our $T_{\max}=0.871$.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[shrink=6]{31/07/2026 --- his own two figures, our curve added}
+  \begin{columns}[c]
+    \begin{column}{0.5\linewidth}
+      \includegraphics[width=\linewidth]{fwd_his1_over.png}
+    \end{column}
+    \begin{column}{0.5\linewidth}
+      \includegraphics[width=\linewidth]{fwd_his2_over.png}
+    \end{column}
+  \end{columns}
+  {\tiny His \texttt{code.py} and \texttt{code\_discounted.py} reproduced line for line ---
+  same window, bins, symmetric interval, colours, labels --- with only \gold{our density
+  (green)} and the \gold{market's (black)} added. \gold{The single most useful thing here:
+  our green curve and the market's black curve almost coincide}, so the offset from his
+  histogram is a property of the \emph{option market's} risk-neutral density, not of our
+  network. The offset itself is the risk-neutral drift ($r$) against a realised $-45\%$, plus
+  occupation-vs-terminal. Right: his standardisation forces his sample to unit width by
+  construction, while our density pushed through the \emph{same} affine map has s.d.\
+  \red{1.59} --- so that transformation is calibrated to his sample, not a common yardstick.
+  His discounted script also drops the \texttt{np.log} of the first one; $e^{-rt}S_t$ a
+  martingale pins the \emph{mean}, not the shape.}
+\end{frame}
+
+\begin{frame}[shrink=6]{31/07/2026 --- his two plots, reproduced from 7 Aug}
+  \begin{columns}[c]
+    \begin{column}{0.5\linewidth}
+      \includegraphics[width=\linewidth]{fwd_kde7aug.png}
+    \end{column}
+    \begin{column}{0.5\linewidth}
+      \includegraphics[width=\linewidth]{fwd_kde7aug_disc.png}
+    \end{column}
+  \end{columns}
+  {\tiny Started at \gold{7 Aug, $\tau=0$, $S_0=5752.51$} --- the calibration date itself, so no
+  two-day gap and no 9 Aug spot: that belonged to the forward \emph{repricing} test and was
+  only clutter here. Sampled at the \emph{exact} calendar dates of his 316 observations. His
+  window, his bins, his symmetric interval.
+  \textbf{Left} (\texttt{code.py}): width \red{93rd} pct, location \red{6th} --- over his full
+  window the index wandered $\sim\!2\times$ a typical model path and sat well below it. Note
+  this \emph{flips} against the 219-day matched window (41st / 18th): his last 97 trading days
+  run to Nov 2002 and carry a second leg down, $4200\to\!\sim\!3000$.
+  \textbf{Right} (\texttt{code\_discounted.py}): his standardisation pins mean $0$ and sd $1$
+  for \emph{every} curve, so it is a pure \gold{shape} test --- skewness \red{7th} pct
+  ($-0.80$ vs model median $-0.07$), excess kurtosis 62nd.
+  \gold{No pointwise-median line}: see the next slide for why. $\sigma$ frozen at its
+  $T_{\max}=0.871$ slice for the last $30\%$ of his window.}
+\end{frame}
+
+\begin{frame}[shrink=6]{31/07/2026 --- why no median line: it is an averaging artefact}
+  \begin{center}
+    \includegraphics[width=0.99\linewidth,height=0.52\textheight,keepaspectratio]{fwd_shape_check.png}
+  \end{center}
+  {\tiny A pointwise median across per-path densities is \emph{not the density of anything}.
+  Individual paths peak wherever they lingered; standardised, those peaks land at different
+  $z$, so medianing pointwise smears them and manufactures a smooth bell --- which then tracks
+  $N(0,1)$ more closely than \emph{any single path} does. \red{Left: none of the grey curves
+  resembles the green median.} It was inviting the reader to compare his irregular curve
+  against a smooth ``prediction'' no path matches, so it has been removed from every figure.
+  \gold{Right: the model reproduces his shape readily} --- the single path whose skewness is
+  closest ($-0.81$ vs his $-0.80$) sits almost on top of his curve, and $6.5\%$ of model paths
+  are at least as left-skewed. The artefact is \emph{not} in the low-order moments (the median
+  curve's sd is $1.007$, skew $-0.014$ against the per-path median $-0.066$) --- it is purely
+  in smoothness and multimodality, so the 7th-percentile skewness figure, measured per-path,
+  still stands.}
+\end{frame}
+
+\begin{frame}[shrink=6]{31/07/2026 --- do we recover his KDE?  width yes, location no}
+  \begin{center}
+    \includegraphics[width=0.97\linewidth,height=0.55\textheight,keepaspectratio]{fwd_his_matched.png}
+  \end{center}
+  {\tiny The previous slide's green curve was our \emph{terminal} density --- the wrong object
+  to set against his KDE, which estimates a \emph{single path's occupation} density. The
+  model's prediction of \emph{that} is not one curve but a distribution of curves: the green
+  band. Decomposed against the model's own sampling distribution, on the matched
+  $217$-day window:
+  \gold{width} s.d.\ $0.073$ vs median $0.081$ $\Rightarrow$ \gold{41st pct, recovered};
+  \red{location} mean $8.506$ vs median $8.647$ $\Rightarrow$ \red{19th pct}, low but inside
+  the 5--95\% band. Pointwise his curve is inside the envelope over only $56\%$ of the axis,
+  since a small location shift slides a narrow peaked curve off the band --- so the two
+  summary statistics are the fairer test. \gold{The location gap is not a defect}: $Q$
+  carries drift $r$ ($+3.5\%$ over this window) by construction while the index fell
+  $18.8\%$. No risk-neutral density forecasts the realised drift --- that is the $P$ vs $Q$
+  gap two slides on. Note also \red{pooled} occupation s.d.\ $0.185$ $\neq$ \red{per-path}
+  median $0.081$: one path cannot estimate the ensemble.}
+\end{frame}
+
+\begin{frame}[shrink=8]{31/07/2026 --- apples with apples: condition the drift away}
+  \begin{center}
+    \includegraphics[width=0.99\linewidth,height=0.50\textheight,keepaspectratio]{fwd_apples.png}
+  \end{center}
+  {\tiny Common coordinate $u_t=\ln(S_t/S_{\rm start})$, both sides starting at the realised
+  9 Aug spot (his script starts 7 Aug, which was injecting a spurious $-4.2\%$ two-day move
+  into the location statistic).
+  \textbf{(1)} Unconditional: width \gold{43rd} pct, location \red{18th}.
+  \textbf{(2)} Keep only the $557/20000$ model paths finishing within $2\%$ of where the index
+  actually finished. This conditions away the drift $Q$ cannot know, so what is left is a test
+  of the \emph{volatility structure} alone: location \gold{49th} pct by construction, and
+  width \red{11th} --- given an endpoint $21\%$ down, the model expects the path to have
+  \emph{wandered more} than it did ($0.101$ vs $0.072$).
+  \textbf{(3)} His window is one draw on his side too: against all $2695$ same-length pre-2001
+  DAX windows it is the \gold{59th} percentile --- \gold{entirely typical}. Model median
+  $0.078$ sits above both his $0.072$ and history's $0.067$.
+  \gold{This is an independent confirmation of the over-dispersion}: $\sim\!15$--$20\%$ too
+  wide, now from a \emph{path} statistic rather than the terminal density, so it is not an
+  artefact of the BL smoothing or the strike grid. Part of it is the legitimate variance risk
+  premium.}
+\end{frame}
+
+\begin{frame}[shrink=6]{31/07/2026 --- the overlay alone would have fooled us}
+  \begin{center}
+    \includegraphics[width=0.99\linewidth,height=0.60\textheight,keepaspectratio]{fwd_overlay_nic.png}
+  \end{center}
+  {\tiny On \emph{his} window his s.d.\ is $0.188$ against $0.213$ for the market and
+  $0.265$ for our model --- close enough to read as \gold{agreement}. On the window that
+  actually matches our panel it is \red{$0.073$}. Sweeping the cut from one month to 316
+  days moves it over $0.031$--$0.188$, while our density does not move at all: it is fixed
+  by the option prices at one maturity. \red{So the apparent agreement carried no
+  information --- and neither would a disagreement.} Reporting only the flattering window
+  would have been the same cherry-picking error we are trying to avoid elsewhere. Green
+  rule $=$ the one directly comparable number, the realised close at expiry.}
+\end{frame}
+
+\begin{frame}[shrink=6]{31/07/2026 --- so give his statistic a \emph{null distribution}}
+  \begin{center}
+    \includegraphics[width=0.99\linewidth,height=0.58\textheight,keepaspectratio]{fwd_nic_envelope.png}
+  \end{center}
+  {\tiny His caveat --- ``they do not have to match exactly'' --- is right but not
+  quantitative. So: run \emph{his own recipe} on $2000$ paths simulated from our 7 Aug
+  surface, started at the realised 9 Aug spot. Under our model the s.d.\ of
+  $\log(\mathrm{DAX})$ over that window has median $0.081$ and 5--95\% range
+  \gold{$0.043$--$0.189$} (min--max $0.024$--$0.541$). The realised value $0.073$ sits at the
+  \gold{41st percentile}. The model does not merely survive his figure --- \gold{it agrees
+  with it}, and the envelope is the honest measure of how much the two need not match.
+  Panel 2: the same for his discounted--standardised variant.}
+\end{frame}
+
+\begin{frame}[shrink=6]{31/07/2026 --- where the index \emph{actually} finished}
+  \begin{center}
+    \includegraphics[width=0.99\linewidth,height=0.58\textheight,keepaspectratio]{fwd_realised_pit.png}
+  \end{center}
+  {\tiny The honest version of ``only one sample value''. Model percentiles of the realised
+  close: $0.5,\,6.9,\,21.8,\,35.8,\,14.0$ at $43,71,134,218,316$ d; market where defined:
+  $<\!0.2,\,<\!9.7,\,21.0,\,36.2,\,12.4$. Model and market agree to $\sim\!1$ point wherever
+  both exist. At 43 d the model assigned \emph{more} mass to the outcome than the market did
+  --- consistent with our wider density. \red{Not a calibration test}: five outcomes from
+  \emph{one} path are not five draws, and the first two expiries straddle 11 September 2001.
+  At $\tau=0.195$ the outcome fell below \emph{every} quoted strike, so no market percentile
+  exists --- bounded, not extrapolated.}
+\end{frame}
+
+\begin{frame}[shrink=6]{31/07/2026 --- what his idea really opened up: $P$ vs $Q$}
+  \begin{center}
+    \includegraphics[width=0.99\linewidth,height=0.55\textheight,keepaspectratio]{fwd_pq_density.png}
+  \end{center}
+  {\tiny Turn the realised side into a \emph{distribution}: the physical density of
+  $\tau$-horizon log returns from DAX history \emph{strictly before} 7 Aug 2001. The
+  market's $Q$ is $9$--$19\%$ wider than unconditional 1990--2001 history --- the
+  \gold{variance risk premium}, showing up where it should, which is a sanity check that the
+  recovered surface behaves like a real option surface. Caveats displayed, not buried:
+  effective $n$ is only $12$--$96$ (hence the bootstrap band), and Aug 2001 was a high-vol
+  regime so unconditional history \emph{overstates} the premium.
+  \red{The other side, on the record:} vol actually realised over these windows was
+  $30$--$42\%$ against $\sim\!22\%$ implied --- so ex post the \emph{market's} density was
+  too narrow and ours points toward the outcome. One path containing 11 Sep cannot validate
+  a model; this is recorded, not leaned on.}
+\end{frame}
+
+\begin{frame}[shrink=14]{31/07/2026 --- status and what is still running}
+  \begin{columns}[T]
+    \begin{column}{0.48\linewidth}
+      \gold{Settled}
+      \begin{itemize}\scriptsize
+        \item $K{=}0$ boundary: \texttt{exp\_k} gives $0.000\%$ on 3/3 days, all maturities
+        \item Fit RMSE beats the published models on 3/3 days
+        \item The 2024$\to$2026 reprice regression traced to \emph{two} settings
+              ($\eta$ lr, collocation domain); most --- not all --- of the gap recovered
+        \item First out-of-sample test in the project now exists, with benchmarks, an
+              in-sample bias control, and a paired mechanism diagnostic
+        \item The forward bias is a \emph{model-class} property, not a training artefact
+        \item \red{Horizon does not drive it} --- same move over $17\times$ the horizon
+              gives the same error. It is a state effect
+        \item \red{At $34$--$62$ days the model beats both heuristics in vol terms} (5/6)
+        \item \red{NP's realised-data check: the model \emph{agrees} with it.} His statistic
+              sits at the 41st percentile of its own null under our model
+        \item $Q$ is $9$--$19\%$ wider than pre-2001 history --- the variance risk premium
+              is present, as it should be
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.48\linewidth}
+      \gold{Open}
+      \begin{itemize}\scriptsize
+        \item \gold{Price vs implied-vol metrics disagree} at long horizon. Needs a stated
+              position in the paper --- vega-weighted or strike-uniform?
+        \item Residual reprice gap ($+7\%$/$+24\%$/$+19\%$) not yet fully explained
+        \item Density is \emph{identifiability-limited} by the quote grid $\Rightarrow$ the
+              survival function, not the density, is the honest distributional metric
+        \item Only \emph{down}-moves are sampled (May--Aug 2001 was a falling market), so
+              the sign of the anchoring effect is untested on a rally
+        \item \gold{Ex ante vs ex post point in opposite directions.} Against the market our
+              density is too wide; against the outcome ($30$--$42\%$ realised vs $22\%$
+              implied) the \emph{market} was too narrow. Needs a stated position, and
+              neither can be leaned on from one path containing 11 Sep
+        \item \gold{Data}: 13 genuine DAX days (May--Aug 2001) recovered; 4 more base dates
+              could be trained
       \end{itemize}
     \end{column}
   \end{columns}
