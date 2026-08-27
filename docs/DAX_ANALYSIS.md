@@ -15,6 +15,28 @@ Batch entry: `run_dax_market_data.py` (`--pipeline`, `--direct`, or both).
 
 Shared logic: [`examples/dax_analysis_common.py`](../Synthetic_Data_Tensorflow_Advanced/examples/dax_analysis_common.py).
 
+## Forward-looking density result (7 Aug 2001)
+
+[`presentation/journal_forward_density.tex`](../Synthetic_Data_Tensorflow_Advanced/presentation/journal_forward_density.tex) / `.pdf` — a finished,
+self-contained 11-slide result, distinct from the pipeline/direct validation
+scripts above: recovers the full risk-neutral density of the DAX at every
+horizon from a single day's option quotes (7 Aug 2001, 217 calls, 5
+maturities) via Breeden–Litzenberger applied to the self-consistent
+exp_k-ansatz Dupire PINN calibration `nbexpk7` — no historical prices, no
+forecasting model.
+
+Validated three independent ways (figures in
+`presentation/figures/forward_density/`):
+
+| Check | Figure | Result |
+|---|---|---|
+| Extraction (autodiff vs. central difference on the network's own output) | `fig3_extraction` | agree to 2.2e-3 of peak; both theoretical error exponents (−2 roundoff, +2 truncation) recovered |
+| Self-consistency (analytic density vs. a 40,000-path MC reprice of the same learned local vol) | `fig6_selfconsistency` | KS ≤ 0.0047 across all five maturities |
+| Shape vs. realised path (Nicolas's discounted-DAX method) | `fig5_realised` | both left-skewed in the same direction; explicitly not a formal test (one ℙ-path vs. a ℚ-density) |
+
+Explicit scope, per the deck's own closing slide: this is the market's
+risk-neutral view on that one day, not a ℙ-measure forecast.
+
 ## Model and data sources
 
 | Date | S₀ | Legacy model dir | CSV |

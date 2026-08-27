@@ -1,7 +1,7 @@
 # MZ-Augmented Self-Consistent Learning of Local Volatility
 ### A Mori–Zwanzig closure for the Dupire equation: inferring local volatility *and* the risk-neutral density
 
-*Synthesis note / draft for a follow-up to* **Wang, Shaa, Privault & Guet, "Deep self-consistent learning of local volatility," *Journal of Computational Finance* 29(1), 2025** *(hereafter WSPG25), cross-pollinated with the eigenbasis Mori–Zwanzig (MZ) closure theory of* **Shaa, Lim, Guet & Garbet, "Eigenbasis Mori–Zwanzig closure for the Hasegawa–Wakatani 12-mode system"** *(submitted, Nuclear Fusion; hereafter SLGG).*
+*Synthesis note / draft for a follow-up to* **Wang, Shaa, Privault & Guet, "Deep self-consistent learning of local volatility," *Journal of Computational Finance* 29(2), 2025** *(hereafter WSPG25), cross-pollinated with the eigenbasis Mori–Zwanzig (MZ) closure theory of* **Shaa, Lim, Guet & Garbet, "Eigenbasis Mori–Zwanzig closure for the Hasegawa–Wakatani 12-mode system"** *(submitted, Nuclear Fusion; hereafter SLGG).*
 
 Status: theory + CPU de-risking complete (this document). Implementation Steps 2–4 scoped in §10.
 
