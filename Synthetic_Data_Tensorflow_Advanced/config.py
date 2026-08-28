@@ -651,6 +651,15 @@ class DupirePipelineConfig:
     # Options: 'tanh', 'relu', 'elu', 'swish'
     # 'tanh' is standard for this problem
 
+    ansatz: str = 'exp_k'
+    # Call-price ansatz for NN_phi (fixes the K=0 boundary deficit):
+    #   'exp_k' (default): phi_tilde = exp(-k_tilde * softplus(a + k_tilde * H)),
+    #       a = log(e^{K_max/S0} - 1), H = raw (linear) NN_phi output. Hardwires
+    #       C_NN(0,T)=S0 AND M(.,0)=K_max/S0 (correct deep-ITM slope + unit mass).
+    #       NN_phi output layer is LINEAR.
+    #   'one_minus_exp' (legacy/pre-fix): phi_tilde = 1 - exp(-N_c), N_c=softplus output
+    #       (open at 1, so C_NN(0,T)<S0 structurally). NN_phi output layer is SOFTPLUS.
+
     gaussian_noise_phi: float = 0.5
     # Gaussian noise added to option price network input
     # Acts as regularization (prevents overfitting)
