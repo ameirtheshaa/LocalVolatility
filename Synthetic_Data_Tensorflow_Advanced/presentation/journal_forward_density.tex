@@ -3,11 +3,15 @@
 % Template/theme copied from journal_dec10_onward.tex (NTU Beamer); NEW FILE, that deck
 % is not modified.
 % Figures: figures/forward_density/*.pdf, built by
-%   nn_boundary_deficit_results/forward_test/pub_compute.py  then
-%   pub_evolution.py / pub_extraction.py / pub_realised.py / pub_consistency.py
+%   nn_boundary_deficit_results/forward_test/pub_all.py
+%   (restyle only, seconds: 5 render scripts + pub_captions.py, reading the cache
+%   pub_compute.py already wrote; pass --recompute to also re-run pub_compute.py,
+%   ~76s CPU, TensorFlow + Monte Carlo). One entry point so the render-script list
+%   can't drift out of sync with this comment again.
 %   Figure stems match the deck's figure numbers: fig1_* is captioned Figure 1.
-% Numbers: figures/forward_density/fd_numbers.tex, built by pub_captions.py.
-%          Every quantity cited below resolves through one of those macros, so the text
+% Numbers: figures/forward_density/fd_numbers.tex, built by pub_all.py (via
+%          pub_captions.py). Every quantity cited below resolves through one of
+%          those macros, so the text
 %          cannot drift away from the figures.
 % Build: cd presentation && pdflatex journal_forward_density.tex   (twice)
 \documentclass[aspectratio=169,11pt]{beamer}
