@@ -135,10 +135,10 @@ def main() -> int:
     parser.add_argument('--output-dir', default=None,
                         help="Where to save outputs (default: "
                              "<model-dir>/reproduce_user_plots).")
-    parser.add_argument('--phi-mapping', choices=['transformed', 'legacy'],
-                        default='transformed',
-                        help="phi_tilde mapping (default 'transformed' = "
-                             "matches training).")
+    parser.add_argument('--phi-mapping', choices=['transformed', 'legacy', 'exp_k'],
+                        default=None,
+                        help="phi_tilde mapping; default None auto-selects from "
+                             "model metadata ansatz.")
     args = parser.parse_args()
 
     repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -158,7 +158,7 @@ def main() -> int:
     print('=' * 80)
     print(f'Model        : {model_dir}')
     print(f'MC source    : {args.mc_source}')
-    print(f'phi_mapping  : {args.phi_mapping}')
+    print(f'phi_mapping  : {args.phi_mapping or "auto (from model metadata ansatz)"}')
     print(f'Maturities   : {T_values}')
     if args.mc_source == 'repriced':
         print(f'MC paths     : {args.n_paths:,}  (seed=42)')
@@ -239,7 +239,7 @@ def main() -> int:
         'model_dir':                model_dir,
         'mc_source':                args.mc_source,
         'mc_provenance':            mc_provenance,
-        'phi_mapping':              args.phi_mapping,
+        'phi_mapping':              analyzer.phi_mapping,
         'n_mc_samples':             n_mc_samples,
         'n_mc_samples_by_maturity': samples_by_T,
         'n_paths_requested':        args.n_paths if args.mc_source == 'repriced' else None,

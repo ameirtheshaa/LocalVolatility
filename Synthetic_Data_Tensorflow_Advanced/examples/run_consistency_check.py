@@ -157,9 +157,9 @@ Examples:
     parser.add_argument('--output-dir', default=None,
                         help='Where to write consistency_check.json '
                              '(default: <model-dir>/consistency_check).')
-    parser.add_argument('--phi-mapping', choices=['transformed', 'legacy'], default='transformed',
-                        help="phi_tilde mapping; 'transformed' = 1-exp(-NN_phi) matches "
-                             "training (default and required for valid IBP).")
+    parser.add_argument('--phi-mapping', choices=['transformed', 'legacy', 'exp_k'], default=None,
+                        help="phi_tilde mapping; default None auto-selects from model metadata "
+                             "ansatz ('exp_k' -> exp_k, 'one_minus_exp'/absent -> transformed).")
     args = parser.parse_args()
 
     repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -178,7 +178,7 @@ Examples:
     print('DUPIRE NN CONSISTENCY CHECK')
     print('=' * 80)
     print(f'Model:        {model_dir}')
-    print(f'phi mapping:  {args.phi_mapping}')
+    print(f'phi mapping:  {args.phi_mapping or "auto (from model metadata ansatz)"}')
     print(f'Maturities:   {T_values}')
     print(f'MC paths:     {args.n_paths:,}  (seed = 42, fixed inside simulator)')
     print(f'Output dir:   {out_dir}')
@@ -190,6 +190,7 @@ Examples:
     nn_phi, nn_eta, metadata = load_trained_models(model_dir)
     analyzer = PDFAnalyzer(nn_phi, nn_eta, config, metadata,
                            phi_mapping=args.phi_mapping)
+    print(f'phi mapping (resolved): {analyzer.phi_mapping}')
 
     mc_data = analyzer.simulate_paths_with_nn_volatility(T_values, verbose=True)
 
@@ -238,7 +239,7 @@ Examples:
 
     payload = {
         'model_dir':   model_dir,
-        'phi_mapping': args.phi_mapping,
+        'phi_mapping': analyzer.phi_mapping,
         'n_paths':     args.n_paths,
         'mc_seed':     42,
         'S0':          float(config.S0),

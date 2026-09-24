@@ -429,7 +429,7 @@ for lambda_pde in [0.5, 1.0, 2.0, 5.0]:
 
 ### Neural Network Architecture
 
-Both NN_phi and NN_eta use the same architecture:
+NN_phi and NN_eta share the same trunk; only the final layer + output transform differ by ansatz:
 
 ```
 Input (t_tilde, k_tilde)
@@ -442,10 +442,16 @@ Residual Block × N
     ↓
 Dense(64, tanh)
     ↓
-Dense(1, softplus)
+Dense(1)            # NN_eta: softplus;  NN_phi: softplus (one_minus_exp) or linear (exp_k)
     ↓
-Output (φ_tilde or η_tilde)
+raw output → ansatz transform → φ_tilde  or  η_tilde
 ```
+
+**Call-price ansatz** (`config.ansatz`, applied to NN_phi's raw output):
+- `exp_k` (default): `φ_tilde = exp(-k · softplus(a + k·H))`, `a = log(e^{K_max/S0} - 1)`, H = linear output.
+  Hardwires `C_NN(0,T) = S0` and `M(·,0) = K_max/S0` (correct deep-ITM slope + unit mass).
+- `one_minus_exp` (legacy): `φ_tilde = 1 - exp(-N_c)`, N_c = softplus output; open at 1, so
+  `C_NN(0,T) < S0` structurally (the K=0 boundary deficit).
 
 **Residual Block**:
 ```

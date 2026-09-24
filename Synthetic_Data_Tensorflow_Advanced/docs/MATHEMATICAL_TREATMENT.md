@@ -332,9 +332,9 @@ Residual Block N
     ↓
 Dense(64, activation='tanh')
     ↓
-Dense(1, activation='softplus')
+Dense(1)   # NN_η & legacy NN_φ: softplus;  exp_k NN_φ: linear (see §5.3)
     ↓
-Output: φ̃ or η̃ ∈ ℝ₊
+Output: raw → ansatz transform → φ̃ or η̃
 ```
 
 ### 5.2 Residual Block Details
@@ -372,24 +372,37 @@ $$
 
 ### 5.3 Output Transformation
 
-Raw network output is transformed to ensure positivity:
+The raw NN_φ output is mapped to the normalized call price φ̃ by one of two ansätze
+(selected by `config.ansatz`):
+
+**`exp_k` (default)** — hardwires the deep-ITM boundary. With H = NN_φ (linear output) and
+`a = log(e^{K_max/S0} − 1)`:
 
 $$
-\phi_{\text{tilde}}(t, k) = 1 - \exp(-\text{NN}_\phi(t, k))
+\phi_{\text{tilde}}(t, k) = \exp\!\big(-k\, M(t,k)\big), \qquad M(t,k) = \text{softplus}\!\big(a + k\,\text{NN}_\phi(t,k)\big)
 $$
 
-This ensures:
-- **φ_tilde ∈ (0, 1)**: Bounded option prices
-- **Smooth**: Exponential is infinitely differentiable
-- **Boundary**: φ_tilde → 0 as NN_φ → 0, φ_tilde → 1 as NN_φ → ∞
+By construction this gives:
+- **φ̃(t, 0) = exp(0) = 1**, i.e. `C_NN(0, T) = S0` exactly (removes the K=0 boundary deficit);
+- **M(t, 0) = K_max/S0**, i.e. the correct deep-ITM slope `∂C/∂K|₀ = −e^{−rT}` and **unit mass** `∫ f dK = 1`;
+- **φ̃ ∈ (0, 1]**; monotonicity/convexity are shaped by the Dupire + arbitrage losses, OTM end left soft.
 
-For volatility:
+**`one_minus_exp` (legacy)** — with N_c = NN_φ (softplus output):
+
+$$
+\phi_{\text{tilde}}(t, k) = 1 - \exp(-N_c(t, k))
+$$
+
+Smooth and bounded in (0, 1), but **open at 1**: reaching φ̃(t,0)=1 needs N_c → +∞, so
+`C_NN(0, T) < S0` structurally (the K=0 boundary deficit; ~7–13% on high-vol synthetic).
+
+For volatility (both ansätze):
 
 $$
 \eta_{\text{tilde}}(t, k) = \text{NN}_\eta(t, k)
 $$
 
-The softplus activation already ensures η_tilde > 0.
+where NN_η's softplus output ensures η̃ > 0.
 
 ### 5.4 Parameter Count
 
@@ -1032,7 +1045,8 @@ $$
 
 **Hard constraints** (architecture design):
 
-- Use **softplus** or **ReLU** activations for final layer (ensures C > 0)
+- Positivity of C: `exp_k` gives φ̃ = exp(−k·softplus(a+k·H)) ∈ (0,1] on a linear NN_φ layer;
+  legacy `one_minus_exp` uses a softplus NN_φ output — both keep C_NN = S0·φ̃ > 0
 - Use **monotonic networks** (Wehenkel & Louppe, 2019) to enforce ∂C/∂T ≥ 0
 
 **Post-processing**:

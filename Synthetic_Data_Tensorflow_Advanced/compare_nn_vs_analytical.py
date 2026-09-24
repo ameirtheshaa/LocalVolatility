@@ -171,8 +171,8 @@ def compare_option_prices(nn_phi: tf.keras.Model, config: DupirePipelineConfig,
     t_tilde_tensor = tf.constant(np.array(t_tilde_list).reshape(-1,1), dtype=tf.float32)
     k_tilde_tensor = tf.constant(np.array(k_tilde_list).reshape(-1,1), dtype=tf.float32)
 
-    phi_tilde_nn = nn_phi(tf.concat([t_tilde_tensor, k_tilde_tensor], axis=1))
-    C_nn = config.S0 * (1 - tf.exp(-phi_tilde_nn)).numpy().flatten()
+    phi_tilde_nn = analyzer.phi_tilde_from_nn(t_tilde_tensor, k_tilde_tensor)
+    C_nn = (config.S0 * phi_tilde_nn).numpy().flatten()
 
     # Compute analytical Black-Scholes prices
     print("  Computing Black-Scholes analytical prices...")
