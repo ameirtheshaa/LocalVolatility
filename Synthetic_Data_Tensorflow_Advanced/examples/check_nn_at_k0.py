@@ -227,7 +227,7 @@ def main() -> int:
     ax2.legend(loc="upper right", fontsize=8, framealpha=0.9)
 
     fig.suptitle("Direct check: trained price network at the domain boundaries "
-                 "(models/example_pretrained)", fontsize=11, fontweight="bold")
+                 f"({model_dir})", fontsize=11, fontweight="bold")
     plt.tight_layout(rect=(0, 0, 1, 0.96))
 
     for ext in ("png", "pdf"):
