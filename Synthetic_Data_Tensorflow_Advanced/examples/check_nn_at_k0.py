@@ -88,12 +88,15 @@ def eval_point(analyzer, T, k_tilde_target):
     N_c = float(analyzer.nn_phi(tf.concat([t_tilde, k_tilde], axis=1)).numpy().flatten()[0])
     phi_tilde = float(analyzer.phi_tilde_from_nn(t_tilde, k_tilde).numpy().flatten()[0])
 
-    # self-consistency: phi_tilde must equal 1 - exp(-N_c) in 'transformed' mode
-    recon = 1.0 - np.exp(-N_c)
-    assert abs(recon - phi_tilde) < 1e-5, (
-        f"phi_tilde mismatch at T={T}, k_tilde={k_tilde_target}: "
-        f"{phi_tilde} vs 1-exp(-N_c)={recon}"
-    )
+    # self-consistency: phi_tilde == 1 - exp(-N_c) only in 'transformed' (legacy) mode.
+    # For 'exp_k' the raw output is H (linear) and phi_tilde = exp(-k*softplus(a+k*H)),
+    # so this identity does not hold — skip the assert.
+    if analyzer.phi_mapping == 'transformed':
+        recon = 1.0 - np.exp(-N_c)
+        assert abs(recon - phi_tilde) < 1e-5, (
+            f"phi_tilde mismatch at T={T}, k_tilde={k_tilde_target}: "
+            f"{phi_tilde} vs 1-exp(-N_c)={recon}"
+        )
 
     C_NN = phi_tilde * S0
     M2 = float(np.exp(r * T) * C_NN)
@@ -147,12 +150,18 @@ def main() -> int:
     config = DupirePipelineConfig.analysis_only(model_dir)
     config.analysis_config.T_analysis = T_values
     nn_phi, nn_eta, metadata = load_trained_models(model_dir)
-    analyzer = PDFAnalyzer(nn_phi, nn_eta, config, metadata, phi_mapping='transformed')
+    analyzer = PDFAnalyzer(nn_phi, nn_eta, config, metadata)  # phi_mapping=None -> auto from metadata ansatz
 
     S0 = float(config.S0)
     r = float(config.r)
     print(f'S0 = {S0:g},  r = {r:g},  K_max = {analyzer.k_max:g},  T_max = {analyzer.t_max:g}')
-    print(f'Ansatz: phi_tilde = 1 - exp(-N_c),  N_c = softplus output (> 0)  =>  phi_tilde in (0,1)')
+    ansatz_desc = {
+        'exp_k': 'phi_tilde = exp(-k_tilde * softplus(a + k_tilde * H))  =>  C(0,T) = S0 exactly',
+        'transformed': 'phi_tilde = 1 - exp(-N_c),  N_c = softplus output (> 0)  =>  phi_tilde in (0,1)',
+        'one_minus_exp_1mk': 'phi_tilde = 1 - exp(-(1 - k_tilde) * N_c)  (paper eq. 3.9)',
+        'legacy': 'phi_tilde = raw NN output (legacy diagnostic mapping)',
+    }
+    print(f'Ansatz ({analyzer.phi_mapping}): {ansatz_desc.get(analyzer.phi_mapping, "?")}')
     print()
 
     # ---- per-maturity evaluation at both boundaries ----
@@ -169,7 +178,7 @@ def main() -> int:
         zero = eval_point(analyzer, T, 0.0)   # k_tilde = 0  (K = 0)
         inf = eval_point(analyzer, T, 1.0)    # k_tilde = 1  (K = K_max e^{rT})
         deficit_pct = (S0 - zero["C_NN"]) / S0 * 100.0
-        m2_tab = M2_TABLE.get(round(T, 4))
+        m2_tab = M2_TABLE.get(round(T, 4)) if analyzer.phi_mapping == 'transformed' else None
         if m2_tab is not None:
             dM2 = zero["M2"] - m2_tab
             m2_tab_s, dM2_s = f"{m2_tab:9.2f}", f"{dM2:+7.3f}"
@@ -193,11 +202,17 @@ def main() -> int:
         }
 
     print('  ' + '-' * (len(header) - 2))
-    print("\n  Reading: at k_tilde=0 the network outputs a FINITE N_c (~2.6), so")
-    print("  phi_tilde = 1 - exp(-N_c) ~ 0.93 < 1  =>  C_NN(0,T) < S0 (the deficit).")
-    print("  For the BC C_NN(0,T)=S0 we would need N_c -> +inf, which softplus cannot reach.")
-    print("  At k_tilde=1 the network drives N_c -> 0, so phi_tilde -> 0, C_NN -> 0: that")
-    print("  boundary IS reachable. The asymmetry is the whole story.")
+    if analyzer.phi_mapping == 'exp_k':
+        print("\n  Reading: ansatz='exp_k' -> phi_tilde = exp(-k*softplus(a+k*H)).")
+        print("  At k_tilde=0, phi_tilde = exp(0) = 1 EXACTLY, so C_NN(0,T) = S0 (deficit removed),")
+        print("  and M(.,0)=K_max/S0 fixes the deep-ITM slope + unit mass by construction.")
+        print("  At k_tilde=1 the surface decays smoothly (OTM); that end stays soft.")
+    else:
+        print("\n  Reading: at k_tilde=0 the network outputs a FINITE N_c (~2.6), so")
+        print("  phi_tilde = 1 - exp(-N_c) ~ 0.93 < 1  =>  C_NN(0,T) < S0 (the deficit).")
+        print("  For the BC C_NN(0,T)=S0 we would need N_c -> +inf, which softplus cannot reach.")
+        print("  At k_tilde=1 the network drives N_c -> 0, so phi_tilde -> 0, C_NN -> 0: that")
+        print("  boundary IS reachable. The asymmetry is the whole story.")
 
     # ---- k-sweep figure ----
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(11, 4.2), facecolor="white")

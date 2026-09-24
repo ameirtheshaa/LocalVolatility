@@ -191,6 +191,9 @@ from scipy import interpolate
 from scipy.stats import norm, skew, kurtosis, gaussian_kde
 from sklearn.neighbors import KernelDensity
 
+# numpy.trapz was renamed numpy.trapezoid in numpy 2.0 and removed in 2.4; support both.
+_trapz = getattr(np, "trapezoid", None) or np.trapz
+
 # Import configurations from separate config module
 from config import (
     VolatilityConfig,
@@ -1371,11 +1374,12 @@ class ModelTrainer:
         print(f"Lambda Mart: {self.model.lambda_mart}")
         print(f"Lambda Pos: {self.model.lambda_pos}")
         print(f"Learning rate (phi): {self.config.lr_phi}")
-        print(f"Learning rate (eta): {self.config.lr_eta}")
+        eta_ratio = getattr(self.config, 'lr_eta_ratio', 1.0)
+        print(f"Learning rate (eta): {self.config.lr_phi * eta_ratio} (lr_phi x {eta_ratio})")
 
         learning_rate = self.config.lr_phi
         self.model.optimizer_NN_phi.learning_rate.assign(learning_rate)
-        self.model.optimizer_NN_eta.learning_rate.assign(learning_rate / 10)
+        self.model.optimizer_NN_eta.learning_rate.assign(learning_rate * eta_ratio)
 
         loss_phi_list = []
         loss_dupire_list = []
@@ -1459,7 +1463,7 @@ class ModelTrainer:
             if iter_ % self.config.lr_decay_steps == 0 and iter_ != 0:
                 learning_rate /= self.config.lr_decay_rate
                 self.model.optimizer_NN_phi.learning_rate.assign(learning_rate)
-                self.model.optimizer_NN_eta.learning_rate.assign(learning_rate / 10)
+                self.model.optimizer_NN_eta.learning_rate.assign(learning_rate * eta_ratio)
 
             # Save checkpoints and visualize
             if iter_ % self.config.save_epochs == 0 and iter_ != 0:
@@ -2017,7 +2021,7 @@ class PDFAnalyzer:
 
         # Normalize
         if len(K_grid) > 1 and np.sum(density) > 0:
-            integral = np.trapz(density, K_grid)
+            integral = _trapz(density, K_grid)
             if integral > 0:
                 density = density / integral
 
@@ -2073,12 +2077,12 @@ class PDFAnalyzer:
                      5.0 * K_max_plot)
         K_wide = np.linspace(0.0, K_tail, 5000, dtype=np.float64)
         density_wide = self._raw_model_density(T, K_wide)
-        mean_nn_density_wide = float(np.trapz(K_wide * density_wide, K_wide))
+        mean_nn_density_wide = float(_trapz(K_wide * density_wide, K_wide))
         tail_mass_check = float(density_wide[-1] * K_wide[-1])
 
         # (i') existing plot grid
         density_plot = self._raw_model_density(T, K_grid_plot)
-        mean_nn_density_plot = float(np.trapz(K_grid_plot * density_plot,
+        mean_nn_density_plot = float(_trapz(K_grid_plot * density_plot,
                                               K_grid_plot))
 
         # (ii) e^(rT) * C_NN(K=0, T); C = S0 * phi_tilde
@@ -2116,15 +2120,15 @@ class PDFAnalyzer:
         if len(K_grid) < 2:
             return None, None, None, None, None, None
 
-        integral = np.trapz(f_vals, K_grid)
+        integral = _trapz(f_vals, K_grid)
         if integral <= 0:
             return None, None, None, None, None, None
 
         f_vals_norm = f_vals / integral
 
         # Compute moments CORRECTLY
-        mean_K = np.trapz(K_grid * f_vals_norm, K_grid)
-        second_moment = np.trapz((K_grid**2) * f_vals_norm, K_grid)
+        mean_K = _trapz(K_grid * f_vals_norm, K_grid)
+        second_moment = _trapz((K_grid**2) * f_vals_norm, K_grid)
         var_K = second_moment - mean_K**2
 
         if var_K <= 0 or mean_K <= 0:
@@ -2147,7 +2151,7 @@ class PDFAnalyzer:
         # Normalize in x-space
         # Use trapz for proper integration with non-uniform spacing
         if len(x_vals) > 1:
-            integral_x = np.trapz(g_vals, x_vals)
+            integral_x = _trapz(g_vals, x_vals)
             if integral_x > 0:
                 g_vals = g_vals / integral_x
 
@@ -2384,7 +2388,7 @@ class PDFAnalyzer:
                     
                     # Normalize in x-space
                     if len(x_model_mc_space) > 1:
-                        integral_g = np.trapz(g_model_mc_space, x_model_mc_space)
+                        integral_g = _trapz(g_model_mc_space, x_model_mc_space)
                         if integral_g > 0:
                             g_model_mc_space = g_model_mc_space / integral_g
                     
@@ -2640,8 +2644,15 @@ class DupirePipeline:
         # Get random sampling bounds
         t_min = tf.reduce_min(t_tilde).numpy()
         t_max = tf.reduce_max(t_tilde).numpy()
-        k_min = tf.reduce_min(k_tilde).numpy()
-        k_max = tf.reduce_max(k_tilde).numpy()
+        domain = getattr(self.config, 'collocation_domain', 'unit')
+        if domain == 'unit':
+            k_min, k_max = 0.0, 1.0
+        elif domain == 'data_bbox':
+            k_min = tf.reduce_min(k_tilde).numpy()
+            k_max = tf.reduce_max(k_tilde).numpy()
+        else:
+            raise ValueError(f"collocation_domain must be 'unit' or 'data_bbox', got {domain!r}")
+        print(f"  Collocation k_tilde domain ({domain}): [{k_min:.3f}, {k_max:.3f}]")
 
         # Build model
         model = DupireNeuralModel(self.config, data_gen)
@@ -2890,6 +2901,13 @@ Examples:
                        help='Number of residual blocks (default: 3)')
     parser.add_argument('--lr', type=float, default=None,
                        help='Learning rate (default: 1e-4)')
+    parser.add_argument('--lr-eta-ratio', dest='lr_eta_ratio', type=float, default=None,
+                       help='NN_eta learning rate as a multiple of --lr (default: 1.0; '
+                            '0.1 reproduces pre-fix runs)')
+    parser.add_argument('--collocation-domain', dest='collocation_domain', default=None,
+                       choices=['unit', 'data_bbox'],
+                       help="k_tilde collocation range: 'unit' = [0,1] (default) or "
+                            "'data_bbox' = training-quote min/max (pre-fix behaviour)")
 
     # Data generation parameters
     parser.add_argument('--M-train', type=int, default=None,
@@ -2934,9 +2952,13 @@ Examples:
         config.lambda_k0 = args.lambda_k0
     if args.num_res_blocks is not None:
         config.num_res_blocks = args.num_res_blocks
+    if args.lr_eta_ratio is not None:
+        config.lr_eta_ratio = args.lr_eta_ratio
+    if args.collocation_domain is not None:
+        config.collocation_domain = args.collocation_domain
     if args.lr is not None:
         config.lr_phi = args.lr
-        config.lr_eta = args.lr / 10
+        config.lr_eta = args.lr * config.lr_eta_ratio
     if args.M_train is not None:
         config.M_train = args.M_train
     if args.output_dir is not None:

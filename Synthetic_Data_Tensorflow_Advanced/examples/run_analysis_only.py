@@ -79,8 +79,8 @@ Examples:
     parser.add_argument('--no-plots', action='store_true',
                        help='Skip plot generation (only compute statistics)')
 
-    parser.add_argument('--phi-mapping', choices=['transformed', 'legacy'], default='transformed',
-                       help='How to map NN_phi to phi_tilde (default: transformed)')
+    parser.add_argument('--phi-mapping', choices=['transformed', 'legacy', 'exp_k'], default=None,
+                       help='How to map NN_phi to phi_tilde (default: auto from model metadata ansatz)')
 
     parser.add_argument('--figure-label', type=str, default=None,
                        help='Extra subtitle line on PDF analysis figure')
@@ -141,7 +141,8 @@ Examples:
     # Customize analysis parameters
     config.analysis_config.n_paths_analysis = args.n_paths
     config.analysis_config.T_analysis = args.maturities
-    config.phi_mapping = args.phi_mapping
+    if args.phi_mapping is not None:
+        config.phi_mapping = args.phi_mapping
     config.figure_label = args.figure_label
 
     # Control plot generation

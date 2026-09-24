@@ -31,6 +31,9 @@ import sys
 
 import numpy as np
 
+# numpy.trapz was renamed numpy.trapezoid in numpy 2.0 and removed in 2.4; support both.
+_trapz = getattr(np, "trapezoid", None) or np.trapz
+
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from config import DupirePipelineConfig
@@ -80,7 +83,7 @@ def main() -> int:
     config = DupirePipelineConfig.analysis_only(model_dir)
     config.analysis_config.T_analysis = T_values
     nn_phi, nn_eta, metadata = load_trained_models(model_dir)
-    analyzer = PDFAnalyzer(nn_phi, nn_eta, config, metadata, phi_mapping="transformed")
+    analyzer = PDFAnalyzer(nn_phi, nn_eta, config, metadata)  # phi_mapping=None -> auto from metadata ansatz
 
     S0 = float(config.S0)
     r = float(config.r)
@@ -113,8 +116,8 @@ def main() -> int:
 
         q = analyzer._raw_model_density(T, K_wide)
 
-        mass = float(np.trapz(q, K_wide))
-        mean1 = float(np.trapz(K_wide * q, K_wide))
+        mass = float(_trapz(q, K_wide))
+        mean1 = float(_trapz(K_wide * q, K_wide))
         ref = S0 * math.exp(r * T)
         ratio = mean1 / ref if ref > 0 else float("nan")
 
@@ -142,18 +145,31 @@ def main() -> int:
     print(
         f"  Mass conservation: {'PASS (all |mass-1| < 5%)' if mass_ok else 'FAIL (mass deviates > 5% from 1)'}"
     )
-    print(
-        f"  M_1/M_ref: {', '.join(f'{v:.4f}' for v in ratios)} "
-        f"(expect ~0.93 from three-way table)"
-    )
-    print()
-    print(
-        "  INTERPRETATION: A mass < 1 indicates that the K=0 boundary deficit\n"
-        "  prevents full probability mass from accumulating over [0, K_tail].\n"
-        "  The missing mass fraction equals the deficit fraction (7% at T=0.5, etc.).\n"
-        "  M_1/M_ref < 1 is thus expected: it matches the ~7%-below-forward values\n"
-        "  seen in the IBP three-way table (M_2 / M_ref columns)."
-    )
+    if analyzer.phi_mapping == 'exp_k':
+        print(
+            f"  M_1/M_ref: {', '.join(f'{v:.4f}' for v in ratios)} "
+            f"(expect ~1.0 by construction)"
+        )
+        print()
+        print(
+            "  INTERPRETATION: ansatz='exp_k' hardwires C_NN(0,T)=S0 and unit mass\n"
+            "  (M(.,0)=K_max/S0), so mass and M_1/M_ref should both be ~1 with no K=0\n"
+            "  deficit. Residual deviations are numerical (grid/tail truncation), not the\n"
+            "  structural boundary deficit that the legacy 1-exp(-N_c) ansatz exhibited."
+        )
+    else:
+        print(
+            f"  M_1/M_ref: {', '.join(f'{v:.4f}' for v in ratios)} "
+            f"(expect ~0.93 from three-way table)"
+        )
+        print()
+        print(
+            "  INTERPRETATION: A mass < 1 indicates that the K=0 boundary deficit\n"
+            "  prevents full probability mass from accumulating over [0, K_tail].\n"
+            "  The missing mass fraction equals the deficit fraction (7% at T=0.5, etc.).\n"
+            "  M_1/M_ref < 1 is thus expected: it matches the ~7%-below-forward values\n"
+            "  seen in the IBP three-way table (M_2 / M_ref columns)."
+        )
 
     # ---- save JSON ----
     json_path = os.path.join(args.output_dir, "density_normalization.json")

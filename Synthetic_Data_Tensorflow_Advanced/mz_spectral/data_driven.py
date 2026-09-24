@@ -80,17 +80,27 @@ def run_data_driven_rom_integration(
     L_RR_rows: List[np.ndarray] = []
     sigma_gen = np.zeros_like(grid.K)
     eta_gen = np.zeros_like(grid.K)
+    sigma_blended: Optional[np.ndarray] = None
 
     for k in range(max(1, int(vol_iterate))):
-        L_RR_rows, P_R, sigma_gen, eta_gen = build_L_rr_from_phi_data(
-            phi_for_L,
-            grid,
-            D2,
-            T_max,
-            keep,
-            filter_phi=filter_phi_for_sigma,
-            filter_phi_adaptive=filter_phi_adaptive,
-        )
+        if sigma_blended is not None:
+            # Damped fixed-point update: rebuild the generator directly from the
+            # blended sigma so vol_blend_alpha actually drives the next iteration,
+            # instead of re-deriving an undamped sigma from phi_for_L.
+            _, P_R, _, L_RR_rows = precompute_L_and_blocks(
+                grid, sigma_blended, T_max, keep
+            )
+            sigma_gen = sigma_blended
+        else:
+            L_RR_rows, P_R, sigma_gen, eta_gen = build_L_rr_from_phi_data(
+                phi_for_L,
+                grid,
+                D2,
+                T_max,
+                keep,
+                filter_phi=filter_phi_for_sigma,
+                filter_phi_adaptive=filter_phi_adaptive,
+            )
         sigma_history.append(np.array(sigma_gen, copy=True))
 
         if k > 0 and len(sigma_history) >= 2:
@@ -112,7 +122,7 @@ def run_data_driven_rom_integration(
                 regularize=True,
             )
             phi_for_L = phi_probe
-            sigma_gen = (1.0 - vol_blend_alpha) * sigma_gen + vol_blend_alpha * sigma_new
+            sigma_blended = (1.0 - vol_blend_alpha) * sigma_gen + vol_blend_alpha * sigma_new
 
     nu_g, nu_steps = fit_nu_ql(phi_data, grid.t_tilde, L_RR_rows, P_R, D2)
     phi0 = apply_projector(P_R, phi_data[0])

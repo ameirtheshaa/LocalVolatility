@@ -38,7 +38,7 @@ from numpy.polynomial.hermite_e import hermegauss, hermeval
 from scipy import optimize
 
 # numpy.trapz was renamed numpy.trapezoid in newer numpy; support both.
-_trapz = getattr(np, "trapezoid", np.trapz)
+_trapz = getattr(np, "trapezoid", None) or np.trapz
 
 # Default leading non-Gaussian Hermite orders used everywhere (skew + kurtosis
 # channels). §8 Step 1 found the standardized skew/kurtosis 99% collinear (PCA

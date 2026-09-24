@@ -52,6 +52,9 @@ if _ROOT not in sys.path:
 
 import numpy as np
 import matplotlib
+
+# numpy.trapz was renamed numpy.trapezoid in numpy 2.0 and removed in 2.4; support both.
+_trapz = getattr(np, "trapezoid", None) or np.trapz
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
@@ -460,22 +463,22 @@ def _compute_eval_diagnostics(model, config, T_nn, K_nn, phi_ref, market_meta):
         K_np_g = K_g.numpy().ravel()
 
         # (b) negative mass
-        neg_mass = float(np.trapz(np.maximum(-f_np, 0.0), K_np_g))
+        neg_mass = float(_trapz(np.maximum(-f_np, 0.0), K_np_g))
         neg_mass_per_T[float(T_val)] = neg_mass
 
         # (c) edge mass fraction
-        total_mass = float(np.trapz(np.abs(f_np), K_np_g))
+        total_mass = float(_trapz(np.abs(f_np), K_np_g))
         lo_mask = K_np_g < edge_width
         hi_mask = K_np_g > (K_hi - edge_width)
-        edge_lo_mass = float(np.trapz(np.abs(f_np[lo_mask]), K_np_g[lo_mask])) if lo_mask.any() else 0.0
-        edge_hi_mass = float(np.trapz(np.abs(f_np[hi_mask]), K_np_g[hi_mask])) if hi_mask.any() else 0.0
+        edge_lo_mass = float(_trapz(np.abs(f_np[lo_mask]), K_np_g[lo_mask])) if lo_mask.any() else 0.0
+        edge_hi_mass = float(_trapz(np.abs(f_np[hi_mask]), K_np_g[hi_mask])) if hi_mask.any() else 0.0
         edge_mass_per_T[float(T_val)] = {
             "K_lo_frac": edge_lo_mass / max(total_mass, 1e-12),
             "K_hi_frac": edge_hi_mass / max(total_mass, 1e-12),
         }
 
         # (d) martingale relative residual |(E[S_T] - F)| / F
-        mean_est = float(np.trapz(K_np_g * f_np, K_np_g))
+        mean_est = float(_trapz(K_np_g * f_np, K_np_g))
         forward = float(S0 * math.exp(r * float(T_val)))
         mart_relresid_per_T[float(T_val)] = abs(mean_est - forward) / max(forward, 1e-12)
 
@@ -540,8 +543,8 @@ def _plot_density(model, config, output_dir):
     K_grid, f = model._density_tf(T)
     K = K_grid.numpy().ravel()
     fv = f.numpy().ravel()
-    mass = float(np.trapz(fv, K))
-    mean = float(np.trapz(K * fv, K))
+    mass = float(_trapz(fv, K))
+    mean = float(_trapz(K * fv, K))
     target = float(config.S0 * np.exp(config.r * T))
     fig, ax = plt.subplots(figsize=(7, 3.5), dpi=120)
     ax.plot(K, fv, color="#E94B3C", label="f(K)=e^{rT}∂²C/∂K²")

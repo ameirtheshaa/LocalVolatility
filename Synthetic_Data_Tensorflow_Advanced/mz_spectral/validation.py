@@ -9,7 +9,7 @@ from typing import Any, Dict, List, Tuple
 
 import numpy as np
 
-_trapz = getattr(np, "trapezoid", np.trapz)
+_trapz = getattr(np, "trapezoid", None) or np.trapz
 
 
 def payoff_phi_tilde(k_tilde: np.ndarray, S0: float, K_max: float) -> np.ndarray:

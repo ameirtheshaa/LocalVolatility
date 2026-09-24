@@ -24,6 +24,9 @@ from mz_spectral.validation import (
     spectral_pdf_filter,
 )
 
+# numpy.trapz was renamed numpy.trapezoid in numpy 2.0 and removed in 2.4; support both.
+_trapz = getattr(np, "trapezoid", None) or np.trapz
+
 DPI = 450
 
 # Align with dupire_pipeline.COLORS (avoid importing TF stack)
@@ -49,7 +52,7 @@ def nearest_time_index(T_column: np.ndarray, T_target: float) -> int:
 def _normalize_pdf(f: np.ndarray, K_row: np.ndarray) -> np.ndarray:
     f = np.maximum(np.asarray(f, dtype=float), 0.0)
     if len(K_row) > 1:
-        area = np.trapz(f, K_row)
+        area = _trapz(f, K_row)
         if area > 0:
             f /= area
     return f
@@ -132,7 +135,7 @@ def reference_pdf_row(
 
     if mc_samples is not None:
         f_mc = mc_kde_pdf_on_K_grid(mc_samples, K_row)
-        if np.trapz(f_mc, K_row) > 0:
+        if _trapz(f_mc, K_row) > 0:
             return f_mc
     return bl_pdf_from_phi_row(phi_truth_row, T, r, S0, K_max, K_row, D2)
 
@@ -148,7 +151,7 @@ def pdf_reference_is_mc_kde(
     if case != "paper" or samples is None:
         return False
     f_mc = mc_kde_pdf_on_K_grid(samples, K_row)
-    return float(np.trapz(f_mc, K_row)) > 0.0
+    return float(_trapz(f_mc, K_row)) > 0.0
 
 
 def _mc_samples_for_maturity(
@@ -263,7 +266,7 @@ def _density_to_mc_x_space(
     x_model = (np.log(K_grid) - mu_mc) / sigma_mc
     g = f_K * sigma_mc * K_grid
     if len(x_model) > 1:
-        integral_g = np.trapz(g, x_model)
+        integral_g = _trapz(g, x_model)
         if integral_g > 0:
             g = g / integral_g
     valid = (x_model >= -4) & (x_model <= 4)

@@ -32,6 +32,9 @@ import warnings
 
 import numpy as np
 
+# numpy.trapz was renamed numpy.trapezoid in numpy 2.0 and removed in 2.4; support both.
+_trapz = getattr(np, "trapezoid", None) or np.trapz
+
 warnings.filterwarnings("ignore", message="All-NaN slice encountered")
 warnings.filterwarnings("ignore", message="Mean of empty slice")
 
@@ -172,8 +175,8 @@ def phase_A(n_t=24, n_k=256, sigma_const=0.3, rel_noise=0.01, R=300, z=1.96, see
 
     # martingale / mass of the point density (clipped+normalized estimate)
     f_pt = pdf_from_phi_tilde(phi_truth[i_rep], T_rep, r, S0, K_max, Krow, D2, normalize=False)
-    mass = float(np.trapz(f_pt, Krow))
-    mean = float(np.trapz(Krow * f_pt, Krow))
+    mass = float(_trapz(f_pt, Krow))
+    mean = float(_trapz(Krow * f_pt, Krow))
     martingale = {"int_f": mass, "int_Kf": mean, "S0_erT": float(S0 * np.exp(r * T_rep)),
                   "mean_rel_err": float(abs(mean - S0 * np.exp(r * T_rep)) / (S0 * np.exp(r * T_rep)))}
 

@@ -40,6 +40,9 @@ import json
 
 import numpy as np
 
+# numpy.trapz was renamed numpy.trapezoid in numpy 2.0 and removed in 2.4; support both.
+_trapz = getattr(np, "trapezoid", None) or np.trapz
+
 # --- path setup: make the package root importable (mirrors every example) ---
 _ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if _ROOT not in sys.path:
@@ -116,17 +119,17 @@ def _sym_second_derivative(n, dk):
 def _standardized_cumulants(K_row, f):
     """Return (skew, excess_kurtosis) of a (normalized) density f on grid K_row."""
     f = np.clip(np.asarray(f, dtype=float), 0.0, None)
-    area = np.trapz(f, K_row)
+    area = _trapz(f, K_row)
     if not np.isfinite(area) or area <= 0:
         return np.nan, np.nan
     f = f / area
-    m1 = np.trapz(K_row * f, K_row)
-    var = np.trapz((K_row - m1) ** 2 * f, K_row)
+    m1 = _trapz(K_row * f, K_row)
+    var = _trapz((K_row - m1) ** 2 * f, K_row)
     if not np.isfinite(var) or var <= 0:
         return np.nan, np.nan
     sd = np.sqrt(var)
-    mu3 = np.trapz((K_row - m1) ** 3 * f, K_row)
-    mu4 = np.trapz((K_row - m1) ** 4 * f, K_row)
+    mu3 = _trapz((K_row - m1) ** 3 * f, K_row)
+    mu4 = _trapz((K_row - m1) ** 4 * f, K_row)
     skew = mu3 / sd ** 3
     exkurt = mu4 / var ** 2 - 3.0
     return float(skew), float(exkurt)
@@ -272,13 +275,13 @@ def step_0b(n_t=24, n_k=256, keeps=(16, 32, 64, 128), keep_detail=64, sigma_cons
             T, Krow = float(grid.T[i]), grid.K[i]
             f_truth = pdf_from_phi_tilde(phi_truth[i], T, r, S0, K_max, Krow, D2, normalize=True)
             f_exact = lognormal_density(Krow, S0, T, r, sigma_const)
-            f_exact = f_exact / np.trapz(f_exact, Krow)
+            f_exact = f_exact / _trapz(f_exact, Krow)
             f_rrr = pdf_from_phi_tilde(phi_rrr[i], T, r, S0, K_max, Krow, D2, normalize=True)
             f_ql = pdf_from_phi_tilde(phi_ql[i], T, r, S0, K_max, Krow, D2, normalize=True)
             km = interior_k_mask(Krow)
             detail = {
                 "keep": keep, "T": T,
-                "sanity_l2_truthBL_vs_lognormal": float(np.sqrt(np.trapz((f_truth - f_exact) ** 2, Krow))),
+                "sanity_l2_truthBL_vs_lognormal": float(np.sqrt(_trapz((f_truth - f_exact) ** 2, Krow))),
                 "pdf_rrr_interior": _jsonable(pdf_metrics(f_rrr, f_exact, Krow, k_mask=km)),
                 "pdf_ql_interior": _jsonable(pdf_metrics(f_ql, f_exact, Krow, k_mask=km)),
                 "pdf_rrr_tail": _jsonable(pdf_metrics(f_rrr, f_exact, Krow, k_mask=~km)),
@@ -363,8 +366,8 @@ def step_1(n_t=40, n_k=256, K_min=100.0, K_max=6000.0):
             Krow = grid.K[i]
             f = pdf_from_phi_tilde(phi[i], float(grid.T[i]), r, S0, K_max, Krow, D2, normalize=True)
             fx = lognormal_density(Krow, S0, float(grid.T[i]), r, 0.30)
-            fx = fx / np.trapz(fx, Krow)
-            sanity = float(np.sqrt(np.trapz((f - fx) ** 2, Krow)))
+            fx = fx / _trapz(fx, Krow)
+            sanity = float(np.sqrt(_trapz((f - fx) ** 2, Krow)))
 
     X = np.array(rows)  # (n_samples, 2) = (skew, exkurt)
     # z-score columns so PCA measures shape-correlation, not raw scale

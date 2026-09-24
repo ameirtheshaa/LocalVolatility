@@ -60,6 +60,9 @@ if _ROOT not in sys.path:
 
 import numpy as np
 import matplotlib
+
+# numpy.trapz was renamed numpy.trapezoid in numpy 2.0 and removed in 2.4; support both.
+_trapz = getattr(np, "trapezoid", None) or np.trapz
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
@@ -366,8 +369,8 @@ def _eval_arm(model: DupireNeuralModel, config: DupirePipelineConfig,
             K_g, f_tf = model._density_tf(T_tf)
             f_np = f_tf.numpy().ravel()
             K_np = K_g.numpy().ravel()
-            neg_mass_list.append(float(np.trapz(np.maximum(-f_np, 0.0), K_np)))
-            mean_est = float(np.trapz(K_np * f_np, K_np))
+            neg_mass_list.append(float(_trapz(np.maximum(-f_np, 0.0), K_np)))
+            mean_est = float(_trapz(K_np * f_np, K_np))
             fwd = S0 * math.exp(r * float(T_val))
             mart_resid_list.append(abs(mean_est - fwd) / max(fwd, 1e-12))
         except Exception:

@@ -66,12 +66,13 @@ def fit_nu_ql(
         lhs = P_R @ dphi - L_RR_rows[i] @ phi_R
         q = P_R @ (D2 @ phi_R)
         num = float(np.dot(lhs, q))
-        den = float(np.dot(q, q)) + ridge
+        qq = float(np.dot(q, q))
+        den = qq + ridge
         nu_i = num / den
         nu_i = float(np.clip(nu_i, nu_lo, nu_clip))
         nu_steps.append(nu_i)
         numers.append(num)
-        denoms.append(den + ridge)
-    nu_global_raw = float(sum(numers) / (sum(denoms) + 1e-16))
+        denoms.append(qq)
+    nu_global_raw = float(sum(numers) / (sum(denoms) + ridge + 1e-16))
     nu_global = float(np.clip(nu_global_raw, nu_lo, nu_clip))
     return nu_global, np.asarray(nu_steps, dtype=float)

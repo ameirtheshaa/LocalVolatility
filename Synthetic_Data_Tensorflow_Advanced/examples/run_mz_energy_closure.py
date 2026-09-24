@@ -40,6 +40,9 @@ import warnings
 
 import numpy as np
 
+# numpy.trapz was renamed numpy.trapezoid in numpy 2.0 and removed in 2.4; support both.
+_trapz = getattr(np, "trapezoid", None) or np.trapz
+
 warnings.filterwarnings("ignore", message="All-NaN slice encountered")
 warnings.filterwarnings("ignore", message="Mean of empty slice")
 
@@ -108,7 +111,7 @@ def phase_A(n_t=24, n_k=256, sigma_const=0.3):
 
     # truth density on the strike grid: exact lognormal (constant-sigma ground truth)
     f_ref = lognormal_density(Krow, S0, T_rep, r, sigma_const)
-    f_ref = f_ref / np.trapz(f_ref, Krow)
+    f_ref = f_ref / _trapz(f_ref, Krow)
 
     # Extract the standardized log-return moments the closure consumes on a WIDE grid:
     # the canonical [K_min,K_max] grid truncates the lognormal's tails and would inject a
@@ -116,7 +119,7 @@ def phase_A(n_t=24, n_k=256, sigma_const=0.3):
     # reads skew≈0, exkurt≈0 -> the closure collapses to the pure Gaussian core (E_tail≈0).
     K_wide = np.linspace(50.0, 20000.0, 8000)
     f_wide = lognormal_density(K_wide, S0, T_rep, r, sigma_const)
-    f_wide = f_wide / np.trapz(f_wide, K_wide)
+    f_wide = f_wide / _trapz(f_wide, K_wide)
     mu_x, s2_x, skew_Y, exk_Y = ec.log_return_moments(f_wide, K_wide, S0)
     coeffs = ec.coeffs_from_skew_kurt(skew_Y, exk_Y)
     E_tail = ec.E_tail(coeffs)
@@ -130,7 +133,7 @@ def phase_A(n_t=24, n_k=256, sigma_const=0.3):
     # since the lognormal has ~3% mass outside), so l2(closure, f_ref) carries that
     # renormalization mismatch; l2 vs the exact analytic density is the true machinery floor.
     f_exact = lognormal_density(Krow, S0, T_rep, r, sigma_const)
-    l2_vs_exact = float(np.sqrt(np.trapz(((f_me - f_exact) ** 2)[km], Krow[km])))
+    l2_vs_exact = float(np.sqrt(_trapz(((f_me - f_exact) ** 2)[km], Krow[km])))
 
     # invariants on a WIDE grid (by-construction exactness over the full line)
     Kw = _wide_K_grid(s2_x, aux_me["mu_T"], S0)

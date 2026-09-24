@@ -57,10 +57,8 @@ import forward_test as FT      # noqa: E402
 from config import DupirePipelineConfig   # noqa: E402
 from dupire_pipeline import PDFAnalyzer   # noqa: E402
 
-# np.trapz was removed in numpy 2.0 in favour of the identical np.trapezoid.  dupire_pipeline
-# still calls np.trapz, so it only runs under numpy < 2, while this module was written against
-# numpy >= 2 -- importing the pipeline here forces the two to coexist.  The two functions are
-# the same routine under two names, so aliasing is numerically a no-op.
+# np.trapz was renamed np.trapezoid in numpy 2.0 (and removed in 2.4); the two are the same
+# routine, so this alias is numerically a no-op and lets the module run under either numpy.
 _trapz = getattr(np, "trapezoid", None) or np.trapz
 
 DAY = "7aug"
