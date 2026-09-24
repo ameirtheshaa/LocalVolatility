@@ -1374,11 +1374,12 @@ class ModelTrainer:
         print(f"Lambda Mart: {self.model.lambda_mart}")
         print(f"Lambda Pos: {self.model.lambda_pos}")
         print(f"Learning rate (phi): {self.config.lr_phi}")
-        print(f"Learning rate (eta): {self.config.lr_eta}")
+        eta_ratio = getattr(self.config, 'lr_eta_ratio', 1.0)
+        print(f"Learning rate (eta): {self.config.lr_phi * eta_ratio} (lr_phi x {eta_ratio})")
 
         learning_rate = self.config.lr_phi
         self.model.optimizer_NN_phi.learning_rate.assign(learning_rate)
-        self.model.optimizer_NN_eta.learning_rate.assign(learning_rate / 10)
+        self.model.optimizer_NN_eta.learning_rate.assign(learning_rate * eta_ratio)
 
         loss_phi_list = []
         loss_dupire_list = []
@@ -1462,7 +1463,7 @@ class ModelTrainer:
             if iter_ % self.config.lr_decay_steps == 0 and iter_ != 0:
                 learning_rate /= self.config.lr_decay_rate
                 self.model.optimizer_NN_phi.learning_rate.assign(learning_rate)
-                self.model.optimizer_NN_eta.learning_rate.assign(learning_rate / 10)
+                self.model.optimizer_NN_eta.learning_rate.assign(learning_rate * eta_ratio)
 
             # Save checkpoints and visualize
             if iter_ % self.config.save_epochs == 0 and iter_ != 0:
@@ -2643,8 +2644,15 @@ class DupirePipeline:
         # Get random sampling bounds
         t_min = tf.reduce_min(t_tilde).numpy()
         t_max = tf.reduce_max(t_tilde).numpy()
-        k_min = tf.reduce_min(k_tilde).numpy()
-        k_max = tf.reduce_max(k_tilde).numpy()
+        domain = getattr(self.config, 'collocation_domain', 'unit')
+        if domain == 'unit':
+            k_min, k_max = 0.0, 1.0
+        elif domain == 'data_bbox':
+            k_min = tf.reduce_min(k_tilde).numpy()
+            k_max = tf.reduce_max(k_tilde).numpy()
+        else:
+            raise ValueError(f"collocation_domain must be 'unit' or 'data_bbox', got {domain!r}")
+        print(f"  Collocation k_tilde domain ({domain}): [{k_min:.3f}, {k_max:.3f}]")
 
         # Build model
         model = DupireNeuralModel(self.config, data_gen)
@@ -2893,6 +2901,13 @@ Examples:
                        help='Number of residual blocks (default: 3)')
     parser.add_argument('--lr', type=float, default=None,
                        help='Learning rate (default: 1e-4)')
+    parser.add_argument('--lr-eta-ratio', dest='lr_eta_ratio', type=float, default=None,
+                       help='NN_eta learning rate as a multiple of --lr (default: 1.0; '
+                            '0.1 reproduces pre-fix runs)')
+    parser.add_argument('--collocation-domain', dest='collocation_domain', default=None,
+                       choices=['unit', 'data_bbox'],
+                       help="k_tilde collocation range: 'unit' = [0,1] (default) or "
+                            "'data_bbox' = training-quote min/max (pre-fix behaviour)")
 
     # Data generation parameters
     parser.add_argument('--M-train', type=int, default=None,
@@ -2937,9 +2952,13 @@ Examples:
         config.lambda_k0 = args.lambda_k0
     if args.num_res_blocks is not None:
         config.num_res_blocks = args.num_res_blocks
+    if args.lr_eta_ratio is not None:
+        config.lr_eta_ratio = args.lr_eta_ratio
+    if args.collocation_domain is not None:
+        config.collocation_domain = args.collocation_domain
     if args.lr is not None:
         config.lr_phi = args.lr
-        config.lr_eta = args.lr / 10
+        config.lr_eta = args.lr * config.lr_eta_ratio
     if args.M_train is not None:
         config.M_train = args.M_train
     if args.output_dir is not None:

@@ -679,8 +679,21 @@ class DupirePipelineConfig:
     # If training is too slow: increase to 5e-4
 
     lr_eta: float = 1e-4
-    # Learning rate for volatility network (NN_eta)
-    # Often set to lr_phi / 10 (volatility is harder to learn)
+    # Informational only: ModelTrainer drives NN_eta at lr_phi * lr_eta_ratio
+    # (decayed together with lr_phi), not at this value.
+
+    lr_eta_ratio: float = 1.0
+    # NN_eta learning rate as a multiple of lr_phi. 1.0 matches the published
+    # notebook (opt_eta uses the SAME rate as opt_phi). The pipeline used to
+    # hardcode 0.1, which trained eta 10x too slowly (journal_dec10_onward.tex,
+    # "root cause found"). Set 0.1 to reproduce runs made before this flag.
+
+    collocation_domain: str = 'unit'
+    # k_tilde range for PDE/BC collocation sampling:
+    #   'unit'      = [0, 1], the notebook's unit square; covers deep ITM down to K=0
+    #   'data_bbox' = [min, max] of the training quotes' k_tilde (old behaviour,
+    #                 drops ~35% of the domain; journal_dec10_onward.tex,
+    #                 "second regression: the collocation domain")
 
     lr_decay_rate: float = 1.1
     # Learning rate decay factor
