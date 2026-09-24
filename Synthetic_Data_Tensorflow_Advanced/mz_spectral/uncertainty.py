@@ -42,6 +42,9 @@ from scipy.ndimage import gaussian_filter1d
 from .validation import pdf_from_phi_tilde, interior_k_mask
 from .sigma_from_phi import implied_sigma_from_phi, sigma_reliability_mask
 
+# numpy.trapz was renamed numpy.trapezoid in numpy 2.0 and removed in 2.4; support both.
+_trapz = getattr(np, "trapezoid", None) or np.trapz
+
 
 def smooth_phi_k(phi, smooth_k):
     """Gaussian-smooth phi~ along the strike (k~) axis by `smooth_k` grid points.
@@ -115,7 +118,7 @@ def gaussian_mollifier_bank(K_row, h):
     dK = K_row[:, None] - K_row[None, :]                  # (center, eval)
     Psi = np.exp(-0.5 * (dK / h) ** 2) / (np.sqrt(2.0 * np.pi) * h)
     # renormalize each bump to unit mass on the actual (possibly nonuniform) K grid
-    mass = np.trapz(Psi, K_row, axis=1)
+    mass = _trapz(Psi, K_row, axis=1)
     mass = np.where(mass > 0, mass, 1.0)
     return Psi / mass[:, None]
 

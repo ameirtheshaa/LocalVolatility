@@ -191,6 +191,9 @@ from scipy import interpolate
 from scipy.stats import norm, skew, kurtosis, gaussian_kde
 from sklearn.neighbors import KernelDensity
 
+# numpy.trapz was renamed numpy.trapezoid in numpy 2.0 and removed in 2.4; support both.
+_trapz = getattr(np, "trapezoid", None) or np.trapz
+
 # Import configurations from separate config module
 from config import (
     VolatilityConfig,
@@ -2017,7 +2020,7 @@ class PDFAnalyzer:
 
         # Normalize
         if len(K_grid) > 1 and np.sum(density) > 0:
-            integral = np.trapz(density, K_grid)
+            integral = _trapz(density, K_grid)
             if integral > 0:
                 density = density / integral
 
@@ -2073,12 +2076,12 @@ class PDFAnalyzer:
                      5.0 * K_max_plot)
         K_wide = np.linspace(0.0, K_tail, 5000, dtype=np.float64)
         density_wide = self._raw_model_density(T, K_wide)
-        mean_nn_density_wide = float(np.trapz(K_wide * density_wide, K_wide))
+        mean_nn_density_wide = float(_trapz(K_wide * density_wide, K_wide))
         tail_mass_check = float(density_wide[-1] * K_wide[-1])
 
         # (i') existing plot grid
         density_plot = self._raw_model_density(T, K_grid_plot)
-        mean_nn_density_plot = float(np.trapz(K_grid_plot * density_plot,
+        mean_nn_density_plot = float(_trapz(K_grid_plot * density_plot,
                                               K_grid_plot))
 
         # (ii) e^(rT) * C_NN(K=0, T); C = S0 * phi_tilde
@@ -2116,15 +2119,15 @@ class PDFAnalyzer:
         if len(K_grid) < 2:
             return None, None, None, None, None, None
 
-        integral = np.trapz(f_vals, K_grid)
+        integral = _trapz(f_vals, K_grid)
         if integral <= 0:
             return None, None, None, None, None, None
 
         f_vals_norm = f_vals / integral
 
         # Compute moments CORRECTLY
-        mean_K = np.trapz(K_grid * f_vals_norm, K_grid)
-        second_moment = np.trapz((K_grid**2) * f_vals_norm, K_grid)
+        mean_K = _trapz(K_grid * f_vals_norm, K_grid)
+        second_moment = _trapz((K_grid**2) * f_vals_norm, K_grid)
         var_K = second_moment - mean_K**2
 
         if var_K <= 0 or mean_K <= 0:
@@ -2147,7 +2150,7 @@ class PDFAnalyzer:
         # Normalize in x-space
         # Use trapz for proper integration with non-uniform spacing
         if len(x_vals) > 1:
-            integral_x = np.trapz(g_vals, x_vals)
+            integral_x = _trapz(g_vals, x_vals)
             if integral_x > 0:
                 g_vals = g_vals / integral_x
 
@@ -2384,7 +2387,7 @@ class PDFAnalyzer:
                     
                     # Normalize in x-space
                     if len(x_model_mc_space) > 1:
-                        integral_g = np.trapz(g_model_mc_space, x_model_mc_space)
+                        integral_g = _trapz(g_model_mc_space, x_model_mc_space)
                         if integral_g > 0:
                             g_model_mc_space = g_model_mc_space / integral_g
                     
