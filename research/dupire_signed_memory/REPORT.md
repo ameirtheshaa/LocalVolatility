@@ -227,7 +227,12 @@ memory is "cosmetic" stands; its explanation (anti-diffusion is unphysical) does
   `python3 research/dupire_signed_memory/scripts/run_all.py --resume` re-runs only what is
   missing. Interruption/resume is exercised by `tests/test_resume.py` and by
   `scripts/restore_rehearsal.sh` (fresh clone, venv, tests, Gate 1 recomputed and compared
-  numerically with the committed JSON, interrupted + resumed Gate 2 case).
+  numerically with the committed JSON, interrupted + resumed Gate 2 case). Rehearsal outcome
+  on 2026-11-04 from a fresh clone of commit `f68a9ce`: 12 tests passed, Gate 1 and the resumed
+  Gate 2 case agreed with the committed results on every numeric field (`verify_results.py`).
+  Two earlier rehearsal runs failed on exactly this comparison and caught stale diagnostic
+  fields (`kernel_norms` computed with the spectral norm before the Frobenius change); the
+  affected 16 result files were regenerated with the committed code.
 * Failed attempts preserved in Git history: the first Gate 2 run (kernel-norm overflow on the
   production split, commit `90f2a2b`) and the first Gate 3 run (progress-print bug that
   overwrote finished blocks, fixed in `9fd4120`).
