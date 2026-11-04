@@ -345,7 +345,7 @@ physical truth, except on the control where Black–Scholes confirms it (`4e-6`)
 
 ## 8. Release and recovery
 
-* Code: `dsm/`, `scripts/`, `tests/` (12 tests, ~10 s). Dependencies: `requirements.txt`
+* Code: `dsm/`, `scripts/`, `tests/` (13 tests, ~30 s). Dependencies: `requirements.txt`
   (NumPy 2.5.3, SciPy 1.18.1, matplotlib, pytest; Python 3.13 verified).
 * Results: `results/gate1/gate1_contract.json`, `results/gate2/*.json` (+ `basis/`),
   `results/gate3/blocks/*.json`, `results/gate4/{evaluation.json,TABLES.md}`; surrogate weights
@@ -361,7 +361,10 @@ physical truth, except on the control where Black–Scholes confirms it (`4e-6`)
   Gate 2 case agreed with the committed results on every numeric field (`verify_results.py`).
   Two earlier rehearsal runs failed on exactly this comparison and caught stale diagnostic
   fields (`kernel_norms` computed with the spectral norm before the Frobenius change); the
-  affected 16 result files were regenerated with the committed code.
+  affected 16 result files were regenerated with the committed code. Wrap-up rehearsal on
+  commit `58d7fa7` (after the scoring correction, the identity scheme and Gate 5): 13 tests
+  passed, Gate 1 agreed with the committed result on every numeric field, and the interrupted
+  Gate 2 case was reused by identity on resume and agreed with the committed, stamped result.
 * Failed attempts preserved in Git history: the first Gate 2 run (kernel-norm overflow on the
   production split, commit `90f2a2b`) and the first Gate 3 run (progress-print bug that
   overwrote finished blocks, fixed in `9fd4120`).
