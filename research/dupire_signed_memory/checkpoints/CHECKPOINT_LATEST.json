@@ -24,10 +24,10 @@
  "extra": {},
  "gate": "gate4",
  "git_dirty_tracked_areas": true,
- "git_head": "174f4da2aa24163e03193758d6db25c05b7c134f",
+ "git_head": "1a9d0604d334dc767205a8fc8ff5e11d73e8d92a",
  "next_command": "python3 research/dupire_signed_memory/scripts/run_all.py --resume",
  "result_checksums": {
-  "results/gate4/evaluation.json": "4a91cad73ddc5c596cbaeb222783119e01c338731344ce7bd0a218b6bdada8b7"
+  "results/gate4/evaluation.json": "8d4683abc4408370b4a18e54340424c2b1c35715d13a3eae3e7e15614eee9776"
  },
  "seeds": {},
  "source_identities": {
@@ -55,5 +55,5 @@
   "research/dupire_signed_memory/scripts/run_all.py": "92343d03f4e53ffd355f37e7144b2f8e89e1513634c13910198d0935b8e56f4e",
   "research/dupire_signed_memory/scripts/verify_results.py": "e296938e553816f704caeda0977a9cad0306360400b34811526c952038df941b"
  },
- "timestamp_utc": "2026-11-04T08:15:37Z"
+ "timestamp_utc": "2026-11-04T08:18:36Z"
 }

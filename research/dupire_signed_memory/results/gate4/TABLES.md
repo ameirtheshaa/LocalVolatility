@@ -16,6 +16,7 @@
 | variant | case | grid 256 vs 512 interior RMS | time sub16 vs sub32 (D) | domain truncation interior RMS |
 |---|---|---|---|---|
 | A | C_sig0.30 | 4.59e-06 | – | 3.22e-05 |
+| B | C_sig0.30 | 4.03e-06 | – | 1.99e-05 |
 | A | D_base0.30 | 4.36e-04 | 1.00e-07 | 2.75e-02 |
 | B | D_base0.30 | 3.03e-06 | 5.97e-08 | 5.82e-03 |
 | A | S_seed8 | 4.42e-06 | – | 4.07e-06 |
