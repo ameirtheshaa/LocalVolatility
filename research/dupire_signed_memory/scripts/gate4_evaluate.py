@@ -102,6 +102,31 @@ def support_summary(block, u):
     return out
 
 
+def check_inputs(n_k: int, sub: int, keeps, variants=("A", "B")):
+    """Every expected Gate 2 case and Gate 3 block must be present, uncorrupted and computed under
+    the current identity (code, inputs, grid, step, refinement); otherwise the evaluation is refused."""
+    import importlib.util
+    def load(name):
+        spec = importlib.util.spec_from_file_location(name, os.path.join(os.path.dirname(os.path.abspath(__file__)), name + ".py"))
+        m = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(m)
+        return m
+    g2, g3 = load("gate2_reference"), load("gate3_compare")
+    problems = []
+    for case in cases.all_cases():
+        for v in variants:
+            refine = case.id in cases.REFINEMENT_CASES
+            st, detail = checkpoint.result_status(os.path.join(G2, f"{case.id}__{v}.json"), g2.case_identity(case, v, n_k, sub, refine, keeps))
+            if st != "done":
+                problems.append(f"gate2 {case.id}__{v}: {st} {detail}")
+    for v in variants:
+        for k in keeps:
+            st, detail = checkpoint.result_status(os.path.join(G3, f"{v}_keep{k}.json"), g3.block_identity(v, k, n_k, sub, True))
+            if st != "done":
+                problems.append(f"gate3 {v}_keep{k}: {st} {detail}")
+    return problems
+
+
 def main():
     global RULE, NEGMASS_KEY, U_SOURCE
     import argparse
@@ -110,9 +135,20 @@ def main():
     ap.add_argument("--negmass", choices=["negative_mass_max", "negative_mass_T_max"], default="negative_mass_max")
     ap.add_argument("--u-source", choices=["train", "all"], default="train")
     ap.add_argument("--suffix", default="", help="output file suffix (e.g. _Tmax)")
+    ap.add_argument("--n_k", type=int, default=256)
+    ap.add_argument("--sub", type=int, default=16)
+    ap.add_argument("--allow-partial", action="store_true", help="score whatever is present (problems are listed in the output)")
     args = ap.parse_args()
     RULE, NEGMASS_KEY, U_SOURCE = args.rule, args.negmass, args.u_source
     t0 = time.time()
+    problems = check_inputs(args.n_k, args.sub, cases.KEEPS)
+    if problems:
+        print(f"input check: {len(problems)} problem(s):")
+        for pr in problems:
+            print("  ", pr)
+        if not args.allow_partial:
+            print("refusing to evaluate (use --allow-partial to score what is present)")
+            sys.exit(2)
     g2 = {}
     for p in sorted(glob.glob(os.path.join(G2, "*__*.json"))):
         d = json.load(open(p))
@@ -256,6 +292,7 @@ def main():
            f"H-scalar supported in at least one block: {ev['verdict']['H_scalar_supported_anywhere']}.",
            f"H-state supported in at least one block: {ev['verdict']['H_state_supported_anywhere']}.", ""]
     ev["scoring"] = {"rule": RULE, "negmass_key": NEGMASS_KEY, "u_source": U_SOURCE}
+    ev["input_check"] = {"n_k": args.n_k, "sub": args.sub, "problems": problems, "allow_partial": bool(args.allow_partial)}
     md.insert(1, f"Scoring: rule = {RULE}, negative-mass metric = {NEGMASS_KEY}, refinement band from = {U_SOURCE} refinement cases (see FROZEN_PLAN.md Addendum 2).")
     ev["wall_seconds"] = time.time() - t0
     ev["status"] = "done"

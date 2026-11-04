@@ -8892,6 +8892,12 @@
    "u_v1_all_cases": 0.006152926978323391
   }
  },
+ "input_check": {
+  "allow_partial": false,
+  "n_k": 256,
+  "problems": [],
+  "sub": 16
+ },
  "n_gate2_cases": 36,
  "n_gate3_blocks": 6,
  "reference": {
@@ -9286,5 +9292,5 @@
    ]
   }
  },
- "wall_seconds": 0.14049911499023438
+ "wall_seconds": 0.09532809257507324
 }

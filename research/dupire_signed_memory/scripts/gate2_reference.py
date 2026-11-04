@@ -23,6 +23,14 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from dsm import cases, checkpoint, metrics, mz, operators as op, reference, repo  # noqa: E402
 
 OUT = os.path.join(checkpoint.RESULTS, "gate2")
+ALGO_VERSION = 1   # bump when the numerics of this script change (identity component)
+
+
+def case_identity(case: cases.Case, variant: str, n_k: int, sub: int, refine: bool, keeps) -> dict:
+    cfg = repo.DupirePipelineConfig()
+    return checkpoint.make_identity(gate="gate2", algo=ALGO_VERSION, case=case.config_hash(), case_id=case.id,
+                                    variant=variant, n_k=int(n_k), sub=int(sub), K_min=float(cfg.K_min),
+                                    K_max=float(cfg.K_max), keeps=list(keeps), refine=bool(refine))
 
 
 def case_diagnostics(case: cases.Case, variant: str, n_k: int, sub: int, keeps) -> dict:
@@ -180,7 +188,7 @@ def main():
     ap.add_argument("--variants", default="A,B")
     ap.add_argument("--only", default="", help="comma-separated case ids")
     ap.add_argument("--no-refine", action="store_true")
-    ap.add_argument("--resume", action="store_true", help="skip cases already done with matching config hash")
+    ap.add_argument("--resume", action="store_true", help="reuse results whose identity (code, inputs, grid, step, refinement) matches")
     ap.add_argument("--max-cases", type=int, default=0, help="stop after this many newly computed cases (interruption test)")
     args = ap.parse_args()
     cmd = "python3 research/dupire_signed_memory/scripts/gate2_reference.py --resume"
@@ -190,27 +198,46 @@ def main():
     if args.only:
         ids = set(args.only.split(","))
         todo = [c for c in todo if c.id in ids]
-    done, failed, pending = [], [], []
+    planned = [f"{case.id}__{variant}" for case in todo for variant in variants]
+    manifest = checkpoint.RunManifest("gate2", planned)
+    if manifest.previous_interrupted:
+        print(f"previous run interrupted: {manifest.previous_interrupted}", flush=True)
+    done, failed, pending, reused = [], [], [], []
+    invalidated = {}
+    before = {}
     computed = 0
     t0 = time.time()
     for case in todo:
         for variant in variants:
             cid = f"{case.id}__{variant}"
             path = os.path.join(OUT, cid + ".json")
-            if args.resume and checkpoint.result_is_done(path, case.config_hash()):
+            refine = (not args.no_refine) and case.id in cases.REFINEMENT_CASES
+            ident = case_identity(case, variant, args.n_k, args.sub, refine, keeps)
+            status, detail = checkpoint.result_status(path, ident)
+            before[cid] = status
+            if status == "done" and args.resume:
                 done.append(cid)
+                reused.append(cid)
                 continue
+            if status in ("stale", "corrupted", "failed", "incomplete"):
+                old = checkpoint.supersede(path)
+                invalidated[cid] = {"status": status, "detail": detail, "kept_as": os.path.relpath(old, checkpoint.OUTPUT_ROOT) if old else None}
+                print(f"[{cid}] {status}: {detail} -> recomputing (old file kept)", flush=True)
             if args.max_cases and computed >= args.max_cases:
                 pending.append(cid)
                 continue
+            manifest.start(cid)
             try:
                 t1 = time.time()
                 res = case_diagnostics(case, variant, args.n_k, args.sub, keeps)
-                if not args.no_refine and case.id in cases.REFINEMENT_CASES:
+                if refine:
                     res["refinement"] = refinement_checks(case, variant, args.sub, keeps)
                 res["status"] = "done"
+                res["identity"] = ident
+                res["identity_hash"] = checkpoint.identity_hash(ident)
                 res["wall_seconds"] = time.time() - t1
                 checkpoint.write_json(path, res)
+                manifest.done(cid)
                 done.append(cid)
                 computed += 1
                 pk = res["per_keep"]
@@ -221,19 +248,28 @@ def main():
             except Exception:
                 tb = traceback.format_exc()
                 checkpoint.write_json(path, {"case": case.id, "variant": variant, "config_hash": case.config_hash(),
-                                             "status": "failed", "traceback": tb})
+                                             "identity": ident, "status": "failed", "traceback": tb})
+                manifest.failed(cid)
                 failed.append(cid)
                 print(f"[{cid}] FAILED\n{tb}", flush=True)
-    summary = {"done": done, "failed": failed, "pending": pending, "wall_seconds": time.time() - t0,
-               "config": vars(args)}
+    manifest.finish()
+    counts = {k: sum(1 for v in before.values() if v == k) for k in ("done", "missing", "stale", "corrupted", "failed", "incomplete")}
+    summary = {"done": done, "failed": failed, "pending": pending, "reused": reused, "computed": computed,
+               "invalidated": invalidated, "status_before_run": counts, "previous_interrupted": manifest.previous_interrupted,
+               "wall_seconds": time.time() - t0, "config": vars(args),
+               "identity_components": {"code": checkpoint.numerical_code_identity(), "algo": ALGO_VERSION}}
     checkpoint.write_json(os.path.join(OUT, "summary.json"), summary)
     exit_code = 0 if not failed else 1
     checkpoint.save_checkpoint("gate2", command=cmd, exit_code=exit_code, done=done, failed=failed, pending=pending,
-                               seeds={"family_S": list(cases.SPLIT_S.keys())}, config=vars(args),
+                               seeds={"family_S": list(cases.SPLIT_S.keys())},
+                               config={**vars(args), "algo_version": ALGO_VERSION, "code_identity": checkpoint.numerical_code_identity()},
+                               extra={"reused": len(reused), "computed": computed, "invalidated": invalidated,
+                                      "status_before_run": counts, "previous_interrupted": manifest.previous_interrupted},
                                next_command=("python3 research/dupire_signed_memory/scripts/gate2_reference.py --resume"
                                              if (pending or failed) else
                                              "python3 research/dupire_signed_memory/scripts/gate3_compare.py --resume"))
-    print(f"gate2: done={len(done)} failed={len(failed)} pending={len(pending)} in {summary['wall_seconds']:.0f}s")
+    print(f"gate2: done={len(done)} (reused {len(reused)}, computed {computed}) failed={len(failed)} pending={len(pending)} "
+          f"invalidated={len(invalidated)} before={counts} in {summary['wall_seconds']:.0f}s")
     sys.exit(exit_code)
 
 

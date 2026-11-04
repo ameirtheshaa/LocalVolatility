@@ -28,6 +28,123 @@ SOURCE_FILES = [
 ]
 
 
+NUMERICAL_MODULES = ["dsm/operators.py", "dsm/cases.py", "dsm/reference.py", "dsm/mz.py",
+                     "dsm/closures.py", "dsm/metrics.py"]
+IDENTITY_SCHEMA = 2
+
+
+def numerical_code_identity() -> str:
+    """sha256 over the modules that determine every number (not the plumbing in this file or the
+    gate scripts, whose numerical choices are captured by their ALGO_VERSION). The environment
+    variable DSM_CODE_IDENTITY_OVERRIDE exists only for tests."""
+    ov = os.environ.get("DSM_CODE_IDENTITY_OVERRIDE")
+    if ov:
+        return ov
+    h = hashlib.sha256()
+    for rel in NUMERICAL_MODULES:
+        p = os.path.join(STUDY_ROOT, rel)
+        h.update(rel.encode())
+        with open(p, "rb") as f:
+            h.update(f.read())
+    return h.hexdigest()[:16]
+
+
+def make_identity(**fields) -> Dict[str, Any]:
+    """Everything a result depends on: numerical code, inputs (case hash), grid, time step,
+    refinement settings and algorithm version. Stored in the result and compared on reuse."""
+    ident = {"schema": IDENTITY_SCHEMA, "code": numerical_code_identity()}
+    ident.update(fields)
+    return ident
+
+
+def identity_hash(identity: Dict[str, Any]) -> str:
+    return hashlib.sha256(json.dumps(identity, sort_keys=True, default=str).encode()).hexdigest()[:16]
+
+
+def result_status(path: str, identity: Dict[str, Any]):
+    """('done' | 'missing' | 'corrupted' | 'stale' | 'failed' | 'incomplete', detail)."""
+    if not os.path.isfile(path):
+        return "missing", ""
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            d = json.load(f)
+    except Exception as e:  # unreadable or truncated
+        return "corrupted", f"unreadable JSON: {e}"
+    if not isinstance(d, dict) or "status" not in d:
+        return "corrupted", "no status field"
+    if d["status"] == "failed":
+        return "failed", d.get("traceback", "")[-200:]
+    if d["status"] != "done":
+        return "incomplete", f"status={d['status']}"
+    stored = d.get("identity")
+    if stored is None or d.get("identity_hash") is None:
+        return "stale", "legacy result without identity (schema 1); run scripts/stamp_results.py to attribute it or recompute"
+    if d["identity_hash"] != identity_hash(identity):
+        diff = sorted(k for k in set(stored) | set(identity) if stored.get(k) != identity.get(k))
+        return "stale", f"identity differs in {diff}"
+    if d["identity_hash"] != identity_hash(stored):
+        return "corrupted", "identity_hash does not match the stored identity"
+    return "done", ""
+
+
+def supersede(path: str) -> Optional[str]:
+    """Keep a stale/corrupted result on disk under a timestamped name (evidence is never deleted)."""
+    if not os.path.isfile(path):
+        return None
+    new = path.replace(".json", "") + ".superseded." + time.strftime("%Y%m%dT%H%M%SZ", time.gmtime()) + ".json"
+    os.replace(path, new)
+    return new
+
+
+class RunManifest:
+    """Detects interrupted runs: in-progress case IDs are recorded before computing and cleared
+    after the result is written; a manifest left with in-progress IDs and a dead pid means the
+    previous run died there."""
+
+    def __init__(self, gate: str, planned: List[str]):
+        self.path = os.path.join(RESULTS, gate, "RUN_MANIFEST.json")
+        os.makedirs(os.path.dirname(self.path), exist_ok=True)
+        self.previous_interrupted: Dict[str, Any] = {}
+        old = read_json(self.path)
+        if old and old.get("in_progress") and not _pid_alive(old.get("pid")):
+            self.previous_interrupted = {"started_utc": old.get("started_utc"), "pid": old.get("pid"),
+                                         "in_progress": old.get("in_progress"), "completed": old.get("completed", [])}
+        self.data = {"gate": gate, "started_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "pid": os.getpid(),
+                     "planned": planned, "in_progress": [], "completed": [], "failed": [], "finished": False,
+                     "previous_interrupted": self.previous_interrupted}
+        self._write()
+
+    def _write(self):
+        write_json(self.path, self.data)
+
+    def start(self, cid: str):
+        self.data["in_progress"] = [cid]
+        self._write()
+
+    def done(self, cid: str):
+        self.data["in_progress"] = []
+        self.data["completed"].append(cid)
+        self._write()
+
+    def failed(self, cid: str):
+        self.data["in_progress"] = []
+        self.data["failed"].append(cid)
+        self._write()
+
+    def finish(self):
+        self.data["in_progress"] = []
+        self.data["finished"] = True
+        self._write()
+
+
+def _pid_alive(pid) -> bool:
+    try:
+        os.kill(int(pid), 0)
+        return True
+    except Exception:
+        return False
+
+
 def sha256_file(path: str) -> str:
     h = hashlib.sha256()
     with open(path, "rb") as f:
@@ -97,6 +214,7 @@ def read_json(path: str) -> Optional[dict]:
 
 
 def result_is_done(path: str, config_hash: str) -> bool:
+    """Legacy check (schema 1): case hash + status only. Superseded by result_status()."""
     d = read_json(path)
     return bool(d) and d.get("config_hash") == config_hash and d.get("status") == "done"
 

@@ -8,6 +8,26 @@
  "config_hash": "46619f18f2cc4f56",
  "family": "C",
  "h": 0.002173913043478261,
+ "identity": {
+  "K_max": 3000.0,
+  "K_min": 500.0,
+  "algo": 1,
+  "case": "46619f18f2cc4f56",
+  "case_id": "C_sig0.20",
+  "code": "302d37258262c714",
+  "gate": "gate2",
+  "keeps": [
+   16,
+   32,
+   64
+  ],
+  "n_k": 256,
+  "refine": false,
+  "schema": 2,
+  "sub": 16,
+  "variant": "B"
+ },
+ "identity_hash": "b4717ce9c0346454",
  "n_fine": 460,
  "n_k": 256,
  "operator": {
@@ -121,6 +141,10 @@
   "monotonicity_violation_frac_mean": 0.0
  },
  "split": "train",
+ "stamped": {
+  "attributed_commit": "7d7753c",
+  "stamped_utc": "2026-11-04T09:13:20Z"
+ },
  "status": "done",
  "sub": 16,
  "variant": "B",
