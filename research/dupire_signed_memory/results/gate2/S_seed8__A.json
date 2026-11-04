@@ -1,7 +1,151 @@
 {
  "case": "S_seed8",
  "config_hash": "8ac3149c882e289c",
- "status": "failed",
- "traceback": "Traceback (most recent call last):\n  File \"/home/user/LocalVolatility/research/dupire_signed_memory/scripts/gate2_reference.py\", line 209, in main\n    res = case_diagnostics(case, variant, args.n_k, args.sub, keeps)\n  File \"/home/user/LocalVolatility/research/dupire_signed_memory/scripts/gate2_reference.py\", line 97, in case_diagnostics\n    rec[\"kernel_norms\"] = dict(zip([str(t) for t in taus], mz.kernel_norms(B, taus).tolist()))\n                                                           ~~~~~~~~~~~~~~~^^^^^^^^^\n  File \"/home/user/LocalVolatility/research/dupire_signed_memory/dsm/mz.py\", line 94, in kernel_norms\n    out.append(float(np.linalg.norm(K, 2)))\n                     ~~~~~~~~~~~~~~^^^^^^\n  File \"/usr/local/lib/python3.13/site-packages/numpy/linalg/_linalg.py\", line 2822, in norm\n    ret = _multi_svd_norm(x, row_axis, col_axis, amax, 0)\n  File \"/usr/local/lib/python3.13/site-packages/numpy/linalg/_linalg.py\", line 2590, in _multi_svd_norm\n    result = op(svd(y, compute_uv=False), axis=-1, initial=initial)\n                ~~~^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.13/site-packages/numpy/linalg/_linalg.py\", line 1850, in svd\n    s = _umath_linalg.svd(a, signature=signature)\n  File \"/usr/local/lib/python3.13/site-packages/numpy/linalg/_linalg.py\", line 153, in _raise_linalgerror_svd_nonconvergence\n    raise LinAlgError(\"SVD did not converge\")\nnumpy.linalg.LinAlgError: SVD did not converge\n",
- "variant": "A"
+ "family": "S",
+ "h": 0.002173913043478261,
+ "n_fine": 460,
+ "n_k": 256,
+ "operator": {
+  "abscissa_L_end": 0.23256842460792235,
+  "numerical_abscissa_L_end": 11842.26860650273
+ },
+ "params": {
+  "b": 0.265394,
+  "c": 0.015936,
+  "s": 0.098728,
+  "seed": 8
+ },
+ "per_keep": {
+  "16": {
+   "abscissa_L_RR_end": -1.0231310057686422e-13,
+   "abscissa_L_UU_end": 115.7508254157328,
+   "dim_R": 33,
+   "kernel_norms": {
+    "0.001": 45051.21959295495,
+    "0.01": 152397.40002993468,
+    "0.1": 5325460685.989116,
+    "0.4": 6.417175494795575e+24
+   },
+   "markovian_norm_end": 97.18263107231853,
+   "memory_to_markovian_ratio_median": 0.9999854800213552,
+   "net_feedback_norm_end": 97.18225288585924,
+   "nu_fit_repo_nonneg": 0.0,
+   "nu_fit_repo_signed_clip": -0.0005,
+   "nu_fit_repo_steps_frac_negative_unclipped": 1.0,
+   "nu_fit_repo_unclipped": -0.017558344616622278,
+   "nu_star_den": 6564127011.095413,
+   "nu_star_num": -115258591.76124245,
+   "nu_star_operator": -0.01755886069334424,
+   "projection_err_interior_rms": 0.007777403227254641,
+   "unresolved_norm_mean": 0.4702842156662626,
+   "work_euclid_frac_positive": 1.0,
+   "work_euclid_mean": 6.504514244749342,
+   "work_weighted_frac_positive": 1.0,
+   "work_weighted_mean": 5941.105608382358
+  },
+  "32": {
+   "abscissa_L_RR_end": -4.235016091836004e-14,
+   "abscissa_L_UU_end": 628.7724882189586,
+   "dim_R": 65,
+   "kernel_norms": {
+    "0.001": 1587350.2802809754,
+    "0.01": 463025386.8056059,
+    "0.1": 1.7463578233368355e+33,
+    "0.4": 1.4583435188954454e+115
+   },
+   "markovian_norm_end": 291.67018139317577,
+   "memory_to_markovian_ratio_median": 0.9999983629344089,
+   "net_feedback_norm_end": 291.67010852459174,
+   "nu_fit_repo_nonneg": 0.0,
+   "nu_fit_repo_signed_clip": -0.0005,
+   "nu_fit_repo_steps_frac_negative_unclipped": 1.0,
+   "nu_fit_repo_unclipped": -0.018551865957810526,
+   "nu_star_den": 51125933344.664185,
+   "nu_star_num": -948495302.8302245,
+   "nu_star_operator": -0.01855213667075704,
+   "projection_err_interior_rms": 0.003861321797249779,
+   "unresolved_norm_mean": 0.32820131177635875,
+   "work_euclid_frac_positive": 1.0,
+   "work_euclid_mean": 2.9102717835395464,
+   "work_weighted_frac_positive": 1.0,
+   "work_weighted_mean": 8204.26936820945
+  },
+  "64": {
+   "abscissa_L_RR_end": -2.2619391584216766e-13,
+   "abscissa_L_UU_end": 2916.4251196987643,
+   "dim_R": 129,
+   "kernel_norms": {
+    "0.001": 359406640.7199614,
+    "0.01": 9.008160737589543e+19,
+    "0.1": 8.861278785717484e+133,
+    "0.4": Infinity
+   },
+   "markovian_norm_end": 1173.934517242833,
+   "memory_to_markovian_ratio_median": 0.999999889420738,
+   "net_feedback_norm_end": 1173.9344241443737,
+   "nu_fit_repo_nonneg": 0.0,
+   "nu_fit_repo_signed_clip": -0.0005,
+   "nu_fit_repo_steps_frac_negative_unclipped": 1.0,
+   "nu_fit_repo_unclipped": -0.019297419205004458,
+   "nu_star_den": 637281015300.4156,
+   "nu_star_num": -12297951048.78566,
+   "nu_star_operator": -0.01929753241274319,
+   "projection_err_interior_rms": 0.0021826872042167568,
+   "unresolved_norm_mean": 0.2117478697864764,
+   "work_euclid_frac_positive": 0.0,
+   "work_euclid_mean": -60.21832474275327,
+   "work_weighted_frac_positive": 0.0,
+   "work_weighted_mean": -12842.577152270153
+  }
+ },
+ "reference_density": {
+  "density_l2_interior_max": 0.0,
+  "density_l2_interior_mean": 0.0,
+  "mass_T_max": 0.9740284904405642,
+  "negative_mass_T_max": 1.2432516581768683e-05,
+  "negative_mass_max": 1.2432516581768683e-05
+ },
+ "reference_validity": {
+  "butterfly_violation_frac_max": 0.0,
+  "butterfly_violation_frac_mean": 0.0,
+  "calendar_violation_frac_max": 0.0,
+  "calendar_violation_frac_mean": 0.0,
+  "finite": true,
+  "inverse_vol_invalid_frac_max": 0.5347826086956522,
+  "inverse_vol_invalid_frac_mean": 0.27499999999999997,
+  "inverse_vol_median_relerr_mean": 0.002957163959871598,
+  "max_phi_rows": 0.5295127746686651,
+  "min_phi_rows": -1.4705964764411483e-05,
+  "monotonicity_violation_frac_mean": 0.0
+ },
+ "refinement": {
+  "abscissa_L_UU_512": {
+   "16": 78.75895179625195,
+   "32": 441.0715991341931,
+   "64": 2463.145822017934
+  },
+  "domain_truncation_interior_rms": 4.0724158848917645e-06,
+  "grid_refinement_full_rms_256_vs_512": 6.0773023177576e-06,
+  "grid_refinement_interior_rms_256_vs_512": 4.41531029061719e-06,
+  "nu_star_operator_512": {
+   "16": -0.017567162645506843,
+   "32": -0.01860906207962903,
+   "64": -0.019164511014324887
+  },
+  "projection_err_interior_rms_512": {
+   "16": 0.007697108408705533,
+   "32": 0.0037767602558223578,
+   "64": 0.002001144285499145
+  },
+  "wide_domain": {
+   "K_max": 6000.0,
+   "K_min": 250.0,
+   "n_k": 583
+  }
+ },
+ "split": "test",
+ "status": "done",
+ "sub": 16,
+ "variant": "A",
+ "wall_seconds": 27.428220987319946
 }

@@ -1,7 +1,126 @@
 {
  "case": "S_seed5",
  "config_hash": "797f573c3efb0615",
- "status": "failed",
- "traceback": "Traceback (most recent call last):\n  File \"/home/user/LocalVolatility/research/dupire_signed_memory/scripts/gate2_reference.py\", line 209, in main\n    res = case_diagnostics(case, variant, args.n_k, args.sub, keeps)\n  File \"/home/user/LocalVolatility/research/dupire_signed_memory/scripts/gate2_reference.py\", line 97, in case_diagnostics\n    rec[\"kernel_norms\"] = dict(zip([str(t) for t in taus], mz.kernel_norms(B, taus).tolist()))\n                                                           ~~~~~~~~~~~~~~~^^^^^^^^^\n  File \"/home/user/LocalVolatility/research/dupire_signed_memory/dsm/mz.py\", line 94, in kernel_norms\n    out.append(float(np.linalg.norm(K, 2)))\n                     ~~~~~~~~~~~~~~^^^^^^\n  File \"/usr/local/lib/python3.13/site-packages/numpy/linalg/_linalg.py\", line 2822, in norm\n    ret = _multi_svd_norm(x, row_axis, col_axis, amax, 0)\n  File \"/usr/local/lib/python3.13/site-packages/numpy/linalg/_linalg.py\", line 2590, in _multi_svd_norm\n    result = op(svd(y, compute_uv=False), axis=-1, initial=initial)\n                ~~~^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.13/site-packages/numpy/linalg/_linalg.py\", line 1850, in svd\n    s = _umath_linalg.svd(a, signature=signature)\n  File \"/usr/local/lib/python3.13/site-packages/numpy/linalg/_linalg.py\", line 153, in _raise_linalgerror_svd_nonconvergence\n    raise LinAlgError(\"SVD did not converge\")\nnumpy.linalg.LinAlgError: SVD did not converge\n",
- "variant": "A"
+ "family": "S",
+ "h": 0.002173913043478261,
+ "n_fine": 460,
+ "n_k": 256,
+ "operator": {
+  "abscissa_L_end": 1.0156283418970593,
+  "numerical_abscissa_L_end": 26395.974236654056
+ },
+ "params": {
+  "b": 0.361001,
+  "c": 0.025766,
+  "s": 0.080794,
+  "seed": 5
+ },
+ "per_keep": {
+  "16": {
+   "abscissa_L_RR_end": 6.104122947667143e-14,
+   "abscissa_L_UU_end": 256.04169361183904,
+   "dim_R": 33,
+   "kernel_norms": {
+    "0.001": 270046.0816767894,
+    "0.01": 3123519.1748281065,
+    "0.1": 3.2198276326567348e+16,
+    "0.4": 7.363444623097485e+49
+   },
+   "markovian_norm_end": 217.04012364256187,
+   "memory_to_markovian_ratio_median": 1.0000059888604333,
+   "net_feedback_norm_end": 217.0709476287151,
+   "nu_fit_repo_nonneg": 0.0,
+   "nu_fit_repo_signed_clip": -0.0005,
+   "nu_fit_repo_steps_frac_negative_unclipped": 1.0,
+   "nu_fit_repo_unclipped": -0.038376785739104476,
+   "nu_star_den": 6584985142.000567,
+   "nu_star_num": -252724461.8867033,
+   "nu_star_operator": -0.03837889629769518,
+   "projection_err_interior_rms": 0.007797336040791959,
+   "unresolved_norm_mean": 0.471496852308694,
+   "work_euclid_frac_positive": 1.0,
+   "work_euclid_mean": 11.831026901371843,
+   "work_weighted_frac_positive": 1.0,
+   "work_weighted_mean": 6396.165277981046
+  },
+  "32": {
+   "abscissa_L_RR_end": -4.299164605104445e-13,
+   "abscissa_L_UU_end": 1394.853528579224,
+   "dim_R": 65,
+   "kernel_norms": {
+    "0.001": 16995189.062499814,
+    "0.01": 4828204756240.561,
+    "0.1": 1.5985743316922942e+67,
+    "0.4": Infinity
+   },
+   "markovian_norm_end": 654.3596815966977,
+   "memory_to_markovian_ratio_median": 1.0000019169313763,
+   "net_feedback_norm_end": 654.383030416897,
+   "nu_fit_repo_nonneg": 0.0,
+   "nu_fit_repo_signed_clip": -0.0005,
+   "nu_fit_repo_steps_frac_negative_unclipped": 1.0,
+   "nu_fit_repo_unclipped": -0.040770635463539394,
+   "nu_star_den": 51374596627.90947,
+   "nu_star_num": -2094646461.3555875,
+   "nu_star_operator": -0.040772027399581794,
+   "projection_err_interior_rms": 0.0038718940186703993,
+   "unresolved_norm_mean": 0.3290693255567322,
+   "work_euclid_frac_positive": 1.0,
+   "work_euclid_mean": 1.7767800848917024,
+   "work_weighted_frac_positive": 1.0,
+   "work_weighted_mean": 8393.71298689988
+  },
+  "64": {
+   "abscissa_L_RR_end": 1.08224043903599e-12,
+   "abscissa_L_UU_end": 6468.600155872296,
+   "dim_R": 129,
+   "kernel_norms": {
+    "0.001": 61833467665.72895,
+    "0.01": 1.1877297245178571e+36,
+    "0.1": Infinity,
+    "0.4": Infinity
+   },
+   "markovian_norm_end": 2644.942747215333,
+   "memory_to_markovian_ratio_median": 1.0000002692430812,
+   "net_feedback_norm_end": 2644.9591657805126,
+   "nu_fit_repo_nonneg": 0.0,
+   "nu_fit_repo_signed_clip": -0.0005,
+   "nu_fit_repo_steps_frac_negative_unclipped": 1.0,
+   "nu_fit_repo_unclipped": -0.04259894146055564,
+   "nu_star_den": 640636478603.9967,
+   "nu_star_num": -27290837368.786457,
+   "nu_star_operator": -0.04259956821106346,
+   "projection_err_interior_rms": 0.0021887778395513987,
+   "unresolved_norm_mean": 0.2123115287848403,
+   "work_euclid_frac_positive": 0.0,
+   "work_euclid_mean": -146.36375020197227,
+   "work_weighted_frac_positive": 0.0,
+   "work_weighted_mean": -19896.586417593982
+  }
+ },
+ "reference_density": {
+  "density_l2_interior_max": 0.0,
+  "density_l2_interior_mean": 0.0,
+  "mass_T_max": 0.9014172529984914,
+  "negative_mass_T_max": 0.0027098232224992335,
+  "negative_mass_max": 0.0027098232224992335
+ },
+ "reference_validity": {
+  "butterfly_violation_frac_max": 0.06521739130434782,
+  "butterfly_violation_frac_mean": 0.012137681159420289,
+  "calendar_violation_frac_max": 0.06956521739130435,
+  "calendar_violation_frac_mean": 0.016485507246376815,
+  "finite": true,
+  "inverse_vol_invalid_frac_max": 0.4043478260869565,
+  "inverse_vol_invalid_frac_mean": 0.12445652173913042,
+  "inverse_vol_median_relerr_mean": 0.0017801041692657761,
+  "max_phi_rows": 0.5334739409826554,
+  "min_phi_rows": -0.0025002391905418475,
+  "monotonicity_violation_frac_mean": 0.0
+ },
+ "split": "train",
+ "status": "done",
+ "sub": 16,
+ "variant": "A",
+ "wall_seconds": 14.371434688568115
 }
