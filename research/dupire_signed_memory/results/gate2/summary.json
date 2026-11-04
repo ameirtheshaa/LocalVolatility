@@ -1,0 +1,17 @@
+{
+ "config": {
+  "max_cases": 0,
+  "n_k": 256,
+  "no_refine": true,
+  "only": "C_sig0.30",
+  "resume": false,
+  "sub": 16,
+  "variants": "B"
+ },
+ "done": [
+  "C_sig0.30__B"
+ ],
+ "failed": [],
+ "pending": [],
+ "wall_seconds": 1.648533582687378
+}

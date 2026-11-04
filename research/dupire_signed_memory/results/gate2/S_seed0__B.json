@@ -1,0 +1,126 @@
+{
+ "case": "S_seed0",
+ "config_hash": "0770aa9b235086f5",
+ "family": "S",
+ "h": 0.002173913043478261,
+ "n_fine": 460,
+ "n_k": 256,
+ "operator": {
+  "abscissa_L_end": 0.0,
+  "numerical_abscissa_L_end": 1107.0275825398103
+ },
+ "params": {
+  "b": 0.327392,
+  "c": 0.002049,
+  "s": 0.026979,
+  "seed": 0
+ },
+ "per_keep": {
+  "16": {
+   "abscissa_L_RR_end": 5.555207778091829e-17,
+   "abscissa_L_UU_end": 2.3740892002587783e-12,
+   "dim_R": 33,
+   "kernel_norms": {
+    "0.001": 100329.12681487639,
+    "0.01": 9521.102247019633,
+    "0.1": 812.4846670953526,
+    "0.4": 69.86457943244413
+   },
+   "markovian_norm_end": 9.050429976229685,
+   "memory_to_markovian_ratio_median": 0.9965604515452436,
+   "net_feedback_norm_end": 9.021851042322421,
+   "nu_fit_repo_nonneg": 0.0,
+   "nu_fit_repo_signed_clip": -0.0005,
+   "nu_fit_repo_steps_frac_negative_unclipped": 1.0,
+   "nu_fit_repo_unclipped": -0.028194171614753065,
+   "nu_star_den": 23899954.22016667,
+   "nu_star_num": -673127.9184017064,
+   "nu_star_operator": -0.02816440199846592,
+   "projection_err_interior_rms": 0.0003189462122055759,
+   "unresolved_norm_mean": 0.011975279786490252,
+   "work_euclid_frac_positive": 0.0,
+   "work_euclid_mean": -0.018462687302949574,
+   "work_weighted_frac_positive": 1.0,
+   "work_weighted_mean": 1.5611829298448805
+  },
+  "32": {
+   "abscissa_L_RR_end": -3.618036712364603e-13,
+   "abscissa_L_UU_end": 4.6924239059115235e-12,
+   "dim_R": 65,
+   "kernel_norms": {
+    "0.001": 511653.3817264448,
+    "0.01": 32036.943576408565,
+    "0.1": 102.78704536460539,
+    "0.4": 9.988111030275214e-07
+   },
+   "markovian_norm_end": 8.592356566267785,
+   "memory_to_markovian_ratio_median": 0.9961688920412928,
+   "net_feedback_norm_end": 8.562303021339062,
+   "nu_fit_repo_nonneg": 0.0,
+   "nu_fit_repo_signed_clip": -0.0005,
+   "nu_fit_repo_steps_frac_negative_unclipped": 1.0,
+   "nu_fit_repo_unclipped": -0.021863027319837053,
+   "nu_star_den": 23220548.447446253,
+   "nu_star_num": -507183.7712346731,
+   "nu_star_operator": -0.021842023774010035,
+   "projection_err_interior_rms": 8.718496035787097e-05,
+   "unresolved_norm_mean": 0.004313490137306924,
+   "work_euclid_frac_positive": 1.0,
+   "work_euclid_mean": 0.012884150693737174,
+   "work_weighted_frac_positive": 1.0,
+   "work_weighted_mean": 5.054996141681255
+  },
+  "64": {
+   "abscissa_L_RR_end": -6.710485128811959e-13,
+   "abscissa_L_UU_end": 5.0894713239410994e-12,
+   "dim_R": 129,
+   "kernel_norms": {
+    "0.001": 1624290.2189334293,
+    "0.01": 11317.098214374397,
+    "0.1": 3.769032237928312e-09,
+    "0.4": 3.962148495329714e-09
+   },
+   "markovian_norm_end": 4.168842595248181,
+   "memory_to_markovian_ratio_median": 0.9843068146163308,
+   "net_feedback_norm_end": 4.107317250218425,
+   "nu_fit_repo_nonneg": 0.0,
+   "nu_fit_repo_signed_clip": -0.0005,
+   "nu_fit_repo_steps_frac_negative_unclipped": 1.0,
+   "nu_fit_repo_unclipped": -0.004720217680286353,
+   "nu_star_den": 12662760.074350413,
+   "nu_star_num": -59638.12456361747,
+   "nu_star_operator": -0.0047097255427290255,
+   "projection_err_interior_rms": 2.1877140425631373e-05,
+   "unresolved_norm_mean": 0.0015058027424396866,
+   "work_euclid_frac_positive": 1.0,
+   "work_euclid_mean": 0.009167396336090821,
+   "work_weighted_frac_positive": 1.0,
+   "work_weighted_mean": 0.9836753668328726
+  }
+ },
+ "reference_density": {
+  "density_l2_interior_max": 0.0,
+  "density_l2_interior_mean": 0.0,
+  "mass_T_max": 0.9081632074871905,
+  "negative_mass_T_max": 1.3358274688618395e-08,
+  "negative_mass_max": 6.029616046017796e-07
+ },
+ "reference_validity": {
+  "butterfly_violation_frac_max": 0.0,
+  "butterfly_violation_frac_mean": 0.0,
+  "calendar_violation_frac_max": 0.0,
+  "calendar_violation_frac_mean": 0.0,
+  "finite": true,
+  "inverse_vol_invalid_frac_max": 0.4434782608695652,
+  "inverse_vol_invalid_frac_mean": 0.13061594202898552,
+  "inverse_vol_median_relerr_mean": 0.0009416801889175264,
+  "max_phi_rows": 0.5291177332078756,
+  "min_phi_rows": 0.0,
+  "monotonicity_violation_frac_mean": 0.0
+ },
+ "split": "train",
+ "status": "done",
+ "sub": 16,
+ "variant": "B",
+ "wall_seconds": 1.3323192596435547
+}

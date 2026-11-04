@@ -1,0 +1,126 @@
+{
+ "case": "S_seed3",
+ "config_hash": "56ceaa859c0ff56c",
+ "family": "S",
+ "h": 0.002173913043478261,
+ "n_fine": 460,
+ "n_k": 256,
+ "operator": {
+  "abscissa_L_end": 0.0,
+  "numerical_abscissa_L_end": 689.0741666559278
+ },
+ "params": {
+  "b": 0.21713,
+  "c": 0.040064,
+  "s": 0.023681,
+  "seed": 3
+ },
+ "per_keep": {
+  "16": {
+   "abscissa_L_RR_end": -5.5050311238453887e-14,
+   "abscissa_L_UU_end": 9.139350037079076e-13,
+   "dim_R": 33,
+   "kernel_norms": {
+    "0.001": 50675.301095741175,
+    "0.01": 6993.380839345037,
+    "0.1": 370.7434543779026,
+    "0.4": 99.47365291405663
+   },
+   "markovian_norm_end": 6.033676410541046,
+   "memory_to_markovian_ratio_median": 0.9975477971292197,
+   "net_feedback_norm_end": 6.021677203646109,
+   "nu_fit_repo_nonneg": 0.0,
+   "nu_fit_repo_signed_clip": -0.0005,
+   "nu_fit_repo_steps_frac_negative_unclipped": 1.0,
+   "nu_fit_repo_unclipped": -0.016168155813637054,
+   "nu_star_den": 26806583.62520393,
+   "nu_star_num": -432872.3485722004,
+   "nu_star_operator": -0.016147986428423782,
+   "projection_err_interior_rms": 0.0003279541233357755,
+   "unresolved_norm_mean": 0.012329692922084853,
+   "work_euclid_frac_positive": 0.0,
+   "work_euclid_mean": -0.0109143064232731,
+   "work_weighted_frac_positive": 1.0,
+   "work_weighted_mean": 3.6696478354491995
+  },
+  "32": {
+   "abscissa_L_RR_end": 3.3876868280630203e-13,
+   "abscissa_L_UU_end": 2.442573469074923e-12,
+   "dim_R": 65,
+   "kernel_norms": {
+    "0.001": 308865.7673594433,
+    "0.01": 21900.670284483844,
+    "0.1": 640.339529988452,
+    "0.4": 0.07253381933349225
+   },
+   "markovian_norm_end": 5.727707219667217,
+   "memory_to_markovian_ratio_median": 0.9972787543349702,
+   "net_feedback_norm_end": 5.7151194652021,
+   "nu_fit_repo_nonneg": 0.0,
+   "nu_fit_repo_signed_clip": -0.0005,
+   "nu_fit_repo_steps_frac_negative_unclipped": 1.0,
+   "nu_fit_repo_unclipped": -0.012463193481308577,
+   "nu_star_den": 26045190.75087218,
+   "nu_star_num": -324186.6842636581,
+   "nu_star_operator": -0.012447084276117343,
+   "projection_err_interior_rms": 8.988087315334554e-05,
+   "unresolved_norm_mean": 0.004456490628792245,
+   "work_euclid_frac_positive": 1.0,
+   "work_euclid_mean": 0.00906313194396536,
+   "work_weighted_frac_positive": 1.0,
+   "work_weighted_mean": 7.991442569304032
+  },
+  "64": {
+   "abscissa_L_RR_end": 1.0519486650766016e-13,
+   "abscissa_L_UU_end": 3.2478573761707622e-12,
+   "dim_R": 129,
+   "kernel_norms": {
+    "0.001": 1155773.3904385353,
+    "0.01": 32019.408933569594,
+    "0.1": 0.0004682527228597586,
+    "0.4": 1.0280215938713546e-09
+   },
+   "markovian_norm_end": 2.8124654523737878,
+   "memory_to_markovian_ratio_median": 0.9887594937123644,
+   "net_feedback_norm_end": 2.7868997945476868,
+   "nu_fit_repo_nonneg": 0.0,
+   "nu_fit_repo_signed_clip": -0.0005,
+   "nu_fit_repo_steps_frac_negative_unclipped": 1.0,
+   "nu_fit_repo_unclipped": -0.002397469333203111,
+   "nu_star_den": 15005092.058478968,
+   "nu_star_num": -35890.126279260454,
+   "nu_star_operator": -0.002391863118159272,
+   "projection_err_interior_rms": 2.2656257921207166e-05,
+   "unresolved_norm_mean": 0.0015673767138241518,
+   "work_euclid_frac_positive": 1.0,
+   "work_euclid_mean": 0.0061814442527371675,
+   "work_weighted_frac_positive": 1.0,
+   "work_weighted_mean": 1.5630956299853318
+  }
+ },
+ "reference_density": {
+  "density_l2_interior_max": 0.0,
+  "density_l2_interior_mean": 0.0,
+  "mass_T_max": 0.9927033153947867,
+  "negative_mass_T_max": 7.548932149855446e-10,
+  "negative_mass_max": 5.997927840497426e-07
+ },
+ "reference_validity": {
+  "butterfly_violation_frac_max": 0.0,
+  "butterfly_violation_frac_mean": 0.0,
+  "calendar_violation_frac_max": 0.0,
+  "calendar_violation_frac_mean": 0.0,
+  "finite": true,
+  "inverse_vol_invalid_frac_max": 0.6,
+  "inverse_vol_invalid_frac_mean": 0.3739130434782609,
+  "inverse_vol_median_relerr_mean": 0.0007060221654733415,
+  "max_phi_rows": 0.5291177332078756,
+  "min_phi_rows": 0.0,
+  "monotonicity_violation_frac_mean": 0.0
+ },
+ "split": "train",
+ "status": "done",
+ "sub": 16,
+ "variant": "B",
+ "wall_seconds": 1.5609776973724365
+}

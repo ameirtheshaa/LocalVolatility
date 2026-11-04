@@ -129,3 +129,16 @@ TensorFlow/GPU training, changes to production defaults in `mz_spectral`.
 
 ## Addenda
 (none yet)
+
+### Addendum 1 (2026-11-04, before any closure was scored)
+
+* Time stepping: the reduced models use 368 = 23·16 uniform steps on `[0.2, 1]` (not 400) so that
+  the 24 repository maturities lie exactly on the fine grid; the reference uses the same step.
+* Diagnostic only, not a scored closure: `scripts/gate2b_basis_diagnostic.py` reports the
+  resolved-only (Galerkin) error of OP-B at matched dimension `2·keep+1` for three bases —
+  the repository Fourier modes, the Dirichlet sine modes `sin(jπ(k̃-k̃_lo)/(k̃_hi-k̃_lo))`, and the
+  weighted eigenbasis of `L(t̃=1)` — to quantify how much of the Fourier "memory" is the
+  wrap-around derivative mismatch of a periodic basis applied to a non-periodic function.
+  The scored comparison (Gate 3) stays with the repository projector as frozen above.
+* `mz.kernel_norms` reports overflow of the divergent OP-A orthogonal propagator as `inf`
+  instead of raising (robustness fix found during the Gate 2 run; no change to any number).

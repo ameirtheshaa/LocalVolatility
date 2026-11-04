@@ -1,0 +1,122 @@
+{
+ "case": "D_base0.30",
+ "config_hash": "74cf84d0f93651d9",
+ "family": "D",
+ "h": 0.002173913043478261,
+ "n_fine": 460,
+ "n_k": 256,
+ "operator": {
+  "abscissa_L_end": 0.18494058533105867,
+  "numerical_abscissa_L_end": 48191.81203411358
+ },
+ "params": {
+  "sigma_base": 0.3
+ },
+ "per_keep": {
+  "16": {
+   "abscissa_L_RR_end": -3.4789174762945147e-13,
+   "abscissa_L_UU_end": 478.6545568903369,
+   "dim_R": 33,
+   "markovian_norm_end": 579.1853940057119,
+   "memory_to_markovian_ratio_median": 1.0007234568658994,
+   "net_feedback_norm_end": 579.9964370987444,
+   "nu_fit_repo_nonneg": 0.0,
+   "nu_fit_repo_signed_clip": -0.0005,
+   "nu_fit_repo_steps_frac_negative_unclipped": 1.0,
+   "nu_fit_repo_unclipped": -0.11556793348396206,
+   "nu_star_den": 8429998608.813425,
+   "nu_star_num": -966746593.8536695,
+   "nu_star_operator": -0.11467933017722587,
+   "projection_err_interior_rms": 0.008864951952646614,
+   "unresolved_norm_mean": 0.5317905867844968,
+   "work_euclid_frac_positive": 1.0,
+   "work_euclid_mean": 113.28845951053374,
+   "work_weighted_frac_positive": 1.0,
+   "work_weighted_mean": 7687.36882127164
+  },
+  "32": {
+   "abscissa_L_RR_end": 4.4135964207745705e-13,
+   "abscissa_L_UU_end": 2583.1539355523228,
+   "dim_R": 65,
+   "markovian_norm_end": 1698.9152928609853,
+   "memory_to_markovian_ratio_median": 1.0001801814212419,
+   "net_feedback_norm_end": 1699.5118496158295,
+   "nu_fit_repo_nonneg": 0.0,
+   "nu_fit_repo_signed_clip": -0.0005,
+   "nu_fit_repo_steps_frac_negative_unclipped": 1.0,
+   "nu_fit_repo_unclipped": -0.12022473825535682,
+   "nu_star_den": 66076632906.57366,
+   "nu_star_num": -7883194440.879806,
+   "nu_star_operator": -0.11930381579863375,
+   "projection_err_interior_rms": 0.004405157626889276,
+   "unresolved_norm_mean": 0.3712472000317597,
+   "work_euclid_frac_positive": 0.7588075880758808,
+   "work_euclid_mean": 172.2143174396968,
+   "work_weighted_frac_positive": 1.0,
+   "work_weighted_mean": 10879.194818176431
+  },
+  "64": {
+   "abscissa_L_RR_end": 5.40071360784361e-12,
+   "abscissa_L_UU_end": 11992.951412758139,
+   "dim_R": 129,
+   "markovian_norm_end": 6709.070423874735,
+   "memory_to_markovian_ratio_median": 1.0000326543785596,
+   "net_feedback_norm_end": 6709.505415834834,
+   "nu_fit_repo_nonneg": 0.0,
+   "nu_fit_repo_signed_clip": -0.0005,
+   "nu_fit_repo_steps_frac_negative_unclipped": 1.0,
+   "nu_fit_repo_unclipped": -0.12389512353413884,
+   "nu_star_den": 825129095329.928,
+   "nu_star_num": -101446791786.04044,
+   "nu_star_operator": -0.12294656964614357,
+   "projection_err_interior_rms": 0.002490778118005919,
+   "unresolved_norm_mean": 0.2395403586094137,
+   "work_euclid_frac_positive": 0.45257452574525747,
+   "work_euclid_mean": 3.518187070065984,
+   "work_weighted_frac_positive": 0.2086720867208672,
+   "work_weighted_mean": -16618.906995888825
+  }
+ },
+ "reference_density": {
+  "density_l2_interior_max": 0.0,
+  "density_l2_interior_mean": 0.0,
+  "mass_T_max": 0.4341658117445384,
+  "negative_mass_T_max": 0.13094509507229002,
+  "negative_mass_max": 0.13094509507229002
+ },
+ "reference_validity": {
+  "butterfly_violation_frac_max": 0.3869565217391304,
+  "butterfly_violation_frac_mean": 0.20054347826086957,
+  "calendar_violation_frac_max": 0.3869565217391304,
+  "calendar_violation_frac_mean": 0.20452898550724638,
+  "finite": true,
+  "inverse_vol_invalid_frac_max": 0.3869565217391304,
+  "inverse_vol_invalid_frac_mean": 0.21739130434782608,
+  "inverse_vol_median_relerr_mean": 4.410674658548237e-05,
+  "max_phi_rows": 0.5732500647053107,
+  "min_phi_rows": -0.16598207853644276,
+  "monotonicity_violation_frac_mean": 0.0
+ },
+ "refinement": {
+  "domain_truncation_interior_rms": 0.027507264464212883,
+  "grid_refinement_full_rms_256_vs_512": 0.0005094684519248716,
+  "grid_refinement_interior_rms_256_vs_512": 0.0004359286689502485,
+  "nu_star_operator_512": {},
+  "projection_err_interior_rms_512": {
+   "16": 0.008760831330362026,
+   "32": 0.004302470573309396,
+   "64": 0.0022803141809518545
+  },
+  "time_refinement_interior_rms_sub16_vs_sub32": 1.0040117871921825e-07,
+  "wide_domain": {
+   "K_max": 6000.0,
+   "K_min": 250.0,
+   "n_k": 583
+  }
+ },
+ "split": "train",
+ "status": "done",
+ "sub": 16,
+ "variant": "A",
+ "wall_seconds": 419.484237909317
+}
