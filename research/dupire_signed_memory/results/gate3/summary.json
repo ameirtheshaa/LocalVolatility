@@ -1,0 +1,22 @@
+{
+ "config": {
+  "keeps": "16,32,64",
+  "max_blocks": 0,
+  "n_k": 256,
+  "no_refine": false,
+  "resume": true,
+  "sub": 16,
+  "variants": "A,B"
+ },
+ "done": [
+  "A_keep16",
+  "A_keep32",
+  "A_keep64",
+  "B_keep16",
+  "B_keep32",
+  "B_keep64"
+ ],
+ "failed": [],
+ "pending": [],
+ "wall_seconds": 444.5625720024109
+}

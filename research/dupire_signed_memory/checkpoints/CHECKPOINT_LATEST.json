@@ -1,0 +1,59 @@
+{
+ "cases": {
+  "done": [
+   "A_keep16",
+   "A_keep32",
+   "A_keep64",
+   "B_keep16",
+   "B_keep32",
+   "B_keep64"
+  ],
+  "failed": [],
+  "pending": []
+ },
+ "command": "python3 research/dupire_signed_memory/scripts/gate4_evaluate.py",
+ "config": {},
+ "environment": {
+  "machine": "x86_64",
+  "numpy": "2.5.3",
+  "platform": "Linux-6.18.44-fc-v233-x86_64-with-glibc2.39",
+  "python": "3.13.18",
+  "scipy": "1.18.1"
+ },
+ "exit_code": 0,
+ "extra": {},
+ "gate": "gate4",
+ "git_dirty_tracked_areas": true,
+ "git_head": "1a9d0604d334dc767205a8fc8ff5e11d73e8d92a",
+ "next_command": "python3 research/dupire_signed_memory/scripts/run_all.py --resume",
+ "result_checksums": {
+  "results/gate4/evaluation.json": "8d4683abc4408370b4a18e54340424c2b1c35715d13a3eae3e7e15614eee9776"
+ },
+ "seeds": {},
+ "source_identities": {
+  "Synthetic_Data_Tensorflow_Advanced/analytical_solutions.py": "5a07c411599c25d266318fff81ef15ae98c740af8627e3a7230aa23ccf552392",
+  "Synthetic_Data_Tensorflow_Advanced/config.py": "7342318d6298f38411073f1afaa62cf6f9674dff882a646124e0bed67977c46a",
+  "Synthetic_Data_Tensorflow_Advanced/mz_spectral/fourier_dupire.py": "97a7a59c07a67aa325918097cc8599469de5d81158e90d670eb4c5c494d1e28b",
+  "Synthetic_Data_Tensorflow_Advanced/mz_spectral/mz_decomposition.py": "466fdb95748f7dc19e73bc7029bdd090207175c224f8610cea588c55e6b7f83c",
+  "Synthetic_Data_Tensorflow_Advanced/mz_spectral/quasi_linear.py": "e541b041ab0a6bdfd24f7114dfd9441e7cf3bf584376fc81d5fc2aba64b8f3a3",
+  "Synthetic_Data_Tensorflow_Advanced/mz_spectral/validation.py": "6d2c3d3319f701c477d4d7f56006da63f8ab616f6ad77c45189e970b71379e86",
+  "research/dupire_signed_memory/dsm/__init__.py": "bccc882aba5d9544276c6878926974a4e46265fd819847d71f56c32a8a0b9da1",
+  "research/dupire_signed_memory/dsm/cases.py": "5b2f81ff7e4516520e9580580c12bc2d51c3052136f7673433baf4c3ae056178",
+  "research/dupire_signed_memory/dsm/checkpoint.py": "f6fe115d58a27ebfff5091b67511191bbce4e2b830f90f8c18a43cf63c15872e",
+  "research/dupire_signed_memory/dsm/closures.py": "9bb0a4ab5565119c373c4b4ebaac0ee60dc1e2d7ad6c134b59563c2f2bc78b78",
+  "research/dupire_signed_memory/dsm/control.py": "dead46edb45ffe84a960fb37379b3b57a8f0d8d86b90a2cc9daabbf10313bc39",
+  "research/dupire_signed_memory/dsm/metrics.py": "08b4f3ab87308648729ae39d8cb58cf28518f0cb0cad8354d3a082ac367b151b",
+  "research/dupire_signed_memory/dsm/mz.py": "fb1334540f14e0c65965b80fb2b7691bcd3fe3968ea4e4d3041f2cf35ddb4efd",
+  "research/dupire_signed_memory/dsm/operators.py": "3b2d859e5c11b5882537b3eccb2dcaee63c48c4284d5b62ad4109f8e34e94ca9",
+  "research/dupire_signed_memory/dsm/reference.py": "977e92fb55478bc8f24d6b65626da119eb2b9956cbc791dda10f9acf9ba8338d",
+  "research/dupire_signed_memory/dsm/repo.py": "0e1b86ecfe54dc8bb27a412917f7af807dc84d57b94424a1e260314d12729b00",
+  "research/dupire_signed_memory/scripts/gate1_contract.py": "3f83bc92b8848053cf57065164c93d053f535dfa10ad69336058bce7b72de970",
+  "research/dupire_signed_memory/scripts/gate2_reference.py": "f51b49337cd08443e3f5e83bc026f5956c40b92d31d403b3b2ab85dfcb53450f",
+  "research/dupire_signed_memory/scripts/gate2b_basis_diagnostic.py": "58d638c5184f5473005e696ad1f0932b8215a8926e50d38a68668e0042325596",
+  "research/dupire_signed_memory/scripts/gate3_compare.py": "67aa1f1647ad2e2d620c68f4507d7c7bb2f7cf792dba9f0965edf7e909a33b22",
+  "research/dupire_signed_memory/scripts/gate4_evaluate.py": "9820a8cf909872ca1134cc4fad826ccf9dbe7fea0cc6818b5cd7282af8c790a7",
+  "research/dupire_signed_memory/scripts/run_all.py": "92343d03f4e53ffd355f37e7144b2f8e89e1513634c13910198d0935b8e56f4e",
+  "research/dupire_signed_memory/scripts/verify_results.py": "e296938e553816f704caeda0977a9cad0306360400b34811526c952038df941b"
+ },
+ "timestamp_utc": "2026-11-04T08:18:36Z"
+}

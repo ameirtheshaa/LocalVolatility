@@ -1,0 +1,126 @@
+{
+ "case": "S_seed2",
+ "config_hash": "2a6651a4a557d22e",
+ "family": "S",
+ "h": 0.002173913043478261,
+ "n_fine": 460,
+ "n_k": 256,
+ "operator": {
+  "abscissa_L_end": 1.2273724098846357,
+  "numerical_abscissa_L_end": 18231.355367981665
+ },
+ "params": {
+  "b": 0.252322,
+  "c": 0.040711,
+  "s": 0.029849,
+  "seed": 2
+ },
+ "per_keep": {
+  "16": {
+   "abscissa_L_RR_end": -1.0209622185535617e-15,
+   "abscissa_L_UU_end": 174.72077117645722,
+   "dim_R": 33,
+   "kernel_norms": {
+    "0.001": 113768.29281616134,
+    "0.01": 637105.9644072764,
+    "0.1": 4401468411397.588,
+    "0.4": 2.5566874662546347e+35
+   },
+   "markovian_norm_end": 144.5171384649865,
+   "memory_to_markovian_ratio_median": 0.9999940177017516,
+   "net_feedback_norm_end": 144.51792277480874,
+   "nu_fit_repo_nonneg": 0.0,
+   "nu_fit_repo_signed_clip": -0.0005,
+   "nu_fit_repo_steps_frac_negative_unclipped": 1.0,
+   "nu_fit_repo_unclipped": -0.025438336968254184,
+   "nu_star_den": 6565314736.493866,
+   "nu_star_num": -167015093.4936433,
+   "nu_star_operator": -0.025439007907004912,
+   "projection_err_interior_rms": 0.0077772417838046105,
+   "unresolved_norm_mean": 0.4702701263139842,
+   "work_euclid_frac_positive": 1.0,
+   "work_euclid_mean": 5.396483222497707,
+   "work_weighted_frac_positive": 1.0,
+   "work_weighted_mean": 7592.310951325737
+  },
+  "32": {
+   "abscissa_L_RR_end": 3.6253537001880316e-13,
+   "abscissa_L_UU_end": 956.3843889580698,
+   "dim_R": 65,
+   "kernel_norms": {
+    "0.001": 5118818.008738422,
+    "0.01": 28221589118.524933,
+    "0.1": 6.796784933693331e+47,
+    "0.4": Infinity
+   },
+   "markovian_norm_end": 440.9126965009737,
+   "memory_to_markovian_ratio_median": 0.9999993729568872,
+   "net_feedback_norm_end": 440.91349277498966,
+   "nu_fit_repo_nonneg": 0.0,
+   "nu_fit_repo_signed_clip": -0.0005,
+   "nu_fit_repo_steps_frac_negative_unclipped": 1.0,
+   "nu_fit_repo_unclipped": -0.027436321918252453,
+   "nu_star_den": 51124674485.06815,
+   "nu_star_num": -1402690510.7065954,
+   "nu_star_operator": -0.02743666389731783,
+   "projection_err_interior_rms": 0.003861190211376775,
+   "unresolved_norm_mean": 0.3281898399078205,
+   "work_euclid_frac_positive": 0.0,
+   "work_euclid_mean": -3.988365624432044,
+   "work_weighted_frac_positive": 1.0,
+   "work_weighted_mean": 8826.585752506475
+  },
+  "64": {
+   "abscissa_L_RR_end": 9.942006197646262e-14,
+   "abscissa_L_UU_end": 4435.766215630038,
+   "dim_R": 129,
+   "kernel_norms": {
+    "0.001": 3823475442.4160733,
+    "0.01": 8.323321406030576e+26,
+    "0.1": Infinity,
+    "0.4": Infinity
+   },
+   "markovian_norm_end": 1799.88005802356,
+   "memory_to_markovian_ratio_median": 0.9999999683548558,
+   "net_feedback_norm_end": 1799.880660798555,
+   "nu_fit_repo_nonneg": 0.0,
+   "nu_fit_repo_signed_clip": -0.0005,
+   "nu_fit_repo_steps_frac_negative_unclipped": 1.0,
+   "nu_fit_repo_unclipped": -0.028948188533023455,
+   "nu_star_den": 637239243730.0591,
+   "nu_star_num": -18447012933.978523,
+   "nu_star_operator": -0.028948331596779158,
+   "projection_err_interior_rms": 0.002182603952655027,
+   "unresolved_norm_mean": 0.21174019084601178,
+   "work_euclid_frac_positive": 0.0,
+   "work_euclid_mean": -114.37682767568795,
+   "work_weighted_frac_positive": 0.0,
+   "work_weighted_mean": -38275.956791747594
+  }
+ },
+ "reference_density": {
+  "density_l2_interior_max": 0.0,
+  "density_l2_interior_mean": 0.0,
+  "mass_T_max": 0.9811147341460709,
+  "negative_mass_T_max": 9.449290900606263e-05,
+  "negative_mass_max": 9.449290900606263e-05
+ },
+ "reference_validity": {
+  "butterfly_violation_frac_max": 0.0,
+  "butterfly_violation_frac_mean": 0.0,
+  "calendar_violation_frac_max": 0.008695652173913044,
+  "calendar_violation_frac_mean": 0.0005434782608695652,
+  "finite": true,
+  "inverse_vol_invalid_frac_max": 0.5434782608695652,
+  "inverse_vol_invalid_frac_mean": 0.2835144927536232,
+  "inverse_vol_median_relerr_mean": 0.0008282289450132161,
+  "max_phi_rows": 0.5293118656725895,
+  "min_phi_rows": -7.372528236690521e-05,
+  "monotonicity_violation_frac_mean": 0.0
+ },
+ "split": "train",
+ "status": "done",
+ "sub": 16,
+ "variant": "A",
+ "wall_seconds": 15.18508267402649
+}

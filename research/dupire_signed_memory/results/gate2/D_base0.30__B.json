@@ -1,0 +1,122 @@
+{
+ "case": "D_base0.30",
+ "config_hash": "74cf84d0f93651d9",
+ "family": "D",
+ "h": 0.002173913043478261,
+ "n_fine": 460,
+ "n_k": 256,
+ "operator": {
+  "abscissa_L_end": 0.0,
+  "numerical_abscissa_L_end": 2432.3846706509103
+ },
+ "params": {
+  "sigma_base": 0.3
+ },
+ "per_keep": {
+  "16": {
+   "abscissa_L_RR_end": 2.150552260780671e-13,
+   "abscissa_L_UU_end": 5.295006043934296e-12,
+   "dim_R": 33,
+   "markovian_norm_end": 10.71734667577105,
+   "memory_to_markovian_ratio_median": 0.9960818724255571,
+   "net_feedback_norm_end": 10.63651650296894,
+   "nu_fit_repo_nonneg": 0.0,
+   "nu_fit_repo_signed_clip": -0.0005,
+   "nu_fit_repo_steps_frac_negative_unclipped": 1.0,
+   "nu_fit_repo_unclipped": -0.11620699786380663,
+   "nu_star_den": 13629485.301219761,
+   "nu_star_num": -1579904.5925276228,
+   "nu_star_operator": -0.11591814053214682,
+   "projection_err_interior_rms": 0.00024617934695619133,
+   "unresolved_norm_mean": 0.008960993335235583,
+   "work_euclid_frac_positive": 0.0,
+   "work_euclid_mean": -0.05560686887036578,
+   "work_weighted_frac_positive": 0.7018970189701897,
+   "work_weighted_mean": 1.042311849750015
+  },
+  "32": {
+   "abscissa_L_RR_end": -1.9326119113157604e-13,
+   "abscissa_L_UU_end": 1.117299343924096e-11,
+   "dim_R": 65,
+   "markovian_norm_end": 10.344885900221907,
+   "memory_to_markovian_ratio_median": 0.9956574633987663,
+   "net_feedback_norm_end": 10.259737084203909,
+   "nu_fit_repo_nonneg": 0.0,
+   "nu_fit_repo_signed_clip": -0.0005,
+   "nu_fit_repo_steps_frac_negative_unclipped": 1.0,
+   "nu_fit_repo_unclipped": -0.09138422799183248,
+   "nu_star_den": 13188526.609852638,
+   "nu_star_num": -1201433.4373683613,
+   "nu_star_operator": -0.0910968657007384,
+   "projection_err_interior_rms": 6.698615271821347e-05,
+   "unresolved_norm_mean": 0.003191399368419127,
+   "work_euclid_frac_positive": 1.0,
+   "work_euclid_mean": 0.026470103294781652,
+   "work_weighted_frac_positive": 1.0,
+   "work_weighted_mean": 3.1094154945414636
+  },
+  "64": {
+   "abscissa_L_RR_end": 7.087625802690306e-13,
+   "abscissa_L_UU_end": 1.4017992925037851e-11,
+   "dim_R": 129,
+   "markovian_norm_end": 4.897263532947238,
+   "memory_to_markovian_ratio_median": 0.9809957222510292,
+   "net_feedback_norm_end": 4.715088773322849,
+   "nu_fit_repo_nonneg": 0.0,
+   "nu_fit_repo_signed_clip": -0.0005,
+   "nu_fit_repo_steps_frac_negative_unclipped": 1.0,
+   "nu_fit_repo_unclipped": -0.018042397976399883,
+   "nu_star_den": 6554980.875395626,
+   "nu_star_num": -117906.08052794117,
+   "nu_star_operator": -0.01798725011853292,
+   "projection_err_interior_rms": 1.6549103244934476e-05,
+   "unresolved_norm_mean": 0.0010757817575358026,
+   "work_euclid_frac_positive": 1.0,
+   "work_euclid_mean": 0.021287434756396016,
+   "work_weighted_frac_positive": 1.0,
+   "work_weighted_mean": 0.6637188968690085
+  }
+ },
+ "reference_density": {
+  "density_l2_interior_max": 0.0,
+  "density_l2_interior_mean": 0.0,
+  "mass_T_max": 0.47222790410454585,
+  "negative_mass_T_max": 2.6286130885082064e-08,
+  "negative_mass_max": 2.761213413564535e-08
+ },
+ "reference_validity": {
+  "butterfly_violation_frac_max": 0.0,
+  "butterfly_violation_frac_mean": 0.0,
+  "calendar_violation_frac_max": 0.0,
+  "calendar_violation_frac_mean": 0.0,
+  "finite": true,
+  "inverse_vol_invalid_frac_max": 0.13043478260869565,
+  "inverse_vol_invalid_frac_mean": 0.007427536231884058,
+  "inverse_vol_median_relerr_mean": 3.640397849883174e-05,
+  "max_phi_rows": 0.5291177332078756,
+  "min_phi_rows": 0.0,
+  "monotonicity_violation_frac_mean": 0.0
+ },
+ "refinement": {
+  "domain_truncation_interior_rms": 0.005816221409153762,
+  "grid_refinement_full_rms_256_vs_512": 2.9216893815142755e-06,
+  "grid_refinement_interior_rms_256_vs_512": 3.0319176130572895e-06,
+  "nu_star_operator_512": {},
+  "projection_err_interior_rms_512": {
+   "16": 0.00024592745143359434,
+   "32": 6.70874910054019e-05,
+   "64": 1.6702004741120837e-05
+  },
+  "time_refinement_interior_rms_sub16_vs_sub32": 5.972311656883888e-08,
+  "wide_domain": {
+   "K_max": 6000.0,
+   "K_min": 250.0,
+   "n_k": 583
+  }
+ },
+ "split": "train",
+ "status": "done",
+ "sub": 16,
+ "variant": "B",
+ "wall_seconds": 397.75459265708923
+}

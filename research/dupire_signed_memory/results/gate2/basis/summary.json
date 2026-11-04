@@ -1,0 +1,24 @@
+{
+ "done": [
+  "C_sig0.20",
+  "C_sig0.30",
+  "C_sig0.40",
+  "C_sig0.25",
+  "C_sig0.35",
+  "S_seed0",
+  "S_seed1",
+  "S_seed2",
+  "S_seed3",
+  "S_seed4",
+  "S_seed5",
+  "S_seed6",
+  "S_seed7",
+  "S_seed8",
+  "S_seed9",
+  "D_base0.30",
+  "D_base0.25",
+  "D_base0.35"
+ ],
+ "failed": [],
+ "wall_seconds": 1159.315511226654
+}

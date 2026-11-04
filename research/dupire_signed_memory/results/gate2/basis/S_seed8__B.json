@@ -1,0 +1,65 @@
+{
+ "case": "S_seed8",
+ "config_hash": "8ac3149c882e289c",
+ "family": "S",
+ "n_k": 256,
+ "per_keep": {
+  "16": {
+   "dim": 33,
+   "eigen": {
+    "finite": true,
+    "projection_err_interior_rms": 1.2844356130642803e-15,
+    "rrr_resolved_interior_rms": 3.1610689152498004e-15
+   },
+   "fourier": {
+    "finite": true,
+    "projection_err_interior_rms": 0.00032567830194661374,
+    "rrr_resolved_interior_rms": 0.01628186284735351
+   },
+   "sine": {
+    "finite": true,
+    "projection_err_interior_rms": 1.3933462192796488e-07,
+    "rrr_resolved_interior_rms": 7.496038396247842e-08
+   }
+  },
+  "32": {
+   "dim": 65,
+   "eigen": {
+    "finite": true,
+    "projection_err_interior_rms": 6.960303681776582e-16,
+    "rrr_resolved_interior_rms": 3.156015274985247e-15
+   },
+   "fourier": {
+    "finite": true,
+    "projection_err_interior_rms": 8.916798534126731e-05,
+    "rrr_resolved_interior_rms": 0.013980848153906007
+   },
+   "sine": {
+    "finite": true,
+    "projection_err_interior_rms": 6.842896695162097e-09,
+    "rrr_resolved_interior_rms": 3.5463067451954704e-09
+   }
+  },
+  "64": {
+   "dim": 129,
+   "eigen": {
+    "finite": true,
+    "projection_err_interior_rms": 5.882379638063917e-16,
+    "rrr_resolved_interior_rms": 3.165395590322449e-15
+   },
+   "fourier": {
+    "finite": true,
+    "projection_err_interior_rms": 2.2444988468082855e-05,
+    "rrr_resolved_interior_rms": 0.011068972414402741
+   },
+   "sine": {
+    "finite": true,
+    "projection_err_interior_rms": 2.804464474493364e-10,
+    "rrr_resolved_interior_rms": 1.4822179322019576e-10
+   }
+  }
+ },
+ "split": "test",
+ "status": "done",
+ "variant": "B"
+}

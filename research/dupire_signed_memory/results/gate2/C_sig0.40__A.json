@@ -1,0 +1,128 @@
+{
+ "bs_comparison": {
+  "density_l2_interior_mean": 0.00028537950646247655,
+  "full_rms": 0.0014151685360901337,
+  "interior_rms": 0.0010434709372661986
+ },
+ "case": "C_sig0.40",
+ "config_hash": "b9abdb732774669f",
+ "family": "C",
+ "h": 0.002173913043478261,
+ "n_fine": 460,
+ "n_k": 256,
+ "operator": {
+  "abscissa_L_end": 0.7200001802395442,
+  "numerical_abscissa_L_end": 36256.93092147424
+ },
+ "params": {
+  "sigma": 0.4
+ },
+ "per_keep": {
+  "16": {
+   "abscissa_L_RR_end": -7.849006738247127e-15,
+   "abscissa_L_UU_end": 348.57683524470355,
+   "dim_R": 33,
+   "kernel_norms": {
+    "0.001": 573694.8073744817,
+    "0.01": 14888118.608765421,
+    "0.1": 6.306948552888256e+20,
+    "0.4": 1.6417918980658997e+66
+   },
+   "markovian_norm_end": 305.58653518946073,
+   "memory_to_markovian_ratio_median": 1.0000390666883603,
+   "net_feedback_norm_end": 305.69478738763684,
+   "nu_fit_repo_nonneg": 0.0,
+   "nu_fit_repo_signed_clip": -0.0005,
+   "nu_fit_repo_steps_frac_negative_unclipped": 1.0,
+   "nu_fit_repo_unclipped": -0.052658641101510396,
+   "nu_star_den": 6638416072.93449,
+   "nu_star_num": -349601203.2823017,
+   "nu_star_operator": -0.052663346111681976,
+   "projection_err_interior_rms": 0.007833636339697378,
+   "unresolved_norm_mean": 0.47362176912828335,
+   "work_euclid_frac_positive": 1.0,
+   "work_euclid_mean": 14.691404267237216,
+   "work_weighted_frac_positive": 1.0,
+   "work_weighted_mean": 7117.228329554074
+  },
+  "32": {
+   "abscissa_L_RR_end": -8.256990125814638e-13,
+   "abscissa_L_UU_end": 1907.437958611963,
+   "dim_R": 65,
+   "kernel_norms": {
+    "0.001": 53516141.47112804,
+    "0.01": 1529812467270485.8,
+    "0.1": 5.491846573405655e+89,
+    "0.4": Infinity
+   },
+   "markovian_norm_end": 918.7771744787862,
+   "memory_to_markovian_ratio_median": 1.0000103180767366,
+   "net_feedback_norm_end": 918.858530054243,
+   "nu_fit_repo_nonneg": 0.0,
+   "nu_fit_repo_signed_clip": -0.0005,
+   "nu_fit_repo_steps_frac_negative_unclipped": 1.0,
+   "nu_fit_repo_unclipped": -0.05582936401937846,
+   "nu_star_den": 51833795187.35221,
+   "nu_star_num": -2894009121.6298513,
+   "nu_star_operator": -0.055832475919803164,
+   "projection_err_interior_rms": 0.0038903353350371694,
+   "unresolved_norm_mean": 0.33056568616956344,
+   "work_euclid_frac_positive": 0.2953929539295393,
+   "work_euclid_mean": -0.34711115663839004,
+   "work_weighted_frac_positive": 1.0,
+   "work_weighted_mean": 8847.880372385001
+  },
+  "64": {
+   "abscissa_L_RR_end": -1.0596583023587467e-13,
+   "abscissa_L_UU_end": 8843.900507305905,
+   "dim_R": 129,
+   "kernel_norms": {
+    "0.001": 1252953245170.9531,
+    "0.01": 4.630729843405022e+46,
+    "0.1": Infinity,
+    "0.4": Infinity
+   },
+   "markovian_norm_end": 3709.1851132449156,
+   "memory_to_markovian_ratio_median": 1.000001776423952,
+   "net_feedback_norm_end": 3709.2440949680304,
+   "nu_fit_repo_nonneg": 0.0,
+   "nu_fit_repo_signed_clip": -0.0005,
+   "nu_fit_repo_steps_frac_negative_unclipped": 1.0,
+   "nu_fit_repo_unclipped": -0.05825275946448505,
+   "nu_star_den": 646503583583.6647,
+   "nu_star_num": -37661539950.486305,
+   "nu_star_operator": -0.058254185911426566,
+   "projection_err_interior_rms": 0.0021992732927877423,
+   "unresolved_norm_mean": 0.21327918265782997,
+   "work_euclid_frac_positive": 0.0,
+   "work_euclid_mean": -209.2892794144481,
+   "work_weighted_frac_positive": 0.0,
+   "work_weighted_mean": -28622.45887771061
+  }
+ },
+ "reference_density": {
+  "density_l2_interior_max": 0.0,
+  "density_l2_interior_mean": 0.0,
+  "mass_T_max": 0.8529099679771244,
+  "negative_mass_T_max": 0.010102791094824716,
+  "negative_mass_max": 0.010102791094824716
+ },
+ "reference_validity": {
+  "butterfly_violation_frac_max": 0.13043478260869565,
+  "butterfly_violation_frac_mean": 0.03677536231884058,
+  "calendar_violation_frac_max": 0.13043478260869565,
+  "calendar_violation_frac_mean": 0.04148550724637681,
+  "finite": true,
+  "inverse_vol_invalid_frac_max": 0.33043478260869563,
+  "inverse_vol_invalid_frac_mean": 0.10634057971014493,
+  "inverse_vol_median_relerr_mean": 1.0281737581153855e-05,
+  "max_phi_rows": 0.5362056051814053,
+  "min_phi_rows": -0.010023469292011145,
+  "monotonicity_violation_frac_mean": 0.0
+ },
+ "split": "train",
+ "status": "done",
+ "sub": 16,
+ "variant": "A",
+ "wall_seconds": 13.677359819412231
+}
