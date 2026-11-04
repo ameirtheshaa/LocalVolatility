@@ -2,6 +2,25 @@
  "case": "C_sig0.25",
  "config_hash": "86f93f733729aad2",
  "family": "C",
+ "identity": {
+  "K_max": 3000.0,
+  "K_min": 500.0,
+  "algo": 1,
+  "case": "86f93f733729aad2",
+  "case_id": "C_sig0.25",
+  "code": "302d37258262c714",
+  "gate": "gate2b",
+  "keeps": [
+   16,
+   32,
+   64
+  ],
+  "n_k": 256,
+  "schema": 2,
+  "sub": 16,
+  "variant": "B"
+ },
+ "identity_hash": "71ef78f7b0c9049e",
  "n_k": 256,
  "per_keep": {
   "16": {
@@ -60,6 +79,10 @@
   }
  },
  "split": "val",
+ "stamped": {
+  "attributed_commit": "7d7753c",
+  "stamped_utc": "2026-11-04T09:13:20Z"
+ },
  "status": "done",
  "variant": "B"
 }

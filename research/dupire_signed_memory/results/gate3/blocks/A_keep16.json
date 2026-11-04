@@ -38,6 +38,79 @@
   }
  },
  "gap_reproducible": true,
+ "identity": {
+  "K_max": 3000.0,
+  "K_min": 500.0,
+  "algo": 1,
+  "cases": {
+   "C_sig0.20": "46619f18f2cc4f56",
+   "C_sig0.25": "86f93f733729aad2",
+   "C_sig0.30": "986601137fc64a69",
+   "C_sig0.35": "6a51db34c2e01264",
+   "C_sig0.40": "b9abdb732774669f",
+   "D_base0.25": "5c0a893456e58e71",
+   "D_base0.30": "74cf84d0f93651d9",
+   "D_base0.35": "34b5354c71f32d4b",
+   "S_seed0": "0770aa9b235086f5",
+   "S_seed1": "3cc7d45d53601848",
+   "S_seed2": "2a6651a4a557d22e",
+   "S_seed3": "56ceaa859c0ff56c",
+   "S_seed4": "fb868918a607cb69",
+   "S_seed5": "797f573c3efb0615",
+   "S_seed6": "93abb86b675a5c23",
+   "S_seed7": "9561ee2da69ef6c3",
+   "S_seed8": "8ac3149c882e289c",
+   "S_seed9": "2edeaeb2d64c7aa8"
+  },
+  "code": "302d37258262c714",
+  "gate": "gate3",
+  "keep": 16,
+  "n_k": 256,
+  "nu_clip": 0.0005,
+  "refine": true,
+  "refinement_cases": [
+   "C_sig0.30",
+   "S_seed8",
+   "D_base0.30"
+  ],
+  "reservoir": {
+   "in_scale_w": 1.0,
+   "leak": 0.5,
+   "n_res": 200,
+   "rho": 0.9,
+   "seed": 0
+  },
+  "ridge_grid": [
+   1e-08,
+   1e-06,
+   0.0001,
+   0.01
+  ],
+  "schema": 2,
+  "splits": {
+   "C_sig0.20": "train",
+   "C_sig0.25": "val",
+   "C_sig0.30": "train",
+   "C_sig0.35": "test",
+   "C_sig0.40": "train",
+   "D_base0.25": "val",
+   "D_base0.30": "train",
+   "D_base0.35": "test",
+   "S_seed0": "train",
+   "S_seed1": "train",
+   "S_seed2": "train",
+   "S_seed3": "train",
+   "S_seed4": "train",
+   "S_seed5": "train",
+   "S_seed6": "val",
+   "S_seed7": "val",
+   "S_seed8": "test",
+   "S_seed9": "test"
+  },
+  "sub": 16,
+  "variant": "A"
+ },
+ "identity_hash": "c23e5b9c5322864f",
  "keep": 16,
  "n_k": 256,
  "oracle_gap_train": {
@@ -2692,6 +2765,10 @@
   "S_seed7": "val",
   "S_seed8": "test",
   "S_seed9": "test"
+ },
+ "stamped": {
+  "attributed_commit": "7d7753c",
+  "stamped_utc": "2026-11-04T09:13:20Z"
  },
  "status": "done",
  "sub": 16,

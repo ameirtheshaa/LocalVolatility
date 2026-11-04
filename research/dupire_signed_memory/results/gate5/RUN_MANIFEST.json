@@ -1,0 +1,19 @@
+{
+ "completed": [
+  "C_sig0.30",
+  "S_seed9",
+  "F_fresh_base0.28_t0.2_x0.05"
+ ],
+ "failed": [],
+ "finished": true,
+ "gate": "gate5",
+ "in_progress": [],
+ "pid": 855,
+ "planned": [
+  "C_sig0.30",
+  "S_seed9",
+  "F_fresh_base0.28_t0.2_x0.05"
+ ],
+ "previous_interrupted": {},
+ "started_utc": "2026-11-04T09:16:37Z"
+}

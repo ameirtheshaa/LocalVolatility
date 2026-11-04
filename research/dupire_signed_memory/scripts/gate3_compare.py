@@ -27,6 +27,17 @@ FIXTURES = os.path.join(checkpoint.OUTPUT_ROOT, "fixtures")
 NU_CLIP = 5e-4
 RIDGE_GRID = [1e-8, 1e-6, 1e-4, 1e-2]
 RES_KW = dict(n_res=200, rho=0.9, leak=0.5, in_scale_w=1.0, seed=0)
+ALGO_VERSION = 1   # bump when the numerics of this script change (identity component)
+
+
+def block_identity(variant: str, keep: int, n_k: int, sub: int, refine: bool) -> dict:
+    cfg = repo.DupirePipelineConfig()
+    return checkpoint.make_identity(gate="gate3", algo=ALGO_VERSION, variant=variant, keep=int(keep), n_k=int(n_k),
+                                    sub=int(sub), K_min=float(cfg.K_min), K_max=float(cfg.K_max), refine=bool(refine),
+                                    nu_clip=NU_CLIP, ridge_grid=list(RIDGE_GRID), reservoir=dict(RES_KW),
+                                    cases={c.id: c.config_hash() for c in cases.all_cases()},
+                                    splits={c.id: c.split for c in cases.all_cases()},
+                                    refinement_cases=list(cases.REFINEMENT_CASES))
 
 
 def score_rollout(case: cases.Case, setup: cz.RomSetup, grid: op.Grid, fg: reference.FineGrid,
@@ -179,7 +190,12 @@ def main():
     cmd = "python3 research/dupire_signed_memory/scripts/gate3_compare.py --resume"
     keeps = [int(k) for k in args.keeps.split(",")]
     variants = args.variants.split(",")
-    done, failed, pending = [], [], []
+    planned = [f"{v}_keep{k}" for v in variants for k in keeps]
+    manifest = checkpoint.RunManifest("gate3", planned)
+    if manifest.previous_interrupted:
+        print(f"previous run interrupted: {manifest.previous_interrupted}", flush=True)
+    done, failed, pending, reused = [], [], [], []
+    invalidated, before = {}, {}
     computed = 0
     t0 = time.time()
     os.makedirs(os.path.join(OUT, "blocks"), exist_ok=True)
@@ -187,20 +203,30 @@ def main():
         for keep in keeps:
             bid = f"{variant}_keep{keep}"
             path = os.path.join(OUT, "blocks", bid + ".json")
-            cfg_hash = checkpoint.hashlib.sha256(f"{bid}|{args.n_k}|{args.sub}|{NU_CLIP}|{RIDGE_GRID}|{RES_KW}".encode()).hexdigest()[:16]
-            if args.resume and checkpoint.result_is_done(path, cfg_hash):
+            ident = block_identity(variant, keep, args.n_k, args.sub, not args.no_refine)
+            status, detail = checkpoint.result_status(path, ident)
+            before[bid] = status
+            if status == "done" and args.resume:
                 done.append(bid)
+                reused.append(bid)
                 continue
+            if status in ("stale", "corrupted", "failed", "incomplete"):
+                old = checkpoint.supersede(path)
+                invalidated[bid] = {"status": status, "detail": detail, "kept_as": os.path.relpath(old, checkpoint.OUTPUT_ROOT) if old else None}
+                print(f"[{bid}] {status}: {detail} -> recomputing (old file kept)", flush=True)
             if args.max_blocks and computed >= args.max_blocks:
                 pending.append(bid)
                 continue
+            manifest.start(bid)
             written = False
             try:
                 block = run_block(variant, keep, args.n_k, args.sub, u_refine=not args.no_refine)
                 block["status"] = "done"
-                block["config_hash"] = cfg_hash
+                block["identity"] = ident
+                block["identity_hash"] = checkpoint.identity_hash(ident)
                 checkpoint.write_json(path, block)
                 written = True
+                manifest.done(bid)
                 done.append(bid)
                 computed += 1
                 pc = block["per_case"]
@@ -213,21 +239,31 @@ def main():
                       + " ".join(f"{n}:{mean_split(n,'train'):.2e}/{mean_split(n,'test'):.2e}" for n in names), flush=True)
             except Exception:
                 tb = traceback.format_exc()
-                if written:          # the block itself is complete; only the progress print failed
+                if written:
                     print(f"[{bid}] written; progress print failed:\n{tb}", flush=True)
                 else:
-                    checkpoint.write_json(path, {"block": bid, "status": "failed", "config_hash": cfg_hash, "traceback": tb})
+                    checkpoint.write_json(path, {"block": bid, "status": "failed", "identity": ident, "traceback": tb})
+                    manifest.failed(bid)
                     failed.append(bid)
                     print(f"[{bid}] FAILED\n{tb}", flush=True)
-    checkpoint.write_json(os.path.join(OUT, "summary.json"), {"done": done, "failed": failed, "pending": pending,
-                                                              "wall_seconds": time.time() - t0, "config": vars(args)})
+    manifest.finish()
+    counts = {k: sum(1 for v in before.values() if v == k) for k in ("done", "missing", "stale", "corrupted", "failed", "incomplete")}
+    checkpoint.write_json(os.path.join(OUT, "summary.json"), {"done": done, "failed": failed, "pending": pending, "reused": reused,
+                                                              "computed": computed, "invalidated": invalidated, "status_before_run": counts,
+                                                              "previous_interrupted": manifest.previous_interrupted,
+                                                              "wall_seconds": time.time() - t0, "config": vars(args),
+                                                              "identity_components": {"code": checkpoint.numerical_code_identity(), "algo": ALGO_VERSION}})
     exit_code = 0 if not failed else 1
     checkpoint.save_checkpoint("gate3", command=cmd, exit_code=exit_code, done=done, failed=failed, pending=pending,
                                seeds={"reservoir_seed": RES_KW["seed"], "family_S": list(cases.SPLIT_S.keys())},
-                               config={**vars(args), "nu_clip": NU_CLIP, "ridge_grid": RIDGE_GRID, "reservoir": RES_KW},
+                               config={**vars(args), "nu_clip": NU_CLIP, "ridge_grid": RIDGE_GRID, "reservoir": RES_KW,
+                                       "algo_version": ALGO_VERSION, "code_identity": checkpoint.numerical_code_identity()},
+                               extra={"reused": len(reused), "computed": computed, "invalidated": invalidated,
+                                      "status_before_run": counts, "previous_interrupted": manifest.previous_interrupted},
                                next_command=(cmd if (pending or failed) else
                                              "python3 research/dupire_signed_memory/scripts/gate4_evaluate.py"))
-    print(f"gate3: done={len(done)} failed={len(failed)} pending={len(pending)} in {time.time()-t0:.0f}s")
+    print(f"gate3: done={len(done)} (reused {len(reused)}, computed {computed}) failed={len(failed)} pending={len(pending)} "
+          f"invalidated={len(invalidated)} before={counts} in {time.time()-t0:.0f}s")
     sys.exit(exit_code)
 
 

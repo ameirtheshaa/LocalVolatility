@@ -44,6 +44,17 @@ def agg(vals):
             "min": float(np.min(fin)) if fin else float("nan"), "max": float(np.max(fin)) if fin else float("nan")}
 
 
+RULE = "strict"          # "strict": any increase of negative mass counts (frozen plan); "tolerant": the v1 5 % allowance
+NEGMASS_KEY = "negative_mass_max"   # or "negative_mass_T_max" (last output row), see FROZEN_PLAN Addendum 2
+U_SOURCE = "train"       # "train": refinement band from training refinement cases only; "all": v1 (includes S_seed8)
+
+
+def negmass_increased(a_val, r_val):
+    if RULE == "tolerant":
+        return a_val > 1.05 * r_val + 1e-12
+    return a_val > r_val * (1.0 + 1e-9) + 1e-15
+
+
 def helps(block, closure, split, u):
     """Prespecified: on EVERY case of the split, stable, interior error below RRR by more than u,
     no increase of negative density mass or invalid inverse-vol fraction relative to RRR."""
@@ -59,15 +70,85 @@ def helps(block, closure, split, u):
             continue
         if not (a["resolved_interior_rms"] < r["resolved_interior_rms"] - u):
             reasons.append(f"{c}: gain {r['resolved_interior_rms'] - a['resolved_interior_rms']:+.2e} not > u={u:.2e}")
-        if a["negative_mass_max"] > 1.05 * r["negative_mass_max"] + 1e-12:
-            reasons.append(f"{c}: negative mass {a['negative_mass_max']:.2e} > RRR {r['negative_mass_max']:.2e}")
+        if negmass_increased(a[NEGMASS_KEY], r[NEGMASS_KEY]):
+            reasons.append(f"{c}: {NEGMASS_KEY} {a[NEGMASS_KEY]:.4e} > RRR {r[NEGMASS_KEY]:.4e}")
         if a["inverse_vol_invalid_frac_mean"] > r["inverse_vol_invalid_frac_mean"] + 1e-12:
             reasons.append(f"{c}: invalid inverse-vol {a['inverse_vol_invalid_frac_mean']:.3f} > RRR {r['inverse_vol_invalid_frac_mean']:.3f}")
     return {"helps": len(reasons) == 0, "n_cases": len(ids), "reasons": reasons}
 
 
+def refinement_band(block):
+    """u from the stored per-case RRR refinement numbers; 'train' excludes held-out cases."""
+    per = block["refinement_band"]["per_case"]
+    sp = block["splits"]
+    use = {c: v for c, v in per.items() if (U_SOURCE == "all" or sp.get(c) == "train")}
+    return (max(v["u"] for v in use.values()) if use else float("nan")), sorted(use)
+
+
+def support_summary(block, u):
+    """Direction/magnitude evidence per closure on the held-out split, for the support table."""
+    pc, sp = block["per_case"], block["splits"]
+    ids = [c for c in pc if sp[c] == "test"]
+    out = {}
+    for cl in CLOSURES:
+        if cl in ("RRR",) or not all(cl in pc[c] for c in ids):
+            continue
+        gains = [pc[c]["RRR"]["resolved_interior_rms"] - pc[c][cl]["resolved_interior_rms"] for c in ids if not pc[c][cl]["unstable"]]
+        out[cl] = {"n_stable": len(gains), "n": len(ids),
+                   "frac_improved": float(np.mean([g > 0 for g in gains])) if gains else float("nan"),
+                   "min_gain_over_u": float(min(gains) / u) if gains and np.isfinite(u) and u > 0 else float("nan"),
+                   "negmass_max_increased_cases": [c for c in ids if not pc[c][cl]["unstable"] and negmass_increased(pc[c][cl]["negative_mass_max"], pc[c]["RRR"]["negative_mass_max"])],
+                   "negmass_Tmax_increased_cases": [c for c in ids if not pc[c][cl]["unstable"] and negmass_increased(pc[c][cl]["negative_mass_T_max"], pc[c]["RRR"]["negative_mass_T_max"])]}
+    return out
+
+
+def check_inputs(n_k: int, sub: int, keeps, variants=("A", "B")):
+    """Every expected Gate 2 case and Gate 3 block must be present, uncorrupted and computed under
+    the current identity (code, inputs, grid, step, refinement); otherwise the evaluation is refused."""
+    import importlib.util
+    def load(name):
+        spec = importlib.util.spec_from_file_location(name, os.path.join(os.path.dirname(os.path.abspath(__file__)), name + ".py"))
+        m = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(m)
+        return m
+    g2, g3 = load("gate2_reference"), load("gate3_compare")
+    problems = []
+    for case in cases.all_cases():
+        for v in variants:
+            refine = case.id in cases.REFINEMENT_CASES
+            st, detail = checkpoint.result_status(os.path.join(G2, f"{case.id}__{v}.json"), g2.case_identity(case, v, n_k, sub, refine, keeps))
+            if st != "done":
+                problems.append(f"gate2 {case.id}__{v}: {st} {detail}")
+    for v in variants:
+        for k in keeps:
+            st, detail = checkpoint.result_status(os.path.join(G3, f"{v}_keep{k}.json"), g3.block_identity(v, k, n_k, sub, True))
+            if st != "done":
+                problems.append(f"gate3 {v}_keep{k}: {st} {detail}")
+    return problems
+
+
 def main():
+    global RULE, NEGMASS_KEY, U_SOURCE
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--rule", choices=["strict", "tolerant"], default="strict")
+    ap.add_argument("--negmass", choices=["negative_mass_max", "negative_mass_T_max"], default="negative_mass_max")
+    ap.add_argument("--u-source", choices=["train", "all"], default="train")
+    ap.add_argument("--suffix", default="", help="output file suffix (e.g. _Tmax)")
+    ap.add_argument("--n_k", type=int, default=256)
+    ap.add_argument("--sub", type=int, default=16)
+    ap.add_argument("--allow-partial", action="store_true", help="score whatever is present (problems are listed in the output)")
+    args = ap.parse_args()
+    RULE, NEGMASS_KEY, U_SOURCE = args.rule, args.negmass, args.u_source
     t0 = time.time()
+    problems = check_inputs(args.n_k, args.sub, cases.KEEPS)
+    if problems:
+        print(f"input check: {len(problems)} problem(s):")
+        for pr in problems:
+            print("  ", pr)
+        if not args.allow_partial:
+            print("refusing to evaluate (use --allow-partial to score what is present)")
+            sys.exit(2)
     g2 = {}
     for p in sorted(glob.glob(os.path.join(G2, "*__*.json"))):
         d = json.load(open(p))
@@ -138,13 +219,14 @@ def main():
     verdicts = {}
     for (variant, keep), b in sorted(blocks.items()):
         key = f"{variant}_keep{keep}"
-        u = b["refinement_band"]["u"]
+        u, u_cases = refinement_band(b)
         pc, sp = b["per_case"], b["splits"]
         present = [c for c in CLOSURES if any(c in pc[x] for x in pc)]
-        rec = {"u": u, "nu": b["fit"]["nu_by_closure"], "nu_unclipped": b["fit"]["nu_unclipped"],
+        rec = {"u": u, "u_cases": u_cases, "u_v1_all_cases": b["refinement_band"]["u"], "rule": RULE, "negmass_key": NEGMASS_KEY,
+               "support": support_summary(b, u), "nu": b["fit"]["nu_by_closure"], "nu_unclipped": b["fit"]["nu_unclipped"],
                "gap_reproducible": b["gap_reproducible"], "ridge": {k: v.get("chosen") for k, v in b["ridge_selection"].items()},
                "scores": {}, "helps_test": {}, "helps_val": {}}
-        md += [f"## Closure scores — variant {variant}, keep {keep} (dim R = {b['dim_R']}, u = {fmt(u)}, ν_unclipped = {fmt(b['fit']['nu_unclipped'])}, oracle gap reproducible = {b['gap_reproducible']})", "",
+        md += [f"## Closure scores — variant {variant}, keep {keep} (dim R = {b['dim_R']}, u = {fmt(u)} from {u_cases} [v1 with S_seed8: {fmt(b['refinement_band']['u'])}], rule = {RULE} on {NEGMASS_KEY}, ν_unclipped = {fmt(b['fit']['nu_unclipped'])}, oracle gap reproducible = {b['gap_reproducible']})", "",
                "| closure | ν / ridge | split | n | stable | resolved interior RMS mean [min, max] | price interior RMS mean | density L2 mean | neg. mass max | inverse-vol invalid frac mean | butterfly viol. mean | closed abscissa max | helps (rule) |",
                "|---|---|---|---|---|---|---|---|---|---|---|---|---|"]
         for cl in present:
@@ -209,17 +291,23 @@ def main():
     md += ["", f"H-sign (eliminated modes add diffusion, ν* ≥ 0) rejected on OP-B at every keep: {ev['verdict']['H_sign_rejected_OP_B']}; on OP-A: {ev['verdict']['H_sign_rejected_OP_A']}.",
            f"H-scalar supported in at least one block: {ev['verdict']['H_scalar_supported_anywhere']}.",
            f"H-state supported in at least one block: {ev['verdict']['H_state_supported_anywhere']}.", ""]
+    ev["scoring"] = {"rule": RULE, "negmass_key": NEGMASS_KEY, "u_source": U_SOURCE}
+    ev["input_check"] = {"n_k": args.n_k, "sub": args.sub, "problems": problems, "allow_partial": bool(args.allow_partial)}
+    md.insert(1, f"Scoring: rule = {RULE}, negative-mass metric = {NEGMASS_KEY}, refinement band from = {U_SOURCE} refinement cases (see FROZEN_PLAN.md Addendum 2).")
     ev["wall_seconds"] = time.time() - t0
     ev["status"] = "done"
     os.makedirs(OUT, exist_ok=True)
-    checkpoint.write_json(os.path.join(OUT, "evaluation.json"), ev)
-    with open(os.path.join(OUT, "TABLES.md"), "w", encoding="utf-8") as f:
+    checkpoint.write_json(os.path.join(OUT, f"evaluation{args.suffix}.json"), ev)
+    with open(os.path.join(OUT, f"TABLES{args.suffix}.md"), "w", encoding="utf-8") as f:
         f.write("\n".join(md) + "\n")
-    checkpoint.save_checkpoint("gate4", command="python3 research/dupire_signed_memory/scripts/gate4_evaluate.py", exit_code=0,
+    checkpoint.save_checkpoint("gate4", command=f"python3 research/dupire_signed_memory/scripts/gate4_evaluate.py --rule {RULE} --negmass {NEGMASS_KEY} --u-source {U_SOURCE}" + (f" --suffix {args.suffix}" if args.suffix else ""), exit_code=0,
                                done=list(verdicts.keys()), failed=[], pending=[], seeds={}, config={},
                                next_command="python3 research/dupire_signed_memory/scripts/run_all.py --resume")
-    print(json.dumps(ev["verdict"], indent=1))
-    print(f"wrote {OUT}/evaluation.json and TABLES.md")
+    print(json.dumps(ev["verdict"]["per_block"], indent=None))
+    print({k: v for k, v in ev["verdict"].items() if k != "per_block"})
+    for key, rec in ev["closures"].items():
+        print(key, "u=%.2e (v1 %.2e)" % (rec["u"], rec["u_v1_all_cases"]), {cl: (h["helps"], len(h.get("reasons", []))) for cl, h in rec["helps_test"].items()})
+    print(f"wrote {OUT}/evaluation{args.suffix}.json and TABLES{args.suffix}.md")
 
 
 if __name__ == "__main__":

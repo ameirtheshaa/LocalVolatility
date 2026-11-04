@@ -21,3 +21,7 @@
 | Gate 3 (6 closure blocks) | done | 445 s wall clock after the restart; first attempt discarded (progress-print bug overwrote finished blocks) |
 | Gate 4 + report | done | ~15 min wall clock |
 | Gate 5 release (restore rehearsal, final push) | done | see README.md / scripts/restore_rehearsal.sh |
+| Wrap-up A: Gate 4 scoring correction, v1 preserved, S_seed8 disclosure | done | ~10 min wall clock |
+| Wrap-up B: result identity / corruption / interruption checks, stamping, tests | done | ~20 min wall clock |
+| Wrap-up C: boundary-adapted reduced model (Gate 5) | done | 726 s compute (fresh time-dependent case with 512-point reference dominates) |
+| Wrap-up D: report, recommendation, rehearsal, export | done | |

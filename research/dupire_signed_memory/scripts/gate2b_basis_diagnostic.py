@@ -21,6 +21,14 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from dsm import cases, checkpoint, metrics, operators as op, reference  # noqa: E402
 
 OUT = os.path.join(checkpoint.RESULTS, "gate2", "basis")
+ALGO_VERSION = 1
+
+
+def case_identity(case, n_k, sub, keeps):
+    from dsm import repo
+    cfg = repo.DupirePipelineConfig()
+    return checkpoint.make_identity(gate="gate2b", algo=ALGO_VERSION, case=case.config_hash(), case_id=case.id, variant="B",
+                                    n_k=int(n_k), sub=int(sub), K_min=float(cfg.K_min), K_max=float(cfg.K_max), keeps=list(keeps))
 
 
 def galerkin_rollout(L_of_t, V, x_ref, t, constant):
@@ -108,14 +116,23 @@ def main():
     os.makedirs(OUT, exist_ok=True)
     t0 = time.time()
     done, failed = [], []
+    invalidated = {}
     for case in cases.all_cases():
         path = os.path.join(OUT, f"{case.id}__B.json")
-        if args.resume and checkpoint.result_is_done(path, case.config_hash()):
+        ident = case_identity(case, args.n_k, args.sub, cases.KEEPS)
+        status, detail = checkpoint.result_status(path, ident)
+        if args.resume and status == "done":
             done.append(case.id)
             continue
+        if status in ("stale", "corrupted", "failed", "incomplete"):
+            old = checkpoint.supersede(path)
+            invalidated[case.id] = {"status": status, "detail": detail, "kept_as": old}
+            print(f"[{case.id}] {status}: {detail} -> recomputing (old file kept)", flush=True)
         try:
             res = run_case(case, args.n_k, args.sub, cases.KEEPS)
             res["status"] = "done"
+            res["identity"] = ident
+            res["identity_hash"] = checkpoint.identity_hash(ident)
             checkpoint.write_json(path, res)
             done.append(case.id)
             pk = res["per_keep"]
@@ -127,7 +144,9 @@ def main():
             checkpoint.write_json(path, {"case": case.id, "status": "failed", "config_hash": case.config_hash(), "traceback": traceback.format_exc()})
             failed.append(case.id)
             print(f"[{case.id}] FAILED {e}", flush=True)
-    checkpoint.write_json(os.path.join(OUT, "summary.json"), {"done": done, "failed": failed, "wall_seconds": time.time() - t0})
+    checkpoint.write_json(os.path.join(OUT, "summary.json"), {"done": done, "failed": failed, "invalidated": invalidated,
+                                                              "wall_seconds": time.time() - t0,
+                                                              "identity_components": {"code": checkpoint.numerical_code_identity(), "algo": ALGO_VERSION}})
     print(f"gate2b: done={len(done)} failed={len(failed)} in {time.time()-t0:.0f}s")
     sys.exit(0 if not failed else 1)
 

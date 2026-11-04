@@ -44,6 +44,16 @@ python3 research/dupire_signed_memory/scripts/gate4_evaluate.py
 ```
 
 * `NEXT_ACTIONS.md` always names the one exact next command after an interruption.
+* Every result file carries an **identity** (numerical-code hash of `dsm/{operators,cases,
+  reference,mz,closures,metrics}.py`, case hash, variant, grid, time step, strike domain,
+  refinement settings, algorithm version). A result is reused only when the identity matches;
+  stale, corrupted, failed or legacy files are superseded (kept as `*.superseded.<utc>.json`)
+  and recomputed. `results/<gate>/RUN_MANIFEST.json` records the case in progress, so an
+  interrupted run is reported (`previous_interrupted`) on the next start. Gate 4 refuses to
+  evaluate when an expected Gate 2/3 input is missing, stale or corrupted (`--allow-partial`
+  to override). Results produced before the identity scheme were attributed to commit
+  `7d7753c` by `scripts/stamp_results.py`, which first verifies that the numerical modules are
+  byte-identical to that commit.
 * `checkpoints/CHECKPOINT_<gate>.json` records the Git commit, source hashes, environment,
   seeds, done/failed/pending case IDs, the command, its exit code and result checksums.
 * Per-case results live in `results/gate2/*.json` and per-block results in
@@ -64,7 +74,9 @@ bash research/dupire_signed_memory/scripts/restore_rehearsal.sh
 
 The tests cover the analytic control, the projector identity with the production code, the
 exact-reconstruction identity (unresolved initial data + memory), the oracle floor of the
-integrator, the eigenbasis no-memory property and interruption/resume idempotence. The
+integrator, the eigenbasis no-memory property, interruption/resume idempotence, and the
+checkpoint identity chain (grid, step, code, corruption, tampering, missing file, interrupted
+run, legacy file). The
 rehearsal clones the repository into a fresh directory, installs the pinned dependencies,
 runs the tests, recomputes Gate 1 and compares it numerically with the committed result.
 
