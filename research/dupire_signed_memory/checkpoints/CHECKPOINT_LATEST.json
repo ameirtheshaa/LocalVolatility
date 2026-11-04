@@ -11,7 +11,7 @@
   "failed": [],
   "pending": []
  },
- "command": "python3 research/dupire_signed_memory/scripts/gate4_evaluate.py",
+ "command": "python3 research/dupire_signed_memory/scripts/gate4_evaluate.py --rule tolerant --negmass negative_mass_max --u-source all --suffix _v1check",
  "config": {},
  "environment": {
   "machine": "x86_64",
@@ -24,10 +24,13 @@
  "extra": {},
  "gate": "gate4",
  "git_dirty_tracked_areas": true,
- "git_head": "1a9d0604d334dc767205a8fc8ff5e11d73e8d92a",
+ "git_head": "2003b203800e7b3c5fb0f9ec1b84e46447f3016e",
  "next_command": "python3 research/dupire_signed_memory/scripts/run_all.py --resume",
  "result_checksums": {
-  "results/gate4/evaluation.json": "8d4683abc4408370b4a18e54340424c2b1c35715d13a3eae3e7e15614eee9776"
+  "results/gate4/evaluation.json": "e0e3c59b4f63258c414359e6073f294656b3bf38a4c695c8b7b2e2a5114e0faa",
+  "results/gate4/evaluation_Tmax.json": "2a2a25a9c0e99330d271ed0da89fa086e7ab31709508e9f1b2b85056d5d57dda",
+  "results/gate4/evaluation_v1_tolerant.json": "8d4683abc4408370b4a18e54340424c2b1c35715d13a3eae3e7e15614eee9776",
+  "results/gate4/evaluation_v1check.json": "9cf509e063c4ee95c92cd93f09c501c5476971355d2ad753e8447655554b0108"
  },
  "seeds": {},
  "source_identities": {
@@ -51,9 +54,9 @@
   "research/dupire_signed_memory/scripts/gate2_reference.py": "f51b49337cd08443e3f5e83bc026f5956c40b92d31d403b3b2ab85dfcb53450f",
   "research/dupire_signed_memory/scripts/gate2b_basis_diagnostic.py": "58d638c5184f5473005e696ad1f0932b8215a8926e50d38a68668e0042325596",
   "research/dupire_signed_memory/scripts/gate3_compare.py": "67aa1f1647ad2e2d620c68f4507d7c7bb2f7cf792dba9f0965edf7e909a33b22",
-  "research/dupire_signed_memory/scripts/gate4_evaluate.py": "9820a8cf909872ca1134cc4fad826ccf9dbe7fea0cc6818b5cd7282af8c790a7",
+  "research/dupire_signed_memory/scripts/gate4_evaluate.py": "d4a24d7b51307b7eb34a37af79c784ea64a71d855631e79d670dcb27352b7213",
   "research/dupire_signed_memory/scripts/run_all.py": "92343d03f4e53ffd355f37e7144b2f8e89e1513634c13910198d0935b8e56f4e",
   "research/dupire_signed_memory/scripts/verify_results.py": "e296938e553816f704caeda0977a9cad0306360400b34811526c952038df941b"
  },
- "timestamp_utc": "2026-11-04T08:18:36Z"
+ "timestamp_utc": "2026-11-04T09:05:55Z"
 }

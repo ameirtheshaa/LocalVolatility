@@ -142,3 +142,21 @@ TensorFlow/GPU training, changes to production defaults in `mz_spectral`.
   The scored comparison (Gate 3) stays with the repository projector as frozen above.
 * `mz.kernel_norms` reports overflow of the divergent OP-A orthogonal propagator as `inf`
   instead of raising (robustness fix found during the Gate 2 run; no change to any number).
+
+### Addendum 2 (2026-11-04, after the first scoring; correction of the evaluation code)
+
+* The acceptance rule above says a closure must not *increase* negative density mass relative to
+  RRR. The first implementation of `scripts/gate4_evaluate.py` allowed a 5 % increase
+  (`a > 1.05·r + 1e-12`). This deviates from the frozen rule. The results scored under the
+  5 % tolerance are preserved as `results/gate4/evaluation_v1_tolerant.json` /
+  `TABLES_v1_tolerant.md`; the corrected scoring (`--rule strict`: any increase beyond a
+  `1e-9` relative round-off guard counts) is the one reported. Both are shown side by side.
+* The negative-mass metric is the maximum over the 24 output rows. The first output row is the
+  shared projected initial condition, identical for every closure, and it often carries the
+  largest ringing, so the row-maximum can be blind to what a closure does later. The corrected
+  scoring therefore also reports the rule with the negative mass at `T_max` (last row).
+* Disclosure: `REFINEMENT_CASES` contained `S_seed8`, a held-out case. It was used (with
+  `C_sig0.30` and `D_base0.30`, both training cases) to compute the refinement band `u` that
+  enters the acceptance threshold. No parameter was fitted on it, but it is not fully
+  untouched. The corrected scoring computes `u` from the training refinement cases only
+  (`--u-source train`) and shows the old `u` for comparison.

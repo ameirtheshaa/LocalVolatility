@@ -20,7 +20,9 @@ coefficient of either sign is useless — with `ν ≥ 0` the closure is a no-op
 a sub-resolution gain or an instability. The feedback is a basis artifact: with boundary-adapted
 modes the truncation is exact to `1e-7`–`1e-10`, and within the Fourier split a stateless linear
 map on the resolved state removes 98–99 % of the resolved error. Signed *and* stateful
-feedback is therefore neither needed nor sufficient; what is needed is the basis.
+feedback is therefore neither needed nor sufficient; what is needed is the basis. Re-scoring
+under the strict negative-mass rule (§6a) leaves every verdict unchanged but removes the one
+formal "stateful helps" result; no closure improves the density in the Fourier split.
 
 ## 2. What was tested (Gate 0: inventory and frozen plan)
 
@@ -193,6 +195,52 @@ helps, and the production stencil itself produces negative prices and invalid de
 repository smile at the production grid. The existing report's conclusion that the forward QL
 memory is "cosmetic" stands; its explanation (anti-diffusion is unphysical) does not.
 
+## 6a. Erratum and re-scoring (2026-11-04, after the first release)
+
+**What was wrong.** The frozen rule says a closure must not *increase* negative density mass
+relative to RRR; the first `gate4_evaluate.py` allowed a 5 % increase. The first scoring is
+preserved unchanged as `results/gate4/evaluation_v1_tolerant.json` / `TABLES_v1_tolerant.md`;
+the corrected scoring (any increase beyond a `1e-9` round-off guard) is now the default and the
+old behaviour is reproducible with `--rule tolerant --u-source all`
+(`evaluation_v1check.json`). A second variant scores the negative mass at the last maturity
+instead of the row maximum (`evaluation_Tmax.json`), because the row maximum is usually set by
+the shared initial row and is blind to the closure (FROZEN_PLAN Addendum 2).
+
+**Disclosure.** `REFINEMENT_CASES` contained the held-out case `S_seed8`; it entered the
+refinement band `u` (never a fitted parameter). Recomputing `u` from the training refinement
+cases only gives the same `u` at every block (`S_seed8`'s band was never the maximum), so no
+number changes, but the held-out split was not fully untouched and is reported as such.
+
+**What changes.** Held-out "helps" decisions (every case stable, gain > u, no increase of
+negative mass or invalid inverse-vol fraction):
+
+| block | closure | v1 (5 % tolerance) | strict, row-max negative mass | strict, last-row negative mass |
+|---|---|---|---|---|
+| B_keep16 | LM | helps | no (negative mass increases on 1 case) | no |
+| B_keep16 | LR | helps | no (increase on 2 cases) | no |
+| B_keep16/32/64 | ORACLE | helps | helps | no (last-row negative mass higher than RRR on all 4 cases) |
+| all blocks | QL+, QL±, QL* | no | no | no |
+| B_keep32/64 | LM, LR, ESN | no | no | no |
+
+The per-block verdicts ("justified" everywhere) and H-sign/H-scalar are unchanged;
+`H_state_supported_anywhere` becomes **False**. The exact resolved field itself fails the
+last-row density rule, which shows that the density component of the rule measures the
+Fourier projection's ringing, not the closure; it cannot discriminate between closures in this
+split and should not be read as evidence against the linear map's price-side gain.
+
+**Support classification of each conclusion.**
+
+| conclusion | evidence | status |
+|---|---|---|
+| Eliminated modes do not add diffusion (`ν* < 0`) | 108/108 combinations, operator-based and finite-difference estimators agree, analytic control and theorem | supported |
+| The nonnegative clip makes QL a no-op | `ν = 0` fitted on every case | supported |
+| The signed clip (`-5e-4`) improves the resolved error | direction consistent on 18/18 cases and 4/4 held-out at every keep, but every gain is 0.3–0.9 of `u` | **uncertain** (inside refinement uncertainty) |
+| The unclipped coefficient destabilises | abscissa `+3.6e2` to `+2.2e3`; unstable on 12/12 held-out rollouts at `keep = 16, 32`, 3/4 at 64 | supported |
+| A stateless linear map removes 98–99 % of the resolved error | held-out gains 60–76× `u` at every OP-B block, stable, abscissa `< 0` | supported for the resolved price; **not** for the density (fails the strict rule, and so does the exact resolved field) |
+| State (reservoirs) adds nothing robust | LR unstable at `keep = 32`, never better than LM except `keep = 16`; ESN never better than LR | supported within the fixed budget only |
+| The feedback is a basis artifact; boundary-adapted bases need no closure | Gate 2b: Galerkin error `1e-7`–`1e-10` at 33 modes in sine/eigen bases vs `1e-2` Fourier | supported for the resolved price; density, cost and stability tested in §9 |
+| OP-A production references are unphysical | negative prices and negative mass in every family at the production grid | supported |
+
 ## 7. Limitations
 
 * Synthetic, noise-free, semidiscrete references only; nothing here bears on market
@@ -213,6 +261,7 @@ memory is "cosmetic" stands; its explanation (anti-diffusion is unphysical) does
 * Noisy-observation fits (secondary in the plan) were not run.
 * The reference commit named in the brief (`f539f41`) is not in this repository; see
   `SOURCE_INVENTORY.md`.
+* The held-out case `S_seed8` was one of the three refinement cases that define `u` (§6a).
 
 ## 8. Release and recovery
 
