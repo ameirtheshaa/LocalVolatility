@@ -15,3 +15,7 @@
 | block | status | note |
 |---|---|---|
 | inventory + probes + frozen plan | done | ~20 min wall clock |
+| Gate 1 (derivation, control, identities) | done | ~15 min wall clock; one φ₁-scaling bug found and fixed by the identity check itself |
+| Gate 2 (36 reference cases + refinement) | done | 18 min first run + 4 min resume (15 production-stencil cases failed on a kernel-norm overflow, now reported as inf); ~55 min of idle wall clock lost to a background wait that expired |
+| Gate 2b basis diagnostic | done | ~20 min wall clock under CPU contention |
+| Gate 3 (6 closure blocks) | running | first attempt discarded (progress-print bug overwrote finished blocks); restarted with 2 BLAS threads |

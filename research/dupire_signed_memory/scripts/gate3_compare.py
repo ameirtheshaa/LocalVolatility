@@ -194,16 +194,18 @@ def main():
             if args.max_blocks and computed >= args.max_blocks:
                 pending.append(bid)
                 continue
+            written = False
             try:
                 block = run_block(variant, keep, args.n_k, args.sub, u_refine=not args.no_refine)
                 block["status"] = "done"
                 block["config_hash"] = cfg_hash
                 checkpoint.write_json(path, block)
+                written = True
                 done.append(bid)
                 computed += 1
                 pc = block["per_case"]
                 def mean_split(cl, split):
-                    vals = [pc[c]["resolved_interior_rms"] for c in pc if block["splits"][c] == split and cl in pc[c]]
+                    vals = [pc[c][cl]["resolved_interior_rms"] for c in pc if block["splits"][c] == split and cl in pc[c]]
                     vals = [v for v in vals if np.isfinite(v)]
                     return float(np.mean(vals)) if vals else float("nan")
                 names = [n for n in ("RRR", "QL+", "QL±", "QL*", "ORACLE", "LM", "LR", "ESN") if n in pc[next(iter(pc))]]
@@ -211,9 +213,12 @@ def main():
                       + " ".join(f"{n}:{mean_split(n,'train'):.2e}/{mean_split(n,'test'):.2e}" for n in names), flush=True)
             except Exception:
                 tb = traceback.format_exc()
-                checkpoint.write_json(path, {"block": bid, "status": "failed", "config_hash": cfg_hash, "traceback": tb})
-                failed.append(bid)
-                print(f"[{bid}] FAILED\n{tb}", flush=True)
+                if written:          # the block itself is complete; only the progress print failed
+                    print(f"[{bid}] written; progress print failed:\n{tb}", flush=True)
+                else:
+                    checkpoint.write_json(path, {"block": bid, "status": "failed", "config_hash": cfg_hash, "traceback": tb})
+                    failed.append(bid)
+                    print(f"[{bid}] FAILED\n{tb}", flush=True)
     checkpoint.write_json(os.path.join(OUT, "summary.json"), {"done": done, "failed": failed, "pending": pending,
                                                               "wall_seconds": time.time() - t0, "config": vars(args)})
     exit_code = 0 if not failed else 1
