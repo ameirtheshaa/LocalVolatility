@@ -12,7 +12,7 @@ stateful feedback from the eliminated modes, or is the nonnegative scalar eddy-d
 restriction of `fit_nu_ql` (`docs/MZ_QL_NONNEG_FIX_REPORT.md`) justified on variable-volatility
 problems?
 
-**Short answer.** The restriction is not justified by the physics and not harmful in practice.
+**Short answer** (updated after the wrap-up, §6a and §9). The restriction is not justified by the physics and not harmful in practice.
 The exact feedback of the eliminated modes projects *negatively* on the eddy-diffusion regressor
 in every tested case (constant, strike-dependent and time-dependent volatility, both operator
 variants, all truncations), so "eliminated modes must add diffusion" is false; but a scalar
@@ -22,7 +22,10 @@ modes the truncation is exact to `1e-7`–`1e-10`, and within the Fourier split 
 map on the resolved state removes 98–99 % of the resolved error. Signed *and* stateful
 feedback is therefore neither needed nor sufficient; what is needed is the basis. Re-scoring
 under the strict negative-mass rule (§6a) leaves every verdict unchanged but removes the one
-formal "stateful helps" result; no closure improves the density in the Fourier split.
+formal "stateful helps" result; no closure improves the density in the Fourier split. A
+33-mode boundary-adapted (sine) model needs no closure and matches the un-reduced solve to grid
+accuracy with valid densities on a constant-σ control, a held-out strike smile and a fresh
+time-dependent smile (§9); that is the practical recommendation (§10).
 
 ## 2. What was tested (Gate 0: inventory and frozen plan)
 
@@ -241,7 +244,84 @@ split and should not be read as evidence against the linear map's price-side gai
 | The feedback is a basis artifact; boundary-adapted bases need no closure | Gate 2b: Galerkin error `1e-7`–`1e-10` at 33 modes in sine/eigen bases vs `1e-2` Fourier | supported for the resolved price; density, cost and stability tested in §9 |
 | OP-A production references are unphysical | negative prices and negative mass in every family at the production grid | supported |
 
-## 7. Limitations
+## 9. Gate 5 — a small boundary-adapted reduced model (`results/gate5/`)
+
+The most promising practical improvement identified in §4 was tested as a deployable model:
+Dirichlet sine modes on the detrended price with the boundary-consistent stencil (`B_sine`,
+17/33/65 degrees of freedom, resolved-only Galerkin, no closure), against the production Fourier
+model (`A_fourier`), the boundary-consistent Fourier model (`B_fourier`), the un-reduced 256-point
+solves, and the refined 512-point boundary-consistent solve as reference (Black–Scholes for the
+control). Three cases: the constant-σ control `C_sig0.30`, the held-out strike smile `S_seed9`, and
+one fresh time- and strike-dependent smile never used before
+(`F_fresh`: `σ = 0.28 + y e^{-y}`, `y = (t+0.2)√(x+0.05)`, defined only in `gate5_sine_rom.py`).
+Two start protocols: from the projected reference at `t̃0 = 0.2` (as in Gate 3) and from the
+payoff at `t̃ = 0` (deployment). Numerical uncertainty `u_grid` is the 256-vs-512 interior RMS
+difference of the full solve (`4.0e-6`, `3.6e-6`, `3.0e-6`); for the fresh case the step
+refinement adds `5.8e-8`. Interior RMS of the scaled price at the 24 repository maturities,
+start from the payoff (the projected-start numbers are equal or smaller):
+
+| case | model | dof | price RMS | density L2 | negative mass (max row) | inverse-vol invalid | stable | rollout cost |
+|---|---|---|---|---|---|---|---|---|
+| C_sig0.30 | A_fourier (production) | 33 | `9.9e-2` | `4.4e-2` | `1.5` | 0.154 | yes | 7 ms |
+| | B_fourier | 33 | `3.0e-2` | `2.1e-2` | `0.94` | 0.539 | yes | 7 ms |
+| | **B_sine** | **17** | `1.0e-5` | `1.0e-4` | `6e-4` | 0.169 | yes (abscissa `-0.21`) | 8 ms |
+| | **B_sine** | **33** | `4.2e-6` | `1.4e-5` | `1.9e-6` | 0.169 | yes | 8 ms |
+| | B_full256 (un-reduced) | 256 | `4.0e-6` | `3.3e-6` | `6e-7` | 0.169 | yes | 140 ms |
+| S_seed9 | A_fourier (production) | 33 | `1.1e-1` | `3.9e-2` | `1.3` | 0.209 | yes | 7 ms |
+| | B_fourier | 33 | `4.4e-2` | `2.2e-2` | `0.87` | 0.523 | yes | 19 ms |
+| | **B_sine** | **33** | `3.8e-6` | `2.1e-5` | `1.8e-6` | 0.075 | yes (`-0.33`) | 24 ms |
+| | B_full256 | 256 | `3.6e-6` | `2.5e-6` | `4e-7` | 0.076 | yes | 138 ms |
+| F_fresh | A_full256 (production, un-reduced) | 256 | `1.6e-2` | `2.8e-3` | `9.0e-2` | 0.191 | yes | 48 s |
+| | A_fourier (production) | 33 | `1.2e-1` | `2.4e-2` | `0.92` | 0.267 | yes | 8.8 s |
+| | B_fourier | 33 | `7.8e-2` | `1.8e-2` | `0.69` | 0.425 | yes | 8.6 s |
+| | **B_sine** | **17** | `8.1e-6` | `1.6e-4` | `7e-7` | 0.005 | yes (`-0.71`) | 8.7 s |
+| | **B_sine** | **33** | `3.1e-6` | `2.6e-5` | `2.3e-7` | 0.004 | yes | 9.4 s |
+| | B_full256 | 256 | `3.0e-6` | `9.0e-7` | `2.7e-8` | 0.004 | yes | 46 s |
+
+(The fresh case has a time-dependent operator, so every model pays one small matrix
+exponential per step; the constant-coefficient cases pay one exponential in total. Costs are
+medians of three rollouts on the session's CPU and are only meaningful relative to each other.)
+
+**Claims that exceed numerical uncertainty** (`results/gate5/comparison.json`): on every case
+and under both start protocols, the 33-mode sine model's price error is within `u_grid` of the
+un-reduced 256-point solve (it is numerically indistinguishable from not reducing at all), its
+gain over the 33-mode Fourier models is `2.2e-2`–`1.2e-1`, i.e. `10³`–`10⁴` times `u_grid`, its
+density error is `10³` times smaller than the Fourier models' and the gain exceeds the density
+uncertainty, its negative density mass drops from `0.7–45` to `≤ 2e-6`, and its invalid
+inverse-volatility fraction equals that of the full solve. The 17-mode model is within 2–3
+`u_grid` of the full solve. Rollout cost is 5–17× below the un-reduced solve at equal time step.
+The production stencil's own un-reduced solve on the fresh smile has price error `1.6e-2`,
+negative mass `0.09` and 19 % invalid inverse-volatility estimates, so on such smiles the
+boundary-adapted 17-mode model is more accurate than the production full solve by four
+orders of magnitude.
+
+**What this does not show.** Three cases, one grid family, one time horizon and the study's
+own semidiscrete references; no noisy or market data; the sine basis relies on the
+boundary-consistent (linearity) stencil, whose domain-truncation error on the repository smile
+is `5.8e-3` (Gate 2), common to all models here; the 512-point reference shares the stencil
+and the strike domain with the models, so agreement with it measures discretisation, not
+physical truth, except on the control where Black–Scholes confirms it (`4e-6`).
+
+## 10. Recommendation
+
+1. Do not use the Fourier-truncated model (either stencil) for densities or local-volatility
+   inversion: at 33–129 modes its density error, negative mass and inverse-volatility validity
+   are those of the projection, not of any closure, and no tested closure repairs them.
+2. If a reduced model is wanted, replace the Fourier modes by Dirichlet sine modes on the
+   detrended price with the linearity boundary rows: 33 modes reproduce the 256-point solve
+   to grid accuracy on all three test cases, with valid densities and no closure, at 5–17× lower
+   rollout cost (§9). This is a change of basis and boundary treatment, not of the closure.
+3. Drop the sign restriction debate: the eliminated-mode feedback is anti-diffusive in every
+   tested case, but a scalar coefficient of either sign is useless (§5–§6a). If the Fourier
+   model must be kept for the resolved price only, a stateless linear map on the resolved state
+   is the only closure that helped beyond uncertainty, and it does not repair the density.
+4. Treat the production one-sided boundary rows as a defect to fix before any further
+   reduced-model work: they make the operator non-dissipative and produce negative prices and
+   invalid densities on the repository smile at the production grid (§4, §9).
+5. Widen the strike domain for strong smiles (domain truncation `5.8e-3` on the repository
+   smile, §4).
+
+## 7. Limitations (first release; see also §9 for Gate 5)
 
 * Synthetic, noise-free, semidiscrete references only; nothing here bears on market
   performance, on the P9 tail-energy detector, or on plasma/DNS closures.

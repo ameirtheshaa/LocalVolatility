@@ -11,7 +11,8 @@ import math
 import sys
 
 IGNORE = {"wall_seconds", "timestamp_utc", "traceback", "command", "git_head", "git_dirty_tracked_areas",
-          "environment", "source_identities", "result_checksums", "path"}
+          "environment", "source_identities", "result_checksums", "path", "stamped",
+          "wall_seconds_rollout", "wall_seconds_rollout_median"}
 
 
 def walk(a, b, path, rtol, atol, diffs):

@@ -1,0 +1,18 @@
+{
+ "done": [
+  "C_sig0.30",
+  "S_seed9",
+  "F_fresh_base0.28_t0.2_x0.05"
+ ],
+ "failed": [],
+ "fresh_case": {
+  "config_hash": "f76128638b884cc2",
+  "id": "F_fresh_base0.28_t0.2_x0.05",
+  "params": {
+   "sigma_base": 0.28,
+   "t_shift": 0.2,
+   "x_shift": 0.05
+  }
+ },
+ "wall_seconds": 725.696257352829
+}
