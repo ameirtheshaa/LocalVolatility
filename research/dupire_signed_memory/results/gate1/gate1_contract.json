@@ -1,0 +1,193 @@
+{
+ "OP_A": {
+  "abscissa_L": 0.4049996931328545,
+  "abscissa_L_UU": 1072.933851719241,
+  "horizons": {
+   "10": {
+    "finite": true,
+    "max_rel_err_resolved_reconstruction": 7.437281719722111,
+    "max_rel_err_unresolved_reconstruction": 38.37058024332342
+   },
+   "160": {
+    "finite": true,
+    "max_rel_err_resolved_reconstruction": 6.333034655731932e+152,
+    "max_rel_err_unresolved_reconstruction": 3.392292163419197e+153
+   },
+   "2": {
+    "finite": true,
+    "max_rel_err_resolved_reconstruction": 5.720523867423641e-08,
+    "max_rel_err_unresolved_reconstruction": 2.9592133691773065e-07
+   },
+   "20": {
+    "finite": true,
+    "max_rel_err_resolved_reconstruction": 100054630667.53618,
+    "max_rel_err_unresolved_reconstruction": 517326427695.6198
+   },
+   "368": {
+    "finite": false,
+    "max_rel_err_resolved_reconstruction": NaN,
+    "max_rel_err_unresolved_reconstruction": NaN
+   },
+   "40": {
+    "finite": true,
+    "max_rel_err_resolved_reconstruction": 1.8105059105422069e+31,
+    "max_rel_err_unresolved_reconstruction": 9.403645417285963e+31
+   },
+   "5": {
+    "finite": true,
+    "max_rel_err_resolved_reconstruction": 6.411769940736795e-05,
+    "max_rel_err_unresolved_reconstruction": 0.000330448781664929
+   },
+   "80": {
+    "finite": true,
+    "max_rel_err_resolved_reconstruction": 5.924563230322431e+71,
+    "max_rel_err_unresolved_reconstruction": 3.107155120104963e+72
+   }
+  },
+  "memory_vs_markovian_ratio_along_reference": 0.9999995102098884,
+  "numerical_abscissa_L": 20394.52364332929
+ },
+ "OP_B": {
+  "abscissa_L": 0.0,
+  "abscissa_L_UU": 5.046536945274334e-12,
+  "final_rel_err_resolved": 1.3698186093100697e-05,
+  "finite": true,
+  "kernel_norms": {
+   "0.0": 3431226.9111138457,
+   "0.001": 478609.36617332353,
+   "0.01": 29835.28361458917,
+   "0.1": 195.05867268831864,
+   "0.4": 2.9117159859361062e-05,
+   "0.8": 2.1989955632979511e-10
+  },
+  "kernel_sym_eigrange": {
+   "0.001": [
+    -24295.241474653034,
+    449543.50106191053
+   ],
+   "0.01": [
+    -2238.1356031627392,
+    27545.31429554359
+   ],
+   "0.1": [
+    -15.047768235696891,
+    180.01090440818848
+   ],
+   "0.4": [
+    -2.246281265900179e-06,
+    2.687091259287215e-05
+   ],
+   "0.8": [
+    -1.3126880844065027e-10,
+    7.332359424814148e-11
+   ]
+  },
+  "max_rel_err_resolved_reconstruction": 1.1901209160497533e-05,
+  "max_rel_err_unresolved_reconstruction": 6.416646832189206e-05,
+  "norm_markovian_term_end": 8.193897411407017,
+  "norm_memory_feedback_end": 8.17030998529747,
+  "norm_total_feedback_end": 8.17030998529747,
+  "norm_unresolved_ic_feedback_end": 7.732347541159936e-19,
+  "norm_unresolved_ic_feedback_t0": 0.8133736193938866,
+  "numerical_abscissa_L": 1026.2215763441927
+ },
+ "OP_C": {
+  "abscissa_L_UU": 5.046536945274334e-12,
+  "boundary_values_match_bs_max": 4.189834812429183e-09,
+  "final_rel_err_resolved": 7.762884036504275e-06,
+  "finite": true,
+  "full_rms_vs_bs_OP_A": 6.982464315771833e-05,
+  "full_rms_vs_bs_OP_B": 9.473143009365345e-05,
+  "full_rms_vs_bs_OP_C": 3.7455334370686377e-06,
+  "interior_rms_vs_bs_OP_A": 3.237809698026226e-05,
+  "interior_rms_vs_bs_OP_B": 2.033692895133969e-05,
+  "interior_rms_vs_bs_OP_C": 3.94729163691768e-06,
+  "max_rel_err_resolved_reconstruction": 6.778937895516585e-06,
+  "max_rel_err_unresolved_reconstruction": 3.4608758868626234e-05,
+  "norm_markovian_term_end": 8.412172868618534,
+  "norm_memory_feedback_end": 8.389551805043306,
+  "norm_resolved_boundary_forcing_end": 0.06393468660750179,
+  "norm_total_feedback_end": 8.389088426993576,
+  "norm_unresolved_boundary_forcing_end": 0.004172860321971671,
+  "norm_unresolved_ic_feedback_end": 7.732376153005142e-19,
+  "norm_unresolved_ic_feedback_t0": 0.813375951293078
+ },
+ "config": {
+  "keep": 32,
+  "n_k": 256,
+  "sub": 16
+ },
+ "config_hash": "986601137fc64a69",
+ "control": {
+  "closed_model_rate": -1.2976328319840333,
+  "closed_model_stable": true,
+  "exact_markovian_limit_rate": -1.0,
+  "fraction_time_work_positive": 1.0,
+  "full_eigenvalues": [
+   -1.0,
+   -3.0
+  ],
+  "kernel_positive": true,
+  "max_resolved_equation_residual": 4.211529691655613e-08,
+  "max_unresolved_reconstruction_error": 4.211529680553383e-08,
+  "nu_star_on_minus_x": -0.7023671680159668
+ },
+ "eigenbasis": {
+  "norm_L_RR": 2759.3446585289744,
+  "norm_L_RU": 5.87164985168156e-11,
+  "note": "L_RU = 0: Galerkin in the weighted eigenbasis is exact for time-independent L"
+ },
+ "sign_theorem": {
+  "L_UU_abscissa_W_orthogonal": 4.60875627310066e-12,
+  "L_UU_abscissa_euclidean": 3.6914731085686375e-12,
+  "kernel_quadratic_form": [
+   {
+    "W_orthogonal": {
+     "max_eig_symK": 332138.981272872,
+     "min_eig_symK": -6.506754980968356e-11
+    },
+    "euclidean_fourier": {
+     "max_eig_symK": 528932.3235076368,
+     "min_eig_symK": -0.012576601150181367
+    },
+    "tau": 0.001
+   },
+   {
+    "W_orthogonal": {
+     "max_eig_symK": 3203.434766080756,
+     "min_eig_symK": -1.6326456702675723e-12
+    },
+    "euclidean_fourier": {
+     "max_eig_symK": 6024.906253856008,
+     "min_eig_symK": -0.00758024920112247
+    },
+    "tau": 0.01
+   },
+   {
+    "W_orthogonal": {
+     "max_eig_symK": 7.811815054620287e-08,
+     "min_eig_symK": -5.533299891437837e-11
+    },
+    "euclidean_fourier": {
+     "max_eig_symK": 1.1816790279558465e-06,
+     "min_eig_symK": -4.3118202835164855e-10
+    },
+    "tau": 0.1
+   },
+   {
+    "W_orthogonal": {
+     "max_eig_symK": 8.991681304626424e-11,
+     "min_eig_symK": -1.8413558803526013e-10
+    },
+    "euclidean_fourier": {
+     "max_eig_symK": 5.714593464271362e-10,
+     "min_eig_symK": -3.5867817511286454e-10
+    },
+    "tau": 0.4
+   }
+  ],
+  "symmetry_defect_of_similarity_transformed_L": 1.4757982515515832e-16
+ },
+ "status": "done",
+ "wall_seconds": 5.323978424072266
+}

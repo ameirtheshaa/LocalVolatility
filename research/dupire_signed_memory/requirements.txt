@@ -1,0 +1,5 @@
+# Dupire signed-memory study — CPU only. Verified with Python 3.13.18 on Linux x86_64.
+numpy==2.5.3
+scipy==1.18.1
+matplotlib==3.11.2
+pytest==9.2.0
