@@ -5,6 +5,7 @@ t_out ∈ [0.2, 1] lie on the grid: `sub` fine steps per output interval, h = 0.
 """
 from __future__ import annotations
 
+import os
 from dataclasses import dataclass
 from typing import Callable, Dict, Optional
 
@@ -14,6 +15,8 @@ from scipy.linalg import expm
 from dsm import operators as op
 from dsm import repo
 from dsm.cases import Case
+
+CACHE = os.path.join(os.environ.get("DSM_OUTPUT_ROOT", repo.STUDY_ROOT), "results", "cache")
 
 
 @dataclass
@@ -25,6 +28,8 @@ class FineGrid:
 
 
 def fine_grid(grid: op.Grid, sub: int = 16) -> FineGrid:
+    if sub % 4 != 0:
+        raise ValueError(f"sub must be a multiple of 4 so that t̃0 = 0.2 is a grid point (got {sub})")
     n_out = len(grid.t_out)
     h = (grid.t_out[-1] - grid.t_out[0]) / ((n_out - 1) * sub)
     n0 = int(round(grid.t_out[0] / h))
@@ -98,3 +103,21 @@ def state_variable(phi: np.ndarray, grid: op.Grid, variant: str) -> np.ndarray:
 def trend_rows(phi: np.ndarray, grid: op.Grid) -> np.ndarray:
     phi = np.atleast_2d(phi)
     return np.stack([op.linear_trend(grid.k, row[0], row[-1]) for row in phi])
+
+
+def reference_key(case: Case, grid: op.Grid, variant: str, fg: FineGrid) -> str:
+    return f"ref_{case.id}_{variant}_nk{grid.n_k}_Kmin{grid.K_min:g}_Kmax{grid.K_max:g}_N{len(fg.t)-1}_{case.config_hash()}"
+
+
+def get_reference(case: Case, grid: op.Grid, variant: str, fg: FineGrid, *, force: bool = False) -> np.ndarray:
+    """Cached full solve on the fine grid (results/cache, regenerable, not committed)."""
+    os.makedirs(CACHE, exist_ok=True)
+    path = os.path.join(CACHE, reference_key(case, grid, variant, fg) + ".npz")
+    if os.path.isfile(path) and not force:
+        with np.load(path) as z:
+            if np.allclose(z["t"], fg.t):
+                return z["phi"]
+    phi = solve_full(case, grid, variant, fg)
+    np.savez_compressed(path + ".tmp.npz", phi=phi, t=fg.t)
+    os.replace(path + ".tmp.npz", path)
+    return phi

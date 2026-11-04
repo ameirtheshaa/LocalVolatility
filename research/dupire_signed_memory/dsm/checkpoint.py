@@ -13,8 +13,11 @@ from typing import Any, Dict, List, Optional
 
 from dsm.repo import REPO_ROOT, STUDY_ROOT
 
-RESULTS = os.path.join(STUDY_ROOT, "results")
-CHECKPOINTS = os.path.join(STUDY_ROOT, "checkpoints")
+# DSM_OUTPUT_ROOT redirects results/, checkpoints/ and NEXT_ACTIONS.md (used by the tests and by
+# the fresh-directory restore rehearsal); default is the study directory itself.
+OUTPUT_ROOT = os.environ.get("DSM_OUTPUT_ROOT", STUDY_ROOT)
+RESULTS = os.path.join(OUTPUT_ROOT, "results")
+CHECKPOINTS = os.path.join(OUTPUT_ROOT, "checkpoints")
 SOURCE_FILES = [
     "Synthetic_Data_Tensorflow_Advanced/mz_spectral/mz_decomposition.py",
     "Synthetic_Data_Tensorflow_Advanced/mz_spectral/quasi_linear.py",
@@ -101,7 +104,7 @@ def result_is_done(path: str, config_hash: str) -> bool:
 def result_checksums(subdir: str) -> Dict[str, str]:
     out = {}
     for p in sorted(glob.glob(os.path.join(RESULTS, subdir, "**", "*.json"), recursive=True)):
-        out[os.path.relpath(p, STUDY_ROOT)] = sha256_file(p)
+        out[os.path.relpath(p, OUTPUT_ROOT)] = sha256_file(p)
     return out
 
 
@@ -149,5 +152,6 @@ def write_next_actions(gate: str, next_command: str, pending: List[str], failed:
         "Re-running the command re-uses every result whose stored config hash matches and recomputes only",
         "missing or mismatched cases; it never overwrites a committed earlier checkpoint file.",
     ]
-    with open(os.path.join(STUDY_ROOT, "NEXT_ACTIONS.md"), "w", encoding="utf-8") as f:
+    os.makedirs(OUTPUT_ROOT, exist_ok=True)
+    with open(os.path.join(OUTPUT_ROOT, "NEXT_ACTIONS.md"), "w", encoding="utf-8") as f:
         f.write("\n".join(lines) + "\n")

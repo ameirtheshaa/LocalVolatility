@@ -87,17 +87,26 @@ def variation_of_constants(L_UU_of_t: Callable[[float], np.ndarray], forcing: np
 
 
 def kernel_norms(blocks: Dict[str, np.ndarray], taus: np.ndarray) -> np.ndarray:
-    """‖L̂_RU e^{τ L_UU} L_UR‖₂ for the listed lags (constant L only)."""
+    """Frobenius norm of K(τ) = L̂_RU e^{τ L_UU} L_UR for the listed lags (constant L only).
+    Overflow (divergent orthogonal dynamics) is reported as inf, never raised."""
     out = []
     for tau in taus:
-        K = blocks["L_RU"] @ expm(tau * blocks["L_UU"]) @ blocks["L_UR"]
-        out.append(float(np.linalg.norm(K, 2)))
+        with np.errstate(all="ignore"):
+            try:
+                K = blocks["L_RU"] @ expm(tau * blocks["L_UU"]) @ blocks["L_UR"]
+                v = float(np.linalg.norm(K)) if np.all(np.isfinite(K)) else float("inf")
+            except Exception:
+                v = float("inf")
+        out.append(v)
     return np.asarray(out)
 
 
 def kernel_quadratic_range(blocks: Dict[str, np.ndarray], tau: float) -> Tuple[float, float]:
     """(min, max) eigenvalue of sym(K̂(τ)), K̂(τ) = L̂_RU e^{τ L_UU} L_UR in resolved coordinates."""
-    K = blocks["L_RU"] @ expm(tau * blocks["L_UU"]) @ blocks["L_UR"]
+    with np.errstate(all="ignore"):
+        K = blocks["L_RU"] @ expm(tau * blocks["L_UU"]) @ blocks["L_UR"]
+    if not np.all(np.isfinite(K)):
+        return float("nan"), float("nan")
     ev = np.linalg.eigvalsh(0.5 * (K + K.T))
     return float(ev.min()), float(ev.max())
 
