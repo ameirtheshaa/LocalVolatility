@@ -1,11 +1,11 @@
 # NEXT_ACTIONS
 
-Last completed checkpoint: `gate2` (see `checkpoints/CHECKPOINT_LATEST.json`).
+Last completed checkpoint: `gate4` (see `checkpoints/CHECKPOINT_LATEST.json`).
 
 Exactly one safe next command (idempotent; from the repository root, Mac/Linux, no account needed):
 
 ```bash
-python3 research/dupire_signed_memory/scripts/gate3_compare.py --resume
+python3 research/dupire_signed_memory/scripts/run_all.py --resume
 ```
 
 Pending case IDs: none
