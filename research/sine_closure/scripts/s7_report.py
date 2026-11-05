@@ -439,8 +439,9 @@ RULES = OrderedDict([
     ("resolved_dynamics_improvement", "every test_interp case, both protocols: stable AND e_dyn(X) < e_dyn(RRR_m) - 2 u_dyn"),
     ("useful_closure", "RDI AND refined price RMS(X) < RMS(RRR_m) - 2u on every case/protocol AND noninferior to RRR_m in density L2, negmass (strict), "
                        "positivity/monotonicity/butterfly/calendar raw interior fractions, invvol invalid fraction (full) and coverage on every case/protocol"),
-    ("successful_compression", "useful_closure AND on every case/protocol: price <= RRR33 + u_price, density <= RRR33 + u_dens, negmass <= RRR33 + gamma, "
+    ("successful_compression", "useful_closure AND on every ELIGIBLE case/protocol cell (Addendum 2): price <= RRR33 + u_price, density <= RRR33 + u_dens, negmass <= RRR33 + gamma, "
                                "invvol invalid <= RRR33 + max(u, 1/N) AND online warm median(X) < median(RRR33) - max(IQR_X, IQR_RRR33) (cost.json)"),
+    ("compression eligibility", "E_m(case, protocol) = PROJ_m price < RRR33 price + u AND RRR_m price - PROJ_m price > 2u; compression classes use only eligible cells, empty regime = not_testable_regime_empty"),
     ("price_only_compression", "not successful_compression, but RDI AND price improves beyond 2u over RRR_m AND price <= RRR33 + u_price on every case/protocol"),
     ("stateful_advantage", "LR/LR0 only: vs LM at same m (same protocol) e_dyn(LM) - e_dyn(LR) > 2 u_dyn on every case AND noninferior in price, density, negmass, "
                            "arbitrage fractions, invvol invalid, coverage; AND the same two requirements against RRR at m + n_h"),
@@ -566,6 +567,25 @@ def cost_rows(D):
     return Cost(D)
 
 
+def eligible_cells(D, m, cases):
+    """PLAN Addendum 2: E_m(case, protocol) = [PROJ_m price < RRR_m33 price + u_price] AND [RRR_m price - PROJ_m price > 2 u_price]
+    (refined price interior RMS, same protocol, reference-derived rows of the score file). Returns (eligible list, n_cells, details)."""
+    el, det = [], []
+    for cid in cases:
+        for P in ("P0", "P1"):
+            pj, r, r33 = (vf(D.row(cid, f"PROJ_m{m}__{P}"), Q_PRICE), vf(D.row(cid, rrr_key(m, P)), Q_PRICE), vf(D.row(cid, rrr_key(33, P)), Q_PRICE))
+            u = D.u(cid, Q_PRICE)
+            if None in (pj, r, r33) or u is None:
+                det.append({"case": cid, "protocol": P, "eligible": False, "missing": True})
+                continue
+            a, b = bool(pj < r33 + u), bool(r - pj > 2 * u)
+            det.append({"case": cid, "protocol": P, "eligible": bool(a and b), "cond_a_proj_below_rrr33_plus_u": a, "cond_b_headroom_beyond_2u": b,
+                        "proj": pj, "rrr_m": r, "rrr33": r33, "u_price": u, "missing": False})
+            if a and b:
+                el.append({"case": cid, "protocol": P})
+    return el, len(cases) * 2, det
+
+
 def evaluate(D, e, cases, costget):
     """All PLAN section-10 checks for one entry (m, closure, n_h, hidden) on the given case set."""
     m = e["m"]
@@ -649,9 +669,22 @@ def evaluate(D, e, cases, costget):
     flags = {g: ok(g) for g in ("stable", "edyn_beyond", "price_beyond", "noninf", "c33_price", "c33_other")}
     rdi = flags["stable"] and flags["edyn_beyond"]
     useful = rdi and flags["price_beyond"] and flags["noninf"]
+    # compression classes: only over the eligible (case, protocol) cells (PLAN Addendum 2)
+    elig, n_cells, elig_det = eligible_cells(D, m, cases)
+    eset = {(c["case"], c["protocol"]) for c in elig}
+    inE = lambda c: c.get("case") == "all" or (c.get("case"), c.get("protocol")) in eset  # noqa: E731
+    okE = lambda g: any(inE(c) for c in G[g] if isinstance(c, dict)) and all(c["ok"] for c in G[g] if isinstance(c, dict) and inE(c))  # noqa: E731
+    flagsE = {g: okE(g) for g in ("stable", "edyn_beyond", "price_beyond", "noninf", "c33_price", "c33_other", "cost")}
     cost_ok = None if cost_status == "unavailable" else ok("cost")
-    success = bool(useful and flags["c33_price"] and flags["c33_other"] and cost_ok)
-    price_only = bool((not success) and rdi and flags["price_beyond"] and flags["c33_price"])
+    if not elig:
+        compression_status = "not_testable_regime_empty"
+        success = price_only = False
+    else:
+        compression_status = "tested"
+        rdiE = flagsE["stable"] and flagsE["edyn_beyond"]
+        usefulE = rdiE and flagsE["price_beyond"] and flagsE["noninf"]
+        success = bool(usefulE and flagsE["c33_price"] and flagsE["c33_other"] and flagsE["cost"] and cost_status != "unavailable")
+        price_only = bool((not success) and rdiE and flagsE["price_beyond"] and flagsE["c33_price"])
     stateful = None
     if e["clos"] in HIDDEN_CLOSURES:
         stateful = bool(ok("lm_edyn") and ok("lm_noninf") and ok("eq_edyn") and ok("eq_noninf"))
@@ -696,6 +729,8 @@ def evaluate(D, e, cases, costget):
         exc = []
         for g in groups:
             for c in G.get(g, []):
+                if cls in ("successful_compression", "price_only_compression") and isinstance(c, dict) and (not inE(c) or compression_status != "tested"):
+                    continue
                 if isinstance(c, dict) and not c["ok"]:
                     exc.append({k: v for k, v in c.items() if k in ("case", "protocol", "quantity", "x_model", "y_model", "x", "y", "u", "tol",
                                                                     "gain", "threshold", "missing", "note", "group")})
@@ -703,6 +738,8 @@ def evaluate(D, e, cases, costget):
         exceptions[cls] = exc
     return {"classes": classes, "flags": {**flags, "rdi": rdi, "useful": useful, "cost_ok": cost_ok, "cost_status": cost_status,
                                           "success": success, "price_only": price_only, "stateful": stateful},
+            "compression_status": compression_status, "eligible_cells": elig, "n_eligible": len(elig), "n_cells": n_cells,
+            "eligibility_detail": elig_det,
             "inconclusive": inconclusive, "inconclusive_detail": incon, "no_benefit_reasons": reasons, "exceptions": exceptions}
 
 
@@ -757,6 +794,56 @@ def entry_label(e):
     return f"{e['clos']}_m{e['m']}" + (f"_h{e['h']}" if e["h"] else "") + (f"/{e['hid']}" if e["hid"] else "")
 
 
+def compensation_cells(D, e, cases):
+    """Output-oriented compensation (PLAN Addendum 2): a closed model whose same-grid price error is below PROJ_m's by more than u_price,
+    or whose refined density L2 is below PROJ_m's by more than u_dens, moved the resolved coefficients away from c_ref to improve an output."""
+    out = []
+    for cid in cases:
+        for P in ("P0", "P1"):
+            X, PJ = D.row(cid, entry_key(e, P)), D.row(cid, f"PROJ_m{e['m']}__{P}")
+            if X is None or PJ is None or X.get("unstable") or X.get("failed"):
+                continue
+            up, ud = D.u(cid, Q_PRICE), D.u(cid, Q_DENS)
+            xs, ps = vsame(X), vsame(PJ)
+            xd, pd_ = vf(X, Q_DENS), vf(PJ, Q_DENS)
+            c1 = bool(xs is not None and ps is not None and up is not None and ps - xs > up)
+            c2 = bool(xd is not None and pd_ is not None and ud is not None and pd_ - xd > ud)
+            if c1 or c2:
+                out.append({"case": cid, "split": D.split_of(cid), "protocol": P, "price_same_grid_model": xs, "price_same_grid_PROJ": ps, "u_price": up,
+                            "density_model": xd, "density_PROJ": pd_, "u_dens": ud, "price_condition": c1, "density_condition": c2})
+    return out
+
+
+def domain_flags(D):
+    """results/verify/bs_vs_u_family_C.json: list of {case, full511_vs_bs, u_grid_price}; flag when full511_vs_bs > 2 u_grid_price (family C only)."""
+    d = read_json(os.path.join(RESULTS, "verify", "bs_vs_u_family_C.json"))
+    if isinstance(d, dict):
+        d = d.get("rows") or d.get("cases") or []
+    out = {}
+    for r in d or []:
+        if isinstance(r, dict) and r.get("case") and fin(r.get("full511_vs_bs")) and fin(r.get("u_grid_price")):
+            out[r["case"]] = {"domain_limited_physical": bool(r["full511_vs_bs"] > 2 * r["u_grid_price"]),
+                              "full511_vs_bs": r["full511_vs_bs"], "u_grid_price": r["u_grid_price"]}
+    return out
+
+
+def dev_eligibility(D):
+    """eligible dev cases per m from the diagnose files (P0 rows), as context."""
+    out = {}
+    for m in DIMS_DECISION:
+        n = el = 0
+        for cid, d in D.diag.items():
+            mods = d.get("models") or {}
+            pj, r, r33 = ((mods.get(k) or {}).get("metrics") or {} for k in (f"PROJ_m{m}__P0", f"RRR_m{m}__P0", "RRR_m33__P0"))
+            u = D.u(cid, Q_PRICE)
+            if not (fin(pj.get(Q_PRICE)) and fin(r.get(Q_PRICE)) and fin(r33.get(Q_PRICE)) and u is not None):
+                continue
+            n += 1
+            el += int(pj[Q_PRICE] < r33[Q_PRICE] + u and r[Q_PRICE] - pj[Q_PRICE] > 2 * u)
+        out[str(m)] = {"eligible_dev_cases": el, "n_dev_cases": n}
+    return out
+
+
 def compute_decision(D):
     costget = cost_rows(D)
     ti, ood = D.cases("test_interp"), D.cases("test_ood")
@@ -784,7 +871,12 @@ def compute_decision(D):
                             "useful_closure": "useful_closure" in rc["classes"],
                             "resolved_dynamics_improvement": "resolved_dynamics_improvement" in rc["classes"]}
         rec["regimes"] = regimes
+        comp_cells = compensation_cells(D, e, ti + ood)
+        rec["compensation"] = bool(comp_cells)
+        rec["compensation_cells"] = comp_cells
         out["entries"].append(rec)
+    out["domain_limited_physical"] = domain_flags(D)
+    out["dev_eligibility_P0"] = dev_eligibility(D)
     cav = []
     if D.gamma is None:
         cav.append("roundoff guard gamma missing: the negative-mass rule used gamma = 0")
@@ -813,7 +905,10 @@ def compute_decision(D):
             verdict = "resolved_dynamics_only_no_deployment_benefit"
         else:
             verdict = "closure_does_not_help"
-        out["per_m"][str(m)] = {"verdict": verdict, "top_class": top, "entries_by_class": helpers, "stateful_advantage": stateful,
+        elig_m, ncell_m, _ = eligible_cells(D, m, ti)
+        po = [r["entry"] for r in es if "price_only_compression" in r["test_interp"]["classes"]]
+        out["per_m"][str(m)] = {"eligible_cells": elig_m, "n_eligible": len(elig_m), "n_cells": ncell_m, "price_only_entries": po,
+                                "compensation_entries": [r["entry"] for r in es if r.get("compensation")], "verdict": verdict, "top_class": top, "entries_by_class": helpers, "stateful_advantage": stateful,
                                 "selected_regimes": sel, "representation_limited": rep_limited(D, m),
                                 "unclosed_33_remains_recommendation": not bool(helpers["successful_compression"]),
                                 "n_entries": len(es)}
@@ -844,6 +939,16 @@ def verdict_sentence(m, v):
              "which is not a deployment benefit by itself (the useful-closure conditions fail).")
     else:
         s = f"m = {m}: closure does not help (no entry reaches resolved-dynamics improvement on every held-out interpolation case)."
+    if v.get("n_eligible") == 0:
+        s += (" Compression not testable on this test set (eligible regime empty: PROJ_m already exceeds the 33-mode target or the headroom "
+              "RRR_m - PROJ_m is within 2u).")
+    elif v.get("n_eligible"):
+        cases_e = sorted({c["case"] for c in v["eligible_cells"]})
+        s += f" Eligible regime ({v['n_eligible']} of {v['n_cells']} case-protocol cells: {', '.join(cases_e)})."
+        if v.get("price_only_entries"):
+            s += f" Price-only compression in the eligible regime: {', '.join(cases_e)} ({', '.join(v['price_only_entries'])})."
+    if v.get("compensation_entries"):
+        s += f" Output-oriented compensation flagged for: {', '.join(v['compensation_entries'])}."
     if v.get("representation_limited"):
         s += " The dimension is representation-limited by the PLAN stopping rule."
     s += (" The unclosed 33-mode model remains the recommendation." if v["unclosed_33_remains_recommendation"]
@@ -878,6 +983,31 @@ def report_decision(D, dec):
             md += [f"* {verdict_sentence(m, v)}"]
         else:
             md += [f"* m = {m}: no closed-model entries available."]
+    md += ["", "## Compression-eligibility regime (PLAN Addendum 2)", "",
+           "E_m(case, protocol) = PROJ_m price < RRR_m33 price + u_price AND RRR_m price - PROJ_m price > 2 u_price (refined price interior RMS, per protocol). "
+           "Compression classes are evaluated only over eligible cells; an empty regime is reported as `not_testable_regime_empty`.", ""]
+    for m in DIMS_DECISION:
+        v = dec["per_m"].get(str(m), {})
+        dv = dec.get("dev_eligibility_P0", {}).get(str(m), {})
+        md += [f"* m = {m}: test_interp eligible cells {v.get('n_eligible', '–')} of {v.get('n_cells', '–')}"
+               + (f" ({', '.join(c['case'] + '/' + c['protocol'] for c in v.get('eligible_cells', []))})" if v.get("eligible_cells") else "")
+               + (f"; development data (P0): {dv.get('eligible_dev_cases')} eligible dev cases / {dv.get('n_dev_cases')} diagnosed" if dv.get("n_dev_cases") else "; no diagnose files for the dev count")]
+    md += ["", "## Domain annotation (family C, results/verify/bs_vs_u_family_C.json)", ""]
+    df = dec.get("domain_limited_physical", {})
+    md += [f"* {cid}: domain_limited_physical: {str(r['domain_limited_physical']).lower()} (full511_vs_bs {fe(r['full511_vs_bs'])}, u_grid_price {fe(r['u_grid_price'])})"
+           for cid, r in df.items()] or ["* no bs_vs_u_family_C.json data"]
+    md += ["", "## Output-oriented compensation (beats PROJ_m beyond u: same-grid price or refined density)", "",
+           "Reported as compensation, never as recovered memory: in the full-grid Euclidean norm c_ref is the best coefficient vector, so beating PROJ means the "
+           "fitted model moved resolved coefficients away from c_ref to improve an output.", ""]
+    nc = 0
+    for r in dec["entries"]:
+        if r.get("compensation"):
+            nc += 1
+            md += [f"* **{r['entry']}** compensation: true ({len(r['compensation_cells'])} cells)"]
+            md += [f"  * {c['case']} ({c['split']}) {c['protocol']}: same-grid price {fe(c['price_same_grid_model'])} vs PROJ {fe(c['price_same_grid_PROJ'])} (u {fe(c['u_price'])}); "
+                   f"density {fe(c['density_model'])} vs PROJ {fe(c['density_PROJ'])} (u {fe(c['u_dens'])})" for c in r["compensation_cells"][:12]]
+    if not nc:
+        md += ["* none"]
     md += ["", "## Classification table (test_interp)", ""]
     rows = []
     for r in dec["entries"]:
@@ -887,8 +1017,9 @@ def report_decision(D, dec):
         ex = t["exceptions"]
         rows.append([r["entry"], t["primary"], ", ".join(t["classes"]) or "–", fb(t["flags"]["cost_ok"]) if t["flags"]["cost_status"] == "evaluated" else "n/a",
                      str(len(ex.get("resolved_dynamics_improvement", []))), str(len(ex.get("useful_closure", []))),
-                     str(len(ex.get("successful_compression", []))), "; ".join(t["no_benefit_reasons"]) if t["primary"] == "no_supported_benefit" else ""])
-    md += table(["entry", "primary class", "all classes holding", "cost beats RRR33", "#exc RDI", "#exc useful", "#exc compression", "reasons (no supported benefit)"], rows) + [""]
+                     str(len(ex.get("successful_compression", []))), t["compression_status"], f"{t['n_eligible']}/{t['n_cells']}", fb(r.get("compensation")),
+                     "; ".join(t["no_benefit_reasons"]) if t["primary"] == "no_supported_benefit" else ""])
+    md += table(["entry", "primary class", "all classes holding", "cost beats RRR33", "#exc RDI", "#exc useful", "#exc compression", "compression status", "eligible/cells", "compensation", "reasons (no supported benefit)"], rows) + [""]
     md += ["## Exceptions (first 30 per entry and class; complete lists in decision.json)", ""]
     for r in dec["entries"]:
         t = r.get("test_interp")

@@ -108,7 +108,7 @@ def build(root, scenario):
                 pf = 1.0 if P == "P0" else 0.8
                 models[f"RRR_m{m}__{P}"] = row(metrics(price_rrr(m) * cf * pf, edyn_rrr(m) * cf * pf, dens_rrr(m) * cf * pf, neg_rrr(m) * cf,
                                                        butter=0.004 * 9.0 / m, early=(P == "P0")), m, 0, 1.0 + m / 40.0)
-                models[f"PROJ_m{m}__{P}"] = row(metrics(price_rrr(m) * cf * 0.6, 1e-9, dens_rrr(m) * cf * 0.9, neg_rrr(m) * cf * 0.5), m, 0, 0.0)
+                models[f"PROJ_m{m}__{P}"] = row(metrics(price_rrr(m) * cf * (0.2 if strong else 0.6), 1e-9, dens_rrr(m) * cf * 0.9, neg_rrr(m) * cf * 0.5), m, 0, 0.0)
                 models[f"TF_m{m}__{P}"] = row(metrics(price_rrr(m) * cf * 0.7, 2e-7, dens_rrr(m) * cf * 0.95, neg_rrr(m) * cf * 0.7), m, 0, 0.0)
         for P in ("P0", "P1"):
             models[f"FULL256__{P}"] = row(metrics(4e-6 * cf, 0.0, 3e-6 * cf, 5e-7 * cf, early=(P == "P0")), 254, 0, 40.0)
@@ -207,6 +207,8 @@ def build(root, scenario):
     wj(os.path.join(R, "manifests", "CASES.json"), {"cases": [{"id": c, "family": f, "split": s, "params": p} for c, f, s, p in CASES],
                                                     "counts": {"test_interp": 2, "test_ood": 1, "dev_regression": 2}, "sha256": "synthetic"})
     wj(os.path.join(R, "manifests", "ENV.json"), {"python": sys.version.split()[0], "numpy": np.__version__, "synthetic": True})
+    wj(os.path.join(R, "verify", "bs_vs_u_family_C.json"), [{"case": "C_test_0.205", "full511_vs_bs": 2.0e-5, "u_grid_price": 4.1e-6},
+                                                           {"case": "C_sig0.30", "full511_vs_bs": 5.0e-6, "u_grid_price": 4.0e-6}])
     cmp_ = {"pass": True, "n_compared": 123, "n_failed": 0, "max_rel_dev": 3.4e-9, "max_rel_dev_key": "C_sig0.30:x",
             "cases": {"C_sig0.30": {"status": "done", "metrics": {
                 "models.a.price_interior_rms": {"committed": 1.0e-5, "reproduced": 1.0000001e-5, "pass": True},
