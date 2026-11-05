@@ -1,0 +1,145 @@
+{
+ "cases": {
+  "C_sig0.30": {
+   "m17_P0": {
+    "gate5_abscissa": -0.21371400238547705,
+    "gate5_price_vs_512spline": 1.0266903715459808e-05,
+    "gate5_projection_err": 3.42242571039169e-06,
+    "pass": true,
+    "rel_abscissa": 1.0117069150000643e-13,
+    "rel_proj": 2.2296692801823565e-11,
+    "scc_PROJ_same_price_interior_rms": 3.422425710315381e-06,
+    "scc_RRR_price_vs_511": 1.0025299895494265e-05,
+    "scc_abscissa_last": -0.21371400238549867
+   },
+   "m17_P1": {
+    "gate5_abscissa": -0.21371400238547705,
+    "gate5_price_vs_512spline": 5.023873456938568e-06,
+    "gate5_projection_err": 3.42242571039169e-06,
+    "pass": true,
+    "rel_abscissa": 1.0117069150000643e-13,
+    "rel_proj": 2.2296692801823565e-11,
+    "scc_PROJ_same_price_interior_rms": 3.422425710315381e-06,
+    "scc_RRR_price_vs_511": 4.605033547654086e-06,
+    "scc_abscissa_last": -0.21371400238549867
+   },
+   "m33_P0": {
+    "gate5_abscissa": -0.21369639032469318,
+    "gate5_price_vs_512spline": 4.147628580137326e-06,
+    "gate5_projection_err": 2.2471413474455521e-07,
+    "pass": true,
+    "rel_abscissa": 1.0065949672537265e-12,
+    "rel_proj": 1.801715306272173e-10,
+    "scc_PROJ_same_price_interior_rms": 2.247141347850423e-07,
+    "scc_RRR_price_vs_511": 3.6211838026538667e-06,
+    "scc_abscissa_last": -0.21369639032447807
+   },
+   "m33_P1": {
+    "gate5_abscissa": -0.21369639032469318,
+    "gate5_price_vs_512spline": 4.029969646858663e-06,
+    "gate5_projection_err": 2.2471413474455521e-07,
+    "pass": true,
+    "rel_abscissa": 1.0065949672537265e-12,
+    "rel_proj": 1.801715306272173e-10,
+    "scc_PROJ_same_price_interior_rms": 2.247141347850423e-07,
+    "scc_RRR_price_vs_511": 3.5043850780360253e-06,
+    "scc_abscissa_last": -0.21369639032447807
+   }
+  },
+  "F_fresh_base0.28_t0.2_x0.05": {
+   "m17_P0": {
+    "gate5_abscissa": -0.7126198082185703,
+    "gate5_price_vs_512spline": 8.101725432597779e-06,
+    "gate5_projection_err": 8.090388410420585e-06,
+    "pass": true,
+    "rel_abscissa": 0.0009786117766990793,
+    "rel_proj": 1.1242278276641625e-12,
+    "scc_PROJ_same_price_interior_rms": 8.090388410429681e-06,
+    "scc_RRR_price_vs_511": 7.923642459981879e-06,
+    "scc_abscissa_last": -0.7119224300819386
+   },
+   "m17_P1": {
+    "gate5_abscissa": -0.7126198082185703,
+    "gate5_price_vs_512spline": 6.41970174214942e-06,
+    "gate5_projection_err": 8.090388410420585e-06,
+    "pass": true,
+    "rel_abscissa": 0.0009786117766990793,
+    "rel_proj": 1.1242278276641625e-12,
+    "scc_PROJ_same_price_interior_rms": 8.090388410429681e-06,
+    "scc_RRR_price_vs_511": 6.362251321497439e-06,
+    "scc_abscissa_last": -0.7119224300819386
+   },
+   "m33_P0": {
+    "gate5_abscissa": -0.7125926296888877,
+    "gate5_price_vs_512spline": 3.0808870131312645e-06,
+    "gate5_projection_err": 4.109862806706498e-07,
+    "pass": true,
+    "rel_abscissa": 0.000978539192011827,
+    "rel_proj": 6.813948021885045e-11,
+    "scc_PROJ_same_price_interior_rms": 4.1098628069865417e-07,
+    "scc_RRR_price_vs_511": 2.7283246720761516e-06,
+    "scc_abscissa_last": -0.7118953298727984
+   },
+   "m33_P1": {
+    "gate5_abscissa": -0.7125926296888877,
+    "gate5_price_vs_512spline": 2.8754818771501832e-06,
+    "gate5_projection_err": 4.109862806706498e-07,
+    "pass": true,
+    "rel_abscissa": 0.000978539192011827,
+    "rel_proj": 6.813948021885045e-11,
+    "scc_PROJ_same_price_interior_rms": 4.1098628069865417e-07,
+    "scc_RRR_price_vs_511": 2.524839044677138e-06,
+    "scc_abscissa_last": -0.7118953298727984
+   }
+  },
+  "S_seed9": {
+   "m17_P0": {
+    "gate5_abscissa": -0.3320488404097722,
+    "gate5_price_vs_512spline": 8.575074555306068e-06,
+    "gate5_projection_err": 6.118157543114776e-06,
+    "pass": true,
+    "rel_abscissa": 3.427142220513217e-14,
+    "rel_proj": 9.265066892555642e-12,
+    "scc_PROJ_same_price_interior_rms": 6.118157543058091e-06,
+    "scc_RRR_price_vs_511": 8.302279988292606e-06,
+    "scc_abscissa_last": -0.3320488404097608
+   },
+   "m17_P1": {
+    "gate5_abscissa": -0.3320488404097722,
+    "gate5_price_vs_512spline": 6.0715201473027784e-06,
+    "gate5_projection_err": 6.118157543114776e-06,
+    "pass": true,
+    "rel_abscissa": 3.427142220513217e-14,
+    "rel_proj": 9.265066892555642e-12,
+    "scc_PROJ_same_price_interior_rms": 6.118157543058091e-06,
+    "scc_RRR_price_vs_511": 5.794572620418146e-06,
+    "scc_abscissa_last": -0.3320488404097608
+   },
+   "m33_P0": {
+    "gate5_abscissa": -0.332024735523241,
+    "gate5_price_vs_512spline": 3.7850350183506716e-06,
+    "gate5_projection_err": 3.3400273268716814e-07,
+    "pass": true,
+    "rel_abscissa": 7.128973342213985e-13,
+    "rel_proj": 1.983378622907322e-10,
+    "scc_PROJ_same_price_interior_rms": 3.3400273275341353e-07,
+    "scc_RRR_price_vs_511": 3.320503705426317e-06,
+    "scc_abscissa_last": -0.3320247355230043
+   },
+   "m33_P1": {
+    "gate5_abscissa": -0.332024735523241,
+    "gate5_price_vs_512spline": 3.6170637687391717e-06,
+    "gate5_projection_err": 3.3400273268716814e-07,
+    "pass": true,
+    "rel_abscissa": 7.128973342213985e-13,
+    "rel_proj": 1.983378622907322e-10,
+    "scc_PROJ_same_price_interior_rms": 3.3400273275341353e-07,
+    "scc_RRR_price_vs_511": 3.1525208921367415e-06,
+    "scc_abscissa_last": -0.3320247355230043
+   }
+  }
+ },
+ "note": "projection error: identical quantity (same-grid interior RMS of (I-P)psi at the 24 maturities); abscissa: Gate 5 uses the last-step midpoint operator, this study the t=1 operator (differs by operator drift over h/2 for time-dependent cases only); prices: Gate 5 vs 512-point cubic-spline reference, this study vs the nested 511 restriction (not an identity).",
+ "pass": true,
+ "tolerance_identity_rel": 1e-06
+}
