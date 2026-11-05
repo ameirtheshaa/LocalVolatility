@@ -1,0 +1,2424 @@
+{
+ "C_sig0.120": {
+  "n256_s16": {
+   "from_cache": false,
+   "identity_hash": "a82c5535f2f20c40",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\a82c5535f2f20c40.npz",
+   "seconds": 0.10098120011389256,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": false,
+   "identity_hash": "7ae085e6556f5f0e",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\7ae085e6556f5f0e.npz",
+   "seconds": 0.1506792998407036,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n511_s16": {
+   "from_cache": false,
+   "identity_hash": "1af60d3edf1d2e41",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\1af60d3edf1d2e41.npz",
+   "seconds": 0.2908550000283867,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "C_sig0.180": {
+  "n1021_s16": {
+   "from_cache": false,
+   "identity_hash": "8e3e9b4a6a903210",
+   "n": 1021,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\8e3e9b4a6a903210.npz",
+   "seconds": 8.269751599989831,
+   "solver": "sparse",
+   "sub": 16
+  },
+  "n256_s16": {
+   "from_cache": false,
+   "identity_hash": "d967e7014c7641ae",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\d967e7014c7641ae.npz",
+   "seconds": 0.10586449992842972,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": false,
+   "identity_hash": "30a0c6e1ef1177ca",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\30a0c6e1ef1177ca.npz",
+   "seconds": 0.12155260005965829,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n256_s64": {
+   "from_cache": false,
+   "identity_hash": "ca22fd3854801fec",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\ca22fd3854801fec.npz",
+   "seconds": 1.0666555999778211,
+   "solver": "sparse",
+   "sub": 64
+  },
+  "n511_s16": {
+   "from_cache": false,
+   "identity_hash": "8bb804b77c880912",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\8bb804b77c880912.npz",
+   "seconds": 0.32294880016706884,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "C_sig0.205": {
+  "n1021_s16": {
+   "from_cache": false,
+   "identity_hash": "18278f86bcea37aa",
+   "n": 1021,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\18278f86bcea37aa.npz",
+   "seconds": 12.693079899996519,
+   "solver": "sparse",
+   "sub": 16
+  },
+  "n256_s16": {
+   "from_cache": false,
+   "identity_hash": "b1ac4b7363cb2fd6",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\b1ac4b7363cb2fd6.npz",
+   "seconds": 0.0818429000210017,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": false,
+   "identity_hash": "2593139b271b8418",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\2593139b271b8418.npz",
+   "seconds": 0.12809490016661584,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n256_s64": {
+   "from_cache": false,
+   "identity_hash": "a40517a948fe6d32",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\a40517a948fe6d32.npz",
+   "seconds": 1.2963868000078946,
+   "solver": "sparse",
+   "sub": 64
+  },
+  "n511_s16": {
+   "from_cache": false,
+   "identity_hash": "73f25c3e300820c1",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\73f25c3e300820c1.npz",
+   "seconds": 0.3381705000065267,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "C_sig0.220": {
+  "n1021_s16": {
+   "from_cache": false,
+   "identity_hash": "98a0b91aa80072de",
+   "n": 1021,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\98a0b91aa80072de.npz",
+   "seconds": 13.088347499957308,
+   "solver": "sparse",
+   "sub": 16
+  },
+  "n256_s16": {
+   "from_cache": true,
+   "identity_hash": "51bab46806f81ea4",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\51bab46806f81ea4.npz",
+   "seconds": 0.007353199878707528,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": true,
+   "identity_hash": "0dffb7cee8766cad",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\0dffb7cee8766cad.npz",
+   "seconds": 0.009768899995833635,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n256_s64": {
+   "from_cache": false,
+   "identity_hash": "28b0d4b722d2458e",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\28b0d4b722d2458e.npz",
+   "seconds": 1.4184514000080526,
+   "solver": "sparse",
+   "sub": 64
+  },
+  "n511_s16": {
+   "from_cache": true,
+   "identity_hash": "881e2aa4f049a308",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\881e2aa4f049a308.npz",
+   "seconds": 0.009595199953764677,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "C_sig0.240": {
+  "n256_s16": {
+   "from_cache": true,
+   "identity_hash": "5e07402c1fca79d5",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\5e07402c1fca79d5.npz",
+   "seconds": 0.009526000125333667,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": false,
+   "identity_hash": "db58d17721a896d6",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\db58d17721a896d6.npz",
+   "seconds": 0.13616909994743764,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n511_s16": {
+   "from_cache": false,
+   "identity_hash": "84a1eb883d43cfe1",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\84a1eb883d43cfe1.npz",
+   "seconds": 0.385616899933666,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "C_sig0.270": {
+  "n256_s16": {
+   "from_cache": false,
+   "identity_hash": "dab472b01e4706e8",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\dab472b01e4706e8.npz",
+   "seconds": 0.087617700221017,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": false,
+   "identity_hash": "371c8c48207fd094",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\371c8c48207fd094.npz",
+   "seconds": 0.12278309999965131,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n511_s16": {
+   "from_cache": false,
+   "identity_hash": "d995715d3d1437bf",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\d995715d3d1437bf.npz",
+   "seconds": 0.3621397998649627,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "C_sig0.30": {
+  "n256_s16": {
+   "from_cache": true,
+   "identity_hash": "fc5f137fe39fb6d7",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\fc5f137fe39fb6d7.npz",
+   "seconds": 0.00788370007649064,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": false,
+   "identity_hash": "c50915ebb415c94d",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\c50915ebb415c94d.npz",
+   "seconds": 0.13622940005734563,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n511_s16": {
+   "from_cache": false,
+   "identity_hash": "1066db34f8385e4f",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\1066db34f8385e4f.npz",
+   "seconds": 0.3730261998716742,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "C_sig0.310": {
+  "n1021_s16": {
+   "from_cache": false,
+   "identity_hash": "c4763887e09a15f6",
+   "n": 1021,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\c4763887e09a15f6.npz",
+   "seconds": 28.02383349998854,
+   "solver": "sparse",
+   "sub": 16
+  },
+  "n256_s16": {
+   "from_cache": false,
+   "identity_hash": "593ac260e6e4dc83",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\593ac260e6e4dc83.npz",
+   "seconds": 0.07925059995613992,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": false,
+   "identity_hash": "53772b68b1442b71",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\53772b68b1442b71.npz",
+   "seconds": 0.12079959991388023,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n256_s64": {
+   "from_cache": false,
+   "identity_hash": "a9c2f69ff22a46c1",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\a9c2f69ff22a46c1.npz",
+   "seconds": 2.0720331000629812,
+   "solver": "sparse",
+   "sub": 64
+  },
+  "n511_s16": {
+   "from_cache": false,
+   "identity_hash": "7ad15fb202016fa4",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\7ad15fb202016fa4.npz",
+   "seconds": 0.36645539989694953,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "C_sig0.330": {
+  "n256_s16": {
+   "from_cache": false,
+   "identity_hash": "d5d333117739b975",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\d5d333117739b975.npz",
+   "seconds": 0.08674319996498525,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": false,
+   "identity_hash": "c6e443f03e56bac1",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\c6e443f03e56bac1.npz",
+   "seconds": 0.12399760005064309,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n511_s16": {
+   "from_cache": false,
+   "identity_hash": "7cc4e062b3e04447",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\7cc4e062b3e04447.npz",
+   "seconds": 0.3553462000563741,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "C_sig0.360": {
+  "n256_s16": {
+   "from_cache": true,
+   "identity_hash": "4c929fb90a08168c",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\4c929fb90a08168c.npz",
+   "seconds": 0.00911749992519617,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": false,
+   "identity_hash": "a05fd2ee83fa590e",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\a05fd2ee83fa590e.npz",
+   "seconds": 0.15725629986263812,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n511_s16": {
+   "from_cache": false,
+   "identity_hash": "1d00db1d44c8e349",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\1d00db1d44c8e349.npz",
+   "seconds": 0.4304114000406116,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "C_sig0.380": {
+  "n256_s16": {
+   "from_cache": false,
+   "identity_hash": "378cd6092b8fc697",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\378cd6092b8fc697.npz",
+   "seconds": 0.08326690015383065,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": false,
+   "identity_hash": "e0e74c53f50c3cba",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\e0e74c53f50c3cba.npz",
+   "seconds": 0.13847019989043474,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n511_s16": {
+   "from_cache": false,
+   "identity_hash": "cd3ff71100b2c430",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\cd3ff71100b2c430.npz",
+   "seconds": 0.3516512999776751,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "C_sig0.415": {
+  "n1021_s16": {
+   "from_cache": false,
+   "identity_hash": "24bd3c53d172a63b",
+   "n": 1021,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\24bd3c53d172a63b.npz",
+   "seconds": 49.93468130007386,
+   "solver": "sparse",
+   "sub": 16
+  },
+  "n256_s16": {
+   "from_cache": false,
+   "identity_hash": "36ac8d9e6e5647ff",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\36ac8d9e6e5647ff.npz",
+   "seconds": 0.08118010009638965,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": false,
+   "identity_hash": "5e0f3da9388d7702",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\5e0f3da9388d7702.npz",
+   "seconds": 0.1179192999843508,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n256_s64": {
+   "from_cache": false,
+   "identity_hash": "d2ff5e340d0db821",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\d2ff5e340d0db821.npz",
+   "seconds": 3.477732100058347,
+   "solver": "sparse",
+   "sub": 64
+  },
+  "n511_s16": {
+   "from_cache": false,
+   "identity_hash": "8150438c8bb5ec53",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\8150438c8bb5ec53.npz",
+   "seconds": 0.37069900007918477,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "C_sig0.440": {
+  "n256_s16": {
+   "from_cache": false,
+   "identity_hash": "003b2a8fa7ddc8ce",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\003b2a8fa7ddc8ce.npz",
+   "seconds": 0.08815460000187159,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": false,
+   "identity_hash": "f4b11e5c6eb636e4",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\f4b11e5c6eb636e4.npz",
+   "seconds": 0.1224696000572294,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n511_s16": {
+   "from_cache": false,
+   "identity_hash": "568e29221ecd3648",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\568e29221ecd3648.npz",
+   "seconds": 0.39390179980546236,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "C_sig0.550": {
+  "n256_s16": {
+   "from_cache": false,
+   "identity_hash": "0ece6736be20dc97",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\0ece6736be20dc97.npz",
+   "seconds": 0.10158249991945922,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": false,
+   "identity_hash": "b28da1cf76783dc6",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\b28da1cf76783dc6.npz",
+   "seconds": 0.15776309999637306,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n511_s16": {
+   "from_cache": false,
+   "identity_hash": "2625efda0ddd2e5d",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\2625efda0ddd2e5d.npz",
+   "seconds": 0.38451130012981594,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "D2_seed200": {
+  "n1021_s16": {
+   "from_cache": false,
+   "identity_hash": "2767ebdc9eb47c8b",
+   "n": 1021,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\2767ebdc9eb47c8b.npz",
+   "seconds": 89.4491821997799,
+   "solver": "sparse",
+   "sub": 16
+  },
+  "n256_s16": {
+   "from_cache": false,
+   "identity_hash": "566de9539dda4370",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\566de9539dda4370.npz",
+   "seconds": 19.04411290003918,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": true,
+   "identity_hash": "04394b0b669d4d4d",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\04394b0b669d4d4d.npz",
+   "seconds": 0.013972799992188811,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n256_s64": {
+   "from_cache": false,
+   "identity_hash": "fb10f3c2113c0ad0",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\fb10f3c2113c0ad0.npz",
+   "seconds": 6.343820299953222,
+   "solver": "sparse",
+   "sub": 64
+  },
+  "n511_s16": {
+   "from_cache": false,
+   "identity_hash": "5b594c6df785806d",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\5b594c6df785806d.npz",
+   "seconds": 157.75327580003068,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "D2_seed201": {
+  "n1021_s16": {
+   "from_cache": false,
+   "identity_hash": "9adaf1f6e04cbd4d",
+   "n": 1021,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\9adaf1f6e04cbd4d.npz",
+   "seconds": 102.90386809990741,
+   "solver": "sparse",
+   "sub": 16
+  },
+  "n256_s16": {
+   "from_cache": false,
+   "identity_hash": "8f387c9272ff4167",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\8f387c9272ff4167.npz",
+   "seconds": 20.22574090003036,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": false,
+   "identity_hash": "4a39c6044b195cf0",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\4a39c6044b195cf0.npz",
+   "seconds": 39.37133940006606,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n256_s64": {
+   "from_cache": false,
+   "identity_hash": "b55f1237cf6bea10",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\b55f1237cf6bea10.npz",
+   "seconds": 7.059728099964559,
+   "solver": "sparse",
+   "sub": 64
+  },
+  "n511_s16": {
+   "from_cache": false,
+   "identity_hash": "c08fd7b0cf92bd61",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\c08fd7b0cf92bd61.npz",
+   "seconds": 160.85853040008806,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "D2_seed202": {
+  "n256_s16": {
+   "from_cache": false,
+   "identity_hash": "6551f9d797ee978c",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\6551f9d797ee978c.npz",
+   "seconds": 19.920451499987394,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": false,
+   "identity_hash": "958effd99928df05",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\958effd99928df05.npz",
+   "seconds": 37.63286010012962,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n511_s16": {
+   "from_cache": false,
+   "identity_hash": "abd36cfe6619f763",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\abd36cfe6619f763.npz",
+   "seconds": 155.4485337000806,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "D2_seed203": {
+  "n256_s16": {
+   "from_cache": false,
+   "identity_hash": "95360239a0ba9780",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\95360239a0ba9780.npz",
+   "seconds": 19.9212251000572,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": false,
+   "identity_hash": "ced26d7414da98da",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\ced26d7414da98da.npz",
+   "seconds": 35.95841900003143,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n511_s16": {
+   "from_cache": false,
+   "identity_hash": "ba781d00d59ebbd6",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\ba781d00d59ebbd6.npz",
+   "seconds": 158.33143269992433,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "D2_seed204": {
+  "n256_s16": {
+   "from_cache": false,
+   "identity_hash": "456e78cd9f87f552",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\456e78cd9f87f552.npz",
+   "seconds": 18.73570610000752,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": false,
+   "identity_hash": "f2b75eab1c80b25f",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\f2b75eab1c80b25f.npz",
+   "seconds": 35.98240420012735,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n511_s16": {
+   "from_cache": false,
+   "identity_hash": "02417273c45aaa71",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\02417273c45aaa71.npz",
+   "seconds": 152.50284640002064,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "D2_seed205": {
+  "n256_s16": {
+   "from_cache": false,
+   "identity_hash": "7775b36e2c428ca9",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\7775b36e2c428ca9.npz",
+   "seconds": 19.98645110009238,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": false,
+   "identity_hash": "bd87ad97bb75d7dc",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\bd87ad97bb75d7dc.npz",
+   "seconds": 37.75261740013957,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n511_s16": {
+   "from_cache": false,
+   "identity_hash": "bfa6c1b2e72c79d7",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\bfa6c1b2e72c79d7.npz",
+   "seconds": 155.3313012998551,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "D2_seed210": {
+  "n256_s16": {
+   "from_cache": true,
+   "identity_hash": "c7503fd8225f638f",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\c7503fd8225f638f.npz",
+   "seconds": 0.009034199872985482,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": false,
+   "identity_hash": "36971d9482b73f22",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\36971d9482b73f22.npz",
+   "seconds": 36.3875502999872,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n511_s16": {
+   "from_cache": false,
+   "identity_hash": "dfcfa7f2d0ef4853",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\dfcfa7f2d0ef4853.npz",
+   "seconds": 151.1036463000346,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "D2_seed211": {
+  "n256_s16": {
+   "from_cache": true,
+   "identity_hash": "7e3b74fa919a8e37",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\7e3b74fa919a8e37.npz",
+   "seconds": 0.008553900057449937,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": false,
+   "identity_hash": "1253b4c0eddc2f3f",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\1253b4c0eddc2f3f.npz",
+   "seconds": 36.389648400014266,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n511_s16": {
+   "from_cache": false,
+   "identity_hash": "3121bac22240dcb5",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\3121bac22240dcb5.npz",
+   "seconds": 149.4507391001098,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "D2_seed220": {
+  "n1021_s16": {
+   "from_cache": false,
+   "identity_hash": "813b2a8e32d93239",
+   "n": 1021,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\813b2a8e32d93239.npz",
+   "seconds": 110.49594769999385,
+   "solver": "sparse",
+   "sub": 16
+  },
+  "n256_s16": {
+   "from_cache": false,
+   "identity_hash": "9e8b083ddae3eed5",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\9e8b083ddae3eed5.npz",
+   "seconds": 12.466548800002784,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": false,
+   "identity_hash": "8631990bbd8cdd76",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\8631990bbd8cdd76.npz",
+   "seconds": 32.60454780003056,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n256_s64": {
+   "from_cache": false,
+   "identity_hash": "204b3542f145dc6e",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\204b3542f145dc6e.npz",
+   "seconds": 7.879660899983719,
+   "solver": "sparse",
+   "sub": 64
+  },
+  "n511_s16": {
+   "from_cache": false,
+   "identity_hash": "c86a97e5fb4a8d60",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\c86a97e5fb4a8d60.npz",
+   "seconds": 117.0135990998242,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "D2_seed221": {
+  "n1021_s16": {
+   "from_cache": false,
+   "identity_hash": "13856a17e79e0aa9",
+   "n": 1021,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\13856a17e79e0aa9.npz",
+   "seconds": 90.94567719986662,
+   "solver": "sparse",
+   "sub": 16
+  },
+  "n256_s16": {
+   "from_cache": false,
+   "identity_hash": "b74ac952219d55de",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\b74ac952219d55de.npz",
+   "seconds": 12.046771100023761,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": false,
+   "identity_hash": "7134c28009d0dd53",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\7134c28009d0dd53.npz",
+   "seconds": 32.18562290002592,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n256_s64": {
+   "from_cache": false,
+   "identity_hash": "f2c74fb7f1897585",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\f2c74fb7f1897585.npz",
+   "seconds": 6.830613700207323,
+   "solver": "sparse",
+   "sub": 64
+  },
+  "n511_s16": {
+   "from_cache": false,
+   "identity_hash": "44110d07b9bd6630",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\44110d07b9bd6630.npz",
+   "seconds": 113.75985499983653,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "D2_seed222": {
+  "n1021_s16": {
+   "from_cache": false,
+   "identity_hash": "4c84b381d7a111c3",
+   "n": 1021,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\4c84b381d7a111c3.npz",
+   "seconds": 86.10218179994263,
+   "solver": "sparse",
+   "sub": 16
+  },
+  "n256_s16": {
+   "from_cache": false,
+   "identity_hash": "0e6d9b45f10cc725",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\0e6d9b45f10cc725.npz",
+   "seconds": 12.05151390004903,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": false,
+   "identity_hash": "e168058e30e54925",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\e168058e30e54925.npz",
+   "seconds": 31.596643399912864,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n256_s64": {
+   "from_cache": false,
+   "identity_hash": "3b115eaeb63e7f88",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\3b115eaeb63e7f88.npz",
+   "seconds": 6.287816200172529,
+   "solver": "sparse",
+   "sub": 64
+  },
+  "n511_s16": {
+   "from_cache": false,
+   "identity_hash": "e6321105a87f474a",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\e6321105a87f474a.npz",
+   "seconds": 114.23610080010258,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "D2_seed223": {
+  "n1021_s16": {
+   "from_cache": false,
+   "identity_hash": "03184a5b43473d15",
+   "n": 1021,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\03184a5b43473d15.npz",
+   "seconds": 110.50856659980491,
+   "solver": "sparse",
+   "sub": 16
+  },
+  "n256_s16": {
+   "from_cache": false,
+   "identity_hash": "be9c446a7a07eeb5",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\be9c446a7a07eeb5.npz",
+   "seconds": 12.619593899929896,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": false,
+   "identity_hash": "57a661d6a1ca58a6",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\57a661d6a1ca58a6.npz",
+   "seconds": 32.27138079982251,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n256_s64": {
+   "from_cache": false,
+   "identity_hash": "7858783c4bc08c9a",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\7858783c4bc08c9a.npz",
+   "seconds": 7.816694499924779,
+   "solver": "sparse",
+   "sub": 64
+  },
+  "n511_s16": {
+   "from_cache": false,
+   "identity_hash": "465bf27e31487736",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\465bf27e31487736.npz",
+   "seconds": 117.11822480009869,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "D2_seed230": {
+  "n256_s16": {
+   "from_cache": false,
+   "identity_hash": "ca1ee4fb5db44f63",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\ca1ee4fb5db44f63.npz",
+   "seconds": 12.813610000070184,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": false,
+   "identity_hash": "eb7d492ecc86b988",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\eb7d492ecc86b988.npz",
+   "seconds": 25.216942599974573,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n511_s16": {
+   "from_cache": false,
+   "identity_hash": "25a19a032f5d9637",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\25a19a032f5d9637.npz",
+   "seconds": 111.39205730007961,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "D2_seed231": {
+  "n256_s16": {
+   "from_cache": false,
+   "identity_hash": "22400b925967d3ba",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\22400b925967d3ba.npz",
+   "seconds": 13.008487500017509,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": false,
+   "identity_hash": "7ae72621f0039218",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\7ae72621f0039218.npz",
+   "seconds": 25.415028099901974,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n511_s16": {
+   "from_cache": false,
+   "identity_hash": "34c71c54b63d7b89",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\34c71c54b63d7b89.npz",
+   "seconds": 113.72962330002338,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "F_fresh_base0.28_t0.2_x0.05": {
+  "n256_s16": {
+   "from_cache": true,
+   "identity_hash": "d5c407ce4c864142",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\d5c407ce4c864142.npz",
+   "seconds": 0.00897850003093481,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": false,
+   "identity_hash": "fd2c11d13d6fa318",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\fd2c11d13d6fa318.npz",
+   "seconds": 25.568747299956158,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n511_s16": {
+   "from_cache": false,
+   "identity_hash": "eb1f4854f42e3792",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\eb1f4854f42e3792.npz",
+   "seconds": 119.24129519984126,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "M_seed300": {
+  "n1021_s16": {
+   "from_cache": false,
+   "identity_hash": "6412ccd0c6388bd8",
+   "n": 1021,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\6412ccd0c6388bd8.npz",
+   "seconds": 32.47765780007467,
+   "solver": "sparse",
+   "sub": 16
+  },
+  "n256_s16": {
+   "from_cache": true,
+   "identity_hash": "782a55f7fff4ea60",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\782a55f7fff4ea60.npz",
+   "seconds": 0.009736299980431795,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": true,
+   "identity_hash": "2de699c5915be27a",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\2de699c5915be27a.npz",
+   "seconds": 0.01499860011972487,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n256_s64": {
+   "from_cache": false,
+   "identity_hash": "6caa38f2684ccba4",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\6caa38f2684ccba4.npz",
+   "seconds": 3.1734351001214236,
+   "solver": "sparse",
+   "sub": 64
+  },
+  "n511_s16": {
+   "from_cache": false,
+   "identity_hash": "0798842e6691acf3",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\0798842e6691acf3.npz",
+   "seconds": 129.83732310007326,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "M_seed301": {
+  "n1021_s16": {
+   "from_cache": false,
+   "identity_hash": "fb93c10e30567e56",
+   "n": 1021,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\fb93c10e30567e56.npz",
+   "seconds": 22.799106599995866,
+   "solver": "sparse",
+   "sub": 16
+  },
+  "n256_s16": {
+   "from_cache": true,
+   "identity_hash": "fd37f7bc6ebd706c",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\fd37f7bc6ebd706c.npz",
+   "seconds": 0.009740599896758795,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": false,
+   "identity_hash": "4c8fefcc7d600bcb",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\4c8fefcc7d600bcb.npz",
+   "seconds": 29.150533200008795,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n256_s64": {
+   "from_cache": false,
+   "identity_hash": "46118f64cd61e51c",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\46118f64cd61e51c.npz",
+   "seconds": 2.6415204000659287,
+   "solver": "sparse",
+   "sub": 64
+  },
+  "n511_s16": {
+   "from_cache": false,
+   "identity_hash": "b8bb0ebd3077e2b2",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\b8bb0ebd3077e2b2.npz",
+   "seconds": 120.75632059993222,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "M_seed302": {
+  "n256_s16": {
+   "from_cache": true,
+   "identity_hash": "96a012c222b8885a",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\96a012c222b8885a.npz",
+   "seconds": 0.008713300107046962,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": false,
+   "identity_hash": "d5a5091dd0af4478",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\d5a5091dd0af4478.npz",
+   "seconds": 32.70770839997567,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n511_s16": {
+   "from_cache": false,
+   "identity_hash": "1bfe6314dc5ed767",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\1bfe6314dc5ed767.npz",
+   "seconds": 128.63892720011063,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "M_seed303": {
+  "n256_s16": {
+   "from_cache": true,
+   "identity_hash": "9023324d51326d48",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\9023324d51326d48.npz",
+   "seconds": 0.008439299883320928,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": false,
+   "identity_hash": "3581781148cb352d",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\3581781148cb352d.npz",
+   "seconds": 22.354923899983987,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n511_s16": {
+   "from_cache": false,
+   "identity_hash": "8d5931aff8f3d70f",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\8d5931aff8f3d70f.npz",
+   "seconds": 106.38964660000056,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "M_seed304": {
+  "n256_s16": {
+   "from_cache": true,
+   "identity_hash": "1f662c37c1654af3",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\1f662c37c1654af3.npz",
+   "seconds": 0.008185999933630228,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": false,
+   "identity_hash": "a5fa934f7fb8080e",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\a5fa934f7fb8080e.npz",
+   "seconds": 34.736334500135854,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n511_s16": {
+   "from_cache": false,
+   "identity_hash": "55a02158ce9b55da",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\55a02158ce9b55da.npz",
+   "seconds": 130.052978400141,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "M_seed305": {
+  "n256_s16": {
+   "from_cache": true,
+   "identity_hash": "54d8ddce4817d810",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\54d8ddce4817d810.npz",
+   "seconds": 0.009481699904426932,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": false,
+   "identity_hash": "de8d05d2a57c1305",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\de8d05d2a57c1305.npz",
+   "seconds": 35.95503139984794,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n511_s16": {
+   "from_cache": false,
+   "identity_hash": "5d2bb2889c675f69",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\5d2bb2889c675f69.npz",
+   "seconds": 133.41066320007667,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "M_seed310": {
+  "n256_s16": {
+   "from_cache": true,
+   "identity_hash": "7a9ffce62ca344d9",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\7a9ffce62ca344d9.npz",
+   "seconds": 0.008404900087043643,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": false,
+   "identity_hash": "8c5eb0820d5c0fc2",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\8c5eb0820d5c0fc2.npz",
+   "seconds": 29.17208579997532,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n511_s16": {
+   "from_cache": false,
+   "identity_hash": "99f4dbafa08d6597",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\99f4dbafa08d6597.npz",
+   "seconds": 121.30169379990548,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "M_seed311": {
+  "n256_s16": {
+   "from_cache": true,
+   "identity_hash": "8386102c9e84489a",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\8386102c9e84489a.npz",
+   "seconds": 0.007732299854978919,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": false,
+   "identity_hash": "bdd7fc08429f8f72",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\bdd7fc08429f8f72.npz",
+   "seconds": 26.83254610002041,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n511_s16": {
+   "from_cache": false,
+   "identity_hash": "de5385fc91e8dcf2",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\de5385fc91e8dcf2.npz",
+   "seconds": 114.15769120003097,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "M_seed320": {
+  "n1021_s16": {
+   "from_cache": false,
+   "identity_hash": "9260d4381c23970b",
+   "n": 1021,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\9260d4381c23970b.npz",
+   "seconds": 39.00598969985731,
+   "solver": "sparse",
+   "sub": 16
+  },
+  "n256_s16": {
+   "from_cache": false,
+   "identity_hash": "42519c1d14fffcd3",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\42519c1d14fffcd3.npz",
+   "seconds": 13.146479899995029,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": false,
+   "identity_hash": "a902879378d737c1",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\a902879378d737c1.npz",
+   "seconds": 23.21322609996423,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n256_s64": {
+   "from_cache": false,
+   "identity_hash": "f07940218ddc4bd1",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\f07940218ddc4bd1.npz",
+   "seconds": 3.775275600142777,
+   "solver": "sparse",
+   "sub": 64
+  },
+  "n511_s16": {
+   "from_cache": false,
+   "identity_hash": "02874cd8d339c313",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\02874cd8d339c313.npz",
+   "seconds": 106.71126280003227,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "M_seed321": {
+  "n1021_s16": {
+   "from_cache": false,
+   "identity_hash": "d1ef8d3cd812296c",
+   "n": 1021,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\d1ef8d3cd812296c.npz",
+   "seconds": 45.79478660016321,
+   "solver": "sparse",
+   "sub": 16
+  },
+  "n256_s16": {
+   "from_cache": false,
+   "identity_hash": "f0568eadea0513a7",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\f0568eadea0513a7.npz",
+   "seconds": 14.838279700139537,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": false,
+   "identity_hash": "e869ae38ea0c733f",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\e869ae38ea0c733f.npz",
+   "seconds": 21.725154499989003,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n256_s64": {
+   "from_cache": false,
+   "identity_hash": "f5702f6460c15f54",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\f5702f6460c15f54.npz",
+   "seconds": 4.0671128001995385,
+   "solver": "sparse",
+   "sub": 64
+  },
+  "n511_s16": {
+   "from_cache": false,
+   "identity_hash": "f33c4fd37b4c4e6e",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\f33c4fd37b4c4e6e.npz",
+   "seconds": 106.72108939988539,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "M_seed322": {
+  "n1021_s16": {
+   "from_cache": false,
+   "identity_hash": "0951f2e714348102",
+   "n": 1021,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\0951f2e714348102.npz",
+   "seconds": 21.626090899808332,
+   "solver": "sparse",
+   "sub": 16
+  },
+  "n256_s16": {
+   "from_cache": false,
+   "identity_hash": "178ad73ec9e2b41a",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\178ad73ec9e2b41a.npz",
+   "seconds": 9.631640699924901,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": false,
+   "identity_hash": "ac3a9c6e42b6dfdf",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\ac3a9c6e42b6dfdf.npz",
+   "seconds": 21.22121059987694,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n256_s64": {
+   "from_cache": false,
+   "identity_hash": "63719cd37217ffea",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\63719cd37217ffea.npz",
+   "seconds": 3.6338172999676317,
+   "solver": "sparse",
+   "sub": 64
+  },
+  "n511_s16": {
+   "from_cache": false,
+   "identity_hash": "b08b2e9d25f6c0a6",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\b08b2e9d25f6c0a6.npz",
+   "seconds": 77.86147309979424,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "M_seed323": {
+  "n1021_s16": {
+   "from_cache": false,
+   "identity_hash": "dab99f68f0bf5450",
+   "n": 1021,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\dab99f68f0bf5450.npz",
+   "seconds": 32.63388339988887,
+   "solver": "sparse",
+   "sub": 16
+  },
+  "n256_s16": {
+   "from_cache": false,
+   "identity_hash": "b37e770b6d84330f",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\b37e770b6d84330f.npz",
+   "seconds": 11.908216400071979,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": false,
+   "identity_hash": "b209e444d88d4e88",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\b209e444d88d4e88.npz",
+   "seconds": 25.57634159992449,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n256_s64": {
+   "from_cache": false,
+   "identity_hash": "c1d695c5216444db",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\c1d695c5216444db.npz",
+   "seconds": 4.092100600013509,
+   "solver": "sparse",
+   "sub": 64
+  },
+  "n511_s16": {
+   "from_cache": false,
+   "identity_hash": "2ba2b1708439f053",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\2ba2b1708439f053.npz",
+   "seconds": 88.95471350010484,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "M_seed330": {
+  "n256_s16": {
+   "from_cache": false,
+   "identity_hash": "99faa3dfeeb88238",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\99faa3dfeeb88238.npz",
+   "seconds": 13.144065600121394,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": false,
+   "identity_hash": "7617620e0e741cd6",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\7617620e0e741cd6.npz",
+   "seconds": 20.940907899988815,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n511_s16": {
+   "from_cache": false,
+   "identity_hash": "144e05176e4df3ab",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\144e05176e4df3ab.npz",
+   "seconds": 91.42278160015121,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "M_seed331": {
+  "n256_s16": {
+   "from_cache": false,
+   "identity_hash": "b5829d16fb3e49e6",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\b5829d16fb3e49e6.npz",
+   "seconds": 13.888861400075257,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": false,
+   "identity_hash": "38f4858435a237be",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\38f4858435a237be.npz",
+   "seconds": 20.696706000017002,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n511_s16": {
+   "from_cache": false,
+   "identity_hash": "6ab283278d949b67",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\6ab283278d949b67.npz",
+   "seconds": 85.2773767998442,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "S2_seed100": {
+  "n1021_s16": {
+   "from_cache": false,
+   "identity_hash": "6a28f9b88336b4c9",
+   "n": 1021,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\6a28f9b88336b4c9.npz",
+   "seconds": 29.950442099943757,
+   "solver": "sparse",
+   "sub": 16
+  },
+  "n256_s16": {
+   "from_cache": true,
+   "identity_hash": "9acafe082087e6d8",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\9acafe082087e6d8.npz",
+   "seconds": 0.007323700003325939,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": true,
+   "identity_hash": "edd65fb25caa4b74",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\edd65fb25caa4b74.npz",
+   "seconds": 0.010180399985983968,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n256_s64": {
+   "from_cache": false,
+   "identity_hash": "75426e9ea9e5e70e",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\75426e9ea9e5e70e.npz",
+   "seconds": 2.234031300060451,
+   "solver": "sparse",
+   "sub": 64
+  },
+  "n511_s16": {
+   "from_cache": true,
+   "identity_hash": "5b45dd8a0a8e653f",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\5b45dd8a0a8e653f.npz",
+   "seconds": 0.009954800130799413,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "S2_seed101": {
+  "n1021_s16": {
+   "from_cache": false,
+   "identity_hash": "64af36fa3afbbf39",
+   "n": 1021,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\64af36fa3afbbf39.npz",
+   "seconds": 76.19546579988673,
+   "solver": "sparse",
+   "sub": 16
+  },
+  "n256_s16": {
+   "from_cache": true,
+   "identity_hash": "aebd49eb838cb500",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\aebd49eb838cb500.npz",
+   "seconds": 0.0075193000957369804,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": true,
+   "identity_hash": "2d4465579ca93b9c",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\2d4465579ca93b9c.npz",
+   "seconds": 0.009820899926126003,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n256_s64": {
+   "from_cache": false,
+   "identity_hash": "ad39ba0783a058b1",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\ad39ba0783a058b1.npz",
+   "seconds": 4.046040700050071,
+   "solver": "sparse",
+   "sub": 64
+  },
+  "n511_s16": {
+   "from_cache": true,
+   "identity_hash": "1917db20a02c077e",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\1917db20a02c077e.npz",
+   "seconds": 0.009661199990659952,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "S2_seed102": {
+  "n256_s16": {
+   "from_cache": false,
+   "identity_hash": "18500e5d11c66f89",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\18500e5d11c66f89.npz",
+   "seconds": 0.11017320002429187,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": false,
+   "identity_hash": "70f9311abbb93032",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\70f9311abbb93032.npz",
+   "seconds": 0.147665899945423,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n511_s16": {
+   "from_cache": false,
+   "identity_hash": "531b3e83aa13b17a",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\531b3e83aa13b17a.npz",
+   "seconds": 0.3762352999765426,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "S2_seed103": {
+  "n256_s16": {
+   "from_cache": true,
+   "identity_hash": "45d5c55a1b7cdb85",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\45d5c55a1b7cdb85.npz",
+   "seconds": 0.007723500020802021,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": true,
+   "identity_hash": "cbd4b0a08b82bf5a",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\cbd4b0a08b82bf5a.npz",
+   "seconds": 0.009717399952933192,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n511_s16": {
+   "from_cache": true,
+   "identity_hash": "db681b822fe9ba2f",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\db681b822fe9ba2f.npz",
+   "seconds": 0.009561499813571572,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "S2_seed104": {
+  "n256_s16": {
+   "from_cache": false,
+   "identity_hash": "22977be72730fa88",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\22977be72730fa88.npz",
+   "seconds": 0.07912190002389252,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": false,
+   "identity_hash": "ad2e46f81ab85890",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\ad2e46f81ab85890.npz",
+   "seconds": 0.12248200015164912,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n511_s16": {
+   "from_cache": false,
+   "identity_hash": "1b8ab9bf02f7d823",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\1b8ab9bf02f7d823.npz",
+   "seconds": 0.3481549001298845,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "S2_seed105": {
+  "n256_s16": {
+   "from_cache": false,
+   "identity_hash": "cee5e369fe8e7fa7",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\cee5e369fe8e7fa7.npz",
+   "seconds": 0.08669240004383028,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": false,
+   "identity_hash": "402a4e7c3ce39b0f",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\402a4e7c3ce39b0f.npz",
+   "seconds": 0.12361459992825985,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n511_s16": {
+   "from_cache": false,
+   "identity_hash": "b17fe1566ef42ac0",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\b17fe1566ef42ac0.npz",
+   "seconds": 0.3319685999304056,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "S2_seed106": {
+  "n256_s16": {
+   "from_cache": false,
+   "identity_hash": "466452c448d8f5be",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\466452c448d8f5be.npz",
+   "seconds": 0.08536889986135066,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": false,
+   "identity_hash": "54c601523cb95098",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\54c601523cb95098.npz",
+   "seconds": 0.1461155000142753,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n511_s16": {
+   "from_cache": false,
+   "identity_hash": "fff9c1cd62a0f0bc",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\fff9c1cd62a0f0bc.npz",
+   "seconds": 0.3848635000176728,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "S2_seed107": {
+  "n256_s16": {
+   "from_cache": false,
+   "identity_hash": "2fc51ff8a0080142",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\2fc51ff8a0080142.npz",
+   "seconds": 0.10035819979384542,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": false,
+   "identity_hash": "32cfb22c42d358f1",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\32cfb22c42d358f1.npz",
+   "seconds": 0.16799670015461743,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n511_s16": {
+   "from_cache": false,
+   "identity_hash": "b14ece01c23daec5",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\b14ece01c23daec5.npz",
+   "seconds": 0.4202670999802649,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "S2_seed108": {
+  "n256_s16": {
+   "from_cache": false,
+   "identity_hash": "429785cdb8757783",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\429785cdb8757783.npz",
+   "seconds": 0.10159480012953281,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": false,
+   "identity_hash": "468ec26a98282fd6",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\468ec26a98282fd6.npz",
+   "seconds": 0.15502130007371306,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n511_s16": {
+   "from_cache": false,
+   "identity_hash": "ce88f87dbf5b7117",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\ce88f87dbf5b7117.npz",
+   "seconds": 0.42077800002880394,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "S2_seed109": {
+  "n256_s16": {
+   "from_cache": false,
+   "identity_hash": "e3c4accd04fa2234",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\e3c4accd04fa2234.npz",
+   "seconds": 0.11127939983271062,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": false,
+   "identity_hash": "69a7f7abce010400",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\69a7f7abce010400.npz",
+   "seconds": 0.1529359999112785,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n511_s16": {
+   "from_cache": false,
+   "identity_hash": "e45dcb92909ed7a2",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\e45dcb92909ed7a2.npz",
+   "seconds": 0.39654550002887845,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "S2_seed110": {
+  "n256_s16": {
+   "from_cache": true,
+   "identity_hash": "8351961f6f52a5a9",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\8351961f6f52a5a9.npz",
+   "seconds": 0.009075399953871965,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": false,
+   "identity_hash": "8b3b900bbb8b8687",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\8b3b900bbb8b8687.npz",
+   "seconds": 0.16612300020642579,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n511_s16": {
+   "from_cache": false,
+   "identity_hash": "8dd52b1d658d6748",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\8dd52b1d658d6748.npz",
+   "seconds": 0.4365821999963373,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "S2_seed111": {
+  "n256_s16": {
+   "from_cache": true,
+   "identity_hash": "8a70ecc7fed2bae5",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\8a70ecc7fed2bae5.npz",
+   "seconds": 0.00959149980917573,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": false,
+   "identity_hash": "59617a000d848a5b",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\59617a000d848a5b.npz",
+   "seconds": 0.13893319992348552,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n511_s16": {
+   "from_cache": false,
+   "identity_hash": "f4b6a89c5452325e",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\f4b6a89c5452325e.npz",
+   "seconds": 0.4163721001241356,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "S2_seed112": {
+  "n256_s16": {
+   "from_cache": true,
+   "identity_hash": "ed9c9a096bd8f6d6",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\ed9c9a096bd8f6d6.npz",
+   "seconds": 0.009120400063693523,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": false,
+   "identity_hash": "7501a6acce89e62d",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\7501a6acce89e62d.npz",
+   "seconds": 0.1355435000732541,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n511_s16": {
+   "from_cache": false,
+   "identity_hash": "f769971f208052ff",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\f769971f208052ff.npz",
+   "seconds": 0.3586927999276668,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "S2_seed113": {
+  "n256_s16": {
+   "from_cache": true,
+   "identity_hash": "7288cb95a221acf8",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\7288cb95a221acf8.npz",
+   "seconds": 0.009596599964424968,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": false,
+   "identity_hash": "4dbbe96d69320660",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\4dbbe96d69320660.npz",
+   "seconds": 0.1431476001162082,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n511_s16": {
+   "from_cache": false,
+   "identity_hash": "974bd3ac71e0ae34",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\974bd3ac71e0ae34.npz",
+   "seconds": 0.3698748000897467,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "S2_seed120": {
+  "n1021_s16": {
+   "from_cache": false,
+   "identity_hash": "1d9f083adca10f31",
+   "n": 1021,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\1d9f083adca10f31.npz",
+   "seconds": 53.8967118000146,
+   "solver": "sparse",
+   "sub": 16
+  },
+  "n256_s16": {
+   "from_cache": false,
+   "identity_hash": "5971b0c5b1665264",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\5971b0c5b1665264.npz",
+   "seconds": 0.07766990014351904,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": false,
+   "identity_hash": "50bf8208ae316a32",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\50bf8208ae316a32.npz",
+   "seconds": 0.12674930016510189,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n256_s64": {
+   "from_cache": false,
+   "identity_hash": "59347adec956fdce",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\59347adec956fdce.npz",
+   "seconds": 3.2998008001595736,
+   "solver": "sparse",
+   "sub": 64
+  },
+  "n511_s16": {
+   "from_cache": false,
+   "identity_hash": "69b206b9887f726d",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\69b206b9887f726d.npz",
+   "seconds": 0.3641542000696063,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "S2_seed121": {
+  "n1021_s16": {
+   "from_cache": false,
+   "identity_hash": "ad8b348307eccc40",
+   "n": 1021,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\ad8b348307eccc40.npz",
+   "seconds": 57.987893800018355,
+   "solver": "sparse",
+   "sub": 16
+  },
+  "n256_s16": {
+   "from_cache": false,
+   "identity_hash": "2e3e4d8533536259",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\2e3e4d8533536259.npz",
+   "seconds": 0.07730749994516373,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": false,
+   "identity_hash": "cdb2d7a40452e77d",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\cdb2d7a40452e77d.npz",
+   "seconds": 0.12084210012108088,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n256_s64": {
+   "from_cache": false,
+   "identity_hash": "523873e16bf2ddd1",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\523873e16bf2ddd1.npz",
+   "seconds": 3.268346300115809,
+   "solver": "sparse",
+   "sub": 64
+  },
+  "n511_s16": {
+   "from_cache": false,
+   "identity_hash": "97dbe2d958299a50",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\97dbe2d958299a50.npz",
+   "seconds": 0.36241839989088476,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "S2_seed122": {
+  "n1021_s16": {
+   "from_cache": false,
+   "identity_hash": "407ef20eef4f864f",
+   "n": 1021,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\407ef20eef4f864f.npz",
+   "seconds": 53.67981799994595,
+   "solver": "sparse",
+   "sub": 16
+  },
+  "n256_s16": {
+   "from_cache": false,
+   "identity_hash": "e2c4167814b6b7ca",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\e2c4167814b6b7ca.npz",
+   "seconds": 0.08477180008776486,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": false,
+   "identity_hash": "c3c89da17a9404da",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\c3c89da17a9404da.npz",
+   "seconds": 0.124684700043872,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n256_s64": {
+   "from_cache": false,
+   "identity_hash": "fc6b2c9b93b129c4",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\fc6b2c9b93b129c4.npz",
+   "seconds": 3.279120499966666,
+   "solver": "sparse",
+   "sub": 64
+  },
+  "n511_s16": {
+   "from_cache": false,
+   "identity_hash": "2abb4afa393b5eca",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\2abb4afa393b5eca.npz",
+   "seconds": 0.33986650011502206,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "S2_seed123": {
+  "n1021_s16": {
+   "from_cache": false,
+   "identity_hash": "7606807e1f9842cc",
+   "n": 1021,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\7606807e1f9842cc.npz",
+   "seconds": 41.51273790001869,
+   "solver": "sparse",
+   "sub": 16
+  },
+  "n256_s16": {
+   "from_cache": false,
+   "identity_hash": "5050b30dff39ed91",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\5050b30dff39ed91.npz",
+   "seconds": 0.09522869996726513,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": false,
+   "identity_hash": "e0ded0436f996590",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\e0ded0436f996590.npz",
+   "seconds": 0.15232040011323988,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n256_s64": {
+   "from_cache": false,
+   "identity_hash": "b274196dde553966",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\b274196dde553966.npz",
+   "seconds": 2.3241198000032455,
+   "solver": "sparse",
+   "sub": 64
+  },
+  "n511_s16": {
+   "from_cache": false,
+   "identity_hash": "7c400b1780af7e83",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\7c400b1780af7e83.npz",
+   "seconds": 0.33833970013074577,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "S2_seed124": {
+  "n1021_s16": {
+   "from_cache": false,
+   "identity_hash": "8b039029acb6cc2f",
+   "n": 1021,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\8b039029acb6cc2f.npz",
+   "seconds": 56.086846599821,
+   "solver": "sparse",
+   "sub": 16
+  },
+  "n256_s16": {
+   "from_cache": false,
+   "identity_hash": "2457b53c278037f6",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\2457b53c278037f6.npz",
+   "seconds": 0.10025979997590184,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": false,
+   "identity_hash": "a8179ef170329bde",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\a8179ef170329bde.npz",
+   "seconds": 0.15676579996943474,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n256_s64": {
+   "from_cache": false,
+   "identity_hash": "ed8d9c943cb55f67",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\ed8d9c943cb55f67.npz",
+   "seconds": 3.487863500136882,
+   "solver": "sparse",
+   "sub": 64
+  },
+  "n511_s16": {
+   "from_cache": false,
+   "identity_hash": "0b174093395d26ec",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\0b174093395d26ec.npz",
+   "seconds": 0.33454430010169744,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "S2_seed125": {
+  "n1021_s16": {
+   "from_cache": false,
+   "identity_hash": "0006d030ef1c2658",
+   "n": 1021,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\0006d030ef1c2658.npz",
+   "seconds": 41.340091299964115,
+   "solver": "sparse",
+   "sub": 16
+  },
+  "n256_s16": {
+   "from_cache": false,
+   "identity_hash": "325191f6abf2a57d",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\325191f6abf2a57d.npz",
+   "seconds": 0.08967869984917343,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": false,
+   "identity_hash": "40b20f29f500abfa",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\40b20f29f500abfa.npz",
+   "seconds": 0.13793359999544919,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n256_s64": {
+   "from_cache": false,
+   "identity_hash": "3df11bd2d105fc1f",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\3df11bd2d105fc1f.npz",
+   "seconds": 2.5811957002151757,
+   "solver": "sparse",
+   "sub": 64
+  },
+  "n511_s16": {
+   "from_cache": false,
+   "identity_hash": "4923752ce9f62b61",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\4923752ce9f62b61.npz",
+   "seconds": 0.30490570003166795,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "S2_seed130": {
+  "n256_s16": {
+   "from_cache": false,
+   "identity_hash": "7fdf6577ba82e61b",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\7fdf6577ba82e61b.npz",
+   "seconds": 0.10640290006995201,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": false,
+   "identity_hash": "4cef0d0530e40522",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\4cef0d0530e40522.npz",
+   "seconds": 0.161841900087893,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n511_s16": {
+   "from_cache": false,
+   "identity_hash": "d4a81171e70bc8c6",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\d4a81171e70bc8c6.npz",
+   "seconds": 0.3583760999608785,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "S2_seed131": {
+  "n256_s16": {
+   "from_cache": false,
+   "identity_hash": "c438ac159fcb0368",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\c438ac159fcb0368.npz",
+   "seconds": 0.10490910010412335,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": false,
+   "identity_hash": "ea118cc97166cb80",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\ea118cc97166cb80.npz",
+   "seconds": 0.15768090006895363,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n511_s16": {
+   "from_cache": false,
+   "identity_hash": "e33d33e0d018dd76",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\e33d33e0d018dd76.npz",
+   "seconds": 0.38354720012284815,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "S2_seed132": {
+  "n256_s16": {
+   "from_cache": false,
+   "identity_hash": "31da8f736ad19cf4",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\31da8f736ad19cf4.npz",
+   "seconds": 0.09938459983095527,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": false,
+   "identity_hash": "b7c7486895a55474",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\b7c7486895a55474.npz",
+   "seconds": 0.17059559980407357,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n511_s16": {
+   "from_cache": false,
+   "identity_hash": "a1a3b77980bbc54e",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\a1a3b77980bbc54e.npz",
+   "seconds": 0.2953272999729961,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "S2_seed133": {
+  "n256_s16": {
+   "from_cache": false,
+   "identity_hash": "3cdd7665ab97f1d0",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\3cdd7665ab97f1d0.npz",
+   "seconds": 0.10580409993417561,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": false,
+   "identity_hash": "03ba04377e641272",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\03ba04377e641272.npz",
+   "seconds": 0.16000319994054735,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n511_s16": {
+   "from_cache": false,
+   "identity_hash": "552972485922038f",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\552972485922038f.npz",
+   "seconds": 0.3917488001752645,
+   "solver": "dense",
+   "sub": 16
+  }
+ },
+ "S_seed9": {
+  "n256_s16": {
+   "from_cache": true,
+   "identity_hash": "3a7c783178b4bf33",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\3a7c783178b4bf33.npz",
+   "seconds": 0.008601600071415305,
+   "solver": "dense",
+   "sub": 16
+  },
+  "n256_s32": {
+   "from_cache": false,
+   "identity_hash": "b40e6440fe70bc7b",
+   "n": 256,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\b40e6440fe70bc7b.npz",
+   "seconds": 0.14908139989711344,
+   "solver": "dense",
+   "sub": 32
+  },
+  "n511_s16": {
+   "from_cache": false,
+   "identity_hash": "c1061dfccfa2c545",
+   "n": 511,
+   "npz_path": "C:/mcp_jobs/scc_cache\\reference\\c1061dfccfa2c545.npz",
+   "seconds": 0.39142420003190637,
+   "solver": "dense",
+   "sub": 16
+  }
+ }
+}

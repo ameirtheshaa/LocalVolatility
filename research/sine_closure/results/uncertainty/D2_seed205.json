@@ -17,33 +17,24 @@
    "n511_s16": "bfa6c1b2e72c79d7"
   },
   "lift": "affine_endpoints_v1",
-  "m_list": [
-   9,
-   13,
-   17,
-   25,
-   33,
-   65
-  ],
+  "lock": "26bdf1dcf3f5258906a6f4115cd8f9064488c139d4851c13defd8893ba7666a4",
   "metric_version": "evaluate_v1",
   "n": 256,
   "operator": "OP-B",
-  "protocols": [
-   "P0",
-   "P1"
-  ],
   "quick": false,
   "schema": 1,
-  "script": "4d0100911a6c7177",
+  "script": "581089cf7478591e",
   "split": "train",
   "sub": 16
  },
- "identity_hash": "a23af56ec8822f3b",
+ "identity_hash": "83a1e24590eebee8",
  "levels_present": [
   "refined",
   "same",
   "step"
  ],
+ "lock_kind": "lock",
+ "lock_sha256": "26bdf1dcf3f5258906a6f4115cd8f9064488c139d4851c13defd8893ba7666a4",
  "n": 256,
  "params": {
   "seed": 205,
@@ -195,5 +186,5 @@
    }
   }
  },
- "wall_seconds": 18.599719524383545
+ "wall_seconds": 39.145164012908936
 }

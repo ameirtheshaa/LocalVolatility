@@ -18,8 +18,7 @@ Classification per (m, closure, hidden protocol) on the `test_interp` cases unde
 * **no_supported_benefit**: fallback: none of the above; reasons (gains within uncertainty / equal-state unclosed model at least as good / validity deteriorated) are listed
 
 **Caveats (inputs missing, classification is provisional):**
-* uncertainty u missing for 13 (case, quantity) pairs (treated as 0, fractions floored at 1/N_interior): RUN_MANIFEST:density_l2_interior_mean, RUN_MANIFEST:invvol_invalid_frac_full, RUN_MANIFEST:negative_mass_max_post_initial, RUN_MANIFEST:price_interior_rms, RUN_MANIFEST:u_dyn_m17, RUN_MANIFEST:u_dyn_m9, family_checks:price_interior_rms, summary:density_l2_interior_mean, summary:invvol_invalid_frac_full, summary:negative_mass_max_post_initial, summary:price_interior_rms, summary:u_dyn_m17 ...
-* cost.json timing rows missing for some entries: the cost condition of successful_compression could not be evaluated (treated as not met)
+* uncertainty u missing for 12 (case, quantity) pairs (treated as 0, fractions floored at 1/N_interior): RUN_MANIFEST:density_l2_interior_mean, RUN_MANIFEST:invvol_invalid_frac_full, RUN_MANIFEST:negative_mass_max_post_initial, RUN_MANIFEST:price_interior_rms, RUN_MANIFEST:u_dyn_m17, RUN_MANIFEST:u_dyn_m9, summary:density_l2_interior_mean, summary:invvol_invalid_frac_full, summary:negative_mass_max_post_initial, summary:price_interior_rms, summary:u_dyn_m17, summary:u_dyn_m9
 
 gamma = 1.54e-12; test_interp cases: C_sig0.205, C_sig0.310, C_sig0.415, D2_seed220, D2_seed221, D2_seed222, D2_seed223, M_seed320, M_seed321, M_seed322, M_seed323, S2_seed120, S2_seed121, S2_seed122, S2_seed123, S2_seed124, S2_seed125; test_ood cases: C_sig0.120, C_sig0.550, D2_seed230, D2_seed231, M_seed330, M_seed331, S2_seed130, S2_seed131, S2_seed132, S2_seed133.
 
@@ -309,28 +308,28 @@ Reported as compensation, never as recovered memory: in the full-grid Euclidean 
 
 | entry | primary class | all classes holding | cost beats RRR33 | #exc RDI | #exc useful | #exc compression | compression status | eligible/cells | compensation | reasons (no supported benefit) |
 |---|---|---|---|---|---|---|---|---|---|---|
-| QLp_m9 | no_supported_benefit | – | n/a | 34 | 73 | 0 | not_testable_regime_empty | 0/34 | yes | gains within uncertainty (no cell with a gain beyond 2u in e_dyn or price); validity deteriorated (a noninferiority condition fails in some cell) |
-| QLpm_m9 | no_supported_benefit | – | n/a | 34 | 73 | 0 | not_testable_regime_empty | 0/34 | yes | gains within uncertainty (no cell with a gain beyond 2u in e_dyn or price); validity deteriorated (a noninferiority condition fails in some cell) |
-| QLs_m9 | no_supported_benefit | – | n/a | 34 | 73 | 0 | not_testable_regime_empty | 0/34 | yes | gains within uncertainty (no cell with a gain beyond 2u in e_dyn or price); validity deteriorated (a noninferiority condition fails in some cell) |
-| LM_m9 | inconclusive | – | n/a | 1 | 196 | 0 | not_testable_regime_empty | 0/34 | yes |  |
-| LMb_m9 | inconclusive | – | n/a | 1 | 196 | 0 | not_testable_regime_empty | 0/34 | yes |  |
-| LR0_m9_h16/W0 | no_supported_benefit | – | n/a | 12 | 212 | 0 | not_testable_regime_empty | 0/34 | yes | unclosed model of equal total state is at least as good (e_dyn and price, every cell); validity deteriorated (a noninferiority condition fails in some cell) |
-| LR0_m9_h16/WI | resolved_dynamics_improvement | resolved_dynamics_improvement | n/a | 0 | 189 | 0 | not_testable_regime_empty | 0/34 | yes |  |
-| LR0_m9_h16/WU | resolved_dynamics_improvement | resolved_dynamics_improvement | n/a | 0 | 189 | 0 | not_testable_regime_empty | 0/34 | yes |  |
-| LR_m9_h16/W0 | no_supported_benefit | – | n/a | 12 | 220 | 0 | not_testable_regime_empty | 0/34 | yes | unclosed model of equal total state is at least as good (e_dyn and price, every cell); validity deteriorated (a noninferiority condition fails in some cell) |
-| LR_m9_h16/WI | resolved_dynamics_improvement | resolved_dynamics_improvement | n/a | 0 | 213 | 0 | not_testable_regime_empty | 0/34 | yes |  |
-| LR_m9_h16/WU | resolved_dynamics_improvement | resolved_dynamics_improvement | n/a | 0 | 210 | 0 | not_testable_regime_empty | 0/34 | yes |  |
-| QLp_m17 | no_supported_benefit | – | n/a | 34 | 68 | 0 | not_testable_regime_empty | 0/34 | yes | gains within uncertainty (no cell with a gain beyond 2u in e_dyn or price) |
-| QLpm_m17 | no_supported_benefit | – | n/a | 34 | 201 | 0 | not_testable_regime_empty | 0/34 | yes | gains within uncertainty (no cell with a gain beyond 2u in e_dyn or price); validity deteriorated (a noninferiority condition fails in some cell) |
-| QLs_m17 | no_supported_benefit | – | n/a | 34 | 201 | 0 | not_testable_regime_empty | 0/34 | yes | gains within uncertainty (no cell with a gain beyond 2u in e_dyn or price); validity deteriorated (a noninferiority condition fails in some cell) |
-| LM_m17 | inconclusive | – | n/a | 2 | 186 | 0 | not_testable_regime_empty | 0/34 | yes |  |
-| LMb_m17 | inconclusive | – | n/a | 2 | 188 | 0 | not_testable_regime_empty | 0/34 | yes |  |
-| LR0_m17_h8/W0 | inconclusive | – | n/a | 12 | 217 | 0 | not_testable_regime_empty | 0/34 | yes |  |
-| LR0_m17_h8/WI | inconclusive | – | n/a | 2 | 175 | 0 | not_testable_regime_empty | 0/34 | yes |  |
-| LR0_m17_h8/WU | inconclusive | – | n/a | 2 | 174 | 0 | not_testable_regime_empty | 0/34 | yes |  |
-| LR_m17_h8/W0 | inconclusive | – | n/a | 13 | 225 | 0 | not_testable_regime_empty | 0/34 | yes |  |
-| LR_m17_h8/WI | inconclusive | – | n/a | 2 | 182 | 0 | not_testable_regime_empty | 0/34 | yes |  |
-| LR_m17_h8/WU | inconclusive | – | n/a | 2 | 181 | 0 | not_testable_regime_empty | 0/34 | yes |  |
+| QLp_m9 | no_supported_benefit | – | no | 34 | 73 | 0 | not_testable_regime_empty | 0/34 | yes | gains within uncertainty (no cell with a gain beyond 2u in e_dyn or price); validity deteriorated (a noninferiority condition fails in some cell) |
+| QLpm_m9 | no_supported_benefit | – | no | 34 | 73 | 0 | not_testable_regime_empty | 0/34 | yes | gains within uncertainty (no cell with a gain beyond 2u in e_dyn or price); validity deteriorated (a noninferiority condition fails in some cell) |
+| QLs_m9 | no_supported_benefit | – | no | 34 | 73 | 0 | not_testable_regime_empty | 0/34 | yes | gains within uncertainty (no cell with a gain beyond 2u in e_dyn or price); validity deteriorated (a noninferiority condition fails in some cell) |
+| LM_m9 | inconclusive | – | no | 1 | 196 | 0 | not_testable_regime_empty | 0/34 | yes |  |
+| LMb_m9 | inconclusive | – | no | 1 | 196 | 0 | not_testable_regime_empty | 0/34 | yes |  |
+| LR0_m9_h16/W0 | no_supported_benefit | – | no | 12 | 212 | 0 | not_testable_regime_empty | 0/34 | yes | unclosed model of equal total state is at least as good (e_dyn and price, every cell); validity deteriorated (a noninferiority condition fails in some cell) |
+| LR0_m9_h16/WI | resolved_dynamics_improvement | resolved_dynamics_improvement | no | 0 | 189 | 0 | not_testable_regime_empty | 0/34 | yes |  |
+| LR0_m9_h16/WU | resolved_dynamics_improvement | resolved_dynamics_improvement | no | 0 | 189 | 0 | not_testable_regime_empty | 0/34 | yes |  |
+| LR_m9_h16/W0 | no_supported_benefit | – | no | 12 | 220 | 0 | not_testable_regime_empty | 0/34 | yes | unclosed model of equal total state is at least as good (e_dyn and price, every cell); validity deteriorated (a noninferiority condition fails in some cell) |
+| LR_m9_h16/WI | resolved_dynamics_improvement | resolved_dynamics_improvement | no | 0 | 213 | 0 | not_testable_regime_empty | 0/34 | yes |  |
+| LR_m9_h16/WU | resolved_dynamics_improvement | resolved_dynamics_improvement | no | 0 | 210 | 0 | not_testable_regime_empty | 0/34 | yes |  |
+| QLp_m17 | no_supported_benefit | – | no | 34 | 68 | 0 | not_testable_regime_empty | 0/34 | yes | gains within uncertainty (no cell with a gain beyond 2u in e_dyn or price) |
+| QLpm_m17 | no_supported_benefit | – | no | 34 | 201 | 0 | not_testable_regime_empty | 0/34 | yes | gains within uncertainty (no cell with a gain beyond 2u in e_dyn or price); validity deteriorated (a noninferiority condition fails in some cell) |
+| QLs_m17 | no_supported_benefit | – | no | 34 | 201 | 0 | not_testable_regime_empty | 0/34 | yes | gains within uncertainty (no cell with a gain beyond 2u in e_dyn or price); validity deteriorated (a noninferiority condition fails in some cell) |
+| LM_m17 | inconclusive | – | no | 2 | 186 | 0 | not_testable_regime_empty | 0/34 | yes |  |
+| LMb_m17 | inconclusive | – | no | 2 | 188 | 0 | not_testable_regime_empty | 0/34 | yes |  |
+| LR0_m17_h8/W0 | inconclusive | – | no | 12 | 217 | 0 | not_testable_regime_empty | 0/34 | yes |  |
+| LR0_m17_h8/WI | inconclusive | – | no | 2 | 175 | 0 | not_testable_regime_empty | 0/34 | yes |  |
+| LR0_m17_h8/WU | inconclusive | – | no | 2 | 174 | 0 | not_testable_regime_empty | 0/34 | yes |  |
+| LR_m17_h8/W0 | inconclusive | – | no | 13 | 225 | 0 | not_testable_regime_empty | 0/34 | yes |  |
+| LR_m17_h8/WI | inconclusive | – | no | 2 | 182 | 0 | not_testable_regime_empty | 0/34 | yes |  |
+| LR_m17_h8/WU | inconclusive | – | no | 2 | 181 | 0 | not_testable_regime_empty | 0/34 | yes |  |
 
 ## Exceptions (first 30 per entry and class; complete lists in decision.json)
 

@@ -1,0 +1,103 @@
+{
+ "cases": [
+  "C_sig0.205",
+  "S2_seed120",
+  "D2_seed220",
+  "M_seed320"
+ ],
+ "cold_definition": "first call of each component in this process (models of a case are first-called in sequence); not a fresh interpreter per model",
+ "identity": {
+  "basis": "dst1_v1",
+  "cases": [
+   "C_sig0.205",
+   "S2_seed120",
+   "D2_seed220",
+   "M_seed320"
+  ],
+  "cases_sha256": "51e0626f40dfe61bd79816446eb6f3231d0946f236bae69e6907c2bf4c092dbb",
+  "code": "5db723e3f2651764",
+  "lift": "affine_endpoints_v1",
+  "lock_cases_sha": "51e0626f40dfe61bd79816446eb6f3231d0946f236bae69e6907c2bf4c092dbb",
+  "n": 256,
+  "operator": "OP-B",
+  "quick": false,
+  "repeats": 7,
+  "schema": 1,
+  "stage": "s6_cost",
+  "sub": 16,
+  "warmup": 2
+ },
+ "identity_hash": "64217f2f1c2d34d1",
+ "n": 256,
+ "order_randomisation": "per repeat r the models of a case are permuted with numpy default_rng(r)",
+ "quick": false,
+ "repeats": 7,
+ "run_exclusively_on_remote_box": true,
+ "stage": "s6_cost",
+ "status": "done",
+ "sub": 16,
+ "thread_pins": {
+  "MKL_NUM_THREADS": "1",
+  "OMP_NUM_THREADS": "1",
+  "OPENBLAS_NUM_THREADS": "1"
+ },
+ "timing_env": {
+  "blas": {
+   "blas": {
+    "detection method": "pkgconfig",
+    "found": true,
+    "include directory": "C:/Users/runneradmin/AppData/Local/Temp/cibw-run-ilsfmine/cp311-win_amd64/build/venv/Lib/site-packages/scipy_openblas64/include",
+    "lib directory": "C:/Users/runneradmin/AppData/Local/Temp/cibw-run-ilsfmine/cp311-win_amd64/build/venv/Lib/site-packages/scipy_openblas64/lib",
+    "name": "scipy-openblas",
+    "openblas configuration": "OpenBLAS 0.3.29  USE64BITINT DYNAMIC_ARCH NO_AFFINITY Haswell MAX_THREADS=24",
+    "pc file directory": "C:/a/numpy/numpy/.openblas",
+    "version": "0.3.29"
+   },
+   "lapack": {
+    "detection method": "pkgconfig",
+    "found": true,
+    "include directory": "C:/Users/runneradmin/AppData/Local/Temp/cibw-run-ilsfmine/cp311-win_amd64/build/venv/Lib/site-packages/scipy_openblas64/include",
+    "lib directory": "C:/Users/runneradmin/AppData/Local/Temp/cibw-run-ilsfmine/cp311-win_amd64/build/venv/Lib/site-packages/scipy_openblas64/lib",
+    "name": "scipy-openblas",
+    "openblas configuration": "OpenBLAS 0.3.29  USE64BITINT DYNAMIC_ARCH NO_AFFINITY Haswell MAX_THREADS=24",
+    "pc file directory": "C:/a/numpy/numpy/.openblas",
+    "version": "0.3.29"
+   }
+  },
+  "cpu_count": 16,
+  "machine": "AMD64",
+  "numpy": "2.2.6",
+  "platform": "Windows-10-10.0.26200-SP0",
+  "processor": "Intel64 Family 6 Model 141 Stepping 1, GenuineIntel",
+  "python": "3.11.9",
+  "scipy": "1.13.1",
+  "threadpoolctl_info": [
+   {
+    "architecture": "SkylakeX",
+    "filepath": "C:\\Users\\ameir\\AppData\\Roaming\\Python\\Python311\\site-packages\\numpy.libs\\libscipy_openblas64_-13e2df515630b4a41f92893938845698.dll",
+    "internal_api": "openblas",
+    "num_threads": 1,
+    "prefix": "libscipy_openblas",
+    "threading_layer": "pthreads",
+    "user_api": "blas",
+    "version": "0.3.29"
+   },
+   {
+    "architecture": "SkylakeX",
+    "filepath": "C:\\Users\\ameir\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\scipy.libs\\libopenblas_v0.3.27--3aa239bc726cfb0bd8e5330d8d4c15c6.dll",
+    "internal_api": "openblas",
+    "num_threads": 1,
+    "prefix": "libopenblas",
+    "threading_layer": "pthreads",
+    "user_api": "blas",
+    "version": "0.3.27"
+   }
+  ],
+  "threads_env": {
+   "MKL_NUM_THREADS": "1",
+   "OMP_NUM_THREADS": "1",
+   "OPENBLAS_NUM_THREADS": "1"
+  }
+ },
+ "warmup": 2
+}

@@ -4242,7 +4242,6 @@
     "protocol": "P1"
    }
   ],
-  "RUN_MANIFEST": [],
   "S2_seed100": [
    {
     "PROJ_density_l2": 0.0006504888462447909,
@@ -6612,8 +6611,7 @@
     "proj_part_interior_rms": 1.4342811329085824e-08,
     "protocol": "P1"
    }
-  ],
-  "family_checks": []
+  ]
  },
  "note": "Projection and dynamics parts are orthogonal only in the full-grid Euclidean norm (not in the weighted interior-RMS norm used for the scores); the orthogonality defect is reported where available."
 }

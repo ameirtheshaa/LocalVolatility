@@ -189,7 +189,7 @@ class Data:
         if not self.scores:
             warn("no score files found in results/score")
         for p in sorted(glob.glob(os.path.join(RESULTS, "uncertainty", "*.json"))):
-            if os.path.basename(p) == "RUN_MANIFEST.json" or ".superseded." in p:
+            if os.path.basename(p) in ("RUN_MANIFEST.json", "summary.json") or ".superseded." in p:
                 continue
             d = read_json(p)
             if d:

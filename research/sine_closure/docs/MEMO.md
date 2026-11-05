@@ -29,9 +29,10 @@ Under the rules frozen in `PLAN.md` (§10 and Addendum 2) before any held-out ca
 
 **Answer to the brief's question: closure helps neither 9 nor 17 modes by the frozen criteria; it
 improves resolved dynamics only at m = 9 and only with stateful initialisation. The unclosed 33-mode
-sine model remains the recommendation — mainly because of density, where no 9- or 17-mode
-reconstruction can reach the 33-mode target, and for price on the high-σ cells, where even
-RRR-17 → RRR-33 is within `2 u_price`.** Adding sine modes beats closing at equal total state: RRR-25
+sine model remains the recommendation — because of density, which is excluded at 9 and 17 modes by
+the projection bound, and because of price on the low-σ cells; on the high-σ cells price does not
+discriminate 17 from 33 modes (even RRR-17 → RRR-33 is within `2 u_price`) and holds only within the
+computational domain (Rule C).** Adding sine modes beats closing at equal total state: RRR-25
 (17 + 8 states) has 2× lower price error, 3× lower density error and 10× lower negative mass than the
 25-state closed model LR-17/h8, and RRR-13 beats every closed 9-mode model.
 
@@ -68,6 +69,37 @@ constant `H` shared across volatility levels; the stateful closure keeps its res
 (0.56× at m = 9, 0.65× at m = 17). The worst held-out case, `M_seed322`, lies inside the pre-registered
 interpolation ranges but its modulation frequency (0.78) is below the realised training span
 (0.85–1.50); no σ clipping is active on it.
+
+**Answers to the frozen questions.** Q1 (resolved dynamics): yes beyond uncertainty on every cell only
+for LR with WI/WU at m = 9; on 32/34 cells for LM/LR at both m; no at m = 17 under the every-cell rule.
+Q2 (reconstruction): the gains do not survive — price gains are below `2 u_price` at m = 17 and validity
+is worse at both m; density is representation-limited. Q3 (compression): not testable at m = 17
+(regime empty), impossible at m = 9, excluded for density at both m; cost gives no advantage either.
+Q4 (stateful vs stateless): no under the frozen rule; under the payoff start and out of distribution the
+stateful closure is better than the stateless map in resolved error, at the price of non-normal
+transient growth and higher negative mass. S1 (33-mode density): inconclusive, with the stateless map
+making density worse.
+
+Two further bound checks (frozen Rule A, all score files): no closed model beats the exact projection in
+the same-grid full-domain price norm (2992 cells) or in the same-grid full-domain `D2` density norm
+(3808 cells including every compensation-flagged cell), 0 violations in both; so every density
+improvement over the projection is a refined-truth, interior-window effect. Where the extra negative mass
+of the closed models sits (`results/score/*`, per-maturity arrays): at m = 9 the closures *lower* the
+negative mass at the first two maturities, where the payoff ringing of the unclosed model dominates
+(2.8e-2 → 2.3e-2 at T = 0.30), and *raise* it from the fourth maturity on by 2e-4–1e-3 absolute, where the
+unclosed model is nearly valid (1e-4–9e-4) — that late-time excess is what the strict rule and the 10×
+geometric mean register; at m = 17 the excess is at the first maturities (+4e-4 on 1.2e-3 at T = 0.30),
+consistent with transient growth of the non-normal coupled system after initialisation.
+Out of distribution the stateful closure beats the stateless map in resolved error on 20/20 cells at
+m = 9 (14/20 at m = 17) with price noninferior on 20/20, but density on 17/20 (3/20) and strict negative
+mass on 13/20 (12/20): a stress observation, not a verdict (the stateful-advantage rule is frozen on the
+interpolation set and fails there). Extrapolation disclosure
+(`results/tables/extrapolation_disclosure.md`): 10 (case, parameter) pairs of the 17 interpolation cases
+lie outside the span realised by the 28 training draws although inside the pre-registered ranges
+(`M_seed322`'s modulation frequency among them); their labels are kept as frozen.
+
+The next discriminating experiment needs a *fresh* held-out set (§2): the present test cases have now been
+scored and become development data for it.
 
 Everything above is a statement about the semidiscrete OP-B problem on the production strike domain.
 The physical-truth caveat of Addendum 2 (Rule C) applies: the Black–Scholes gap of the reference itself
@@ -112,54 +144,7 @@ Secondary S1 (m = 33 density gain beyond 2 u_dens, every test_interp case and pr
 
 Full rules, exceptions and the separate test_ood outcome: `results/tables/decision.md`, `results/decision.json`.
 
-<!-- narrative (coordinator) -->
-### How to read the decision
-
-The classes are conjunctions over every held-out (case, protocol) cell, as frozen. The per-cell counts
-behind them are in `results/tables/cell_counts.md`; the geometric means over the 17 interpolation cases
-under the payoff start are (refined-grid interior RMS; unclosed model of the same m in brackets):
-
-| model | states | price | resolved | density L2 | negative mass (post-initial max) | inverse-vol coverage |
-|---|---|---|---|---|---|---|
-| RRR-9 | 9 | 1.61e-4 | 1.17e-4 | 9.1e-4 | 9.5e-4 | 0.972 |
-| exact projection, 9 | – | 1.25e-4 | 0 | 8.8e-4 | 1.3e-2 | 0.952 |
-| LM-9 | 9 | 1.37e-4 | 5.6e-5 | 9.1e-4 | 9.9e-4 | 0.955 |
-| LR-9/h16 | 25 | 1.31e-4 | 4.1e-5 | 8.9e-4 | 9.3e-3 | 0.955 |
-| RRR-13 | 13 | 2.6e-5 | 2.2e-5 | 2.8e-4 | 5.4e-4 | 0.991 |
-| RRR-17 | 17 | 9.4e-6 | 7.6e-6 | 1.36e-4 | 1.4e-5 | 0.997 |
-| exact projection, 17 | – | 7.4e-6 | 0 | 1.25e-4 | 2.9e-5 | 0.993 |
-| LM-17 | 17 | 8.5e-6 | 3.1e-6 | 1.43e-4 | 1.5e-5 | 0.991 |
-| LR-17/h8 | 25 | 8.2e-6 | 2.5e-6 | 1.38e-4 | 1.5e-5 | 0.991 |
-| RRR-25 | 25 | 4.1e-6 | 1.6e-6 | 4.2e-5 | 1.2e-6 | 0.999 |
-| RRR-33 | 33 | 3.3e-6 | 3.4e-7 | 1.8e-5 | 1.1e-7 | 1.000 |
-| Full-256 | 256 | 3.2e-6 | – | 2.4e-6 | 1.6e-7 | 1.000 |
-| RRR-65 | 65 | 3.2e-6 | 1e-8 | 4.5e-6 | 2e-9 | 1.000 |
-
-Three things decide the outcome. (i) *Representation*: the exact projection sets the price floor
-(1.25e-4 at m = 9, 7.4e-6 at m = 17 against a 33-mode target of 3.3e-6 + u) and the density floor; a
-closure can only move a model towards that floor, and at m = 9 the closures do reach it in price
-(LR-9 within 5 % of it) — but the floor itself is 40× the target. (ii) *Uncertainty*: `u_price` is
-3–4.6e-6 (grid-dominated, convergence order 2.6–2.8), so the m = 17 price headroom of 2e-6 is not
-resolvable with 256-point models; the plan logged this before scoring, and the *inconclusive* label is
-the honest one. (iii) *Validity*: the frozen noninferiority tolerances are one grid point for the
-arbitrage fractions and the verified roundoff guard (1.5e-12) for negative mass; the closures lose by
-a few grid points on most cells (e.g. butterfly 0.081 vs 0.067 at m = 9) and raise the negative mass by
-4–8 % (LM) or 10× in geometric mean (LR-9, which moves coefficients towards the projection, whose own
-negative mass is 13× the unclosed model's). A closure that improves resolved coordinates therefore
-*imports* the projection's non-validity; the unclosed model's damping is what keeps its density
-comparatively clean. This is the mechanism behind every compensation flag: the density improvements
-over the exact projection (up to 7 % on the D family) are obtained with coefficients that are *worse*
-in the full-grid price norm, not better memory.
-
-Warm start (t̃ = 0.2): the unresolved-initial-condition term that no deployable model receives is
-47–91 % of the exact feedback immediately after t̃₀ but decays within ≈ 0.05 (integrated share 0.1–14 %
-at m = 9, ≤ 1 % at m = 17; `results/verify/ic_term_warm_start.json`); a zero hidden state (W0) costs
-the stateful closure 2–5× in resolved error, and the learned initialiser (WI) or the causal warm-up
-from the payoff (WU) recover the payoff-start performance. The time-dependent BLOCK rows are
-quadrature-converged (second order in h, `results/verify/verify.json`), not roundoff identities; the
-autonomous ones are exact to 1e-12.
-
-
+<!-- coordinator: narrative -->
 <!-- AUTOGEN:END decision -->
 
 
@@ -844,20 +829,91 @@ Gate 5 reproduction (unchanged original script): pass = yes; metrics compared = 
 <!-- AUTOGEN:BEGIN cost -->
 ## Cost summary
 
-cost.json not available.
+| model | timed cases | online warm median [s] (median over cases) | max IQR [s] | cold [s] | break-even N* vs RRR33 (median) |
+|---|---|---|---|---|---|
+| FULL256__P0 | 4 | 6.673e+00 | 3.951e-01 | 6.744e+00 | – |
+| FULL256sp__P0 | 4 | 1.910e+00 | 4.277e-01 | 2.170e+00 | – |
+| FULL256cn__P0 | 4 | 2.086e-02 | 7.161e-03 | 2.152e-02 | – |
+| RRR_m9__P0 | 4 | 2.609e-02 | 1.256e-02 | 3.667e-02 | – |
+| RRR_m9__P1 | 4 | 2.179e-02 | 9.782e-03 | 2.317e-02 | – |
+| RRR_m13__P0 | 4 | 2.816e-02 | 1.294e-02 | 3.090e-02 | – |
+| RRR_m13__P1 | 4 | 2.436e-02 | 5.534e-03 | 2.326e-02 | – |
+| RRR_m17__P0 | 4 | 3.293e-02 | 1.129e-02 | 3.125e-02 | – |
+| RRR_m17__P1 | 4 | 2.701e-02 | 4.922e-03 | 2.462e-02 | – |
+| RRR_m25__P0 | 4 | 3.640e-02 | 1.262e-02 | 4.017e-02 | – |
+| RRR_m25__P1 | 4 | 2.865e-02 | 1.568e-02 | 2.967e-02 | – |
+| RRR_m33__P0 | 4 | 4.762e-02 | 2.590e-02 | 4.875e-02 | – |
+| RRR_m33__P1 | 4 | 3.694e-02 | 1.383e-02 | 4.167e-02 | – |
+| RRR_m65__P0 | 4 | 1.067e-01 | 5.540e-02 | 1.121e-01 | – |
+| RRR_m65__P1 | 4 | 8.344e-02 | 4.032e-02 | 1.039e-01 | – |
+| QLp_m9__P0 | 4 | 2.778e-02 | 1.245e-02 | 3.245e-02 | 2.966e+03 |
+| QLp_m9__P1 | 4 | 2.224e-02 | 2.025e-02 | 2.160e-02 | 3.562e+04 |
+| QLp_m17__P0 | 4 | 3.294e-02 | 1.085e-02 | 3.095e-02 | 3.422e+03 |
+| QLp_m17__P1 | 4 | 2.888e-02 | 1.809e-02 | 2.640e-02 | 3.680e+04 |
+| QLpm_m9__P0 | 4 | 2.781e-02 | 1.277e-02 | 2.691e-02 | 2.968e+03 |
+| QLpm_m9__P1 | 4 | 2.076e-02 | 5.806e-03 | 2.352e-02 | 5.062e+04 |
+| QLpm_m17__P0 | 4 | 3.332e-02 | 7.821e-03 | 3.270e-02 | 6.700e+03 |
+| QLpm_m17__P1 | 4 | 2.595e-02 | 3.191e-03 | 2.588e-02 | 4.252e+04 |
+| QLs_m9__P0 | 4 | 2.489e-02 | 9.116e-03 | 3.099e-02 | 2.734e+03 |
+| QLs_m9__P1 | 4 | 2.453e-02 | 1.876e-02 | 2.442e-02 | 9.345e+04 |
+| QLs_m17__P0 | 4 | 3.134e-02 | 1.435e-02 | 3.277e-02 | 7.458e+04 |
+| QLs_m17__P1 | 4 | 2.622e-02 | 1.804e-02 | 2.461e-02 | 5.833e+03 |
+| LM_m9__P0 | 4 | 2.784e-02 | 7.054e-03 | 3.018e-02 | 3.066e+03 |
+| LM_m9__P1 | 4 | 2.165e-02 | 9.940e-03 | 2.308e-02 | 3.997e+04 |
+| LM_m17__P0 | 4 | 3.174e-02 | 1.422e-02 | 3.065e-02 | 4.318e+03 |
+| LM_m17__P1 | 4 | 2.594e-02 | 6.935e-03 | 2.696e-02 | 6.289e+04 |
+| LMb_m9__P0 | 4 | 2.763e-02 | 2.527e-02 | 2.543e-02 | 1.490e+05 |
+| LMb_m9__P1 | 4 | 2.102e-02 | 1.249e-02 | 2.219e-02 | 4.659e+04 |
+| LMb_m17__P0 | 4 | 3.120e-02 | 1.016e-02 | 3.159e-02 | 2.965e+05 |
+| LMb_m17__P1 | 4 | 2.563e-02 | 1.174e-02 | 2.505e-02 | 5.005e+04 |
+| LR0_m9_h16__P0 | 4 | 5.065e-02 | 2.296e-02 | 5.140e-02 | 1.904e+04 |
+| LR0_m9_h16__P1_W0 | 4 | 4.199e-02 | 1.351e-02 | 3.798e-02 | 5.641e+05 |
+| LR0_m9_h16__P1_WI | 4 | 4.324e-02 | 1.058e-02 | 3.927e-02 | 2.247e+05 |
+| LR0_m17_h8__P0 | 4 | 5.070e-02 | 1.545e-02 | 5.067e-02 | 2.416e+04 |
+| LR0_m17_h8__P1_W0 | 4 | 3.902e-02 | 1.009e-02 | 4.115e-02 | 1.967e+05 |
+| LR0_m17_h8__P1_WI | 4 | 4.063e-02 | 1.389e-02 | 4.587e-02 | 3.156e+04 |
+| LR_m9_h16__P0 | 4 | 5.104e-02 | 2.941e-02 | 4.562e-02 | 1.353e+06 |
+| LR_m9_h16__P1_W0 | 4 | 3.886e-02 | 7.935e-03 | 3.784e-02 | 3.764e+06 |
+| LR_m9_h16__P1_WI | 4 | 3.865e-02 | 7.053e-03 | 3.995e-02 | 2.170e+05 |
+| LR_m17_h8__P0 | 4 | 5.241e-02 | 2.576e-02 | 4.855e-02 | 1.969e+04 |
+| LR_m17_h8__P1_W0 | 4 | 4.153e-02 | 2.159e-02 | 3.823e-02 | 3.927e+05 |
+| LR_m17_h8__P1_WI | 4 | 4.216e-02 | 9.275e-03 | 3.793e-02 | 1.964e+05 |
+
+Offline cost per closed model [s]: LM_m17: 1.192e+02; LM_m33: 1.192e+02; LM_m9: 1.192e+02; LMb_m17: 1.192e+02; LMb_m9: 1.192e+02; LR0_m17: 1.359e+02; LR0_m9: 1.299e+02; LR_m17: 1.359e+02; LR_m9: 1.299e+02; QLp_m17: 1.192e+02; QLp_m33: 1.192e+02; QLp_m9: 1.192e+02; QLpm_m17: 1.192e+02; QLpm_m33: 1.192e+02; QLpm_m9: 1.192e+02; QLs_m17: 1.192e+02; QLs_m33: 1.192e+02; QLs_m9: 1.192e+02.
+
+A cost difference counts only when the medians differ by more than the larger IQR (PLAN section 9); machine and threads in `results/manifests/TIMING_ENV.json`.
 <!-- AUTOGEN:END cost -->
 
 <!-- narrative (coordinator) -->
-<!-- cost narrative is completed after results/cost/cost.json exists -->
+### Cost, read descriptively
+
+Measured on the GPU laptop (Windows 10, Intel 16-core, Python 3.11.9, NumPy 2.2.6 with OpenBLAS,
+SciPy 1.13.1; BLAS threads pinned to 1; 7 repeats after 2 warm-ups, model order randomised per repeat,
+run with no other job; `results/manifests/TIMING_ENV.json`), one representative held-out case per family,
+online warm medians over cases: unclosed RRR-9 26 ms, RRR-17 33 ms, RRR-33 48 ms, RRR-65 107 ms; LM adds
+nothing measurable at the same m (28 / 32 ms); the 25-state stateful closures cost 51–52 ms under the
+payoff start, i.e. as much as RRR-33, and 39–43 ms with a hidden initialiser. Full solvers at the same
+accuracy: dense exponential (the reference scheme and Gate 5's "un-reduced solve") 6.7 s, sparse
+exponential action 1.9 s, **banded Crank–Nicolson with one substep per output step 21 ms** (converged to
+`u_price` on every timed case). Timing variability is large (IQR 7–29 ms), so RRR-9 and the banded full
+solver are within variability of each other, and RRR-33 is slower than the banded full solver by about
+one IQR. Two consequences: (i) no closed model has an online-cost advantage over the unclosed model of
+equal total state, so even a positive accuracy result would not have been a compression; (ii) Gate 5's
+"5–17× faster than the un-reduced solve" referred to the dense reference solver — against a banded
+production-style solver of equivalent accuracy the sine models give no speed-up at this problem size,
+exactly the caution of PLAN.md §9 ("reduced dimension alone does not establish a speedup"). Break-even
+counts (3e3–4e6 queries for LM/QL/LR against RRR-33) are reported but moot: no compression class was
+reached, so there is no benefit to amortise. Offline cost is dominated by reference generation
+(≈ 120 s for the 28 training references on the laptop); the fits themselves take milliseconds (LM) to
+seconds (LR).
+
 
 
 
 <!-- AUTOGEN:BEGIN warnings -->
 ## Warnings from the report script
 
-* missing file: results/cost/cost.json
-* decision caveat: uncertainty u missing for 13 (case, quantity) pairs (treated as 0, fractions floored at 1/N_interior): RUN_MANIFEST:density_l2_interior_mean, RUN_MANIFEST:invvol_invalid_frac_full, RUN_MANIFEST:negative_mass_max_post_initial, RUN_MANIFEST:price_interior_rms, RUN_MANIFEST:u_dyn_m17, RUN_MANIFEST:u_dyn_m9, family_checks:price_interior_rms, summary:density_l2_interior_mean, summary:invvol_invalid_frac_full, summary:negative_mass_max_post_initial, summary:price_interior_rms, summary:u_dyn_m17 ...
-* decision caveat: cost.json timing rows missing for some entries: the cost condition of successful_compression could not be evaluated (treated as not met)
+* decision caveat: uncertainty u missing for 12 (case, quantity) pairs (treated as 0, fractions floored at 1/N_interior): RUN_MANIFEST:density_l2_interior_mean, RUN_MANIFEST:invvol_invalid_frac_full, RUN_MANIFEST:negative_mass_max_post_initial, RUN_MANIFEST:price_interior_rms, RUN_MANIFEST:u_dyn_m17, RUN_MANIFEST:u_dyn_m9, summary:density_l2_interior_mean, summary:invvol_invalid_frac_full, summary:negative_mass_max_post_initial, summary:price_interior_rms, summary:u_dyn_m17, summary:u_dyn_m9
 <!-- AUTOGEN:END warnings -->
 
 

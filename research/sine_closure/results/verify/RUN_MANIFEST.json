@@ -1,0 +1,42 @@
+{
+ "completed": [
+  "a_basis",
+  "b_lift",
+  "c_assembly",
+  "d_reconstruction",
+  "e_autonomous_block",
+  "f_timeordered",
+  "g_b_zero_control",
+  "h_solvers",
+  "i_black_scholes",
+  "j_roundoff"
+ ],
+ "failed": [],
+ "finished": true,
+ "in_progress": [],
+ "pid": 17848,
+ "planned": [
+  "a",
+  "b",
+  "c",
+  "d",
+  "e",
+  "f",
+  "g",
+  "h",
+  "i",
+  "j"
+ ],
+ "previous_interrupted": {
+  "completed": [
+   "a_basis"
+  ],
+  "in_progress": [
+   "b_lift"
+  ],
+  "pid": 15332,
+  "started_utc": "2026-11-05T11:49:12Z"
+ },
+ "stage": "verify",
+ "started_utc": "2026-11-05T11:50:27Z"
+}
