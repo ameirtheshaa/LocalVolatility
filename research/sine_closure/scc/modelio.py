@@ -36,7 +36,7 @@ def save_spec(spec: ModelSpec, path: str, config: Optional[dict] = None, trainin
         arrays[k] = np.asarray(v, float)
     tmp = path + ".tmp.npz"
     np.savez(tmp, **arrays)
-    os.replace(tmp, path)
+    identity.replace_retry(tmp, path)
     sha = identity.sha256_file(path)
     side = {"name": spec.name, "m": int(spec.m), "closure": spec.closure, "n_h": int(spec.n_h),
             "hidden_init": spec.hidden_init,

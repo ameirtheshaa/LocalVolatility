@@ -61,6 +61,23 @@ def _default(o):
     raise TypeError(type(o))
 
 
+def replace_retry(src: str, dst: str, attempts: int = 25, first_delay: float = 0.05) -> None:
+    """os.replace with retries. On Windows a file under Dropbox can be briefly locked by the sync client
+    right after it is written, and renaming over it raises PermissionError (WinError 5/32); retry with
+    exponential backoff (total wait ~30 s) before giving up."""
+    import time as _t
+    delay = first_delay
+    for i in range(attempts):
+        try:
+            os.replace(src, dst)
+            return
+        except PermissionError:
+            if i == attempts - 1:
+                raise
+            _t.sleep(delay)
+            delay = min(2.0 * delay, 2.0)
+
+
 def sha256_file(path: str) -> str:
     h = hashlib.sha256()
     with open(path, "rb") as f:
@@ -77,7 +94,7 @@ def write_json(path: str, obj: Any) -> str:
     tmp = path + ".tmp"
     with open(tmp, "w", encoding="utf-8") as f:
         json.dump(obj, f, indent=1, sort_keys=True, default=_default)
-    os.replace(tmp, path)
+    replace_retry(tmp, path)
     return sha256_file(path)
 
 
@@ -138,7 +155,7 @@ def cache_store(kind: str, ident: Dict[str, Any], **arrays) -> str:
     tmp = path + ".tmp"
     with open(tmp, "wb") as f:
         np.savez_compressed(f, **arrs)
-    os.replace(tmp, path)
+    replace_retry(tmp, path)
     return path
 
 
@@ -195,7 +212,7 @@ def supersede(path: str) -> Optional[str]:
     if not os.path.isfile(path):
         return None
     new = path.replace(".json", "") + ".superseded." + time.strftime("%Y%m%dT%H%M%SZ", time.gmtime()) + ".json"
-    os.replace(path, new)
+    replace_retry(path, new)
     return new
 
 
