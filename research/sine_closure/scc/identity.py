@@ -232,8 +232,37 @@ def supersede(path: str) -> Optional[str]:
 
 
 def _pid_alive(pid) -> bool:
+    """True when a process with this pid is running. NEVER use os.kill(pid, 0) on Windows: there it is
+    TerminateProcess(pid, 0) and silently kills the other job (this bit us with parallel stage jobs)."""
     try:
-        os.kill(int(pid), 0)
+        pid = int(pid)
+    except Exception:
+        return False
+    if pid <= 0:
+        return False
+    if os.name == "nt":
+        try:
+            import ctypes
+            k32 = ctypes.windll.kernel32
+            PROCESS_QUERY_LIMITED_INFORMATION = 0x1000
+            STILL_ACTIVE = 259
+            h = k32.OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, False, pid)
+            if not h:
+                return False
+            try:
+                code = ctypes.c_ulong()
+                ok = k32.GetExitCodeProcess(h, ctypes.byref(code))
+                return bool(ok) and code.value == STILL_ACTIVE
+            finally:
+                k32.CloseHandle(h)
+        except Exception:
+            return False
+    try:
+        os.kill(pid, 0)
+        return True
+    except ProcessLookupError:
+        return False
+    except PermissionError:
         return True
     except Exception:
         return False

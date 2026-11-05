@@ -32,10 +32,25 @@ def main():
     ap.add_argument("--verify-cases", nargs="*", default=None,
                     help="after migrating, recompute n256_s16 (dense) for these case ids WITHOUT the cache and "
                          "compare bitwise with the migrated copy (default: first train case of each family)")
+    ap.add_argument("--list", action="store_true", help="only list the distinct (kind, code) values in the cache")
     args = ap.parse_args()
     new_code = identity.code_identity("reference")
     cache_dir = os.path.join(scc.CACHE_ROOT, "reference")
     print(f"cache {cache_dir}: old code {args.old} -> new code {new_code}", flush=True)
+    if args.list:
+        import collections
+        cnt = collections.Counter()
+        for side in sorted(glob.glob(os.path.join(cache_dir, "*.json"))):
+            try:
+                d = json.load(open(side, encoding="utf-8"))
+                ident = d.get("identity") or {}
+                cnt[(ident.get("kind"), ident.get("code"), ident.get("schema"))] += 1
+            except Exception as e:
+                cnt[("unreadable", str(e)[:40], None)] += 1
+        for k, v in cnt.most_common():
+            print(f"  kind={k[0]} code={k[1]} schema={k[2]}: {v} files", flush=True)
+        print(f"  current full hash {identity.code_identity('full')}, reference hash {new_code}", flush=True)
+        return
     renamed = {}
     for side in sorted(glob.glob(os.path.join(cache_dir, "*.json"))):
         try:
@@ -111,8 +126,10 @@ def main():
         phi = ref.solve_dense(case, grid, fg)
         same = phi.shape == z["phi"].shape and np.array_equal(phi, z["phi"])
         diff = float(np.max(np.abs(phi - z["phi"]))) if phi.shape == z["phi"].shape else float("inf")
-        print(f"  verify {cid}: bitwise identical = {same}, max |diff| = {diff:.3e}", flush=True)
-        bad += int(not same)
+        # thread-count / BLAS differences give ~1e-16 scatter; a stale operator row would differ by >= 1e-6
+        ok = diff <= 1e-12
+        print(f"  verify {cid}: bitwise identical = {same}, max |diff| = {diff:.3e} -> {'ok' if ok else 'STALE'}", flush=True)
+        bad += int(not ok)
     if bad:
         print(f"STALENESS GUARD FAILED for {bad} case(s): recompute the cache (delete the entries) before use", flush=True)
         sys.exit(3)
