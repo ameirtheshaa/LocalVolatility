@@ -1,0 +1,448 @@
+{
+ "budget": {
+  "m17": {
+   "LM": 5,
+   "LMb": 5,
+   "LR": 20,
+   "LR0": 20,
+   "QLp": 1,
+   "QLpm": 1,
+   "QLs": 1
+  },
+  "m33": {
+   "LM": 5,
+   "QLp": 1,
+   "QLpm": 1,
+   "QLs": 1
+  },
+  "m9": {
+   "LM": 5,
+   "LMb": 5,
+   "LR": 20,
+   "LR0": 20,
+   "QLp": 1,
+   "QLpm": 1,
+   "QLs": 1
+  }
+ },
+ "checklist": {},
+ "constants": {
+  "m17": {
+   "d_max": 0.37314283246352625,
+   "d_min": 0.0006237920071061728,
+   "lam_m_plus_1": -4610.480875859928,
+   "r1": 2.87598111927729,
+   "ratio": 598.1846965217932,
+   "train_times": "24 output times + 0"
+  },
+  "m33": {
+   "d_max": 0.37314283246352625,
+   "d_min": 0.0006237920071061728,
+   "lam_m_plus_1": -16277.217125964786,
+   "r1": 10.153597941108544,
+   "ratio": 598.1846965217932,
+   "train_times": "24 output times + 0"
+  },
+  "m9": {
+   "d_max": 0.37314283246352625,
+   "d_min": 0.0006237920071061728,
+   "lam_m_plus_1": -1427.0275038185196,
+   "r1": 0.890168350802666,
+   "ratio": 598.1846965217932,
+   "train_times": "24 output times + 0"
+  }
+ },
+ "degenerate": [
+  "m17: QLp equals RRR (nu_plus = 0)"
+ ],
+ "edge_selected": [
+  {
+   "edges": [
+    "n_h=16 (grid {8,16}: both values are edges)"
+   ],
+   "family": "LR0",
+   "m": "m9"
+  },
+  {
+   "edges": [
+    "n_h=16 (grid {8,16}: both values are edges)"
+   ],
+   "family": "LR",
+   "m": "m9"
+  },
+  {
+   "edges": [
+    "n_h=8 (grid {8,16}: both values are edges)"
+   ],
+   "family": "LR0",
+   "m": "m17"
+  },
+  {
+   "edges": [
+    "n_h=8 (grid {8,16}: both values are edges)"
+   ],
+   "family": "LR",
+   "m": "m17"
+  },
+  {
+   "edges": [
+    "lam_rel=1e-10"
+   ],
+   "family": "LM",
+   "m": "m33"
+  }
+ ],
+ "leakage_evidence": {
+  "index_sha256": "a6b6f0bebf43e6859cf009e1e1fe8724cc0a9df619d1370db3734bafc7821d8f",
+  "reference_index_cases_by_split_at_lock_time": {
+   "dev_regression": 3,
+   "train": 28,
+   "val": 10
+  },
+  "statement": "no test_interp/test_ood reference existed on disk or in the index when s4 ran (SCC_PHASE=fit cache guard active); test references are generated after the lock commit"
+ },
+ "lock": {
+  "cases_sha256": "51e0626f40dfe61bd79816446eb6f3231d0946f236bae69e6907c2bf4c092dbb",
+  "code_identity": "5db723e3f2651764",
+  "created_utc": "2026-11-05T12:21:40Z",
+  "lock_sha256": "26bdf1dcf3f5258906a6f4115cd8f9064488c139d4851c13defd8893ba7666a4",
+  "n_files": 18
+ },
+ "margins": {
+  "m17/LM": {
+   "arbitrary": false,
+   "best_config": {
+    "alphas": null,
+    "bank": null,
+    "intercept": false,
+    "lam_rel": 1e-06,
+    "n_h": 0
+   },
+   "best_gm": 4.411586009550049e-06,
+   "log_gap": 0.17953352304258274,
+   "log_spread_across_val": NaN,
+   "runner_up_config": {
+    "alphas": null,
+    "bank": null,
+    "intercept": false,
+    "lam_rel": 1e-08,
+    "n_h": 0
+   },
+   "runner_up_gm": 5.279164186626725e-06
+  },
+  "m17/LMb": {
+   "arbitrary": false,
+   "best_config": {
+    "alphas": null,
+    "bank": null,
+    "intercept": true,
+    "lam_rel": 1e-06,
+    "n_h": 0
+   },
+   "best_gm": 4.447645310742328e-06,
+   "log_gap": 0.17975674858573853,
+   "log_spread_across_val": NaN,
+   "runner_up_config": {
+    "alphas": null,
+    "bank": null,
+    "intercept": true,
+    "lam_rel": 1e-08,
+    "n_h": 0
+   },
+   "runner_up_gm": 5.3235030838621e-06
+  },
+  "m17/LR": {
+   "arbitrary": true,
+   "best_config": {
+    "alphas": [
+     0.7189952798193225,
+     3.957774781558424,
+     21.78593053556075,
+     119.922632159829,
+     660.1250141997425,
+     3633.718060753009,
+     20002.130900992277,
+     110103.54515438667
+    ],
+    "bank": "W",
+    "lam_rel": 1e-06,
+    "n_h": 8
+   },
+   "best_gm": 7.4494295210380276e-06,
+   "log_gap": 0.010261023876047659,
+   "log_spread_across_val": NaN,
+   "runner_up_config": {
+    "alphas": [
+     1.437990559638645,
+     5.88123072308605,
+     24.053617449938727,
+     98.3767751462063,
+     402.3507028957046,
+     1645.572218443577,
+     6730.217958175764,
+     27525.88628859666
+    ],
+    "bank": "N",
+    "lam_rel": 1e-06,
+    "n_h": 8
+   },
+   "runner_up_gm": 7.52626181006317e-06
+  },
+  "m17/LR0": {
+   "arbitrary": true,
+   "best_config": {
+    "alphas": [
+     0.7189952798193225,
+     3.957774781558424,
+     21.78593053556075,
+     119.922632159829,
+     660.1250141997425,
+     3633.718060753009,
+     20002.130900992277,
+     110103.54515438667
+    ],
+    "bank": "W",
+    "lam_rel": 1e-06,
+    "n_h": 8
+   },
+   "best_gm": 6.358057219062059e-06,
+   "log_gap": 0.023790707003085387,
+   "log_spread_across_val": NaN,
+   "runner_up_config": {
+    "alphas": [
+     1.437990559638645,
+     5.88123072308605,
+     24.053617449938727,
+     98.3767751462063,
+     402.3507028957046,
+     1645.572218443577,
+     6730.217958175764,
+     27525.88628859666
+    ],
+    "bank": "N",
+    "lam_rel": 1e-06,
+    "n_h": 8
+   },
+   "runner_up_gm": 6.5111335728057134e-06
+  },
+  "m33/LM": {
+   "arbitrary": false,
+   "best_config": {
+    "alphas": null,
+    "bank": null,
+    "intercept": false,
+    "lam_rel": 1e-10,
+    "n_h": 0
+   },
+   "best_gm": 8.740268971903398e-08,
+   "log_gap": 0.8018934794372932,
+   "log_spread_across_val": NaN,
+   "runner_up_config": {
+    "alphas": null,
+    "bank": null,
+    "intercept": false,
+    "lam_rel": 1e-08,
+    "n_h": 0
+   },
+   "runner_up_gm": 1.948869284815316e-07
+  },
+  "m9/LM": {
+   "arbitrary": false,
+   "best_config": {
+    "alphas": null,
+    "bank": null,
+    "intercept": false,
+    "lam_rel": 1e-06,
+    "n_h": 0
+   },
+   "best_gm": 6.65812456565911e-05,
+   "log_gap": 0.1396767383405777,
+   "log_spread_across_val": NaN,
+   "runner_up_config": {
+    "alphas": null,
+    "bank": null,
+    "intercept": false,
+    "lam_rel": 0.0001,
+    "n_h": 0
+   },
+   "runner_up_gm": 7.656190884363387e-05
+  },
+  "m9/LMb": {
+   "arbitrary": false,
+   "best_config": {
+    "alphas": null,
+    "bank": null,
+    "intercept": true,
+    "lam_rel": 1e-06,
+    "n_h": 0
+   },
+   "best_gm": 6.690485641168824e-05,
+   "log_gap": 0.1401355820204273,
+   "log_spread_across_val": NaN,
+   "runner_up_config": {
+    "alphas": null,
+    "bank": null,
+    "intercept": true,
+    "lam_rel": 0.0001,
+    "n_h": 0
+   },
+   "runner_up_gm": 7.696933829765545e-05
+  },
+  "m9/LR": {
+   "arbitrary": true,
+   "best_config": {
+    "alphas": [
+     0.44508417540133305,
+     0.8588312501995977,
+     1.6571946545938576,
+     3.1977109852211356,
+     6.1702803087486044,
+     11.906128872962514,
+     22.973981350345042,
+     44.33043054695847,
+     85.53968258745859,
+     165.05676139130554,
+     318.4923494792194,
+     614.5605658426344,
+     1185.8516843697716,
+     2288.21095182783,
+     4415.3155315097365,
+     8519.761356451165
+    ],
+    "bank": "N",
+    "lam_rel": 0.0001,
+    "n_h": 16
+   },
+   "best_gm": 7.208170569319883e-05,
+   "log_gap": 0.004370725479194704,
+   "log_spread_across_val": NaN,
+   "runner_up_config": {
+    "alphas": [
+     0.22254208770066647,
+     0.49326902216216245,
+     1.0933407282135748,
+     2.4234117576059813,
+     5.371540998476082,
+     11.90612887296252,
+     26.390174584873918,
+     58.49435379468006,
+     129.65391399185205,
+     287.38051321007026,
+     636.9846989584402,
+     1411.8894220589616,
+     3129.4813570585516,
+     6936.55849471195,
+     15375.021692343691,
+     34079.04542580464
+    ],
+    "bank": "W",
+    "lam_rel": 0.0001,
+    "n_h": 16
+   },
+   "runner_up_gm": 7.239744454213569e-05
+  },
+  "m9/LR0": {
+   "arbitrary": true,
+   "best_config": {
+    "alphas": [
+     0.22254208770066647,
+     0.49326902216216245,
+     1.0933407282135748,
+     2.4234117576059813,
+     5.371540998476082,
+     11.90612887296252,
+     26.390174584873918,
+     58.49435379468006,
+     129.65391399185205,
+     287.38051321007026,
+     636.9846989584402,
+     1411.8894220589616,
+     3129.4813570585516,
+     6936.55849471195,
+     15375.021692343691,
+     34079.04542580464
+    ],
+    "bank": "W",
+    "lam_rel": 0.0001,
+    "n_h": 16
+   },
+   "best_gm": 7.612450726674351e-05,
+   "log_gap": 0.0020851625372184657,
+   "log_spread_across_val": NaN,
+   "runner_up_config": {
+    "alphas": [
+     0.44508417540133305,
+     0.8588312501995977,
+     1.6571946545938576,
+     3.1977109852211356,
+     6.1702803087486044,
+     11.906128872962514,
+     22.973981350345042,
+     44.33043054695847,
+     85.53968258745859,
+     165.05676139130554,
+     318.4923494792194,
+     614.5605658426344,
+     1185.8516843697716,
+     2288.21095182783,
+     4415.3155315097365,
+     8519.761356451165
+    ],
+    "bank": "N",
+    "lam_rel": 0.0001,
+    "n_h": 16
+   },
+   "runner_up_gm": 7.628340484352492e-05
+  }
+ },
+ "nu": {
+  "m17": {
+   "den": 1620523982.232233,
+   "nu_adm": -0.0009679888904988457,
+   "nu_plus": 0.0,
+   "nu_pm": -3.5881062065988495e-05,
+   "nu_unclipped": -3.5881062065988495e-05,
+   "num": -58146.12158589759
+  },
+  "m33": {
+   "den": 8464105491.525122,
+   "nu_adm": -0.0007795706799250645,
+   "nu_plus": 1.2653561521611209e-06,
+   "nu_pm": 1.2653561521611209e-06,
+   "nu_unclipped": 1.2653561521611209e-06,
+   "num": 10710.10795624204
+  },
+  "m9": {
+   "den": 671555772.879032,
+   "nu_adm": -0.0013478568294559103,
+   "nu_plus": 3.060404455527727e-05,
+   "nu_pm": 3.060404455527727e-05,
+   "nu_unclipped": 3.060404455527727e-05,
+   "num": 20552.322794543557
+  }
+ },
+ "observations_at_lock": [
+  "LM beats RRR by ~45-48 % in validation e_dyn at m=9, 17, 33; LR0/LR are worse than LM at both m (stateful advantage not expected)",
+  "QL: positive pooled nu at m=9 and m=33 (all three variants coincide, worse than RRR); negative nu* at m=17 (QLp degenerate = RRR; QLpm/QLs 13x worse than RRR)",
+  "LR selections are arbitrary within log-gap < 0.03 of the runner-up; LM selections are clear (log-gap 0.14-0.18); m=33 LM selected at the smallest ridge (edge)"
+ ],
+ "representation_limited": {
+  "m17": {
+   "lr_skipped": null,
+   "representation_limited": false,
+   "source": "D:\\Dropbox\\School\\Graduate\\CERN\\Temp_Files\\Temp_Stuff\\Git\\LocalVolatility\\.claude\\worktrees\\research-brief-implementation-8bee67\\research\\sine_closure\\results\\diagnose\\summary.json"
+  },
+  "m33": {
+   "lr_skipped": "m=33 is secondary: only LM and QL are run",
+   "representation_limited": null,
+   "source": "no entry for this m in summary.json"
+  },
+  "m9": {
+   "lr_skipped": null,
+   "representation_limited": false,
+   "source": "D:\\Dropbox\\School\\Graduate\\CERN\\Temp_Files\\Temp_Stuff\\Git\\LocalVolatility\\.claude\\worktrees\\research-brief-implementation-8bee67\\research\\sine_closure\\results\\diagnose\\summary.json"
+  }
+ },
+ "s3_hash": "65b891385393487c",
+ "selection_rule": "min geometric mean of free-rollout resolved interior RMS over val cases x {P0, P1-W0}, within each closure family; instability disqualifies; ties -> smaller n_h, then larger lambda (PLAN.md section 5). WI initialisers were fitted on train only and are scored but never used for selection."
+}

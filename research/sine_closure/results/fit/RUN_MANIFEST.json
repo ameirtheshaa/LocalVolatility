@@ -1,0 +1,19 @@
+{
+ "completed": [
+  "m9",
+  "m17",
+  "m33"
+ ],
+ "failed": [],
+ "finished": true,
+ "in_progress": [],
+ "pid": 11972,
+ "planned": [
+  "m9",
+  "m17",
+  "m33"
+ ],
+ "previous_interrupted": {},
+ "stage": "fit",
+ "started_utc": "2026-11-05T12:19:40Z"
+}
