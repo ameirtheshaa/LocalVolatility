@@ -1,4 +1,5 @@
 {
+ "LM_feature_set": "constant H (m x m), no sigma/eta conditioning, no intercept (LMb is the declared intercept ablation); shared across all volatility levels - the most likely thing to break on OOD cases.",
  "budget": {
   "m17": {
    "LM": 5,
@@ -92,6 +93,15 @@
    "m": "m33"
   }
  ],
+ "expectations_logged_before_test_scoring": {
+  "QL": "no benefit at any m (positive pooled nu at 9 and 33 hurts; negative at 17 clipped to RRR or anti-damping); the scalar control is misspecified, not merely mis-clipped.",
+  "density": "no compression at either m (projection bound, Rule A); density noninferiority vs RRR_m is the open question.",
+  "m17": "LM may qualify as useful closure at fixed m on the cells with headroom > 2u_price (10/41 dev); price-only compression possible only on Rule-B-eligible cells (2/41 dev, low-sigma constant vol) and marginal there (quadrature: halving the dynamics error gives ~6.4e-6 against a target ~7e-6 on the illustrative dev cell); the eligible test set may be empty.",
+  "m33_secondary": "LM gain ~7e-8 in e_dyn is close to 2u_dyn (up to 1.2e-7) and far below u_price: expected inconclusive at price/density level.",
+  "m9": "LM may qualify as useful closure at fixed m (resolved and price gains beyond 2u expected on all cells); compression impossible (Rule A/B: PROJ_9 20-100x above the 33-mode target).",
+  "note": "written after the lock commit and before any test reference or test score existed; if test results depart sharply, check the pipeline (leakage, reference identity) before interpreting.",
+  "stateful": "LR0/LR beat LM under P0 on validation but not under P1-W0; stateful advantage by the frozen rule (both protocols, every cell) not expected; P0-only advantage will be reported as such."
+ },
  "leakage_evidence": {
   "index_sha256": "a6b6f0bebf43e6859cf009e1e1fe8724cc0a9df619d1370db3734bafc7821d8f",
   "reference_index_cases_by_split_at_lock_time": {
@@ -444,5 +454,36 @@
   }
  },
  "s3_hash": "65b891385393487c",
- "selection_rule": "min geometric mean of free-rollout resolved interior RMS over val cases x {P0, P1-W0}, within each closure family; instability disqualifies; ties -> smaller n_h, then larger lambda (PLAN.md section 5). WI initialisers were fitted on train only and are scored but never used for selection."
+ "selection_rule": "min geometric mean of free-rollout resolved interior RMS over val cases x {P0, P1-W0}, within each closure family; instability disqualifies; ties -> smaller n_h, then larger lambda (PLAN.md section 5). WI initialisers were fitted on train only and are scored but never used for selection.",
+ "validation_by_protocol_geomean_e_dyn": {
+  "m17": {
+   "LM": {
+    "P0": 6.528e-06,
+    "P1_W0": 2.981e-06
+   },
+   "LR0_h8": {
+    "P0": 4.736e-06,
+    "P1_W0": 8.536e-06
+   },
+   "LR_h8": {
+    "P0": 3.568e-06,
+    "P1_W0": 1.555e-05
+   }
+  },
+  "m9": {
+   "LM": {
+    "P0": 8.596e-05,
+    "P1_W0": 5.157e-05
+   },
+   "LR0_h16": {
+    "P0": 5.337e-05,
+    "P1_W0": 0.0001086
+   },
+   "LR_h16": {
+    "P0": 4.641e-05,
+    "P1_W0": 0.000112
+   }
+  },
+  "reading": "Under the payoff start (P0) the stateful models beat LM by ~45 % at both m; under the warm start with a zero hidden state (P1-W0) they are 2-5x worse than LM. The frozen selection criterion (geometric mean over P0 and P1-W0) therefore ranks LM first; the scored WI/WU rows will show whether a learned or causal hidden initialisation recovers the P1 deficit."
+ }
 }
