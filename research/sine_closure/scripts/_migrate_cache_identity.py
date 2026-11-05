@@ -29,6 +29,9 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--old", default=identity.code_identity("full"))
     ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--verify-cases", nargs="*", default=None,
+                    help="after migrating, recompute n256_s16 (dense) for these case ids WITHOUT the cache and "
+                         "compare bitwise with the migrated copy (default: first train case of each family)")
     args = ap.parse_args()
     new_code = identity.code_identity("reference")
     cache_dir = os.path.join(scc.CACHE_ROOT, "reference")
@@ -82,6 +85,38 @@ def main():
         identity.write_json(index_path, idx)
         print(f"index.json: {n_upd} entries updated", flush=True)
     print(f"done: {len(renamed)} references re-keyed", flush=True)
+    # ---- staleness guard: recompute a few references directly and compare with the migrated copies
+    if args.dry_run:
+        return
+    from scc import cases as cs, reference as ref
+    import numpy as np
+    ids = args.verify_cases
+    if ids is None:
+        ids = []
+        for fam in ("C", "S", "D", "M"):
+            for c in cs.cases_by_split("train"):
+                if c.family == fam:
+                    ids.append(c.id)
+                    break
+    bad = 0
+    for cid in ids:
+        case = cs.get_case(cid)
+        ident = ref.reference_identity(case, 256, 16, "dense")
+        z = identity.cache_load("reference", ident)
+        if z is None:
+            print(f"  verify {cid}: no migrated n256_s16 dense entry (nothing to compare)")
+            continue
+        grid = ref.make_grid(256)
+        fg = ref.fine_grid(grid, 16)
+        phi = ref.solve_dense(case, grid, fg)
+        same = phi.shape == z["phi"].shape and np.array_equal(phi, z["phi"])
+        diff = float(np.max(np.abs(phi - z["phi"]))) if phi.shape == z["phi"].shape else float("inf")
+        print(f"  verify {cid}: bitwise identical = {same}, max |diff| = {diff:.3e}", flush=True)
+        bad += int(not same)
+    if bad:
+        print(f"STALENESS GUARD FAILED for {bad} case(s): recompute the cache (delete the entries) before use", flush=True)
+        sys.exit(3)
+    print("staleness guard passed", flush=True)
 
 
 if __name__ == "__main__":

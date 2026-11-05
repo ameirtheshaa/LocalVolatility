@@ -1,0 +1,91 @@
+{
+ "black_scholes": {
+  "n": 256,
+  "note": "informational; ~2e-5 expected at n=256",
+  "price_full_rms_vs_bs": 9.473143009325546e-05,
+  "price_interior_rms_vs_bs": 2.033692895079311e-05,
+  "price_max_abs_vs_bs": 0.0018465732389575384,
+  "sub": 16
+ },
+ "dense_vs_sparse_and_cn": {
+  "C_sig0.30": {
+   "cn_observed_orders_informational": {
+    "1->2": 0.9536102116752081,
+    "2->4": 2.3989342391319295,
+    "4->8": 2.0397785012226937
+   },
+   "cn_vs_dense": {
+    "1": {
+     "max_abs_err": 0.00045810148578203595,
+     "output_rows_interior_rms": 1.0583823875262647e-07
+    },
+    "2": {
+     "max_abs_err": 0.00023653555021495905,
+     "output_rows_interior_rms": 2.6459077770029047e-08
+    },
+    "4": {
+     "max_abs_err": 4.484822496008626e-05,
+     "output_rows_interior_rms": 6.614738762323797e-09
+    },
+    "8": {
+     "max_abs_err": 1.0907136430300321e-05,
+     "output_rows_interior_rms": 1.6536824494302582e-09
+    }
+   },
+   "dense_vs_sparse_max_abs": 1.3195000647669985e-13,
+   "max_abs_phi": 0.5291177332078756,
+   "pass_dense_sparse": true,
+   "relative": 2.4937740354444026e-13,
+   "seconds": 1.7140107154846191,
+   "tolerance": 1e-11
+  },
+  "D2_seed200": {
+   "cn_observed_orders_informational": {
+    "1->2": 0.9781091050959596,
+    "2->4": 2.349377929272512,
+    "4->8": 2.065175110574009
+   },
+   "cn_vs_dense": {
+    "1": {
+     "max_abs_err": 0.0006792774819345468,
+     "output_rows_interior_rms": 1.2268702378610584e-07
+    },
+    "2": {
+     "max_abs_err": 0.0003448315849386343,
+     "output_rows_interior_rms": 8.051652311529693e-08
+    },
+    "4": {
+     "max_abs_err": 6.766651510201754e-05,
+     "output_rows_interior_rms": 7.716726664607248e-08
+    },
+    "8": {
+     "max_abs_err": 1.6169409347425653e-05,
+     "output_rows_interior_rms": 7.695344758968193e-08
+    }
+   },
+   "dense_vs_sparse_max_abs": 2.278177646530821e-13,
+   "max_abs_phi": 0.5291177332078756,
+   "pass_dense_sparse": true,
+   "relative": 4.305615751562401e-13,
+   "seconds": 8.122119903564453,
+   "tolerance": 1e-11
+  }
+ },
+ "identity": {
+  "basis": "dst1_v1",
+  "code": "6941aa686ecce5d1",
+  "file": "solver_check",
+  "lift": "affine_endpoints_v1",
+  "n": 256,
+  "operator": "OP-B",
+  "quick": false,
+  "schema": 1,
+  "stage": "s0_verify",
+  "sub": 16
+ },
+ "identity_hash": "e4a9e2c4017600b5",
+ "pass": true,
+ "stage": "s0_verify",
+ "status": "done",
+ "wall_seconds": 9.853139162063599
+}
