@@ -1,0 +1,63 @@
+{
+ "note": "banded Crank-Nicolson full solver (the s6 cost candidate) vs the dense reference at n=256, sub=16: price, density, negative mass and butterfly at the 24 maturities and at the early panel",
+ "results": {
+  "C_sig0.205": {
+   "CN1_no_rannacher": {
+    "butterfly_raw_interior": 0.0,
+    "density_l2_interior_mean": 1.4988883939225323e-07,
+    "early_density_l2_t0.05_0.10": 1.0805764390780323e-05,
+    "early_negmass_max": 1.3787072357048358e-13,
+    "negmass_max_post_initial": 6.223322674585321e-07,
+    "price_interior_rms": 1.7640008419514822e-08
+   },
+   "CN1_rannacher2": {
+    "butterfly_raw_interior": 0.0,
+    "density_l2_interior_mean": 2.3674388246448414e-07,
+    "early_density_l2_t0.05_0.10": 1.6973745727957326e-05,
+    "early_negmass_max": 1.3787072357048358e-13,
+    "negmass_max_post_initial": 6.222164779570653e-07,
+    "price_interior_rms": 5.791765380471478e-08
+   },
+   "CN2_rannacher2": {
+    "butterfly_raw_interior": 0.0,
+    "density_l2_interior_mean": 5.9183444521819184e-08,
+    "early_density_l2_t0.05_0.10": 4.238481024221561e-06,
+    "early_negmass_max": 3.261269428538842e-13,
+    "negmass_max_post_initial": 6.223737012075339e-07,
+    "price_interior_rms": 1.4479137425432375e-08
+   },
+   "dense_butterfly_raw_interior": 0.0,
+   "dense_negmass_max_post_initial": 6.224259402255607e-07,
+   "dense_seconds_mac": 0.016265392303466797
+  },
+  "D2_seed220": {
+   "CN1_no_rannacher": {
+    "butterfly_raw_interior": 0.0,
+    "density_l2_interior_mean": 1.0078935987671176e-07,
+    "early_density_l2_t0.05_0.10": 7.185438642329812e-05,
+    "early_negmass_max": 5.901494770086418e-07,
+    "negmass_max_post_initial": 2.8076890849693112e-08,
+    "price_interior_rms": 1.1170920261892031e-07
+   },
+   "CN1_rannacher2": {
+    "butterfly_raw_interior": 0.0,
+    "density_l2_interior_mean": 4.632228370606337e-08,
+    "early_density_l2_t0.05_0.10": 7.2698301836722555e-06,
+    "early_negmass_max": 5.891024781123324e-07,
+    "negmass_max_post_initial": 2.8076828666837923e-08,
+    "price_interior_rms": 9.064301503964808e-08
+   },
+   "CN2_rannacher2": {
+    "butterfly_raw_interior": 0.0,
+    "density_l2_interior_mean": 1.326524847744589e-08,
+    "early_density_l2_t0.05_0.10": 1.791543497852076e-06,
+    "early_negmass_max": 5.923772226581418e-07,
+    "negmass_max_post_initial": 2.8076751701360132e-08,
+    "price_interior_rms": 8.04130482959387e-08
+   },
+   "dense_butterfly_raw_interior": 0.0,
+   "dense_negmass_max_post_initial": 2.8090631502896747e-08,
+   "dense_seconds_mac": 0.9407720565795898
+  }
+ }
+}

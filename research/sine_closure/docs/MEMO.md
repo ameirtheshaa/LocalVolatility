@@ -26,6 +26,15 @@ Under the rules frozen in `PLAN.md` (§10 and Addendum 2) before any held-out ca
   at 17; consistent across trajectories within each m: 24/28, 28/28, 26/28).
 * **Secondary S1 (m = 33): inconclusive** (density gain 3.9e-6 against `2 u_dens` = 1.8e-5 on the one
   case where it is positive; the stateless map raises the interior density error by 26 % on average).
+* **Cost gives no advantage either, and the comparison changes how Gate 5's speed-up should be read.**
+  A banded Crank–Nicolson full solver on the 256-point grid runs in 21 ms per query against 26–107 ms
+  for the unclosed 9–65-mode models and 51–52 ms for the 25-state closed ones, at equal accuracy in
+  price *and* density (its density error against the dense reference is 2.4e-7 / 4.6e-8, its negative
+  mass and butterfly fractions are identical to the reference's, and its early-time panel is clean;
+  `results/verify/cn_solver_density_check.json`). Gate 5's "5–17× faster than the un-reduced solve"
+  was measured against the dense exponential reference solver (6.7 s here); against a banded
+  production-style solver there is no speed-up at this problem size. Gate 5's report is not rewritten;
+  if it is cited for speed, that reading needs an annotation in a future addendum.
 
 **Answer to the brief's question: closure helps neither 9 nor 17 modes by the frozen criteria; it
 improves resolved dynamics only at m = 9 and only with stateful initialisation. The unclosed 33-mode
@@ -894,8 +903,10 @@ online warm medians over cases: unclosed RRR-9 26 ms, RRR-17 33 ms, RRR-33 48 ms
 nothing measurable at the same m (28 / 32 ms); the 25-state stateful closures cost 51–52 ms under the
 payoff start, i.e. as much as RRR-33, and 39–43 ms with a hidden initialiser. Full solvers at the same
 accuracy: dense exponential (the reference scheme and Gate 5's "un-reduced solve") 6.7 s, sparse
-exponential action 1.9 s, **banded Crank–Nicolson with one substep per output step 21 ms** (converged to
-`u_price` on every timed case). Timing variability is large (IQR 7–29 ms), so RRR-9 and the banded full
+exponential action 1.9 s, **banded Crank–Nicolson with one substep per fine step and a two-step Rannacher
+start 21 ms** (converged to `u_price` on every timed case; its density, negative mass, butterfly fractions
+and early-time panel were checked against the dense reference on one autonomous and one time-dependent
+case and are at or below the reference's own uncertainty: `results/verify/cn_solver_density_check.json`). Timing variability is large (IQR 7–29 ms), so RRR-9 and the banded full
 solver are within variability of each other, and RRR-33 is slower than the banded full solver by about
 one IQR. Two consequences: (i) no closed model has an online-cost advantage over the unclosed model of
 equal total state, so even a positive accuracy result would not have been a compression; (ii) Gate 5's
