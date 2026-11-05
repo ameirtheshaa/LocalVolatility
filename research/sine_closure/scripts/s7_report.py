@@ -189,11 +189,13 @@ class Data:
         if not self.scores:
             warn("no score files found in results/score")
         for p in sorted(glob.glob(os.path.join(RESULTS, "uncertainty", "*.json"))):
+            if os.path.basename(p) == "RUN_MANIFEST.json" or ".superseded." in p:
+                continue
             d = read_json(p)
             if d:
                 self.unc[d.get("case") or os.path.splitext(os.path.basename(p))[0]] = d
         for p in sorted(glob.glob(os.path.join(RESULTS, "diagnose", "*.json"))):
-            if os.path.basename(p) == "summary.json":
+            if os.path.basename(p) in ("summary.json", "family_checks.json", "RUN_MANIFEST.json") or ".superseded." in p:
                 continue
             d = read_json(p)
             if d:
