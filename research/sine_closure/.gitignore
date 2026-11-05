@@ -8,3 +8,5 @@ results/cache_quick/
 results/verify_quick/
 results/**/*_quick.json
 results/**/*.superseded.*.json
+results/references_quick/
+results/*_quick/

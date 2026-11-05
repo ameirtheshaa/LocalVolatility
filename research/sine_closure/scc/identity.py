@@ -18,18 +18,19 @@ from scc import CACHE_ROOT, DSM_ROOT, REPO_ROOT, RESULTS, STUDY_ROOT
 
 IDENTITY_SCHEMA = 1
 CODE_MODULES = ["conventions", "cases", "reference", "targets", "closures", "oracles", "metrics"]
+# A cached *reference* depends only on the case formulas, the operator conventions and the solvers (plus the
+# production code they call); hashing the closure/metric modules into it would throw away every expensive
+# reference on an unrelated edit.  Result files (scores etc.) use the full hash.
+REFERENCE_FILES = [os.path.join(STUDY_ROOT, "scc", n + ".py") for n in ("conventions", "cases", "reference")] + \
+    [os.path.join(DSM_ROOT, "dsm", n + ".py") for n in ("operators", "reference", "cases", "repo")] + \
+    [os.path.join(REPO_ROOT, "Synthetic_Data_Tensorflow_Advanced", n) for n in
+     ("config.py", "analytical_solutions.py", "mz_spectral/fourier_dupire.py", "mz_spectral/validation.py")]
 
 
-def code_identity() -> str:
-    """sha256[:16] over scc/{conventions,cases,reference,targets,closures,oracles,metrics}.py (name + bytes;
-    missing files hashed as b'missing'). Env SCC_CODE_IDENTITY_OVERRIDE replaces it (tests only)."""
-    ov = os.environ.get("SCC_CODE_IDENTITY_OVERRIDE")
-    if ov:
-        return ov
+def _hash_files(paths) -> str:
     h = hashlib.sha256()
-    for name in CODE_MODULES:
-        p = os.path.join(STUDY_ROOT, "scc", name + ".py")
-        h.update((name + ".py").encode())
+    for p in paths:
+        h.update(os.path.relpath(p, REPO_ROOT).replace(os.sep, "/").encode())
         if os.path.isfile(p):
             with open(p, "rb") as f:
                 h.update(f.read())
@@ -38,9 +39,23 @@ def code_identity() -> str:
     return h.hexdigest()[:16]
 
 
+def code_identity(scope: str = "full") -> str:
+    """sha256[:16] over the numerical code. scope='full': scc/{conventions,cases,reference,targets,closures,
+    oracles,metrics}.py (name + bytes; missing files hashed as b'missing'); scope='reference': REFERENCE_FILES
+    (what a cached reference actually depends on). Env SCC_CODE_IDENTITY_OVERRIDE replaces both (tests only)."""
+    ov = os.environ.get("SCC_CODE_IDENTITY_OVERRIDE")
+    if ov:
+        return ov
+    if scope == "reference":
+        return _hash_files(REFERENCE_FILES)
+    return _hash_files([os.path.join(STUDY_ROOT, "scc", name + ".py") for name in CODE_MODULES])
+
+
 def make_identity(**fields) -> Dict[str, Any]:
-    """{schema: 1, code, basis: 'dst1_v1', lift: 'affine_endpoints_v1', operator: 'OP-B', **fields}."""
-    ident = {"schema": IDENTITY_SCHEMA, "code": code_identity(), "basis": "dst1_v1",
+    """{schema: 1, code, basis: 'dst1_v1', lift: 'affine_endpoints_v1', operator: 'OP-B', **fields};
+    kind='reference' uses the narrow reference-code hash (see REFERENCE_FILES)."""
+    scope = "reference" if fields.get("kind") == "reference" else "full"
+    ident = {"schema": IDENTITY_SCHEMA, "code": code_identity(scope), "basis": "dst1_v1",
              "lift": "affine_endpoints_v1", "operator": "OP-B"}
     ident.update(fields)
     return ident
