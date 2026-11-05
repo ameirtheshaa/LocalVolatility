@@ -390,3 +390,87 @@ files are superseded, never silently accepted.
   therefore does not mix step error into the grid comparison.
 * The forcing input `J g_R` of the LR closure is identically zero for OP-B (`g ≡ 0`, asserted) and
   is not a fitted quantity; it would appear only in the Dirichlet boundary-sensitivity check.
+
+### Addendum 2 (2026-11-05, after the development diagnostics, before any fitting or test scoring)
+
+Numeric values of every frozen rule, computed from development data only (`train`, `val`,
+`dev_regression`; 41 cases; `results/diagnose`, `results/uncertainty`, `results/verify`). Nothing in
+§3–§10 changes; this addendum fixes the numbers those rules refer to and adds three rules whose
+need became visible in the diagnostics. Test references had not been generated when this was written.
+
+**Uncertainties (per case; dev ranges min / median / max).** `u_price` (interior RMS) 2.6e-6 / 3.3e-6 /
+4.6e-6, entirely grid-dominated (`u_step` ≤ 1e-15: the midpoint exponential is exact in time for
+autonomous operators and second-order with 1e-13-level step error for the time-dependent ones);
+`u_dens` (interior L2) 6.5e-7 / 3.0e-6 / 1.2e-5; negative mass (post-initial max) 1.2e-8 / 4.8e-7 /
+6.1e-7; inverse-vol invalid fraction 0 / 0 / 4.9e-4; coverage 0; σ relative error (median) 5.6e-6 /
+3.1e-5 / 1.7e-4; raw arbitrage fractions 0 (the reference has no violations at either level, so the
+`1/N_interior` floor of §10 is the operative tolerance). Observed grid convergence orders on the eight
+cases with the 1021 level: price 2.55–2.81, density 2.15–2.34 (second-order stencil plus payoff kink);
+step orders are exactly 2.0 for the time-dependent cases and undefined (roundoff ratios) otherwise.
+`u_dyn` (resolved-coordinate uncertainty) is a **same-grid** quantity by construction (step
+sensitivity of `c_ref` plus the teacher-forced oracle floor): 5e-9 / 1.8e-8 / 6.4e-8 at m = 9,
+1e-9 / 3.6e-9 / 6.4e-8 at m = 17; it is not comparable with `u_price`, and Q1 (resolved dynamics) is
+therefore decidable on every case at both m (RRR resolved errors are ≥ 5e-6, ≥ 100 `u_dyn`).
+
+**Roundoff guard.** γ = 1.536e-12 (= 10 × the largest paired |Δ negative mass| over 41 cases × m ∈
+{9, 17, 33} × both protocols; the only variant that perturbs the exponential arithmetic is the rotated
+coefficient basis, 1.5e-13; sign flips are bitwise exact; `results/verify/roundoff_guard.json`).
+
+**Verification outcome.** All asserted checks of §11 pass at n = 256 (`results/verify/verify.json`);
+dense vs sparse solvers 1.3e-13; Black–Scholes vs the 256-point solve 2.03e-5 on `C_sig0.30` (as in
+Gate 5). Cross-check against the earlier study on the three Gate 5 cases
+(`results/verify/gate5_crosscheck.json`): projection errors identical to 1e-10 relative, autonomous
+abscissae to 1e-12, time-dependent abscissae 1e-3 apart by definition (last-step midpoint vs t = 1).
+Stopping rule (§10): cond_A (PROJ density fails the 33-mode target) holds on 41/41 dev cases at both
+m; cond_B (unclosed dynamics already at the oracle) holds on 0/41; the conjunction is false, so LR
+fitting proceeds at m = 9 and m = 17. Family checks (`results/diagnose/family_checks.json`; first train case per family, interior RMS on the common strike region `K ∈ [500, 3000]`, wide domain `K ∈ [250, 6000]` with 587 points): C (C_sig0.180): wide-domain vs base 4.7e-06 (cubic) / 4.7e-06 (PCHIP), interpolation difference 3.3e-08; 512-spline vs 511-restriction price 7.5e-07, density 2.9e-07; S (S2_seed100): wide-domain vs base 2.1e-04 (cubic) / 2.1e-04 (PCHIP), interpolation difference 4.6e-09; 512-spline vs 511-restriction price 5.2e-07, density 5.1e-08; D (D2_seed200): wide-domain vs base 6.1e-03 (cubic) / 6.1e-03 (PCHIP), interpolation difference 7.6e-10; 512-spline vs 511-restriction price 4.2e-07, density 3.3e-08; M (M_seed300): wide-domain vs base 6.3e-05 (cubic) / 6.3e-05 (PCHIP), interpolation difference 5.0e-09; 512-spline vs 511-restriction price 5.5e-07, density 5.2e-08. The spline-versus-restriction difference is ≤ 0.25 `u_price` everywhere, so the nested-grid choice does not move any Gate 5-comparable number beyond uncertainty.
+
+**Rule A — PROJ is a lower bound only in one norm; beating it is compensation.** `V` is orthonormal
+and `D2_int V = V Λ` with `D2_int` symmetric, so in the same-grid, full-interior, uniform-weight
+Euclidean norm `c_ref = Vᵀψ_ref` minimises both the price error and the `D2` density error over all
+coefficient vectors; no m-mode reconstruction can beat PROJ there. In the interior-band, refined-grid
+or spectral-density norms the bound is only approximate. Consequently: (i) the 33-mode density target
+is unreachable at m = 9 and m = 17 on every development case (PROJ_17 density L2 exceeds RRR33 + u_dens
+on 41/41 cases, by 3–20×; PROJ_9 by 30–150×), so density compression is excluded by representation
+before any closure is fitted, and the memo says so; (ii) any closed model whose same-grid price
+interior RMS is below PROJ_m's by more than `u_price`, or whose refined density L2 is below PROJ_m's by
+more than `u_dens`, is flagged **output-oriented compensation** in the tables and is never described
+as recovered memory. Negative mass is not bounded by PROJ and is judged by the strict rule alone.
+
+**Rule B — compression regime, fixed from reference-derived quantities.** A (case, protocol) cell is
+*eligible* for the compression classes at dimension m iff
+`PROJ_m price < RRR33 price + u_price` **and** `RRR_m price − PROJ_m price > 2 u_price` (refined-grid
+interior RMS; PROJ and RRR are unfitted). `successful_compression` and `price_only_compression` are
+evaluated on the eligible cells only, must hold on every eligible cell, and are reported as
+`not_testable_regime_empty` when no test cell is eligible; the verdict names the eligible cases
+("price-only compression in the eligible regime: …"). Development counts: m = 17: 2/41 cells
+eligible under P0 (`C_sig0.270`, `C_sig0.240`; low σ); m = 9: 0/41 (PROJ_9 is 20–100× above the
+target). The headroom `RRR_m − PROJ_m` exceeds `2 u_price` on 41/41 dev cases at m = 9 and on 10/41 at
+m = 17 (low-σ and strong-smile cases); on the D family at m = 17 the unclosed rollout is already
+*below* the exact projection by ≈ 1e-6 (< u), so a closure cannot show a refined-price gain there.
+Expected outcome shape, stated now: useful-closure-at-fixed-m is testable at both m; price-only
+compression is testable only in a small low-σ regime at m = 17; "inconclusive by construction" applies
+to the price questions on cells whose headroom is below `2 u_price`, never to Q1.
+
+**Rule C — physical-truth caveat (domain truncation).** For family C the analytic Black–Scholes gap of
+the semidiscrete reference (`results/verify/bs_vs_u_family_C.json`) is 0.7–5e-6 for σ ≤ 0.27 but
+6e-5 (σ = 0.33), 1.5e-4 (0.36), 2.4e-4 (0.38) and 8.3e-4 (0.44), unchanged between 256 and 511
+points: it is domain truncation plus the linearity boundary rows, common to every model and reference
+on the fixed strike domain. The independent domain refinement gives the same picture per family: the wide-domain solution differs from the base-domain reference by 4.7e-06 (C), 2.1e-04 (S), 6.1e-03 (D) and 6.3e-05 (M) interior RMS (cubic and PCHIP interpolations agree to 1e-8), i.e. at the `u` level for the constant-σ and strike-smile families but 10³× `u` for the two time-dependent families (the earlier study's Gate 2 reported 5.8e-3 for the repository smile). `u_domain` is therefore reported per family as a diagnostic and is NOT folded into `u` (§3 unchanged): folding it in would make every model indistinguishable on the D and M families and would compare models against a quantity none of them is asked to approximate. Verdicts remain statements about the semidiscrete
+problem (as in Gate 5); cases with `|Full511 − BS| > 2 u_price` (family C, σ ≥ 0.33 on development
+data; the test-ood case σ = 0.55 and test-interp σ = 0.415 will be flagged by the same rule) carry a
+`domain_limited_physical` annotation in every table, and no physical-price claim is made on them.
+
+**Early-time panel (P0), for the record.** At t̃ = 0.05 the payoff kink gives interior density L2 of
+2e-2 (m = 9), 6e-3 (m = 17), 1e-4 (m = 33) with negative mass 0.2 / 0.07 / 1e-3 for the exact
+projection itself; the free rollouts are within a factor 1.5 of PROJ there. Early-time density is
+representation-limited at every m ≤ 17 and is reported, not classified.
+
+**Warm start (P1).** The unresolved-initial-condition term `B Φ_D(t,t0) z0` that no deployable model
+receives is, at the final time, 0.1 % of the memory term at m = 9 and 1e-9 at m = 17 on `C_sig0.30`
+(BLOCK rows); its early-time share is not recorded. W0/WI/WU remain separate rows.
+
+**Provenance.** s3 output: 41 diagnose files, 41 uncertainty files, `family_checks.json`,
+`summary.json`; sha256 over the sorted (file, sha256) list = `65b891385393487c (84 files)`; code identity
+`5db723e3f2651764` (full) / `d7167e8921f3025c` (reference); laptop: Python 3.11.9, NumPy 2.2.6, SciPy 1.13.1,
+Windows, 16 cores.

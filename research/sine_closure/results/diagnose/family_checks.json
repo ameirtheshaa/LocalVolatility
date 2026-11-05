@@ -1,0 +1,104 @@
+{
+ "families": {
+  "C": {
+   "case_id": "C_sig0.180",
+   "domain_check": {
+    "K_max_wide": 6000.0,
+    "K_min_wide": 250.0,
+    "difference_cubic_minus_pchip": 3.336012391559756e-08,
+    "interior_rms_cubic_vs_base": 4.704664661668216e-06,
+    "interior_rms_cubic_vs_pchip_field": 4.166406490529067e-08,
+    "interior_rms_pchip_vs_base": 4.671304537752619e-06,
+    "n_wide": 587
+   },
+   "spline_vs_restriction": {
+    "density_interior_l2_mean": 1.1949342265146948e-05,
+    "density_interior_rms_diff": 2.9497169800802994e-07,
+    "n_spline_source": 512,
+    "phi_interior_rms_diff": 7.523726127486704e-07,
+    "phi_interior_rms_rel": 7.275832877087245e-06
+   },
+   "status": "done",
+   "wall_seconds": 0.3979926109313965
+  },
+  "D": {
+   "case_id": "D2_seed200",
+   "domain_check": {
+    "K_max_wide": 6000.0,
+    "K_min_wide": 250.0,
+    "difference_cubic_minus_pchip": -7.585113067157256e-10,
+    "interior_rms_cubic_vs_base": 0.006090947267010817,
+    "interior_rms_cubic_vs_pchip_field": 8.456145817592793e-09,
+    "interior_rms_pchip_vs_base": 0.006090948025522124,
+    "n_wide": 587
+   },
+   "spline_vs_restriction": {
+    "density_interior_l2_mean": 1.4463746873685894e-06,
+    "density_interior_rms_diff": 3.2847172622758626e-08,
+    "n_spline_source": 512,
+    "phi_interior_rms_diff": 4.196457511941654e-07,
+    "phi_interior_rms_rel": 2.5575354297582035e-06
+   },
+   "status": "done",
+   "wall_seconds": 87.56022357940674
+  },
+  "M": {
+   "case_id": "M_seed300",
+   "domain_check": {
+    "K_max_wide": 6000.0,
+    "K_min_wide": 250.0,
+    "difference_cubic_minus_pchip": -4.954880358453936e-09,
+    "interior_rms_cubic_vs_base": 6.31601477635534e-05,
+    "interior_rms_cubic_vs_pchip_field": 1.8680481788501972e-08,
+    "interior_rms_pchip_vs_base": 6.316510264391185e-05,
+    "n_wide": 587
+   },
+   "spline_vs_restriction": {
+    "density_interior_l2_mean": 2.355843079568514e-06,
+    "density_interior_rms_diff": 5.227455346607928e-08,
+    "n_spline_source": 512,
+    "phi_interior_rms_diff": 5.462550298025712e-07,
+    "phi_interior_rms_rel": 4.6485626447892385e-06
+   },
+   "status": "done",
+   "wall_seconds": 81.50489544868469
+  },
+  "S": {
+   "case_id": "S2_seed100",
+   "domain_check": {
+    "K_max_wide": 6000.0,
+    "K_min_wide": 250.0,
+    "difference_cubic_minus_pchip": -4.557001942299705e-09,
+    "interior_rms_cubic_vs_base": 0.0002079845263132965,
+    "interior_rms_cubic_vs_pchip_field": 1.6984702029651888e-08,
+    "interior_rms_pchip_vs_base": 0.0002079890833152388,
+    "n_wide": 587
+   },
+   "spline_vs_restriction": {
+    "density_interior_l2_mean": 2.2387358575905427e-06,
+    "density_interior_rms_diff": 5.134551480805658e-08,
+    "n_spline_source": 512,
+    "phi_interior_rms_diff": 5.214615604170994e-07,
+    "phi_interior_rms_rel": 4.236769480436808e-06
+   },
+   "status": "done",
+   "wall_seconds": 0.42005395889282227
+  }
+ },
+ "identity": {
+  "basis": "dst1_v1",
+  "code": "5db723e3f2651764",
+  "evaluate": "9eb33799e257e6e8",
+  "kind": "family_checks",
+  "lift": "affine_endpoints_v1",
+  "n": 256,
+  "operator": "OP-B",
+  "schema": 1,
+  "script": "4d0100911a6c7177",
+  "sub": 16
+ },
+ "identity_hash": "60644f4d2f482359",
+ "stage": "diagnose",
+ "status": "done",
+ "wall_seconds": 0.0
+}
