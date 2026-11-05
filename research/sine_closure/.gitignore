@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+results/cache/
+*.tmp
+*.npz.tmp
+.pytest_cache/
+results/cache_quick/
+results/verify_quick/
+results/**/*_quick.json
+results/**/*.superseded.*.json

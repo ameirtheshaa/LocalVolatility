@@ -1,0 +1,6 @@
+# Closure test for small sine models — CPU only (same pins as the earlier study; any NumPy>=2.0 / SciPy>=1.13 works)
+numpy==2.5.3
+scipy==1.18.1
+matplotlib==3.11.2
+pytest==9.2.0
+threadpoolctl==3.6.0

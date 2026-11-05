@@ -1,0 +1,5045 @@
+{
+ "cases": {
+  "C_sig0.30": {
+   "committed_identity": {
+    "K_max": 3000.0,
+    "K_min": 500.0,
+    "algo": 1,
+    "case": "986601137fc64a69",
+    "case_id": "C_sig0.30",
+    "code": "302d37258262c714",
+    "dims_fourier": [
+     16,
+     32
+    ],
+    "dims_sine": [
+     17,
+     33,
+     65
+    ],
+    "gate": "gate5",
+    "n_k": 256,
+    "n_k_ref": 512,
+    "schema": 2,
+    "sub": 16
+   },
+   "failed_keys": [],
+   "metrics": {
+    "models.A_fourier_m33__from_payoff_t0.butterfly_violation_frac_max": {
+     "committed": 0.20434782608695654,
+     "pass": true,
+     "reproduced": 0.20434782608695654
+    },
+    "models.A_fourier_m33__from_payoff_t0.butterfly_violation_frac_mean": {
+     "committed": 0.13351449275362318,
+     "pass": true,
+     "reproduced": 0.13351449275362318
+    },
+    "models.A_fourier_m33__from_payoff_t0.calendar_violation_frac_max": {
+     "committed": 0.21304347826086956,
+     "pass": true,
+     "reproduced": 0.21304347826086956
+    },
+    "models.A_fourier_m33__from_payoff_t0.calendar_violation_frac_mean": {
+     "committed": 0.13804347826086957,
+     "pass": true,
+     "reproduced": 0.13804347826086957
+    },
+    "models.A_fourier_m33__from_payoff_t0.density_l2_interior_max": {
+     "committed": 0.05509115904697209,
+     "pass": true,
+     "reproduced": 0.05509115904695363
+    },
+    "models.A_fourier_m33__from_payoff_t0.density_l2_interior_mean": {
+     "committed": 0.04420964426969403,
+     "pass": true,
+     "reproduced": 0.04420964426969018
+    },
+    "models.A_fourier_m33__from_payoff_t0.dof": {
+     "committed": 33.0,
+     "pass": true,
+     "reproduced": 33.0
+    },
+    "models.A_fourier_m33__from_payoff_t0.inverse_vol_invalid_frac_max": {
+     "committed": 0.23478260869565218,
+     "pass": true,
+     "reproduced": 0.23478260869565218
+    },
+    "models.A_fourier_m33__from_payoff_t0.inverse_vol_invalid_frac_mean": {
+     "committed": 0.1536231884057971,
+     "pass": true,
+     "reproduced": 0.1536231884057971
+    },
+    "models.A_fourier_m33__from_payoff_t0.inverse_vol_median_relerr_mean": {
+     "committed": 0.034106371414581005,
+     "pass": true,
+     "reproduced": 0.03410637141435651
+    },
+    "models.A_fourier_m33__from_payoff_t0.mass_T_max": {
+     "committed": 0.007521982619559442,
+     "pass": true,
+     "reproduced": 0.00752198261962661
+    },
+    "models.A_fourier_m33__from_payoff_t0.max_phi_rows": {
+     "committed": 0.3838593523635495,
+     "pass": true,
+     "reproduced": 0.3838593523635484
+    },
+    "models.A_fourier_m33__from_payoff_t0.min_phi_rows": {
+     "committed": 0.0001317169118448103,
+     "pass": true,
+     "reproduced": 0.00013171691184463104
+    },
+    "models.A_fourier_m33__from_payoff_t0.monotonicity_violation_frac_mean": {
+     "committed": 0.557427536231884,
+     "pass": true,
+     "reproduced": 0.557427536231884
+    },
+    "models.A_fourier_m33__from_payoff_t0.negative_mass_T_max": {
+     "committed": 0.6489510031446638,
+     "pass": true,
+     "reproduced": 0.6489510031445926
+    },
+    "models.A_fourier_m33__from_payoff_t0.negative_mass_max": {
+     "committed": 1.525209908433602,
+     "pass": true,
+     "reproduced": 1.525209908433627
+    },
+    "models.A_fourier_m33__from_payoff_t0.price_full_rms": {
+     "committed": 0.11940055994321233,
+     "pass": true,
+     "reproduced": 0.11940055994321154
+    },
+    "models.A_fourier_m33__from_payoff_t0.price_interior_rms": {
+     "committed": 0.09853982602162838,
+     "pass": true,
+     "reproduced": 0.09853982602162804
+    },
+    "models.A_fourier_m33__from_payoff_t0.price_interior_rms_vs_bs": {
+     "committed": 0.09853479763848386,
+     "pass": true,
+     "reproduced": 0.09853479763848348
+    },
+    "models.A_fourier_m33__from_payoff_t0.projection_err_interior_rms": {
+     "committed": 0.007779615169923715,
+     "pass": true,
+     "reproduced": 0.007779615169925633
+    },
+    "models.A_fourier_m33__from_payoff_t0.reduced_operator_abscissa": {
+     "committed": -3.842091712346837e-14,
+     "pass": true,
+     "reproduced": -1.8721095704341884e-14
+    },
+    "models.A_fourier_m33__from_projected_t0.2.butterfly_violation_frac_max": {
+     "committed": 0.4956521739130435,
+     "pass": true,
+     "reproduced": 0.4956521739130435
+    },
+    "models.A_fourier_m33__from_projected_t0.2.butterfly_violation_frac_mean": {
+     "committed": 0.13297101449275364,
+     "pass": true,
+     "reproduced": 0.13297101449275364
+    },
+    "models.A_fourier_m33__from_projected_t0.2.calendar_violation_frac_max": {
+     "committed": 0.4956521739130435,
+     "pass": true,
+     "reproduced": 0.4956521739130435
+    },
+    "models.A_fourier_m33__from_projected_t0.2.calendar_violation_frac_mean": {
+     "committed": 0.11902173913043479,
+     "pass": true,
+     "reproduced": 0.11902173913043479
+    },
+    "models.A_fourier_m33__from_projected_t0.2.density_l2_interior_max": {
+     "committed": 0.6330842702919754,
+     "pass": true,
+     "reproduced": 0.6330842702919789
+    },
+    "models.A_fourier_m33__from_projected_t0.2.density_l2_interior_mean": {
+     "committed": 0.0750251126950798,
+     "pass": true,
+     "reproduced": 0.07502511269507715
+    },
+    "models.A_fourier_m33__from_projected_t0.2.dof": {
+     "committed": 33.0,
+     "pass": true,
+     "reproduced": 33.0
+    },
+    "models.A_fourier_m33__from_projected_t0.2.inverse_vol_invalid_frac_max": {
+     "committed": 0.5826086956521739,
+     "pass": true,
+     "reproduced": 0.5826086956521739
+    },
+    "models.A_fourier_m33__from_projected_t0.2.inverse_vol_invalid_frac_mean": {
+     "committed": 0.15235507246376812,
+     "pass": true,
+     "reproduced": 0.15235507246376812
+    },
+    "models.A_fourier_m33__from_projected_t0.2.inverse_vol_median_relerr_mean": {
+     "committed": 0.061112702694646935,
+     "pass": true,
+     "reproduced": 0.06111270269478344
+    },
+    "models.A_fourier_m33__from_projected_t0.2.mass_T_max": {
+     "committed": 0.008474066541036773,
+     "pass": true,
+     "reproduced": 0.008474066541165282
+    },
+    "models.A_fourier_m33__from_projected_t0.2.max_phi_rows": {
+     "committed": 0.5130033022844555,
+     "pass": true,
+     "reproduced": 0.5130033022844537
+    },
+    "models.A_fourier_m33__from_projected_t0.2.min_phi_rows": {
+     "committed": -0.04684480362388955,
+     "pass": true,
+     "reproduced": -0.046844803623888875
+    },
+    "models.A_fourier_m33__from_projected_t0.2.monotonicity_violation_frac_mean": {
+     "committed": 0.497463768115942,
+     "pass": true,
+     "reproduced": 0.497463768115942
+    },
+    "models.A_fourier_m33__from_projected_t0.2.negative_mass_T_max": {
+     "committed": 0.7302585317794111,
+     "pass": true,
+     "reproduced": 0.7302585317793164
+    },
+    "models.A_fourier_m33__from_projected_t0.2.negative_mass_max": {
+     "committed": 20.457251218830507,
+     "pass": true,
+     "reproduced": 20.457251218830123
+    },
+    "models.A_fourier_m33__from_projected_t0.2.price_full_rms": {
+     "committed": 0.10985255156528717,
+     "pass": true,
+     "reproduced": 0.10985255156528659
+    },
+    "models.A_fourier_m33__from_projected_t0.2.price_interior_rms": {
+     "committed": 0.08707320899895259,
+     "pass": true,
+     "reproduced": 0.08707320899895236
+    },
+    "models.A_fourier_m33__from_projected_t0.2.price_interior_rms_vs_bs": {
+     "committed": 0.08706703525024921,
+     "pass": true,
+     "reproduced": 0.087067035250249
+    },
+    "models.A_fourier_m33__from_projected_t0.2.projection_err_interior_rms": {
+     "committed": 0.007779615169923715,
+     "pass": true,
+     "reproduced": 0.007779615169925633
+    },
+    "models.A_fourier_m33__from_projected_t0.2.reduced_operator_abscissa": {
+     "committed": -3.842091712346837e-14,
+     "pass": true,
+     "reproduced": -1.8721095704341884e-14
+    },
+    "models.A_fourier_m65__from_payoff_t0.butterfly_violation_frac_max": {
+     "committed": 0.20434782608695654,
+     "pass": true,
+     "reproduced": 0.20434782608695654
+    },
+    "models.A_fourier_m65__from_payoff_t0.butterfly_violation_frac_mean": {
+     "committed": 0.12844202898550725,
+     "pass": true,
+     "reproduced": 0.12844202898550725
+    },
+    "models.A_fourier_m65__from_payoff_t0.calendar_violation_frac_max": {
+     "committed": 0.20434782608695654,
+     "pass": true,
+     "reproduced": 0.20434782608695654
+    },
+    "models.A_fourier_m65__from_payoff_t0.calendar_violation_frac_mean": {
+     "committed": 0.13170289855072462,
+     "pass": true,
+     "reproduced": 0.13170289855072462
+    },
+    "models.A_fourier_m65__from_payoff_t0.density_l2_interior_max": {
+     "committed": 0.04441720040779109,
+     "pass": true,
+     "reproduced": 0.04441720040780738
+    },
+    "models.A_fourier_m65__from_payoff_t0.density_l2_interior_mean": {
+     "committed": 0.03999697982473586,
+     "pass": true,
+     "reproduced": 0.039996979824733714
+    },
+    "models.A_fourier_m65__from_payoff_t0.dof": {
+     "committed": 65.0,
+     "pass": true,
+     "reproduced": 65.0
+    },
+    "models.A_fourier_m65__from_payoff_t0.inverse_vol_invalid_frac_max": {
+     "committed": 0.20434782608695654,
+     "pass": true,
+     "reproduced": 0.20434782608695654
+    },
+    "models.A_fourier_m65__from_payoff_t0.inverse_vol_invalid_frac_mean": {
+     "committed": 0.1391304347826087,
+     "pass": true,
+     "reproduced": 0.1391304347826087
+    },
+    "models.A_fourier_m65__from_payoff_t0.inverse_vol_median_relerr_mean": {
+     "committed": 0.016184893939489367,
+     "pass": true,
+     "reproduced": 0.016184893940231773
+    },
+    "models.A_fourier_m65__from_payoff_t0.mass_T_max": {
+     "committed": 0.01100622091569392,
+     "pass": true,
+     "reproduced": 0.011006220915761145
+    },
+    "models.A_fourier_m65__from_payoff_t0.max_phi_rows": {
+     "committed": 0.4029252060312098,
+     "pass": true,
+     "reproduced": 0.4029252060312096
+    },
+    "models.A_fourier_m65__from_payoff_t0.min_phi_rows": {
+     "committed": 0.00016494733836348738,
+     "pass": true,
+     "reproduced": 0.00016494733836372653
+    },
+    "models.A_fourier_m65__from_payoff_t0.monotonicity_violation_frac_mean": {
+     "committed": 0.5610507246376811,
+     "pass": true,
+     "reproduced": 0.5610507246376811
+    },
+    "models.A_fourier_m65__from_payoff_t0.negative_mass_T_max": {
+     "committed": 0.6891232927510024,
+     "pass": true,
+     "reproduced": 0.6891232927509866
+    },
+    "models.A_fourier_m65__from_payoff_t0.negative_mass_max": {
+     "committed": 1.5603575899712656,
+     "pass": true,
+     "reproduced": 1.5603575899713367
+    },
+    "models.A_fourier_m65__from_payoff_t0.price_full_rms": {
+     "committed": 0.1262216737553979,
+     "pass": true,
+     "reproduced": 0.12622167375539775
+    },
+    "models.A_fourier_m65__from_payoff_t0.price_interior_rms": {
+     "committed": 0.10560760096491968,
+     "pass": true,
+     "reproduced": 0.1056076009649199
+    },
+    "models.A_fourier_m65__from_payoff_t0.price_interior_rms_vs_bs": {
+     "committed": 0.10560223217304396,
+     "pass": true,
+     "reproduced": 0.10560223217304415
+    },
+    "models.A_fourier_m65__from_payoff_t0.projection_err_interior_rms": {
+     "committed": 0.0038625718123590056,
+     "pass": true,
+     "reproduced": 0.003862571812359982
+    },
+    "models.A_fourier_m65__from_payoff_t0.reduced_operator_abscissa": {
+     "committed": -5.718995089922742e-14,
+     "pass": true,
+     "reproduced": 1.1598025732952338e-13
+    },
+    "models.A_fourier_m65__from_projected_t0.2.butterfly_violation_frac_max": {
+     "committed": 0.4956521739130435,
+     "pass": true,
+     "reproduced": 0.4956521739130435
+    },
+    "models.A_fourier_m65__from_projected_t0.2.butterfly_violation_frac_mean": {
+     "committed": 0.12101449275362319,
+     "pass": true,
+     "reproduced": 0.12101449275362319
+    },
+    "models.A_fourier_m65__from_projected_t0.2.calendar_violation_frac_max": {
+     "committed": 0.49130434782608695,
+     "pass": true,
+     "reproduced": 0.49130434782608695
+    },
+    "models.A_fourier_m65__from_projected_t0.2.calendar_violation_frac_mean": {
+     "committed": 0.10942028985507246,
+     "pass": true,
+     "reproduced": 0.10942028985507246
+    },
+    "models.A_fourier_m65__from_projected_t0.2.density_l2_interior_max": {
+     "committed": 1.156610364330338,
+     "pass": true,
+     "reproduced": 1.1566103643302932
+    },
+    "models.A_fourier_m65__from_projected_t0.2.density_l2_interior_mean": {
+     "committed": 0.08956988917920507,
+     "pass": true,
+     "reproduced": 0.08956988917920228
+    },
+    "models.A_fourier_m65__from_projected_t0.2.dof": {
+     "committed": 65.0,
+     "pass": true,
+     "reproduced": 65.0
+    },
+    "models.A_fourier_m65__from_projected_t0.2.inverse_vol_invalid_frac_max": {
+     "committed": 0.5304347826086957,
+     "pass": true,
+     "reproduced": 0.5304347826086957
+    },
+    "models.A_fourier_m65__from_projected_t0.2.inverse_vol_invalid_frac_mean": {
+     "committed": 0.13206521739130436,
+     "pass": true,
+     "reproduced": 0.13206521739130436
+    },
+    "models.A_fourier_m65__from_projected_t0.2.inverse_vol_median_relerr_mean": {
+     "committed": 0.03790950862015133,
+     "pass": true,
+     "reproduced": 0.03790950862045462
+    },
+    "models.A_fourier_m65__from_projected_t0.2.mass_T_max": {
+     "committed": 0.012387482331073119,
+     "pass": true,
+     "reproduced": 0.012387482331204597
+    },
+    "models.A_fourier_m65__from_projected_t0.2.max_phi_rows": {
+     "committed": 0.5466000742522767,
+     "pass": true,
+     "reproduced": 0.5466000742522703
+    },
+    "models.A_fourier_m65__from_projected_t0.2.min_phi_rows": {
+     "committed": -0.04517938705901395,
+     "pass": true,
+     "reproduced": -0.045179387059013
+    },
+    "models.A_fourier_m65__from_projected_t0.2.monotonicity_violation_frac_mean": {
+     "committed": 0.49311594202898545,
+     "pass": true,
+     "reproduced": 0.49311594202898545
+    },
+    "models.A_fourier_m65__from_projected_t0.2.negative_mass_T_max": {
+     "committed": 0.7706435466015544,
+     "pass": true,
+     "reproduced": 0.7706435466013567
+    },
+    "models.A_fourier_m65__from_projected_t0.2.negative_mass_max": {
+     "committed": 45.298025612728495,
+     "pass": true,
+     "reproduced": 45.29802561272723
+    },
+    "models.A_fourier_m65__from_projected_t0.2.price_full_rms": {
+     "committed": 0.11655303311187418,
+     "pass": true,
+     "reproduced": 0.1165530331118736
+    },
+    "models.A_fourier_m65__from_projected_t0.2.price_interior_rms": {
+     "committed": 0.09364326662043183,
+     "pass": true,
+     "reproduced": 0.09364326662043156
+    },
+    "models.A_fourier_m65__from_projected_t0.2.price_interior_rms_vs_bs": {
+     "committed": 0.0936367881974431,
+     "pass": true,
+     "reproduced": 0.09363678819744285
+    },
+    "models.A_fourier_m65__from_projected_t0.2.projection_err_interior_rms": {
+     "committed": 0.0038625718123590056,
+     "pass": true,
+     "reproduced": 0.003862571812359982
+    },
+    "models.A_fourier_m65__from_projected_t0.2.reduced_operator_abscissa": {
+     "committed": -5.718995089922742e-14,
+     "pass": true,
+     "reproduced": 1.1598025732952338e-13
+    },
+    "models.A_full256.butterfly_violation_frac_max": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.A_full256.butterfly_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.A_full256.calendar_violation_frac_max": {
+     "committed": 0.017391304347826087,
+     "pass": true,
+     "reproduced": 0.017391304347826087
+    },
+    "models.A_full256.calendar_violation_frac_mean": {
+     "committed": 0.0018115942028985507,
+     "pass": true,
+     "reproduced": 0.0018115942028985507
+    },
+    "models.A_full256.density_l2_interior_max": {
+     "committed": 0.00017999479787890606,
+     "pass": true,
+     "reproduced": 0.00017999479789854237
+    },
+    "models.A_full256.density_l2_interior_mean": {
+     "committed": 3.779419436886977e-05,
+     "pass": true,
+     "reproduced": 3.779419437833958e-05
+    },
+    "models.A_full256.dof": {
+     "committed": 256.0,
+     "pass": true,
+     "reproduced": 256.0
+    },
+    "models.A_full256.inverse_vol_invalid_frac_max": {
+     "committed": 0.4782608695652174,
+     "pass": true,
+     "reproduced": 0.4782608695652174
+    },
+    "models.A_full256.inverse_vol_invalid_frac_mean": {
+     "committed": 0.18061594202898554,
+     "pass": true,
+     "reproduced": 0.18061594202898554
+    },
+    "models.A_full256.inverse_vol_median_relerr_mean": {
+     "committed": 1.3890683393509421e-05,
+     "pass": true,
+     "reproduced": 1.3890683427128362e-05
+    },
+    "models.A_full256.mass_T_max": {
+     "committed": 0.9555669572732567,
+     "pass": true,
+     "reproduced": 0.9555669572683244
+    },
+    "models.A_full256.max_phi_rows": {
+     "committed": 0.5301265292019801,
+     "pass": true,
+     "reproduced": 0.5301265292019959
+    },
+    "models.A_full256.min_phi_rows": {
+     "committed": -0.0003712176229855521,
+     "pass": true,
+     "reproduced": -0.00037121762401138257
+    },
+    "models.A_full256.monotonicity_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.A_full256.negative_mass_T_max": {
+     "committed": 0.0003476952229792749,
+     "pass": true,
+     "reproduced": 0.00034769522510247786
+    },
+    "models.A_full256.negative_mass_max": {
+     "committed": 0.0003476952229792749,
+     "pass": true,
+     "reproduced": 0.00034769522510247786
+    },
+    "models.A_full256.price_full_rms": {
+     "committed": 5.099938918445347e-05,
+     "pass": true,
+     "reproduced": 5.099938921871954e-05
+    },
+    "models.A_full256.price_interior_rms": {
+     "committed": 1.7887719469477037e-05,
+     "pass": true,
+     "reproduced": 1.7887719502265977e-05
+    },
+    "models.A_full256.price_interior_rms_vs_bs": {
+     "committed": 3.237809698026228e-05,
+     "pass": true,
+     "reproduced": 3.237809701224506e-05
+    },
+    "models.B_fourier_m33__from_payoff_t0.butterfly_violation_frac_max": {
+     "committed": 0.5347826086956522,
+     "pass": true,
+     "reproduced": 0.5347826086956522
+    },
+    "models.B_fourier_m33__from_payoff_t0.butterfly_violation_frac_mean": {
+     "committed": 0.5230072463768116,
+     "pass": true,
+     "reproduced": 0.5230072463768116
+    },
+    "models.B_fourier_m33__from_payoff_t0.calendar_violation_frac_max": {
+     "committed": 0.5347826086956522,
+     "pass": true,
+     "reproduced": 0.5347826086956522
+    },
+    "models.B_fourier_m33__from_payoff_t0.calendar_violation_frac_mean": {
+     "committed": 0.5181159420289855,
+     "pass": true,
+     "reproduced": 0.5181159420289855
+    },
+    "models.B_fourier_m33__from_payoff_t0.density_l2_interior_max": {
+     "committed": 0.022673176643927397,
+     "pass": true,
+     "reproduced": 0.02267317664395675
+    },
+    "models.B_fourier_m33__from_payoff_t0.density_l2_interior_mean": {
+     "committed": 0.021274384179443013,
+     "pass": true,
+     "reproduced": 0.021274384179443617
+    },
+    "models.B_fourier_m33__from_payoff_t0.dof": {
+     "committed": 33.0,
+     "pass": true,
+     "reproduced": 33.0
+    },
+    "models.B_fourier_m33__from_payoff_t0.inverse_vol_invalid_frac_max": {
+     "committed": 0.5869565217391305,
+     "pass": true,
+     "reproduced": 0.5869565217391305
+    },
+    "models.B_fourier_m33__from_payoff_t0.inverse_vol_invalid_frac_mean": {
+     "committed": 0.5391304347826087,
+     "pass": true,
+     "reproduced": 0.5391304347826087
+    },
+    "models.B_fourier_m33__from_payoff_t0.inverse_vol_median_relerr_mean": {
+     "committed": 0.033723515187211194,
+     "pass": true,
+     "reproduced": 0.03372351518752503
+    },
+    "models.B_fourier_m33__from_payoff_t0.mass_T_max": {
+     "committed": 0.009063981727445852,
+     "pass": true,
+     "reproduced": 0.009063981727456233
+    },
+    "models.B_fourier_m33__from_payoff_t0.max_phi_rows": {
+     "committed": 0.463771781224425,
+     "pass": true,
+     "reproduced": 0.4637717812244242
+    },
+    "models.B_fourier_m33__from_payoff_t0.min_phi_rows": {
+     "committed": -0.13663091370939803,
+     "pass": true,
+     "reproduced": -0.13663091370940078
+    },
+    "models.B_fourier_m33__from_payoff_t0.monotonicity_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_fourier_m33__from_payoff_t0.negative_mass_T_max": {
+     "committed": 0.49162502127215635,
+     "pass": true,
+     "reproduced": 0.4916250212721055
+    },
+    "models.B_fourier_m33__from_payoff_t0.negative_mass_max": {
+     "committed": 0.9403555565931334,
+     "pass": true,
+     "reproduced": 0.9403555565930759
+    },
+    "models.B_fourier_m33__from_payoff_t0.price_full_rms": {
+     "committed": 0.039535871329370295,
+     "pass": true,
+     "reproduced": 0.039535871329370254
+    },
+    "models.B_fourier_m33__from_payoff_t0.price_interior_rms": {
+     "committed": 0.0297299881059542,
+     "pass": true,
+     "reproduced": 0.029729988105954456
+    },
+    "models.B_fourier_m33__from_payoff_t0.price_interior_rms_vs_bs": {
+     "committed": 0.029741145128863795,
+     "pass": true,
+     "reproduced": 0.02974114512886391
+    },
+    "models.B_fourier_m33__from_payoff_t0.projection_err_interior_rms": {
+     "committed": 0.00032294123677544906,
+     "pass": true,
+     "reproduced": 0.0003229412367754366
+    },
+    "models.B_fourier_m33__from_payoff_t0.reduced_operator_abscissa": {
+     "committed": -3.3960581976240177e-15,
+     "pass": true,
+     "reproduced": 8.076566475877437e-14
+    },
+    "models.B_fourier_m33__from_projected_t0.2.butterfly_violation_frac_max": {
+     "committed": 0.48695652173913045,
+     "pass": true,
+     "reproduced": 0.48695652173913045
+    },
+    "models.B_fourier_m33__from_projected_t0.2.butterfly_violation_frac_mean": {
+     "committed": 0.45652173913043476,
+     "pass": true,
+     "reproduced": 0.45652173913043476
+    },
+    "models.B_fourier_m33__from_projected_t0.2.calendar_violation_frac_max": {
+     "committed": 0.49130434782608695,
+     "pass": true,
+     "reproduced": 0.49130434782608695
+    },
+    "models.B_fourier_m33__from_projected_t0.2.calendar_violation_frac_mean": {
+     "committed": 0.46141304347826084,
+     "pass": true,
+     "reproduced": 0.46141304347826084
+    },
+    "models.B_fourier_m33__from_projected_t0.2.density_l2_interior_max": {
+     "committed": 0.025961091728840754,
+     "pass": true,
+     "reproduced": 0.025961091728836833
+    },
+    "models.B_fourier_m33__from_projected_t0.2.density_l2_interior_mean": {
+     "committed": 0.019808985257216086,
+     "pass": true,
+     "reproduced": 0.019808985257218043
+    },
+    "models.B_fourier_m33__from_projected_t0.2.dof": {
+     "committed": 33.0,
+     "pass": true,
+     "reproduced": 33.0
+    },
+    "models.B_fourier_m33__from_projected_t0.2.inverse_vol_invalid_frac_max": {
+     "committed": 0.5304347826086957,
+     "pass": true,
+     "reproduced": 0.5304347826086957
+    },
+    "models.B_fourier_m33__from_projected_t0.2.inverse_vol_invalid_frac_mean": {
+     "committed": 0.49619565217391304,
+     "pass": true,
+     "reproduced": 0.49619565217391304
+    },
+    "models.B_fourier_m33__from_projected_t0.2.inverse_vol_median_relerr_mean": {
+     "committed": 0.06366835961207991,
+     "pass": true,
+     "reproduced": 0.06366835961076305
+    },
+    "models.B_fourier_m33__from_projected_t0.2.mass_T_max": {
+     "committed": 0.010185607567564911,
+     "pass": true,
+     "reproduced": 0.010185607567507138
+    },
+    "models.B_fourier_m33__from_projected_t0.2.max_phi_rows": {
+     "committed": 0.5224437941461396,
+     "pass": true,
+     "reproduced": 0.5224437941461398
+    },
+    "models.B_fourier_m33__from_projected_t0.2.min_phi_rows": {
+     "committed": -0.12187245424088171,
+     "pass": true,
+     "reproduced": -0.12187245424088182
+    },
+    "models.B_fourier_m33__from_projected_t0.2.monotonicity_violation_frac_mean": {
+     "committed": 0.0197463768115942,
+     "pass": true,
+     "reproduced": 0.0197463768115942
+    },
+    "models.B_fourier_m33__from_projected_t0.2.negative_mass_T_max": {
+     "committed": 0.5352694889853202,
+     "pass": true,
+     "reproduced": 0.5352694889853392
+    },
+    "models.B_fourier_m33__from_projected_t0.2.negative_mass_max": {
+     "committed": 1.4178609675789111,
+     "pass": true,
+     "reproduced": 1.4178609675788563
+    },
+    "models.B_fourier_m33__from_projected_t0.2.price_full_rms": {
+     "committed": 0.030610595610749067,
+     "pass": true,
+     "reproduced": 0.03061059561074828
+    },
+    "models.B_fourier_m33__from_projected_t0.2.price_interior_rms": {
+     "committed": 0.02228546557834596,
+     "pass": true,
+     "reproduced": 0.022285465578345737
+    },
+    "models.B_fourier_m33__from_projected_t0.2.price_interior_rms_vs_bs": {
+     "committed": 0.022297559965600643,
+     "pass": true,
+     "reproduced": 0.022297559965600348
+    },
+    "models.B_fourier_m33__from_projected_t0.2.projection_err_interior_rms": {
+     "committed": 0.00032294123677544906,
+     "pass": true,
+     "reproduced": 0.0003229412367754366
+    },
+    "models.B_fourier_m33__from_projected_t0.2.reduced_operator_abscissa": {
+     "committed": -3.3960581976240177e-15,
+     "pass": true,
+     "reproduced": 8.076566475877437e-14
+    },
+    "models.B_fourier_m65__from_payoff_t0.butterfly_violation_frac_max": {
+     "committed": 0.5130434782608696,
+     "pass": true,
+     "reproduced": 0.5130434782608696
+    },
+    "models.B_fourier_m65__from_payoff_t0.butterfly_violation_frac_mean": {
+     "committed": 0.49800724637681154,
+     "pass": true,
+     "reproduced": 0.49800724637681154
+    },
+    "models.B_fourier_m65__from_payoff_t0.calendar_violation_frac_max": {
+     "committed": 0.5217391304347826,
+     "pass": true,
+     "reproduced": 0.5217391304347826
+    },
+    "models.B_fourier_m65__from_payoff_t0.calendar_violation_frac_mean": {
+     "committed": 0.5028985507246376,
+     "pass": true,
+     "reproduced": 0.5028985507246376
+    },
+    "models.B_fourier_m65__from_payoff_t0.density_l2_interior_max": {
+     "committed": 0.020953682844315202,
+     "pass": true,
+     "reproduced": 0.02095368284430337
+    },
+    "models.B_fourier_m65__from_payoff_t0.density_l2_interior_mean": {
+     "committed": 0.019044748113507787,
+     "pass": true,
+     "reproduced": 0.019044748113508845
+    },
+    "models.B_fourier_m65__from_payoff_t0.dof": {
+     "committed": 65.0,
+     "pass": true,
+     "reproduced": 65.0
+    },
+    "models.B_fourier_m65__from_payoff_t0.inverse_vol_invalid_frac_max": {
+     "committed": 0.5608695652173913,
+     "pass": true,
+     "reproduced": 0.5608695652173913
+    },
+    "models.B_fourier_m65__from_payoff_t0.inverse_vol_invalid_frac_mean": {
+     "committed": 0.5135869565217391,
+     "pass": true,
+     "reproduced": 0.5135869565217391
+    },
+    "models.B_fourier_m65__from_payoff_t0.inverse_vol_median_relerr_mean": {
+     "committed": 0.019036783206341768,
+     "pass": true,
+     "reproduced": 0.019036783206280668
+    },
+    "models.B_fourier_m65__from_payoff_t0.mass_T_max": {
+     "committed": 0.015170277791039535,
+     "pass": true,
+     "reproduced": 0.01517027779105544
+    },
+    "models.B_fourier_m65__from_payoff_t0.max_phi_rows": {
+     "committed": 0.4758674901137804,
+     "pass": true,
+     "reproduced": 0.47586749011377827
+    },
+    "models.B_fourier_m65__from_payoff_t0.min_phi_rows": {
+     "committed": -0.12331039619162966,
+     "pass": true,
+     "reproduced": -0.1233103961916345
+    },
+    "models.B_fourier_m65__from_payoff_t0.monotonicity_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_fourier_m65__from_payoff_t0.negative_mass_T_max": {
+     "committed": 0.5162434582938793,
+     "pass": true,
+     "reproduced": 0.5162434582938604
+    },
+    "models.B_fourier_m65__from_payoff_t0.negative_mass_max": {
+     "committed": 0.9416145575462883,
+     "pass": true,
+     "reproduced": 0.9416145575463836
+    },
+    "models.B_fourier_m65__from_payoff_t0.price_full_rms": {
+     "committed": 0.0344500233652073,
+     "pass": true,
+     "reproduced": 0.03445002336520836
+    },
+    "models.B_fourier_m65__from_payoff_t0.price_interior_rms": {
+     "committed": 0.02582608600243952,
+     "pass": true,
+     "reproduced": 0.025826086002440744
+    },
+    "models.B_fourier_m65__from_payoff_t0.price_interior_rms_vs_bs": {
+     "committed": 0.02583740240674016,
+     "pass": true,
+     "reproduced": 0.025837402406741254
+    },
+    "models.B_fourier_m65__from_payoff_t0.projection_err_interior_rms": {
+     "committed": 8.834635504845197e-05,
+     "pass": true,
+     "reproduced": 8.834635504845148e-05
+    },
+    "models.B_fourier_m65__from_payoff_t0.reduced_operator_abscissa": {
+     "committed": -3.119207095906236e-13,
+     "pass": true,
+     "reproduced": -3.3011033673341225e-14
+    },
+    "models.B_fourier_m65__from_projected_t0.2.butterfly_violation_frac_max": {
+     "committed": 0.46956521739130436,
+     "pass": true,
+     "reproduced": 0.46956521739130436
+    },
+    "models.B_fourier_m65__from_projected_t0.2.butterfly_violation_frac_mean": {
+     "committed": 0.4451086956521739,
+     "pass": true,
+     "reproduced": 0.4451086956521739
+    },
+    "models.B_fourier_m65__from_projected_t0.2.calendar_violation_frac_max": {
+     "committed": 0.47391304347826085,
+     "pass": true,
+     "reproduced": 0.47391304347826085
+    },
+    "models.B_fourier_m65__from_projected_t0.2.calendar_violation_frac_mean": {
+     "committed": 0.4407608695652174,
+     "pass": true,
+     "reproduced": 0.4407608695652174
+    },
+    "models.B_fourier_m65__from_projected_t0.2.density_l2_interior_max": {
+     "committed": 0.026273617285085784,
+     "pass": true,
+     "reproduced": 0.02627361728507759
+    },
+    "models.B_fourier_m65__from_projected_t0.2.density_l2_interior_mean": {
+     "committed": 0.01676088513315321,
+     "pass": true,
+     "reproduced": 0.0167608851331567
+    },
+    "models.B_fourier_m65__from_projected_t0.2.dof": {
+     "committed": 65.0,
+     "pass": true,
+     "reproduced": 65.0
+    },
+    "models.B_fourier_m65__from_projected_t0.2.inverse_vol_invalid_frac_max": {
+     "committed": 0.4782608695652174,
+     "pass": true,
+     "reproduced": 0.4782608695652174
+    },
+    "models.B_fourier_m65__from_projected_t0.2.inverse_vol_invalid_frac_mean": {
+     "committed": 0.46811594202898554,
+     "pass": true,
+     "reproduced": 0.46811594202898554
+    },
+    "models.B_fourier_m65__from_projected_t0.2.inverse_vol_median_relerr_mean": {
+     "committed": 0.03863041155811902,
+     "pass": true,
+     "reproduced": 0.038630411557944784
+    },
+    "models.B_fourier_m65__from_projected_t0.2.mass_T_max": {
+     "committed": 0.016979343106951816,
+     "pass": true,
+     "reproduced": 0.016979343106984818
+    },
+    "models.B_fourier_m65__from_projected_t0.2.max_phi_rows": {
+     "committed": 0.5261994222418481,
+     "pass": true,
+     "reproduced": 0.5261994222418482
+    },
+    "models.B_fourier_m65__from_projected_t0.2.min_phi_rows": {
+     "committed": -0.10887938665098687,
+     "pass": true,
+     "reproduced": -0.10887938665098787
+    },
+    "models.B_fourier_m65__from_projected_t0.2.monotonicity_violation_frac_mean": {
+     "committed": 0.010507246376811594,
+     "pass": true,
+     "reproduced": 0.010507246376811594
+    },
+    "models.B_fourier_m65__from_projected_t0.2.negative_mass_T_max": {
+     "committed": 0.559651164914044,
+     "pass": true,
+     "reproduced": 0.5596511649140479
+    },
+    "models.B_fourier_m65__from_projected_t0.2.negative_mass_max": {
+     "committed": 1.4326651466410618,
+     "pass": true,
+     "reproduced": 1.4326651466410207
+    },
+    "models.B_fourier_m65__from_projected_t0.2.price_full_rms": {
+     "committed": 0.02625946408100488,
+     "pass": true,
+     "reproduced": 0.026259464081004432
+    },
+    "models.B_fourier_m65__from_projected_t0.2.price_interior_rms": {
+     "committed": 0.01907766953382817,
+     "pass": true,
+     "reproduced": 0.0190776695338282
+    },
+    "models.B_fourier_m65__from_projected_t0.2.price_interior_rms_vs_bs": {
+     "committed": 0.019089931752374775,
+     "pass": true,
+     "reproduced": 0.019089931752374733
+    },
+    "models.B_fourier_m65__from_projected_t0.2.projection_err_interior_rms": {
+     "committed": 8.834635504845197e-05,
+     "pass": true,
+     "reproduced": 8.834635504845148e-05
+    },
+    "models.B_fourier_m65__from_projected_t0.2.reduced_operator_abscissa": {
+     "committed": -3.119207095906236e-13,
+     "pass": true,
+     "reproduced": -3.3011033673341225e-14
+    },
+    "models.B_full256.butterfly_violation_frac_max": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_full256.butterfly_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_full256.calendar_violation_frac_max": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_full256.calendar_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_full256.density_l2_interior_max": {
+     "committed": 1.1109686165805361e-05,
+     "pass": true,
+     "reproduced": 1.1109686181045173e-05
+    },
+    "models.B_full256.density_l2_interior_mean": {
+     "committed": 4.318515389773655e-06,
+     "pass": true,
+     "reproduced": 4.318515396951583e-06
+    },
+    "models.B_full256.dof": {
+     "committed": 256.0,
+     "pass": true,
+     "reproduced": 256.0
+    },
+    "models.B_full256.inverse_vol_invalid_frac_max": {
+     "committed": 0.4782608695652174,
+     "pass": true,
+     "reproduced": 0.4782608695652174
+    },
+    "models.B_full256.inverse_vol_invalid_frac_mean": {
+     "committed": 0.1688405797101449,
+     "pass": true,
+     "reproduced": 0.1688405797101449
+    },
+    "models.B_full256.inverse_vol_median_relerr_mean": {
+     "committed": 1.505132984971054e-05,
+     "pass": true,
+     "reproduced": 1.505132979384088e-05
+    },
+    "models.B_full256.mass_T_max": {
+     "committed": 0.9400291149105204,
+     "pass": true,
+     "reproduced": 0.9400291149104145
+    },
+    "models.B_full256.max_phi_rows": {
+     "committed": 0.5291177332078756,
+     "pass": true,
+     "reproduced": 0.5291177332078756
+    },
+    "models.B_full256.min_phi_rows": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_full256.monotonicity_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_full256.negative_mass_T_max": {
+     "committed": 9.497697424556065e-09,
+     "pass": true,
+     "reproduced": 9.49769742745087e-09
+    },
+    "models.B_full256.negative_mass_max": {
+     "committed": 6.185524305087498e-07,
+     "pass": true,
+     "reproduced": 6.185524621277203e-07
+    },
+    "models.B_full256.price_full_rms": {
+     "committed": 3.822451892237997e-06,
+     "pass": true,
+     "reproduced": 3.822451894074858e-06
+    },
+    "models.B_full256.price_interior_rms": {
+     "committed": 4.029683796596483e-06,
+     "pass": true,
+     "reproduced": 4.029683798538508e-06
+    },
+    "models.B_full256.price_interior_rms_vs_bs": {
+     "committed": 2.0336928951339676e-05,
+     "pass": true,
+     "reproduced": 2.0336928950645363e-05
+    },
+    "models.B_full512_reference.dof": {
+     "committed": 512.0,
+     "pass": true,
+     "reproduced": 512.0
+    },
+    "models.B_sine_m17__from_payoff_t0.butterfly_violation_frac_max": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m17__from_payoff_t0.butterfly_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m17__from_payoff_t0.calendar_violation_frac_max": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m17__from_payoff_t0.calendar_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m17__from_payoff_t0.density_l2_interior_max": {
+     "committed": 0.0003119306699247896,
+     "pass": true,
+     "reproduced": 0.0003119306699477082
+    },
+    "models.B_sine_m17__from_payoff_t0.density_l2_interior_mean": {
+     "committed": 0.00010380829999042541,
+     "pass": true,
+     "reproduced": 0.00010380829999323618
+    },
+    "models.B_sine_m17__from_payoff_t0.dof": {
+     "committed": 17.0,
+     "pass": true,
+     "reproduced": 17.0
+    },
+    "models.B_sine_m17__from_payoff_t0.inverse_vol_invalid_frac_max": {
+     "committed": 0.44782608695652176,
+     "pass": true,
+     "reproduced": 0.44782608695652176
+    },
+    "models.B_sine_m17__from_payoff_t0.inverse_vol_invalid_frac_mean": {
+     "committed": 0.16920289855072465,
+     "pass": true,
+     "reproduced": 0.16920289855072465
+    },
+    "models.B_sine_m17__from_payoff_t0.inverse_vol_median_relerr_mean": {
+     "committed": 0.001564374194980513,
+     "pass": true,
+     "reproduced": 0.0015643741956521398
+    },
+    "models.B_sine_m17__from_payoff_t0.mass_T_max": {
+     "committed": 0.9385296487365172,
+     "pass": true,
+     "reproduced": 0.9385296487364939
+    },
+    "models.B_sine_m17__from_payoff_t0.max_phi_rows": {
+     "committed": 0.5291177332078756,
+     "pass": true,
+     "reproduced": 0.5291177332078756
+    },
+    "models.B_sine_m17__from_payoff_t0.min_phi_rows": {
+     "committed": -4.310746027302859e-06,
+     "pass": true,
+     "reproduced": -4.310746028385326e-06
+    },
+    "models.B_sine_m17__from_payoff_t0.monotonicity_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m17__from_payoff_t0.negative_mass_T_max": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m17__from_payoff_t0.negative_mass_max": {
+     "committed": 0.0006320541086551129,
+     "pass": true,
+     "reproduced": 0.0006320541086533391
+    },
+    "models.B_sine_m17__from_payoff_t0.price_full_rms": {
+     "committed": 1.2342322272758897e-05,
+     "pass": true,
+     "reproduced": 1.2342322272466646e-05
+    },
+    "models.B_sine_m17__from_payoff_t0.price_interior_rms": {
+     "committed": 1.0266903715459808e-05,
+     "pass": true,
+     "reproduced": 1.0266903715493589e-05
+    },
+    "models.B_sine_m17__from_payoff_t0.price_interior_rms_vs_bs": {
+     "committed": 2.410471546985992e-05,
+     "pass": true,
+     "reproduced": 2.4104715469489235e-05
+    },
+    "models.B_sine_m17__from_payoff_t0.projection_err_interior_rms": {
+     "committed": 3.42242571039169e-06,
+     "pass": true,
+     "reproduced": 3.422425710312479e-06
+    },
+    "models.B_sine_m17__from_payoff_t0.reduced_operator_abscissa": {
+     "committed": -0.21371400238547705,
+     "pass": true,
+     "reproduced": -0.2137140023855155
+    },
+    "models.B_sine_m17__from_projected_t0.2.butterfly_violation_frac_max": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m17__from_projected_t0.2.butterfly_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m17__from_projected_t0.2.calendar_violation_frac_max": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m17__from_projected_t0.2.calendar_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m17__from_projected_t0.2.density_l2_interior_max": {
+     "committed": 0.000153054740192784,
+     "pass": true,
+     "reproduced": 0.00015305474017384844
+    },
+    "models.B_sine_m17__from_projected_t0.2.density_l2_interior_mean": {
+     "committed": 6.660480236042134e-05,
+     "pass": true,
+     "reproduced": 6.660480235924792e-05
+    },
+    "models.B_sine_m17__from_projected_t0.2.dof": {
+     "committed": 17.0,
+     "pass": true,
+     "reproduced": 17.0
+    },
+    "models.B_sine_m17__from_projected_t0.2.inverse_vol_invalid_frac_max": {
+     "committed": 0.4608695652173913,
+     "pass": true,
+     "reproduced": 0.4608695652173913
+    },
+    "models.B_sine_m17__from_projected_t0.2.inverse_vol_invalid_frac_mean": {
+     "committed": 0.16992753623188403,
+     "pass": true,
+     "reproduced": 0.16992753623188403
+    },
+    "models.B_sine_m17__from_projected_t0.2.inverse_vol_median_relerr_mean": {
+     "committed": 0.0013825598261742718,
+     "pass": true,
+     "reproduced": 0.0013825598269497086
+    },
+    "models.B_sine_m17__from_projected_t0.2.mass_T_max": {
+     "committed": 0.9384307931938488,
+     "pass": true,
+     "reproduced": 0.9384307931938665
+    },
+    "models.B_sine_m17__from_projected_t0.2.max_phi_rows": {
+     "committed": 0.5291177332078756,
+     "pass": true,
+     "reproduced": 0.5291177332078756
+    },
+    "models.B_sine_m17__from_projected_t0.2.min_phi_rows": {
+     "committed": -1.693816600478737e-06,
+     "pass": true,
+     "reproduced": -1.6938166006175148e-06
+    },
+    "models.B_sine_m17__from_projected_t0.2.monotonicity_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m17__from_projected_t0.2.negative_mass_T_max": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m17__from_projected_t0.2.negative_mass_max": {
+     "committed": 0.000232116183067858,
+     "pass": true,
+     "reproduced": 0.0002321161830778323
+    },
+    "models.B_sine_m17__from_projected_t0.2.price_full_rms": {
+     "committed": 6.168982811284775e-06,
+     "pass": true,
+     "reproduced": 6.168982813199517e-06
+    },
+    "models.B_sine_m17__from_projected_t0.2.price_interior_rms": {
+     "committed": 5.023873456938568e-06,
+     "pass": true,
+     "reproduced": 5.023873458387132e-06
+    },
+    "models.B_sine_m17__from_projected_t0.2.price_interior_rms_vs_bs": {
+     "committed": 2.1298850314809e-05,
+     "pass": true,
+     "reproduced": 2.1298850314669633e-05
+    },
+    "models.B_sine_m17__from_projected_t0.2.projection_err_interior_rms": {
+     "committed": 3.42242571039169e-06,
+     "pass": true,
+     "reproduced": 3.422425710312479e-06
+    },
+    "models.B_sine_m17__from_projected_t0.2.reduced_operator_abscissa": {
+     "committed": -0.21371400238547705,
+     "pass": true,
+     "reproduced": -0.2137140023855155
+    },
+    "models.B_sine_m33__from_payoff_t0.butterfly_violation_frac_max": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m33__from_payoff_t0.butterfly_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m33__from_payoff_t0.calendar_violation_frac_max": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m33__from_payoff_t0.calendar_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m33__from_payoff_t0.density_l2_interior_max": {
+     "committed": 2.678623161412936e-05,
+     "pass": true,
+     "reproduced": 2.678623159333341e-05
+    },
+    "models.B_sine_m33__from_payoff_t0.density_l2_interior_mean": {
+     "committed": 1.425287114706665e-05,
+     "pass": true,
+     "reproduced": 1.4252871134406994e-05
+    },
+    "models.B_sine_m33__from_payoff_t0.dof": {
+     "committed": 33.0,
+     "pass": true,
+     "reproduced": 33.0
+    },
+    "models.B_sine_m33__from_payoff_t0.inverse_vol_invalid_frac_max": {
+     "committed": 0.4782608695652174,
+     "pass": true,
+     "reproduced": 0.4782608695652174
+    },
+    "models.B_sine_m33__from_payoff_t0.inverse_vol_invalid_frac_mean": {
+     "committed": 0.1690217391304348,
+     "pass": true,
+     "reproduced": 0.1690217391304348
+    },
+    "models.B_sine_m33__from_payoff_t0.inverse_vol_median_relerr_mean": {
+     "committed": 0.0002079116035471209,
+     "pass": true,
+     "reproduced": 0.00020791160200068432
+    },
+    "models.B_sine_m33__from_payoff_t0.mass_T_max": {
+     "committed": 0.9397467037273174,
+     "pass": true,
+     "reproduced": 0.9397467037272198
+    },
+    "models.B_sine_m33__from_payoff_t0.max_phi_rows": {
+     "committed": 0.5291177332078756,
+     "pass": true,
+     "reproduced": 0.5291177332078756
+    },
+    "models.B_sine_m33__from_payoff_t0.min_phi_rows": {
+     "committed": -6.140370200150014e-10,
+     "pass": true,
+     "reproduced": -6.140369931267875e-10
+    },
+    "models.B_sine_m33__from_payoff_t0.monotonicity_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m33__from_payoff_t0.negative_mass_T_max": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m33__from_payoff_t0.negative_mass_max": {
+     "committed": 1.9184975685144505e-06,
+     "pass": true,
+     "reproduced": 1.9184975368954797e-06
+    },
+    "models.B_sine_m33__from_payoff_t0.price_full_rms": {
+     "committed": 3.9627519120766646e-06,
+     "pass": true,
+     "reproduced": 3.962751913444211e-06
+    },
+    "models.B_sine_m33__from_payoff_t0.price_interior_rms": {
+     "committed": 4.147628580137326e-06,
+     "pass": true,
+     "reproduced": 4.147628581694908e-06
+    },
+    "models.B_sine_m33__from_payoff_t0.price_interior_rms_vs_bs": {
+     "committed": 2.0402773572909236e-05,
+     "pass": true,
+     "reproduced": 2.0402773572732674e-05
+    },
+    "models.B_sine_m33__from_payoff_t0.projection_err_interior_rms": {
+     "committed": 2.2471413474455521e-07,
+     "pass": true,
+     "reproduced": 2.2471413476686715e-07
+    },
+    "models.B_sine_m33__from_payoff_t0.reduced_operator_abscissa": {
+     "committed": -0.21369639032469318,
+     "pass": true,
+     "reproduced": -0.21369639032456014
+    },
+    "models.B_sine_m33__from_projected_t0.2.butterfly_violation_frac_max": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m33__from_projected_t0.2.butterfly_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m33__from_projected_t0.2.calendar_violation_frac_max": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m33__from_projected_t0.2.calendar_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m33__from_projected_t0.2.density_l2_interior_max": {
+     "committed": 2.691989187590428e-05,
+     "pass": true,
+     "reproduced": 2.6919891859224965e-05
+    },
+    "models.B_sine_m33__from_projected_t0.2.density_l2_interior_mean": {
+     "committed": 1.4273957133703138e-05,
+     "pass": true,
+     "reproduced": 1.4273957121752206e-05
+    },
+    "models.B_sine_m33__from_projected_t0.2.dof": {
+     "committed": 33.0,
+     "pass": true,
+     "reproduced": 33.0
+    },
+    "models.B_sine_m33__from_projected_t0.2.inverse_vol_invalid_frac_max": {
+     "committed": 0.4782608695652174,
+     "pass": true,
+     "reproduced": 0.4782608695652174
+    },
+    "models.B_sine_m33__from_projected_t0.2.inverse_vol_invalid_frac_mean": {
+     "committed": 0.1690217391304348,
+     "pass": true,
+     "reproduced": 0.1690217391304348
+    },
+    "models.B_sine_m33__from_projected_t0.2.inverse_vol_median_relerr_mean": {
+     "committed": 0.00032528059369899465,
+     "pass": true,
+     "reproduced": 0.00032528059633354613
+    },
+    "models.B_sine_m33__from_projected_t0.2.mass_T_max": {
+     "committed": 0.9397402529848806,
+     "pass": true,
+     "reproduced": 0.9397402529848414
+    },
+    "models.B_sine_m33__from_projected_t0.2.max_phi_rows": {
+     "committed": 0.5291177332078756,
+     "pass": true,
+     "reproduced": 0.5291177332078756
+    },
+    "models.B_sine_m33__from_projected_t0.2.min_phi_rows": {
+     "committed": -1.9476048551680947e-10,
+     "pass": true,
+     "reproduced": -1.9476047163902166e-10
+    },
+    "models.B_sine_m33__from_projected_t0.2.monotonicity_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m33__from_projected_t0.2.negative_mass_T_max": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m33__from_projected_t0.2.negative_mass_max": {
+     "committed": 1.942035710302314e-06,
+     "pass": true,
+     "reproduced": 1.9420357419212844e-06
+    },
+    "models.B_sine_m33__from_projected_t0.2.price_full_rms": {
+     "committed": 3.839124767603011e-06,
+     "pass": true,
+     "reproduced": 3.8391247693005194e-06
+    },
+    "models.B_sine_m33__from_projected_t0.2.price_interior_rms": {
+     "committed": 4.029969646858663e-06,
+     "pass": true,
+     "reproduced": 4.029969648635063e-06
+    },
+    "models.B_sine_m33__from_projected_t0.2.price_interior_rms_vs_bs": {
+     "committed": 2.030406640501303e-05,
+     "pass": true,
+     "reproduced": 2.0304066404833567e-05
+    },
+    "models.B_sine_m33__from_projected_t0.2.projection_err_interior_rms": {
+     "committed": 2.2471413474455521e-07,
+     "pass": true,
+     "reproduced": 2.2471413476686715e-07
+    },
+    "models.B_sine_m33__from_projected_t0.2.reduced_operator_abscissa": {
+     "committed": -0.21369639032469318,
+     "pass": true,
+     "reproduced": -0.21369639032456014
+    },
+    "models.B_sine_m65__from_payoff_t0.butterfly_violation_frac_max": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m65__from_payoff_t0.butterfly_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m65__from_payoff_t0.calendar_violation_frac_max": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m65__from_payoff_t0.calendar_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m65__from_payoff_t0.density_l2_interior_max": {
+     "committed": 1.110298749317066e-05,
+     "pass": true,
+     "reproduced": 1.1102987510088889e-05
+    },
+    "models.B_sine_m65__from_payoff_t0.density_l2_interior_mean": {
+     "committed": 5.138008422542428e-06,
+     "pass": true,
+     "reproduced": 5.138008417070907e-06
+    },
+    "models.B_sine_m65__from_payoff_t0.dof": {
+     "committed": 65.0,
+     "pass": true,
+     "reproduced": 65.0
+    },
+    "models.B_sine_m65__from_payoff_t0.inverse_vol_invalid_frac_max": {
+     "committed": 0.4782608695652174,
+     "pass": true,
+     "reproduced": 0.4782608695652174
+    },
+    "models.B_sine_m65__from_payoff_t0.inverse_vol_invalid_frac_mean": {
+     "committed": 0.1688405797101449,
+     "pass": true,
+     "reproduced": 0.1688405797101449
+    },
+    "models.B_sine_m65__from_payoff_t0.inverse_vol_median_relerr_mean": {
+     "committed": 4.3737170088998155e-05,
+     "pass": true,
+     "reproduced": 4.373717380844189e-05
+    },
+    "models.B_sine_m65__from_payoff_t0.mass_T_max": {
+     "committed": 0.939978510146466,
+     "pass": true,
+     "reproduced": 0.9399785101464159
+    },
+    "models.B_sine_m65__from_payoff_t0.max_phi_rows": {
+     "committed": 0.5291177332078756,
+     "pass": true,
+     "reproduced": 0.5291177332078756
+    },
+    "models.B_sine_m65__from_payoff_t0.min_phi_rows": {
+     "committed": -5.488263316033581e-10,
+     "pass": true,
+     "reproduced": -5.488244581020041e-10
+    },
+    "models.B_sine_m65__from_payoff_t0.monotonicity_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m65__from_payoff_t0.negative_mass_T_max": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m65__from_payoff_t0.negative_mass_max": {
+     "committed": 1.481006711358803e-06,
+     "pass": true,
+     "reproduced": 1.481006711358803e-06
+    },
+    "models.B_sine_m65__from_payoff_t0.price_full_rms": {
+     "committed": 3.820380129579848e-06,
+     "pass": true,
+     "reproduced": 3.820380125309129e-06
+    },
+    "models.B_sine_m65__from_payoff_t0.price_interior_rms": {
+     "committed": 4.027408404740677e-06,
+     "pass": true,
+     "reproduced": 4.027408400231717e-06
+    },
+    "models.B_sine_m65__from_payoff_t0.price_interior_rms_vs_bs": {
+     "committed": 2.0335352930806295e-05,
+     "pass": true,
+     "reproduced": 2.03353529279163e-05
+    },
+    "models.B_sine_m65__from_payoff_t0.projection_err_interior_rms": {
+     "committed": 1.04370734081915e-08,
+     "pass": true,
+     "reproduced": 1.0437073418147917e-08
+    },
+    "models.B_sine_m65__from_payoff_t0.reduced_operator_abscissa": {
+     "committed": -0.21369575413024694,
+     "pass": true,
+     "reproduced": -0.21369575413061145
+    },
+    "models.B_sine_m65__from_projected_t0.2.butterfly_violation_frac_max": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m65__from_projected_t0.2.butterfly_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m65__from_projected_t0.2.calendar_violation_frac_max": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m65__from_projected_t0.2.calendar_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m65__from_projected_t0.2.density_l2_interior_max": {
+     "committed": 1.1109528625035679e-05,
+     "pass": true,
+     "reproduced": 1.110952864133226e-05
+    },
+    "models.B_sine_m65__from_projected_t0.2.density_l2_interior_mean": {
+     "committed": 5.135203920333294e-06,
+     "pass": true,
+     "reproduced": 5.135203914871981e-06
+    },
+    "models.B_sine_m65__from_projected_t0.2.dof": {
+     "committed": 65.0,
+     "pass": true,
+     "reproduced": 65.0
+    },
+    "models.B_sine_m65__from_projected_t0.2.inverse_vol_invalid_frac_max": {
+     "committed": 0.4782608695652174,
+     "pass": true,
+     "reproduced": 0.4782608695652174
+    },
+    "models.B_sine_m65__from_projected_t0.2.inverse_vol_invalid_frac_mean": {
+     "committed": 0.1688405797101449,
+     "pass": true,
+     "reproduced": 0.1688405797101449
+    },
+    "models.B_sine_m65__from_projected_t0.2.inverse_vol_median_relerr_mean": {
+     "committed": 0.00016163837967425753,
+     "pass": true,
+     "reproduced": 0.0001616383793751488
+    },
+    "models.B_sine_m65__from_projected_t0.2.mass_T_max": {
+     "committed": 0.9399786221539589,
+     "pass": true,
+     "reproduced": 0.9399786221539973
+    },
+    "models.B_sine_m65__from_projected_t0.2.max_phi_rows": {
+     "committed": 0.5291177332078756,
+     "pass": true,
+     "reproduced": 0.5291177332078756
+    },
+    "models.B_sine_m65__from_projected_t0.2.min_phi_rows": {
+     "committed": -6.8652045853712096e-12,
+     "pass": true,
+     "reproduced": -6.8652115242651135e-12
+    },
+    "models.B_sine_m65__from_projected_t0.2.monotonicity_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m65__from_projected_t0.2.negative_mass_T_max": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m65__from_projected_t0.2.negative_mass_max": {
+     "committed": 1.4803381282287284e-06,
+     "pass": true,
+     "reproduced": 1.4803380966097582e-06
+    },
+    "models.B_sine_m65__from_projected_t0.2.price_full_rms": {
+     "committed": 3.822404676755557e-06,
+     "pass": true,
+     "reproduced": 3.822404676261096e-06
+    },
+    "models.B_sine_m65__from_projected_t0.2.price_interior_rms": {
+     "committed": 4.029621835190128e-06,
+     "pass": true,
+     "reproduced": 4.029621834665042e-06
+    },
+    "models.B_sine_m65__from_projected_t0.2.price_interior_rms_vs_bs": {
+     "committed": 2.033711146345299e-05,
+     "pass": true,
+     "reproduced": 2.0337111461536912e-05
+    },
+    "models.B_sine_m65__from_projected_t0.2.projection_err_interior_rms": {
+     "committed": 1.04370734081915e-08,
+     "pass": true,
+     "reproduced": 1.0437073418147917e-08
+    },
+    "models.B_sine_m65__from_projected_t0.2.reduced_operator_abscissa": {
+     "committed": -0.21369575413024694,
+     "pass": true,
+     "reproduced": -0.21369575413061145
+    },
+    "uncertainty.full512_vs_bs_interior_rms": {
+     "committed": 1.9701233836255504e-05,
+     "pass": true,
+     "reproduced": 1.9701233836360932e-05
+    },
+    "uncertainty.grid_256_vs_512_density_l2": {
+     "committed": 4.318515389773655e-06,
+     "pass": true,
+     "reproduced": 4.318515396951583e-06
+    },
+    "uncertainty.grid_256_vs_512_interior_rms": {
+     "committed": 4.029683796596483e-06,
+     "pass": true,
+     "reproduced": 4.029683798538508e-06
+    }
+   },
+   "n_failed": 0,
+   "reproduced_identity": {
+    "K_max": 3000.0,
+    "K_min": 500.0,
+    "algo": 1,
+    "case": "986601137fc64a69",
+    "case_id": "C_sig0.30",
+    "code": "302d37258262c714",
+    "dims_fourier": [
+     16,
+     32
+    ],
+    "dims_sine": [
+     17,
+     33,
+     65
+    ],
+    "gate": "gate5",
+    "n_k": 256,
+    "n_k_ref": 512,
+    "schema": 2,
+    "sub": 16
+   },
+   "reproduced_wall_seconds": 0.627300500869751,
+   "status": "done"
+  },
+  "F_fresh_base0.28_t0.2_x0.05": {
+   "committed_identity": {
+    "K_max": 3000.0,
+    "K_min": 500.0,
+    "algo": 1,
+    "case": "f76128638b884cc2",
+    "case_id": "F_fresh_base0.28_t0.2_x0.05",
+    "code": "302d37258262c714",
+    "dims_fourier": [
+     16,
+     32
+    ],
+    "dims_sine": [
+     17,
+     33,
+     65
+    ],
+    "gate": "gate5",
+    "n_k": 256,
+    "n_k_ref": 512,
+    "schema": 2,
+    "sub": 16
+   },
+   "failed_keys": [],
+   "metrics": {
+    "models.A_fourier_m33__from_payoff_t0.butterfly_violation_frac_max": {
+     "committed": 0.29130434782608694,
+     "pass": true,
+     "reproduced": 0.29130434782608694
+    },
+    "models.A_fourier_m33__from_payoff_t0.butterfly_violation_frac_mean": {
+     "committed": 0.2505434782608696,
+     "pass": true,
+     "reproduced": 0.2505434782608696
+    },
+    "models.A_fourier_m33__from_payoff_t0.calendar_violation_frac_max": {
+     "committed": 0.2956521739130435,
+     "pass": true,
+     "reproduced": 0.2956521739130435
+    },
+    "models.A_fourier_m33__from_payoff_t0.calendar_violation_frac_mean": {
+     "committed": 0.2605072463768116,
+     "pass": true,
+     "reproduced": 0.2605072463768116
+    },
+    "models.A_fourier_m33__from_payoff_t0.density_l2_interior_max": {
+     "committed": 0.043371369436640696,
+     "pass": true,
+     "reproduced": 0.04337136943658101
+    },
+    "models.A_fourier_m33__from_payoff_t0.density_l2_interior_mean": {
+     "committed": 0.024194546578402504,
+     "pass": true,
+     "reproduced": 0.02419454657840006
+    },
+    "models.A_fourier_m33__from_payoff_t0.dof": {
+     "committed": 33.0,
+     "pass": true,
+     "reproduced": 33.0
+    },
+    "models.A_fourier_m33__from_payoff_t0.inverse_vol_invalid_frac_max": {
+     "committed": 0.3,
+     "pass": true,
+     "reproduced": 0.3
+    },
+    "models.A_fourier_m33__from_payoff_t0.inverse_vol_invalid_frac_mean": {
+     "committed": 0.26666666666666666,
+     "pass": true,
+     "reproduced": 0.26666666666666666
+    },
+    "models.A_fourier_m33__from_payoff_t0.inverse_vol_median_relerr_mean": {
+     "committed": 0.022459281350955304,
+     "pass": true,
+     "reproduced": 0.022459281349759646
+    },
+    "models.A_fourier_m33__from_payoff_t0.mass_T_max": {
+     "committed": 0.0012728581457336872,
+     "pass": true,
+     "reproduced": 0.0012728581456625462
+    },
+    "models.A_fourier_m33__from_payoff_t0.max_phi_rows": {
+     "committed": 0.33688463444813493,
+     "pass": true,
+     "reproduced": 0.33688463444813455
+    },
+    "models.A_fourier_m33__from_payoff_t0.min_phi_rows": {
+     "committed": 0.02204697761717165,
+     "pass": true,
+     "reproduced": 0.02204697761717208
+    },
+    "models.A_fourier_m33__from_payoff_t0.monotonicity_violation_frac_mean": {
+     "committed": 0.5650362318840579,
+     "pass": true,
+     "reproduced": 0.5650362318840579
+    },
+    "models.A_fourier_m33__from_payoff_t0.negative_mass_T_max": {
+     "committed": 0.10097790078712124,
+     "pass": true,
+     "reproduced": 0.10097790078712914
+    },
+    "models.A_fourier_m33__from_payoff_t0.negative_mass_max": {
+     "committed": 0.9203610026518392,
+     "pass": true,
+     "reproduced": 0.9203610026518075
+    },
+    "models.A_fourier_m33__from_payoff_t0.price_full_rms": {
+     "committed": 0.1382521993286041,
+     "pass": true,
+     "reproduced": 0.13825219932860472
+    },
+    "models.A_fourier_m33__from_payoff_t0.price_interior_rms": {
+     "committed": 0.12147516657463416,
+     "pass": true,
+     "reproduced": 0.12147516657463475
+    },
+    "models.A_fourier_m33__from_payoff_t0.projection_err_interior_rms": {
+     "committed": 0.008646962555355473,
+     "pass": true,
+     "reproduced": 0.008646962569408676
+    },
+    "models.A_fourier_m33__from_payoff_t0.reduced_operator_abscissa": {
+     "committed": 1.7252246133312459e-13,
+     "pass": true,
+     "reproduced": 2.332054089163166e-13
+    },
+    "models.A_fourier_m33__from_projected_t0.2.butterfly_violation_frac_max": {
+     "committed": 0.5,
+     "pass": true,
+     "reproduced": 0.5
+    },
+    "models.A_fourier_m33__from_projected_t0.2.butterfly_violation_frac_mean": {
+     "committed": 0.22916666666666663,
+     "pass": true,
+     "reproduced": 0.22916666666666663
+    },
+    "models.A_fourier_m33__from_projected_t0.2.calendar_violation_frac_max": {
+     "committed": 0.45217391304347826,
+     "pass": true,
+     "reproduced": 0.45217391304347826
+    },
+    "models.A_fourier_m33__from_projected_t0.2.calendar_violation_frac_mean": {
+     "committed": 0.2266304347826087,
+     "pass": true,
+     "reproduced": 0.2266304347826087
+    },
+    "models.A_fourier_m33__from_projected_t0.2.density_l2_interior_max": {
+     "committed": 0.6330935776775967,
+     "pass": true,
+     "reproduced": 0.6330935776775363
+    },
+    "models.A_fourier_m33__from_projected_t0.2.density_l2_interior_mean": {
+     "committed": 0.052815230524490574,
+     "pass": true,
+     "reproduced": 0.052815230524488145
+    },
+    "models.A_fourier_m33__from_projected_t0.2.dof": {
+     "committed": 33.0,
+     "pass": true,
+     "reproduced": 33.0
+    },
+    "models.A_fourier_m33__from_projected_t0.2.inverse_vol_invalid_frac_max": {
+     "committed": 0.5173913043478261,
+     "pass": true,
+     "reproduced": 0.5173913043478261
+    },
+    "models.A_fourier_m33__from_projected_t0.2.inverse_vol_invalid_frac_mean": {
+     "committed": 0.2440217391304348,
+     "pass": true,
+     "reproduced": 0.2440217391304348
+    },
+    "models.A_fourier_m33__from_projected_t0.2.inverse_vol_median_relerr_mean": {
+     "committed": 0.04149179959355053,
+     "pass": true,
+     "reproduced": 0.0414917995932004
+    },
+    "models.A_fourier_m33__from_projected_t0.2.mass_T_max": {
+     "committed": 0.0016992759977259228,
+     "pass": true,
+     "reproduced": 0.001699275997686392
+    },
+    "models.A_fourier_m33__from_projected_t0.2.max_phi_rows": {
+     "committed": 0.5136930067648909,
+     "pass": true,
+     "reproduced": 0.513693006764824
+    },
+    "models.A_fourier_m33__from_projected_t0.2.min_phi_rows": {
+     "committed": -0.04685942437339327,
+     "pass": true,
+     "reproduced": -0.046859424373405026
+    },
+    "models.A_fourier_m33__from_projected_t0.2.monotonicity_violation_frac_mean": {
+     "committed": 0.5195652173913043,
+     "pass": true,
+     "reproduced": 0.5195652173913043
+    },
+    "models.A_fourier_m33__from_projected_t0.2.negative_mass_T_max": {
+     "committed": 0.13934182690691294,
+     "pass": true,
+     "reproduced": 0.13934182690688132
+    },
+    "models.A_fourier_m33__from_projected_t0.2.negative_mass_max": {
+     "committed": 20.44320050301306,
+     "pass": true,
+     "reproduced": 20.443200503010896
+    },
+    "models.A_fourier_m33__from_projected_t0.2.price_full_rms": {
+     "committed": 0.13334926848490647,
+     "pass": true,
+     "reproduced": 0.1333492684849
+    },
+    "models.A_fourier_m33__from_projected_t0.2.price_interior_rms": {
+     "committed": 0.11624307339511966,
+     "pass": true,
+     "reproduced": 0.11624307339511213
+    },
+    "models.A_fourier_m33__from_projected_t0.2.projection_err_interior_rms": {
+     "committed": 0.008646962555355473,
+     "pass": true,
+     "reproduced": 0.008646962569408676
+    },
+    "models.A_fourier_m33__from_projected_t0.2.reduced_operator_abscissa": {
+     "committed": 1.7252246133312459e-13,
+     "pass": true,
+     "reproduced": 2.332054089163166e-13
+    },
+    "models.A_fourier_m65__from_payoff_t0.butterfly_violation_frac_max": {
+     "committed": 0.2782608695652174,
+     "pass": true,
+     "reproduced": 0.2782608695652174
+    },
+    "models.A_fourier_m65__from_payoff_t0.butterfly_violation_frac_mean": {
+     "committed": 0.24963768115942028,
+     "pass": true,
+     "reproduced": 0.24963768115942028
+    },
+    "models.A_fourier_m65__from_payoff_t0.calendar_violation_frac_max": {
+     "committed": 0.2956521739130435,
+     "pass": true,
+     "reproduced": 0.2956521739130435
+    },
+    "models.A_fourier_m65__from_payoff_t0.calendar_violation_frac_mean": {
+     "committed": 0.25579710144927537,
+     "pass": true,
+     "reproduced": 0.25579710144927537
+    },
+    "models.A_fourier_m65__from_payoff_t0.density_l2_interior_max": {
+     "committed": 0.03852566948942775,
+     "pass": true,
+     "reproduced": 0.03852566948936854
+    },
+    "models.A_fourier_m65__from_payoff_t0.density_l2_interior_mean": {
+     "committed": 0.023065131147118723,
+     "pass": true,
+     "reproduced": 0.023065131147116894
+    },
+    "models.A_fourier_m65__from_payoff_t0.dof": {
+     "committed": 65.0,
+     "pass": true,
+     "reproduced": 65.0
+    },
+    "models.A_fourier_m65__from_payoff_t0.inverse_vol_invalid_frac_max": {
+     "committed": 0.30434782608695654,
+     "pass": true,
+     "reproduced": 0.30434782608695654
+    },
+    "models.A_fourier_m65__from_payoff_t0.inverse_vol_invalid_frac_mean": {
+     "committed": 0.26702898550724635,
+     "pass": true,
+     "reproduced": 0.26702898550724635
+    },
+    "models.A_fourier_m65__from_payoff_t0.inverse_vol_median_relerr_mean": {
+     "committed": 0.011073497518433117,
+     "pass": true,
+     "reproduced": 0.01107349751848565
+    },
+    "models.A_fourier_m65__from_payoff_t0.mass_T_max": {
+     "committed": 0.001833576907857827,
+     "pass": true,
+     "reproduced": 0.0018335769076602212
+    },
+    "models.A_fourier_m65__from_payoff_t0.max_phi_rows": {
+     "committed": 0.35980030843490246,
+     "pass": true,
+     "reproduced": 0.3598003084349024
+    },
+    "models.A_fourier_m65__from_payoff_t0.min_phi_rows": {
+     "committed": 0.02295539889147206,
+     "pass": true,
+     "reproduced": 0.022955398891472353
+    },
+    "models.A_fourier_m65__from_payoff_t0.monotonicity_violation_frac_mean": {
+     "committed": 0.5735507246376811,
+     "pass": true,
+     "reproduced": 0.5735507246376811
+    },
+    "models.A_fourier_m65__from_payoff_t0.negative_mass_T_max": {
+     "committed": 0.11497839808604535,
+     "pass": true,
+     "reproduced": 0.11497839808617971
+    },
+    "models.A_fourier_m65__from_payoff_t0.negative_mass_max": {
+     "committed": 0.9662484208181293,
+     "pass": true,
+     "reproduced": 0.966248420818161
+    },
+    "models.A_fourier_m65__from_payoff_t0.price_full_rms": {
+     "committed": 0.1441890436190098,
+     "pass": true,
+     "reproduced": 0.14418904361901033
+    },
+    "models.A_fourier_m65__from_payoff_t0.price_interior_rms": {
+     "committed": 0.12856452273570407,
+     "pass": true,
+     "reproduced": 0.12856452273570457
+    },
+    "models.A_fourier_m65__from_payoff_t0.projection_err_interior_rms": {
+     "committed": 0.004296743298428342,
+     "pass": true,
+     "reproduced": 0.0042967433054244
+    },
+    "models.A_fourier_m65__from_payoff_t0.reduced_operator_abscissa": {
+     "committed": -3.6933363113632974e-13,
+     "pass": true,
+     "reproduced": -1.3805575893191733e-12
+    },
+    "models.A_fourier_m65__from_projected_t0.2.butterfly_violation_frac_max": {
+     "committed": 0.4956521739130435,
+     "pass": true,
+     "reproduced": 0.4956521739130435
+    },
+    "models.A_fourier_m65__from_projected_t0.2.butterfly_violation_frac_mean": {
+     "committed": 0.22228260869565217,
+     "pass": true,
+     "reproduced": 0.22228260869565217
+    },
+    "models.A_fourier_m65__from_projected_t0.2.calendar_violation_frac_max": {
+     "committed": 0.43043478260869567,
+     "pass": true,
+     "reproduced": 0.43043478260869567
+    },
+    "models.A_fourier_m65__from_projected_t0.2.calendar_violation_frac_mean": {
+     "committed": 0.22083333333333333,
+     "pass": true,
+     "reproduced": 0.22083333333333333
+    },
+    "models.A_fourier_m65__from_projected_t0.2.density_l2_interior_max": {
+     "committed": 1.1566572794468584,
+     "pass": true,
+     "reproduced": 1.1566572794468568
+    },
+    "models.A_fourier_m65__from_projected_t0.2.density_l2_interior_mean": {
+     "committed": 0.07239810916938415,
+     "pass": true,
+     "reproduced": 0.07239810916938477
+    },
+    "models.A_fourier_m65__from_projected_t0.2.dof": {
+     "committed": 65.0,
+     "pass": true,
+     "reproduced": 65.0
+    },
+    "models.A_fourier_m65__from_projected_t0.2.inverse_vol_invalid_frac_max": {
+     "committed": 0.4956521739130435,
+     "pass": true,
+     "reproduced": 0.4956521739130435
+    },
+    "models.A_fourier_m65__from_projected_t0.2.inverse_vol_invalid_frac_mean": {
+     "committed": 0.23079710144927534,
+     "pass": true,
+     "reproduced": 0.23079710144927534
+    },
+    "models.A_fourier_m65__from_projected_t0.2.inverse_vol_median_relerr_mean": {
+     "committed": 0.03874071694523505,
+     "pass": true,
+     "reproduced": 0.03874071694544281
+    },
+    "models.A_fourier_m65__from_projected_t0.2.mass_T_max": {
+     "committed": 0.0023926623917000095,
+     "pass": true,
+     "reproduced": 0.0023926623917632367
+    },
+    "models.A_fourier_m65__from_projected_t0.2.max_phi_rows": {
+     "committed": 0.5468979971447588,
+     "pass": true,
+     "reproduced": 0.5468979971446893
+    },
+    "models.A_fourier_m65__from_projected_t0.2.min_phi_rows": {
+     "committed": -0.04520769846593552,
+     "pass": true,
+     "reproduced": -0.045207698465953586
+    },
+    "models.A_fourier_m65__from_projected_t0.2.monotonicity_violation_frac_mean": {
+     "committed": 0.5271739130434783,
+     "pass": true,
+     "reproduced": 0.5271739130434783
+    },
+    "models.A_fourier_m65__from_projected_t0.2.negative_mass_T_max": {
+     "committed": 0.15475231428724817,
+     "pass": true,
+     "reproduced": 0.15475231428724023
+    },
+    "models.A_fourier_m65__from_projected_t0.2.negative_mass_max": {
+     "committed": 45.303294215670235,
+     "pass": true,
+     "reproduced": 45.30329421566876
+    },
+    "models.A_fourier_m65__from_projected_t0.2.price_full_rms": {
+     "committed": 0.13920710212930246,
+     "pass": true,
+     "reproduced": 0.13920710212929366
+    },
+    "models.A_fourier_m65__from_projected_t0.2.price_interior_rms": {
+     "committed": 0.12282977222678436,
+     "pass": true,
+     "reproduced": 0.12282977222677458
+    },
+    "models.A_fourier_m65__from_projected_t0.2.projection_err_interior_rms": {
+     "committed": 0.004296743298428342,
+     "pass": true,
+     "reproduced": 0.0042967433054244
+    },
+    "models.A_fourier_m65__from_projected_t0.2.reduced_operator_abscissa": {
+     "committed": -3.6933363113632974e-13,
+     "pass": true,
+     "reproduced": -1.3805575893191733e-12
+    },
+    "models.A_full256.butterfly_violation_frac_max": {
+     "committed": 0.33043478260869563,
+     "pass": true,
+     "reproduced": 0.33043478260869563
+    },
+    "models.A_full256.butterfly_violation_frac_mean": {
+     "committed": 0.17717391304347826,
+     "pass": true,
+     "reproduced": 0.17717391304347826
+    },
+    "models.A_full256.calendar_violation_frac_max": {
+     "committed": 0.33043478260869563,
+     "pass": true,
+     "reproduced": 0.33043478260869563
+    },
+    "models.A_full256.calendar_violation_frac_mean": {
+     "committed": 0.18043478260869564,
+     "pass": true,
+     "reproduced": 0.18043478260869564
+    },
+    "models.A_full256.density_l2_interior_max": {
+     "committed": 0.006054311743047576,
+     "pass": true,
+     "reproduced": 0.006054311810966619
+    },
+    "models.A_full256.density_l2_interior_mean": {
+     "committed": 0.002778768824869944,
+     "pass": true,
+     "reproduced": 0.002778768847196336
+    },
+    "models.A_full256.dof": {
+     "committed": 256.0,
+     "pass": true,
+     "reproduced": 256.0
+    },
+    "models.A_full256.inverse_vol_invalid_frac_max": {
+     "committed": 0.3347826086956522,
+     "pass": true,
+     "reproduced": 0.3347826086956522
+    },
+    "models.A_full256.inverse_vol_invalid_frac_mean": {
+     "committed": 0.1914855072463768,
+     "pass": true,
+     "reproduced": 0.1914855072463768
+    },
+    "models.A_full256.inverse_vol_median_relerr_mean": {
+     "committed": 4.055295400629146e-05,
+     "pass": true,
+     "reproduced": 4.055295418223412e-05
+    },
+    "models.A_full256.mass_T_max": {
+     "committed": 0.505637795194974,
+     "pass": true,
+     "reproduced": 0.5056377903717543
+    },
+    "models.A_full256.max_phi_rows": {
+     "committed": 0.5715655430205939,
+     "pass": true,
+     "reproduced": 0.5715655430270754
+    },
+    "models.A_full256.min_phi_rows": {
+     "committed": -0.11977878395811459,
+     "pass": true,
+     "reproduced": -0.11977878685904741
+    },
+    "models.A_full256.monotonicity_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.A_full256.negative_mass_T_max": {
+     "committed": 0.09001970410809937,
+     "pass": true,
+     "reproduced": 0.09001970770130152
+    },
+    "models.A_full256.negative_mass_max": {
+     "committed": 0.09001970410809937,
+     "pass": true,
+     "reproduced": 0.09001970770130152
+    },
+    "models.A_full256.price_full_rms": {
+     "committed": 0.019880761707427926,
+     "pass": true,
+     "reproduced": 0.019880762117268542
+    },
+    "models.A_full256.price_interior_rms": {
+     "committed": 0.01644870585965162,
+     "pass": true,
+     "reproduced": 0.016448706201587
+    },
+    "models.B_fourier_m33__from_payoff_t0.butterfly_violation_frac_max": {
+     "committed": 0.5304347826086957,
+     "pass": true,
+     "reproduced": 0.5304347826086957
+    },
+    "models.B_fourier_m33__from_payoff_t0.butterfly_violation_frac_mean": {
+     "committed": 0.4088768115942029,
+     "pass": true,
+     "reproduced": 0.4088768115942029
+    },
+    "models.B_fourier_m33__from_payoff_t0.calendar_violation_frac_max": {
+     "committed": 0.5173913043478261,
+     "pass": true,
+     "reproduced": 0.5173913043478261
+    },
+    "models.B_fourier_m33__from_payoff_t0.calendar_violation_frac_mean": {
+     "committed": 0.41250000000000003,
+     "pass": true,
+     "reproduced": 0.41250000000000003
+    },
+    "models.B_fourier_m33__from_payoff_t0.density_l2_interior_max": {
+     "committed": 0.023642140458767332,
+     "pass": true,
+     "reproduced": 0.02364214045873822
+    },
+    "models.B_fourier_m33__from_payoff_t0.density_l2_interior_mean": {
+     "committed": 0.01773773309247617,
+     "pass": true,
+     "reproduced": 0.017737733092473548
+    },
+    "models.B_fourier_m33__from_payoff_t0.dof": {
+     "committed": 33.0,
+     "pass": true,
+     "reproduced": 33.0
+    },
+    "models.B_fourier_m33__from_payoff_t0.inverse_vol_invalid_frac_max": {
+     "committed": 0.5304347826086957,
+     "pass": true,
+     "reproduced": 0.5304347826086957
+    },
+    "models.B_fourier_m33__from_payoff_t0.inverse_vol_invalid_frac_mean": {
+     "committed": 0.4246376811594203,
+     "pass": true,
+     "reproduced": 0.4246376811594203
+    },
+    "models.B_fourier_m33__from_payoff_t0.inverse_vol_median_relerr_mean": {
+     "committed": 0.025730941795629746,
+     "pass": true,
+     "reproduced": 0.025730941803037713
+    },
+    "models.B_fourier_m33__from_payoff_t0.mass_T_max": {
+     "committed": 0.0011446077819414796,
+     "pass": true,
+     "reproduced": 0.0011446077819878605
+    },
+    "models.B_fourier_m33__from_payoff_t0.max_phi_rows": {
+     "committed": 0.4209958939864287,
+     "pass": true,
+     "reproduced": 0.42099589398642934
+    },
+    "models.B_fourier_m33__from_payoff_t0.min_phi_rows": {
+     "committed": -0.1981496242925855,
+     "pass": true,
+     "reproduced": -0.1981496242925857
+    },
+    "models.B_fourier_m33__from_payoff_t0.monotonicity_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_fourier_m33__from_payoff_t0.negative_mass_T_max": {
+     "committed": 0.0592016053091897,
+     "pass": true,
+     "reproduced": 0.05920160530912844
+    },
+    "models.B_fourier_m33__from_payoff_t0.negative_mass_max": {
+     "committed": 0.6852809633582444,
+     "pass": true,
+     "reproduced": 0.6852809633582861
+    },
+    "models.B_fourier_m33__from_payoff_t0.price_full_rms": {
+     "committed": 0.08875297511411674,
+     "pass": true,
+     "reproduced": 0.088752975114118
+    },
+    "models.B_fourier_m33__from_payoff_t0.price_interior_rms": {
+     "committed": 0.0778919703467243,
+     "pass": true,
+     "reproduced": 0.07789197034672567
+    },
+    "models.B_fourier_m33__from_payoff_t0.projection_err_interior_rms": {
+     "committed": 0.00024572712954933377,
+     "pass": true,
+     "reproduced": 0.00024572712954933643
+    },
+    "models.B_fourier_m33__from_payoff_t0.reduced_operator_abscissa": {
+     "committed": 1.2036792242193742e-13,
+     "pass": true,
+     "reproduced": 8.587237962195631e-14
+    },
+    "models.B_fourier_m33__from_projected_t0.2.butterfly_violation_frac_max": {
+     "committed": 0.4652173913043478,
+     "pass": true,
+     "reproduced": 0.4652173913043478
+    },
+    "models.B_fourier_m33__from_projected_t0.2.butterfly_violation_frac_mean": {
+     "committed": 0.3934782608695652,
+     "pass": true,
+     "reproduced": 0.3934782608695652
+    },
+    "models.B_fourier_m33__from_projected_t0.2.calendar_violation_frac_max": {
+     "committed": 0.4434782608695652,
+     "pass": true,
+     "reproduced": 0.4434782608695652
+    },
+    "models.B_fourier_m33__from_projected_t0.2.calendar_violation_frac_mean": {
+     "committed": 0.396195652173913,
+     "pass": true,
+     "reproduced": 0.396195652173913
+    },
+    "models.B_fourier_m33__from_projected_t0.2.density_l2_interior_max": {
+     "committed": 0.02577617762164676,
+     "pass": true,
+     "reproduced": 0.02577617762162593
+    },
+    "models.B_fourier_m33__from_projected_t0.2.density_l2_interior_mean": {
+     "committed": 0.01687979599210594,
+     "pass": true,
+     "reproduced": 0.01687979599210512
+    },
+    "models.B_fourier_m33__from_projected_t0.2.dof": {
+     "committed": 33.0,
+     "pass": true,
+     "reproduced": 33.0
+    },
+    "models.B_fourier_m33__from_projected_t0.2.inverse_vol_invalid_frac_max": {
+     "committed": 0.46956521739130436,
+     "pass": true,
+     "reproduced": 0.46956521739130436
+    },
+    "models.B_fourier_m33__from_projected_t0.2.inverse_vol_invalid_frac_mean": {
+     "committed": 0.411231884057971,
+     "pass": true,
+     "reproduced": 0.411231884057971
+    },
+    "models.B_fourier_m33__from_projected_t0.2.inverse_vol_median_relerr_mean": {
+     "committed": 0.039829919862483944,
+     "pass": true,
+     "reproduced": 0.039829919861944334
+    },
+    "models.B_fourier_m33__from_projected_t0.2.mass_T_max": {
+     "committed": 0.0014653515836535683,
+     "pass": true,
+     "reproduced": 0.0014653515836604496
+    },
+    "models.B_fourier_m33__from_projected_t0.2.max_phi_rows": {
+     "committed": 0.5225077359237454,
+     "pass": true,
+     "reproduced": 0.5225077359237453
+    },
+    "models.B_fourier_m33__from_projected_t0.2.min_phi_rows": {
+     "committed": -0.17237376515152075,
+     "pass": true,
+     "reproduced": -0.17237376515152067
+    },
+    "models.B_fourier_m33__from_projected_t0.2.monotonicity_violation_frac_mean": {
+     "committed": 0.006884057971014493,
+     "pass": true,
+     "reproduced": 0.006884057971014493
+    },
+    "models.B_fourier_m33__from_projected_t0.2.negative_mass_T_max": {
+     "committed": 0.07530914976486915,
+     "pass": true,
+     "reproduced": 0.07530914976481382
+    },
+    "models.B_fourier_m33__from_projected_t0.2.negative_mass_max": {
+     "committed": 1.3151677982439371,
+     "pass": true,
+     "reproduced": 1.315167798243983
+    },
+    "models.B_fourier_m33__from_projected_t0.2.price_full_rms": {
+     "committed": 0.06761649045908517,
+     "pass": true,
+     "reproduced": 0.06761649045908631
+    },
+    "models.B_fourier_m33__from_projected_t0.2.price_interior_rms": {
+     "committed": 0.05808206747637372,
+     "pass": true,
+     "reproduced": 0.058082067476374975
+    },
+    "models.B_fourier_m33__from_projected_t0.2.projection_err_interior_rms": {
+     "committed": 0.00024572712954933377,
+     "pass": true,
+     "reproduced": 0.00024572712954933643
+    },
+    "models.B_fourier_m33__from_projected_t0.2.reduced_operator_abscissa": {
+     "committed": 1.2036792242193742e-13,
+     "pass": true,
+     "reproduced": 8.587237962195631e-14
+    },
+    "models.B_fourier_m65__from_payoff_t0.butterfly_violation_frac_max": {
+     "committed": 0.5,
+     "pass": true,
+     "reproduced": 0.5
+    },
+    "models.B_fourier_m65__from_payoff_t0.butterfly_violation_frac_mean": {
+     "committed": 0.3949275362318841,
+     "pass": true,
+     "reproduced": 0.3949275362318841
+    },
+    "models.B_fourier_m65__from_payoff_t0.calendar_violation_frac_max": {
+     "committed": 0.4956521739130435,
+     "pass": true,
+     "reproduced": 0.4956521739130435
+    },
+    "models.B_fourier_m65__from_payoff_t0.calendar_violation_frac_mean": {
+     "committed": 0.3969202898550724,
+     "pass": true,
+     "reproduced": 0.3969202898550724
+    },
+    "models.B_fourier_m65__from_payoff_t0.density_l2_interior_max": {
+     "committed": 0.021385466336670118,
+     "pass": true,
+     "reproduced": 0.021385466336676068
+    },
+    "models.B_fourier_m65__from_payoff_t0.density_l2_interior_mean": {
+     "committed": 0.016808612999112967,
+     "pass": true,
+     "reproduced": 0.016808612999110625
+    },
+    "models.B_fourier_m65__from_payoff_t0.dof": {
+     "committed": 65.0,
+     "pass": true,
+     "reproduced": 65.0
+    },
+    "models.B_fourier_m65__from_payoff_t0.inverse_vol_invalid_frac_max": {
+     "committed": 0.5,
+     "pass": true,
+     "reproduced": 0.5
+    },
+    "models.B_fourier_m65__from_payoff_t0.inverse_vol_invalid_frac_mean": {
+     "committed": 0.40380434782608693,
+     "pass": true,
+     "reproduced": 0.40380434782608693
+    },
+    "models.B_fourier_m65__from_payoff_t0.inverse_vol_median_relerr_mean": {
+     "committed": 0.015647916653952442,
+     "pass": true,
+     "reproduced": 0.015647916655777538
+    },
+    "models.B_fourier_m65__from_payoff_t0.mass_T_max": {
+     "committed": 0.0020446984923105527,
+     "pass": true,
+     "reproduced": 0.0020446984922582183
+    },
+    "models.B_fourier_m65__from_payoff_t0.max_phi_rows": {
+     "committed": 0.43673846050641185,
+     "pass": true,
+     "reproduced": 0.43673846050641274
+    },
+    "models.B_fourier_m65__from_payoff_t0.min_phi_rows": {
+     "committed": -0.18738233429975,
+     "pass": true,
+     "reproduced": -0.18738233429975065
+    },
+    "models.B_fourier_m65__from_payoff_t0.monotonicity_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_fourier_m65__from_payoff_t0.negative_mass_T_max": {
+     "committed": 0.06986991746744087,
+     "pass": true,
+     "reproduced": 0.06986991746751399
+    },
+    "models.B_fourier_m65__from_payoff_t0.negative_mass_max": {
+     "committed": 0.7150328466469493,
+     "pass": true,
+     "reproduced": 0.7150328466469731
+    },
+    "models.B_fourier_m65__from_payoff_t0.price_full_rms": {
+     "committed": 0.08124649605840195,
+     "pass": true,
+     "reproduced": 0.08124649605840326
+    },
+    "models.B_fourier_m65__from_payoff_t0.price_interior_rms": {
+     "committed": 0.07106749943109762,
+     "pass": true,
+     "reproduced": 0.07106749943109904
+    },
+    "models.B_fourier_m65__from_payoff_t0.projection_err_interior_rms": {
+     "committed": 6.68396471031523e-05,
+     "pass": true,
+     "reproduced": 6.683964710314903e-05
+    },
+    "models.B_fourier_m65__from_payoff_t0.reduced_operator_abscissa": {
+     "committed": -9.534952932048864e-13,
+     "pass": true,
+     "reproduced": -5.740472707703037e-13
+    },
+    "models.B_fourier_m65__from_projected_t0.2.butterfly_violation_frac_max": {
+     "committed": 0.4217391304347826,
+     "pass": true,
+     "reproduced": 0.4217391304347826
+    },
+    "models.B_fourier_m65__from_projected_t0.2.butterfly_violation_frac_mean": {
+     "committed": 0.37554347826086953,
+     "pass": true,
+     "reproduced": 0.37554347826086953
+    },
+    "models.B_fourier_m65__from_projected_t0.2.calendar_violation_frac_max": {
+     "committed": 0.4217391304347826,
+     "pass": true,
+     "reproduced": 0.4217391304347826
+    },
+    "models.B_fourier_m65__from_projected_t0.2.calendar_violation_frac_mean": {
+     "committed": 0.37481884057971016,
+     "pass": true,
+     "reproduced": 0.37481884057971016
+    },
+    "models.B_fourier_m65__from_projected_t0.2.density_l2_interior_max": {
+     "committed": 0.02603506108659082,
+     "pass": true,
+     "reproduced": 0.026035061086606817
+    },
+    "models.B_fourier_m65__from_projected_t0.2.density_l2_interior_mean": {
+     "committed": 0.01570695190068772,
+     "pass": true,
+     "reproduced": 0.0157069519006888
+    },
+    "models.B_fourier_m65__from_projected_t0.2.dof": {
+     "committed": 65.0,
+     "pass": true,
+     "reproduced": 65.0
+    },
+    "models.B_fourier_m65__from_projected_t0.2.inverse_vol_invalid_frac_max": {
+     "committed": 0.43478260869565216,
+     "pass": true,
+     "reproduced": 0.43478260869565216
+    },
+    "models.B_fourier_m65__from_projected_t0.2.inverse_vol_invalid_frac_mean": {
+     "committed": 0.3885869565217391,
+     "pass": true,
+     "reproduced": 0.3885869565217391
+    },
+    "models.B_fourier_m65__from_projected_t0.2.inverse_vol_median_relerr_mean": {
+     "committed": 0.0269079150039451,
+     "pass": true,
+     "reproduced": 0.026907915002916196
+    },
+    "models.B_fourier_m65__from_projected_t0.2.mass_T_max": {
+     "committed": 0.002554141414850721,
+     "pass": true,
+     "reproduced": 0.002554141414770059
+    },
+    "models.B_fourier_m65__from_projected_t0.2.max_phi_rows": {
+     "committed": 0.5262325336092422,
+     "pass": true,
+     "reproduced": 0.5262325336092423
+    },
+    "models.B_fourier_m65__from_projected_t0.2.min_phi_rows": {
+     "committed": -0.16297497595376775,
+     "pass": true,
+     "reproduced": -0.1629749759537682
+    },
+    "models.B_fourier_m65__from_projected_t0.2.monotonicity_violation_frac_mean": {
+     "committed": 0.005434782608695652,
+     "pass": true,
+     "reproduced": 0.005434782608695652
+    },
+    "models.B_fourier_m65__from_projected_t0.2.negative_mass_T_max": {
+     "committed": 0.08670515797370418,
+     "pass": true,
+     "reproduced": 0.08670515797380002
+    },
+    "models.B_fourier_m65__from_projected_t0.2.negative_mass_max": {
+     "committed": 1.3305246751660031,
+     "pass": true,
+     "reproduced": 1.3305246751659316
+    },
+    "models.B_fourier_m65__from_projected_t0.2.price_full_rms": {
+     "committed": 0.061840310791294206,
+     "pass": true,
+     "reproduced": 0.06184031079129555
+    },
+    "models.B_fourier_m65__from_projected_t0.2.price_interior_rms": {
+     "committed": 0.05295853819127554,
+     "pass": true,
+     "reproduced": 0.05295853819127698
+    },
+    "models.B_fourier_m65__from_projected_t0.2.projection_err_interior_rms": {
+     "committed": 6.68396471031523e-05,
+     "pass": true,
+     "reproduced": 6.683964710314903e-05
+    },
+    "models.B_fourier_m65__from_projected_t0.2.reduced_operator_abscissa": {
+     "committed": -9.534952932048864e-13,
+     "pass": true,
+     "reproduced": -5.740472707703037e-13
+    },
+    "models.B_full256.butterfly_violation_frac_max": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_full256.butterfly_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_full256.calendar_violation_frac_max": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_full256.calendar_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_full256.density_l2_interior_max": {
+     "committed": 3.6950640247808766e-06,
+     "pass": true,
+     "reproduced": 3.6950639761300837e-06
+    },
+    "models.B_full256.density_l2_interior_mean": {
+     "committed": 8.970015823604294e-07,
+     "pass": true,
+     "reproduced": 8.970015769170799e-07
+    },
+    "models.B_full256.dof": {
+     "committed": 256.0,
+     "pass": true,
+     "reproduced": 256.0
+    },
+    "models.B_full256.inverse_vol_invalid_frac_max": {
+     "committed": 0.08260869565217391,
+     "pass": true,
+     "reproduced": 0.08260869565217391
+    },
+    "models.B_full256.inverse_vol_invalid_frac_mean": {
+     "committed": 0.004166666666666667,
+     "pass": true,
+     "reproduced": 0.004166666666666667
+    },
+    "models.B_full256.inverse_vol_median_relerr_mean": {
+     "committed": 3.507423771014525e-05,
+     "pass": true,
+     "reproduced": 3.507423809383962e-05
+    },
+    "models.B_full256.mass_T_max": {
+     "committed": 0.48751993459488635,
+     "pass": true,
+     "reproduced": 0.4875199345948304
+    },
+    "models.B_full256.max_phi_rows": {
+     "committed": 0.5291177332078756,
+     "pass": true,
+     "reproduced": 0.5291177332078756
+    },
+    "models.B_full256.min_phi_rows": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_full256.monotonicity_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_full256.negative_mass_T_max": {
+     "committed": 2.690435740815255e-08,
+     "pass": true,
+     "reproduced": 2.6904357377274647e-08
+    },
+    "models.B_full256.negative_mass_max": {
+     "committed": 2.7383280721001798e-08,
+     "pass": true,
+     "reproduced": 2.7383280690123897e-08
+    },
+    "models.B_full256.price_full_rms": {
+     "committed": 2.9018961844284126e-06,
+     "pass": true,
+     "reproduced": 2.9018961856172157e-06
+    },
+    "models.B_full256.price_interior_rms": {
+     "committed": 3.009378594088823e-06,
+     "pass": true,
+     "reproduced": 3.009378595274704e-06
+    },
+    "models.B_full512_reference.dof": {
+     "committed": 512.0,
+     "pass": true,
+     "reproduced": 512.0
+    },
+    "models.B_sine_m17__from_payoff_t0.butterfly_violation_frac_max": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m17__from_payoff_t0.butterfly_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m17__from_payoff_t0.calendar_violation_frac_max": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m17__from_payoff_t0.calendar_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m17__from_payoff_t0.density_l2_interior_max": {
+     "committed": 0.00025130135627630956,
+     "pass": true,
+     "reproduced": 0.0002513013562742825
+    },
+    "models.B_sine_m17__from_payoff_t0.density_l2_interior_mean": {
+     "committed": 0.00016403054242607315,
+     "pass": true,
+     "reproduced": 0.00016403054242601034
+    },
+    "models.B_sine_m17__from_payoff_t0.dof": {
+     "committed": 17.0,
+     "pass": true,
+     "reproduced": 17.0
+    },
+    "models.B_sine_m17__from_payoff_t0.inverse_vol_invalid_frac_max": {
+     "committed": 0.08695652173913043,
+     "pass": true,
+     "reproduced": 0.08695652173913043
+    },
+    "models.B_sine_m17__from_payoff_t0.inverse_vol_invalid_frac_mean": {
+     "committed": 0.004710144927536232,
+     "pass": true,
+     "reproduced": 0.004710144927536232
+    },
+    "models.B_sine_m17__from_payoff_t0.inverse_vol_median_relerr_mean": {
+     "committed": 0.00303606087656279,
+     "pass": true,
+     "reproduced": 0.003036060875707377
+    },
+    "models.B_sine_m17__from_payoff_t0.mass_T_max": {
+     "committed": 0.48648638973170766,
+     "pass": true,
+     "reproduced": 0.4864863897317283
+    },
+    "models.B_sine_m17__from_payoff_t0.max_phi_rows": {
+     "committed": 0.5291177332078756,
+     "pass": true,
+     "reproduced": 0.5291177332078756
+    },
+    "models.B_sine_m17__from_payoff_t0.min_phi_rows": {
+     "committed": -2.0546795487374682e-17,
+     "pass": true,
+     "reproduced": -2.0546795487374494e-17
+    },
+    "models.B_sine_m17__from_payoff_t0.monotonicity_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m17__from_payoff_t0.negative_mass_T_max": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m17__from_payoff_t0.negative_mass_max": {
+     "committed": 6.917018158548117e-07,
+     "pass": true,
+     "reproduced": 6.917018160323595e-07
+    },
+    "models.B_sine_m17__from_payoff_t0.price_full_rms": {
+     "committed": 1.3458597042182614e-05,
+     "pass": true,
+     "reproduced": 1.3458597041927296e-05
+    },
+    "models.B_sine_m17__from_payoff_t0.price_interior_rms": {
+     "committed": 8.101725432597779e-06,
+     "pass": true,
+     "reproduced": 8.101725432706113e-06
+    },
+    "models.B_sine_m17__from_payoff_t0.projection_err_interior_rms": {
+     "committed": 8.090388410420585e-06,
+     "pass": true,
+     "reproduced": 8.09038841042775e-06
+    },
+    "models.B_sine_m17__from_payoff_t0.reduced_operator_abscissa": {
+     "committed": -0.7126198082185703,
+     "pass": true,
+     "reproduced": -0.7126198082184868
+    },
+    "models.B_sine_m17__from_projected_t0.2.butterfly_violation_frac_max": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m17__from_projected_t0.2.butterfly_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m17__from_projected_t0.2.calendar_violation_frac_max": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m17__from_projected_t0.2.calendar_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m17__from_projected_t0.2.density_l2_interior_max": {
+     "committed": 0.00024861818520715266,
+     "pass": true,
+     "reproduced": 0.0002486181852017942
+    },
+    "models.B_sine_m17__from_projected_t0.2.density_l2_interior_mean": {
+     "committed": 0.00016117685406072258,
+     "pass": true,
+     "reproduced": 0.00016117685406098214
+    },
+    "models.B_sine_m17__from_projected_t0.2.dof": {
+     "committed": 17.0,
+     "pass": true,
+     "reproduced": 17.0
+    },
+    "models.B_sine_m17__from_projected_t0.2.inverse_vol_invalid_frac_max": {
+     "committed": 0.10434782608695652,
+     "pass": true,
+     "reproduced": 0.10434782608695652
+    },
+    "models.B_sine_m17__from_projected_t0.2.inverse_vol_invalid_frac_mean": {
+     "committed": 0.005253623188405797,
+     "pass": true,
+     "reproduced": 0.005253623188405797
+    },
+    "models.B_sine_m17__from_projected_t0.2.inverse_vol_median_relerr_mean": {
+     "committed": 0.0031181801662817725,
+     "pass": true,
+     "reproduced": 0.003118180166853285
+    },
+    "models.B_sine_m17__from_projected_t0.2.mass_T_max": {
+     "committed": 0.48647288117463927,
+     "pass": true,
+     "reproduced": 0.486472881174645
+    },
+    "models.B_sine_m17__from_projected_t0.2.max_phi_rows": {
+     "committed": 0.5291177332078756,
+     "pass": true,
+     "reproduced": 0.5291177332078756
+    },
+    "models.B_sine_m17__from_projected_t0.2.min_phi_rows": {
+     "committed": -2.0544834906064846e-17,
+     "pass": true,
+     "reproduced": -2.054483490606459e-17
+    },
+    "models.B_sine_m17__from_projected_t0.2.monotonicity_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m17__from_projected_t0.2.negative_mass_T_max": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m17__from_projected_t0.2.negative_mass_max": {
+     "committed": 1.0142156539852819e-05,
+     "pass": true,
+     "reproduced": 1.0142156570785476e-05
+    },
+    "models.B_sine_m17__from_projected_t0.2.price_full_rms": {
+     "committed": 1.304980346805653e-05,
+     "pass": true,
+     "reproduced": 1.3049803467547272e-05
+    },
+    "models.B_sine_m17__from_projected_t0.2.price_interior_rms": {
+     "committed": 6.41970174214942e-06,
+     "pass": true,
+     "reproduced": 6.419701741739778e-06
+    },
+    "models.B_sine_m17__from_projected_t0.2.projection_err_interior_rms": {
+     "committed": 8.090388410420585e-06,
+     "pass": true,
+     "reproduced": 8.09038841042775e-06
+    },
+    "models.B_sine_m17__from_projected_t0.2.reduced_operator_abscissa": {
+     "committed": -0.7126198082185703,
+     "pass": true,
+     "reproduced": -0.7126198082184868
+    },
+    "models.B_sine_m33__from_payoff_t0.butterfly_violation_frac_max": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m33__from_payoff_t0.butterfly_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m33__from_payoff_t0.calendar_violation_frac_max": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m33__from_payoff_t0.calendar_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m33__from_payoff_t0.density_l2_interior_max": {
+     "committed": 3.775195321539524e-05,
+     "pass": true,
+     "reproduced": 3.7751953192904976e-05
+    },
+    "models.B_sine_m33__from_payoff_t0.density_l2_interior_mean": {
+     "committed": 2.5471466471739413e-05,
+     "pass": true,
+     "reproduced": 2.5471466470905147e-05
+    },
+    "models.B_sine_m33__from_payoff_t0.dof": {
+     "committed": 33.0,
+     "pass": true,
+     "reproduced": 33.0
+    },
+    "models.B_sine_m33__from_payoff_t0.inverse_vol_invalid_frac_max": {
+     "committed": 0.08260869565217391,
+     "pass": true,
+     "reproduced": 0.08260869565217391
+    },
+    "models.B_sine_m33__from_payoff_t0.inverse_vol_invalid_frac_mean": {
+     "committed": 0.004166666666666667,
+     "pass": true,
+     "reproduced": 0.004166666666666667
+    },
+    "models.B_sine_m33__from_payoff_t0.inverse_vol_median_relerr_mean": {
+     "committed": 0.0004752807184565705,
+     "pass": true,
+     "reproduced": 0.00047528071874675804
+    },
+    "models.B_sine_m33__from_payoff_t0.mass_T_max": {
+     "committed": 0.4873783572931756,
+     "pass": true,
+     "reproduced": 0.48737835729311013
+    },
+    "models.B_sine_m33__from_payoff_t0.max_phi_rows": {
+     "committed": 0.5291177332078756,
+     "pass": true,
+     "reproduced": 0.5291177332078756
+    },
+    "models.B_sine_m33__from_payoff_t0.min_phi_rows": {
+     "committed": -2.053108752542682e-17,
+     "pass": true,
+     "reproduced": -2.0531087525427186e-17
+    },
+    "models.B_sine_m33__from_payoff_t0.monotonicity_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m33__from_payoff_t0.negative_mass_T_max": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m33__from_payoff_t0.negative_mass_max": {
+     "committed": 2.2860797041078718e-07,
+     "pass": true,
+     "reproduced": 2.2860793879181674e-07
+    },
+    "models.B_sine_m33__from_payoff_t0.price_full_rms": {
+     "committed": 3.030118074541842e-06,
+     "pass": true,
+     "reproduced": 3.03011807585053e-06
+    },
+    "models.B_sine_m33__from_payoff_t0.price_interior_rms": {
+     "committed": 3.0808870131312645e-06,
+     "pass": true,
+     "reproduced": 3.080887014481166e-06
+    },
+    "models.B_sine_m33__from_payoff_t0.projection_err_interior_rms": {
+     "committed": 4.109862806706498e-07,
+     "pass": true,
+     "reproduced": 4.1098628067924055e-07
+    },
+    "models.B_sine_m33__from_payoff_t0.reduced_operator_abscissa": {
+     "committed": -0.7125926296888877,
+     "pass": true,
+     "reproduced": -0.7125926296890213
+    },
+    "models.B_sine_m33__from_projected_t0.2.butterfly_violation_frac_max": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m33__from_projected_t0.2.butterfly_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m33__from_projected_t0.2.calendar_violation_frac_max": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m33__from_projected_t0.2.calendar_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m33__from_projected_t0.2.density_l2_interior_max": {
+     "committed": 3.7815762086308355e-05,
+     "pass": true,
+     "reproduced": 3.781576206458203e-05
+    },
+    "models.B_sine_m33__from_projected_t0.2.density_l2_interior_mean": {
+     "committed": 2.5694381021211007e-05,
+     "pass": true,
+     "reproduced": 2.56943810201835e-05
+    },
+    "models.B_sine_m33__from_projected_t0.2.dof": {
+     "committed": 33.0,
+     "pass": true,
+     "reproduced": 33.0
+    },
+    "models.B_sine_m33__from_projected_t0.2.inverse_vol_invalid_frac_max": {
+     "committed": 0.08260869565217391,
+     "pass": true,
+     "reproduced": 0.08260869565217391
+    },
+    "models.B_sine_m33__from_projected_t0.2.inverse_vol_invalid_frac_mean": {
+     "committed": 0.004166666666666667,
+     "pass": true,
+     "reproduced": 0.004166666666666667
+    },
+    "models.B_sine_m33__from_projected_t0.2.inverse_vol_median_relerr_mean": {
+     "committed": 0.0006083317377816259,
+     "pass": true,
+     "reproduced": 0.0006083317427938885
+    },
+    "models.B_sine_m33__from_projected_t0.2.mass_T_max": {
+     "committed": 0.48737748183705176,
+     "pass": true,
+     "reproduced": 0.4873774818371384
+    },
+    "models.B_sine_m33__from_projected_t0.2.max_phi_rows": {
+     "committed": 0.5291177332078756,
+     "pass": true,
+     "reproduced": 0.5291177332078756
+    },
+    "models.B_sine_m33__from_projected_t0.2.min_phi_rows": {
+     "committed": -2.0531020890537793e-17,
+     "pass": true,
+     "reproduced": -2.0531020890538117e-17
+    },
+    "models.B_sine_m33__from_projected_t0.2.monotonicity_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m33__from_projected_t0.2.negative_mass_T_max": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m33__from_projected_t0.2.negative_mass_max": {
+     "committed": 6.27466453286165e-08,
+     "pass": true,
+     "reproduced": 6.274667694758694e-08
+    },
+    "models.B_sine_m33__from_projected_t0.2.price_full_rms": {
+     "committed": 2.8363707768131033e-06,
+     "pass": true,
+     "reproduced": 2.8363707781733586e-06
+    },
+    "models.B_sine_m33__from_projected_t0.2.price_interior_rms": {
+     "committed": 2.8754818771501832e-06,
+     "pass": true,
+     "reproduced": 2.8754818785573557e-06
+    },
+    "models.B_sine_m33__from_projected_t0.2.projection_err_interior_rms": {
+     "committed": 4.109862806706498e-07,
+     "pass": true,
+     "reproduced": 4.1098628067924055e-07
+    },
+    "models.B_sine_m33__from_projected_t0.2.reduced_operator_abscissa": {
+     "committed": -0.7125926296888877,
+     "pass": true,
+     "reproduced": -0.7125926296890213
+    },
+    "models.B_sine_m65__from_payoff_t0.butterfly_violation_frac_max": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m65__from_payoff_t0.butterfly_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m65__from_payoff_t0.calendar_violation_frac_max": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m65__from_payoff_t0.calendar_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m65__from_payoff_t0.density_l2_interior_max": {
+     "committed": 5.353318382259702e-06,
+     "pass": true,
+     "reproduced": 5.353318343633345e-06
+    },
+    "models.B_sine_m65__from_payoff_t0.density_l2_interior_mean": {
+     "committed": 3.75233435555675e-06,
+     "pass": true,
+     "reproduced": 3.7523343507046043e-06
+    },
+    "models.B_sine_m65__from_payoff_t0.dof": {
+     "committed": 65.0,
+     "pass": true,
+     "reproduced": 65.0
+    },
+    "models.B_sine_m65__from_payoff_t0.inverse_vol_invalid_frac_max": {
+     "committed": 0.08260869565217391,
+     "pass": true,
+     "reproduced": 0.08260869565217391
+    },
+    "models.B_sine_m65__from_payoff_t0.inverse_vol_invalid_frac_mean": {
+     "committed": 0.004166666666666667,
+     "pass": true,
+     "reproduced": 0.004166666666666667
+    },
+    "models.B_sine_m65__from_payoff_t0.inverse_vol_median_relerr_mean": {
+     "committed": 9.068189971284163e-05,
+     "pass": true,
+     "reproduced": 9.068189989490888e-05
+    },
+    "models.B_sine_m65__from_payoff_t0.mass_T_max": {
+     "committed": 0.48749668665515494,
+     "pass": true,
+     "reproduced": 0.4874966866551207
+    },
+    "models.B_sine_m65__from_payoff_t0.max_phi_rows": {
+     "committed": 0.5291177332078756,
+     "pass": true,
+     "reproduced": 0.5291177332078756
+    },
+    "models.B_sine_m65__from_payoff_t0.min_phi_rows": {
+     "committed": -2.053255558153324e-17,
+     "pass": true,
+     "reproduced": -2.0532555581534294e-17
+    },
+    "models.B_sine_m65__from_payoff_t0.monotonicity_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m65__from_payoff_t0.negative_mass_T_max": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m65__from_payoff_t0.negative_mass_max": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m65__from_payoff_t0.price_full_rms": {
+     "committed": 2.8936268341279408e-06,
+     "pass": true,
+     "reproduced": 2.8936268357220267e-06
+    },
+    "models.B_sine_m65__from_payoff_t0.price_interior_rms": {
+     "committed": 3.001477971173462e-06,
+     "pass": true,
+     "reproduced": 3.001477972780159e-06
+    },
+    "models.B_sine_m65__from_payoff_t0.projection_err_interior_rms": {
+     "committed": 1.7197653865258983e-08,
+     "pass": true,
+     "reproduced": 1.7197653871131635e-08
+    },
+    "models.B_sine_m65__from_payoff_t0.reduced_operator_abscissa": {
+     "committed": -0.7125915978100748,
+     "pass": true,
+     "reproduced": -0.7125915978107273
+    },
+    "models.B_sine_m65__from_projected_t0.2.butterfly_violation_frac_max": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m65__from_projected_t0.2.butterfly_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m65__from_projected_t0.2.calendar_violation_frac_max": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m65__from_projected_t0.2.calendar_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m65__from_projected_t0.2.density_l2_interior_max": {
+     "committed": 5.352216608695549e-06,
+     "pass": true,
+     "reproduced": 5.352216570301207e-06
+    },
+    "models.B_sine_m65__from_projected_t0.2.density_l2_interior_mean": {
+     "committed": 3.774528271739443e-06,
+     "pass": true,
+     "reproduced": 3.774528268038081e-06
+    },
+    "models.B_sine_m65__from_projected_t0.2.dof": {
+     "committed": 65.0,
+     "pass": true,
+     "reproduced": 65.0
+    },
+    "models.B_sine_m65__from_projected_t0.2.inverse_vol_invalid_frac_max": {
+     "committed": 0.08260869565217391,
+     "pass": true,
+     "reproduced": 0.08260869565217391
+    },
+    "models.B_sine_m65__from_projected_t0.2.inverse_vol_invalid_frac_mean": {
+     "committed": 0.004166666666666667,
+     "pass": true,
+     "reproduced": 0.004166666666666667
+    },
+    "models.B_sine_m65__from_projected_t0.2.inverse_vol_median_relerr_mean": {
+     "committed": 0.00024289893691369093,
+     "pass": true,
+     "reproduced": 0.00024289893884405284
+    },
+    "models.B_sine_m65__from_projected_t0.2.mass_T_max": {
+     "committed": 0.4874967021110429,
+     "pass": true,
+     "reproduced": 0.4874967021110673
+    },
+    "models.B_sine_m65__from_projected_t0.2.max_phi_rows": {
+     "committed": 0.5291177332078756,
+     "pass": true,
+     "reproduced": 0.5291177332078756
+    },
+    "models.B_sine_m65__from_projected_t0.2.min_phi_rows": {
+     "committed": -2.0532556754647485e-17,
+     "pass": true,
+     "reproduced": -2.0532556754648394e-17
+    },
+    "models.B_sine_m65__from_projected_t0.2.monotonicity_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m65__from_projected_t0.2.negative_mass_T_max": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m65__from_projected_t0.2.negative_mass_max": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m65__from_projected_t0.2.price_full_rms": {
+     "committed": 2.897096269012731e-06,
+     "pass": true,
+     "reproduced": 2.8970962702659345e-06
+    },
+    "models.B_sine_m65__from_projected_t0.2.price_interior_rms": {
+     "committed": 3.0051021052311673e-06,
+     "pass": true,
+     "reproduced": 3.0051021064752855e-06
+    },
+    "models.B_sine_m65__from_projected_t0.2.projection_err_interior_rms": {
+     "committed": 1.7197653865258983e-08,
+     "pass": true,
+     "reproduced": 1.7197653871131635e-08
+    },
+    "models.B_sine_m65__from_projected_t0.2.reduced_operator_abscissa": {
+     "committed": -0.7125915978100748,
+     "pass": true,
+     "reproduced": -0.7125915978107273
+    },
+    "uncertainty.grid_256_vs_512_density_l2": {
+     "committed": 8.970015823604294e-07,
+     "pass": true,
+     "reproduced": 8.970015769170799e-07
+    },
+    "uncertainty.grid_256_vs_512_interior_rms": {
+     "committed": 3.009378594088823e-06,
+     "pass": true,
+     "reproduced": 3.009378595274704e-06
+    },
+    "uncertainty.step_sub16_vs_sub32_interior_rms": {
+     "committed": 5.7732060516902163e-08,
+     "pass": true,
+     "reproduced": 5.773206085484635e-08
+    }
+   },
+   "n_failed": 0,
+   "reproduced_identity": {
+    "K_max": 3000.0,
+    "K_min": 500.0,
+    "algo": 1,
+    "case": "f76128638b884cc2",
+    "case_id": "F_fresh_base0.28_t0.2_x0.05",
+    "code": "302d37258262c714",
+    "dims_fourier": [
+     16,
+     32
+    ],
+    "dims_sine": [
+     17,
+     33,
+     65
+    ],
+    "gate": "gate5",
+    "n_k": 256,
+    "n_k_ref": 512,
+    "schema": 2,
+    "sub": 16
+   },
+   "reproduced_wall_seconds": 86.73830890655518,
+   "status": "done"
+  },
+  "S_seed9": {
+   "committed_identity": {
+    "K_max": 3000.0,
+    "K_min": 500.0,
+    "algo": 1,
+    "case": "2edeaeb2d64c7aa8",
+    "case_id": "S_seed9",
+    "code": "302d37258262c714",
+    "dims_fourier": [
+     16,
+     32
+    ],
+    "dims_sine": [
+     17,
+     33,
+     65
+    ],
+    "gate": "gate5",
+    "n_k": 256,
+    "n_k_ref": 512,
+    "schema": 2,
+    "sub": 16
+   },
+   "failed_keys": [],
+   "metrics": {
+    "models.A_fourier_m33__from_payoff_t0.butterfly_violation_frac_max": {
+     "committed": 0.25217391304347825,
+     "pass": true,
+     "reproduced": 0.25217391304347825
+    },
+    "models.A_fourier_m33__from_payoff_t0.butterfly_violation_frac_mean": {
+     "committed": 0.1855072463768116,
+     "pass": true,
+     "reproduced": 0.1855072463768116
+    },
+    "models.A_fourier_m33__from_payoff_t0.calendar_violation_frac_max": {
+     "committed": 0.26956521739130435,
+     "pass": true,
+     "reproduced": 0.26956521739130435
+    },
+    "models.A_fourier_m33__from_payoff_t0.calendar_violation_frac_mean": {
+     "committed": 0.19927536231884058,
+     "pass": true,
+     "reproduced": 0.19927536231884058
+    },
+    "models.A_fourier_m33__from_payoff_t0.density_l2_interior_max": {
+     "committed": 0.050503659437573165,
+     "pass": true,
+     "reproduced": 0.05050365943758715
+    },
+    "models.A_fourier_m33__from_payoff_t0.density_l2_interior_mean": {
+     "committed": 0.03854984359085753,
+     "pass": true,
+     "reproduced": 0.03854984359084512
+    },
+    "models.A_fourier_m33__from_payoff_t0.dof": {
+     "committed": 33.0,
+     "pass": true,
+     "reproduced": 33.0
+    },
+    "models.A_fourier_m33__from_payoff_t0.inverse_vol_invalid_frac_max": {
+     "committed": 0.26956521739130435,
+     "pass": true,
+     "reproduced": 0.26956521739130435
+    },
+    "models.A_fourier_m33__from_payoff_t0.inverse_vol_invalid_frac_mean": {
+     "committed": 0.20851449275362322,
+     "pass": true,
+     "reproduced": 0.20851449275362322
+    },
+    "models.A_fourier_m33__from_payoff_t0.inverse_vol_median_relerr_mean": {
+     "committed": 0.02952288091194379,
+     "pass": true,
+     "reproduced": 0.029522880912158295
+    },
+    "models.A_fourier_m33__from_payoff_t0.mass_T_max": {
+     "committed": 0.004521352778920851,
+     "pass": true,
+     "reproduced": 0.0045213527788990765
+    },
+    "models.A_fourier_m33__from_payoff_t0.max_phi_rows": {
+     "committed": 0.36167360754403444,
+     "pass": true,
+     "reproduced": 0.3616736075440368
+    },
+    "models.A_fourier_m33__from_payoff_t0.min_phi_rows": {
+     "committed": 0.0016788296950868702,
+     "pass": true,
+     "reproduced": 0.0016788296950873956
+    },
+    "models.A_fourier_m33__from_payoff_t0.monotonicity_violation_frac_mean": {
+     "committed": 0.5664855072463768,
+     "pass": true,
+     "reproduced": 0.5664855072463768
+    },
+    "models.A_fourier_m33__from_payoff_t0.negative_mass_T_max": {
+     "committed": 0.4347236759758409,
+     "pass": true,
+     "reproduced": 0.4347236759758884
+    },
+    "models.A_fourier_m33__from_payoff_t0.negative_mass_max": {
+     "committed": 1.2639713225504277,
+     "pass": true,
+     "reproduced": 1.26397132255042
+    },
+    "models.A_fourier_m33__from_payoff_t0.price_full_rms": {
+     "committed": 0.12523140674949568,
+     "pass": true,
+     "reproduced": 0.12523140674949654
+    },
+    "models.A_fourier_m33__from_payoff_t0.price_interior_rms": {
+     "committed": 0.10637213789401512,
+     "pass": true,
+     "reproduced": 0.10637213789401602
+    },
+    "models.A_fourier_m33__from_payoff_t0.projection_err_interior_rms": {
+     "committed": 0.007825379954512992,
+     "pass": true,
+     "reproduced": 0.007825379954308903
+    },
+    "models.A_fourier_m33__from_payoff_t0.reduced_operator_abscissa": {
+     "committed": -4.0806618053255175e-14,
+     "pass": true,
+     "reproduced": -2.0073898108949634e-13
+    },
+    "models.A_fourier_m33__from_projected_t0.2.butterfly_violation_frac_max": {
+     "committed": 0.4956521739130435,
+     "pass": true,
+     "reproduced": 0.4956521739130435
+    },
+    "models.A_fourier_m33__from_projected_t0.2.butterfly_violation_frac_mean": {
+     "committed": 0.1588768115942029,
+     "pass": true,
+     "reproduced": 0.1588768115942029
+    },
+    "models.A_fourier_m33__from_projected_t0.2.calendar_violation_frac_max": {
+     "committed": 0.48695652173913045,
+     "pass": true,
+     "reproduced": 0.48695652173913045
+    },
+    "models.A_fourier_m33__from_projected_t0.2.calendar_violation_frac_mean": {
+     "committed": 0.15996376811594204,
+     "pass": true,
+     "reproduced": 0.15996376811594204
+    },
+    "models.A_fourier_m33__from_projected_t0.2.density_l2_interior_max": {
+     "committed": 0.6330805124121331,
+     "pass": true,
+     "reproduced": 0.6330805124090959
+    },
+    "models.A_fourier_m33__from_projected_t0.2.density_l2_interior_mean": {
+     "committed": 0.06853746202405137,
+     "pass": true,
+     "reproduced": 0.06853746202391721
+    },
+    "models.A_fourier_m33__from_projected_t0.2.dof": {
+     "committed": 33.0,
+     "pass": true,
+     "reproduced": 33.0
+    },
+    "models.A_fourier_m33__from_projected_t0.2.inverse_vol_invalid_frac_max": {
+     "committed": 0.5652173913043478,
+     "pass": true,
+     "reproduced": 0.5652173913043478
+    },
+    "models.A_fourier_m33__from_projected_t0.2.inverse_vol_invalid_frac_mean": {
+     "committed": 0.1847826086956522,
+     "pass": true,
+     "reproduced": 0.1847826086956522
+    },
+    "models.A_fourier_m33__from_projected_t0.2.inverse_vol_median_relerr_mean": {
+     "committed": 0.05057951168678259,
+     "pass": true,
+     "reproduced": 0.05057951168656727
+    },
+    "models.A_fourier_m33__from_projected_t0.2.mass_T_max": {
+     "committed": 0.005254152549274194,
+     "pass": true,
+     "reproduced": 0.0052541525491357766
+    },
+    "models.A_fourier_m33__from_projected_t0.2.max_phi_rows": {
+     "committed": 0.5130440958964251,
+     "pass": true,
+     "reproduced": 0.5130440958952927
+    },
+    "models.A_fourier_m33__from_projected_t0.2.min_phi_rows": {
+     "committed": -0.04684475740330892,
+     "pass": true,
+     "reproduced": -0.04684475740312909
+    },
+    "models.A_fourier_m33__from_projected_t0.2.monotonicity_violation_frac_mean": {
+     "committed": 0.508876811594203,
+     "pass": true,
+     "reproduced": 0.508876811594203
+    },
+    "models.A_fourier_m33__from_projected_t0.2.negative_mass_T_max": {
+     "committed": 0.5115760097239431,
+     "pass": true,
+     "reproduced": 0.5115760097233977
+    },
+    "models.A_fourier_m33__from_projected_t0.2.negative_mass_max": {
+     "committed": 20.4509957927894,
+     "pass": true,
+     "reproduced": 20.450995792705502
+    },
+    "models.A_fourier_m33__from_projected_t0.2.price_full_rms": {
+     "committed": 0.11736491233479208,
+     "pass": true,
+     "reproduced": 0.1173649123346846
+    },
+    "models.A_fourier_m33__from_projected_t0.2.price_interior_rms": {
+     "committed": 0.09691943532990584,
+     "pass": true,
+     "reproduced": 0.09691943532979207
+    },
+    "models.A_fourier_m33__from_projected_t0.2.projection_err_interior_rms": {
+     "committed": 0.007825379954512992,
+     "pass": true,
+     "reproduced": 0.007825379954308903
+    },
+    "models.A_fourier_m33__from_projected_t0.2.reduced_operator_abscissa": {
+     "committed": -4.0806618053255175e-14,
+     "pass": true,
+     "reproduced": -2.0073898108949634e-13
+    },
+    "models.A_fourier_m65__from_payoff_t0.butterfly_violation_frac_max": {
+     "committed": 0.2565217391304348,
+     "pass": true,
+     "reproduced": 0.2565217391304348
+    },
+    "models.A_fourier_m65__from_payoff_t0.butterfly_violation_frac_mean": {
+     "committed": 0.18695652173913047,
+     "pass": true,
+     "reproduced": 0.18695652173913047
+    },
+    "models.A_fourier_m65__from_payoff_t0.calendar_violation_frac_max": {
+     "committed": 0.2608695652173913,
+     "pass": true,
+     "reproduced": 0.2608695652173913
+    },
+    "models.A_fourier_m65__from_payoff_t0.calendar_violation_frac_mean": {
+     "committed": 0.1914855072463768,
+     "pass": true,
+     "reproduced": 0.1914855072463768
+    },
+    "models.A_fourier_m65__from_payoff_t0.density_l2_interior_max": {
+     "committed": 0.04370824126557872,
+     "pass": true,
+     "reproduced": 0.043708241265594854
+    },
+    "models.A_fourier_m65__from_payoff_t0.density_l2_interior_mean": {
+     "committed": 0.035972421943598606,
+     "pass": true,
+     "reproduced": 0.03597242194358527
+    },
+    "models.A_fourier_m65__from_payoff_t0.dof": {
+     "committed": 65.0,
+     "pass": true,
+     "reproduced": 65.0
+    },
+    "models.A_fourier_m65__from_payoff_t0.inverse_vol_invalid_frac_max": {
+     "committed": 0.26956521739130435,
+     "pass": true,
+     "reproduced": 0.26956521739130435
+    },
+    "models.A_fourier_m65__from_payoff_t0.inverse_vol_invalid_frac_mean": {
+     "committed": 0.19855072463768117,
+     "pass": true,
+     "reproduced": 0.19855072463768117
+    },
+    "models.A_fourier_m65__from_payoff_t0.inverse_vol_median_relerr_mean": {
+     "committed": 0.014011315825235605,
+     "pass": true,
+     "reproduced": 0.014011315825017268
+    },
+    "models.A_fourier_m65__from_payoff_t0.mass_T_max": {
+     "committed": 0.00684680060720301,
+     "pass": true,
+     "reproduced": 0.006846800607199013
+    },
+    "models.A_fourier_m65__from_payoff_t0.max_phi_rows": {
+     "committed": 0.38121563046008855,
+     "pass": true,
+     "reproduced": 0.38121563046009205
+    },
+    "models.A_fourier_m65__from_payoff_t0.min_phi_rows": {
+     "committed": 0.0017978120673173832,
+     "pass": true,
+     "reproduced": 0.001797812067318819
+    },
+    "models.A_fourier_m65__from_payoff_t0.monotonicity_violation_frac_mean": {
+     "committed": 0.5721014492753623,
+     "pass": true,
+     "reproduced": 0.5721014492753623
+    },
+    "models.A_fourier_m65__from_payoff_t0.negative_mass_T_max": {
+     "committed": 0.4707695854908372,
+     "pass": true,
+     "reproduced": 0.47076958549083725
+    },
+    "models.A_fourier_m65__from_payoff_t0.negative_mass_max": {
+     "committed": 1.2994560425479027,
+     "pass": true,
+     "reproduced": 1.299456042547887
+    },
+    "models.A_fourier_m65__from_payoff_t0.price_full_rms": {
+     "committed": 0.13170395336545013,
+     "pass": true,
+     "reproduced": 0.13170395336545143
+    },
+    "models.A_fourier_m65__from_payoff_t0.price_interior_rms": {
+     "committed": 0.11350502375104049,
+     "pass": true,
+     "reproduced": 0.11350502375104178
+    },
+    "models.A_fourier_m65__from_payoff_t0.projection_err_interior_rms": {
+     "committed": 0.0038859906434872762,
+     "pass": true,
+     "reproduced": 0.003885990643381488
+    },
+    "models.A_fourier_m65__from_payoff_t0.reduced_operator_abscissa": {
+     "committed": 3.925185215026136e-13,
+     "pass": true,
+     "reproduced": -4.557417114504968e-13
+    },
+    "models.A_fourier_m65__from_projected_t0.2.butterfly_violation_frac_max": {
+     "committed": 0.4956521739130435,
+     "pass": true,
+     "reproduced": 0.4956521739130435
+    },
+    "models.A_fourier_m65__from_projected_t0.2.butterfly_violation_frac_mean": {
+     "committed": 0.15398550724637683,
+     "pass": true,
+     "reproduced": 0.15398550724637683
+    },
+    "models.A_fourier_m65__from_projected_t0.2.calendar_violation_frac_max": {
+     "committed": 0.48695652173913045,
+     "pass": true,
+     "reproduced": 0.48695652173913045
+    },
+    "models.A_fourier_m65__from_projected_t0.2.calendar_violation_frac_mean": {
+     "committed": 0.15344202898550727,
+     "pass": true,
+     "reproduced": 0.15344202898550727
+    },
+    "models.A_fourier_m65__from_projected_t0.2.density_l2_interior_max": {
+     "committed": 1.1566016277289284,
+     "pass": true,
+     "reproduced": 1.1566016277228766
+    },
+    "models.A_fourier_m65__from_projected_t0.2.density_l2_interior_mean": {
+     "committed": 0.08536845702748241,
+     "pass": true,
+     "reproduced": 0.08536845702724323
+    },
+    "models.A_fourier_m65__from_projected_t0.2.dof": {
+     "committed": 65.0,
+     "pass": true,
+     "reproduced": 65.0
+    },
+    "models.A_fourier_m65__from_projected_t0.2.inverse_vol_invalid_frac_max": {
+     "committed": 0.508695652173913,
+     "pass": true,
+     "reproduced": 0.508695652173913
+    },
+    "models.A_fourier_m65__from_projected_t0.2.inverse_vol_invalid_frac_mean": {
+     "committed": 0.16557971014492753,
+     "pass": true,
+     "reproduced": 0.16557971014492753
+    },
+    "models.A_fourier_m65__from_projected_t0.2.inverse_vol_median_relerr_mean": {
+     "committed": 0.0364255435089556,
+     "pass": true,
+     "reproduced": 0.03642554350834792
+    },
+    "models.A_fourier_m65__from_projected_t0.2.mass_T_max": {
+     "committed": 0.00790999384632357,
+     "pass": true,
+     "reproduced": 0.007909993846021257
+    },
+    "models.A_fourier_m65__from_projected_t0.2.max_phi_rows": {
+     "committed": 0.5466123500265277,
+     "pass": true,
+     "reproduced": 0.5466123500247506
+    },
+    "models.A_fourier_m65__from_projected_t0.2.min_phi_rows": {
+     "committed": -0.04517936111248715,
+     "pass": true,
+     "reproduced": -0.04517936111228767
+    },
+    "models.A_fourier_m65__from_projected_t0.2.monotonicity_violation_frac_mean": {
+     "committed": 0.5114130434782609,
+     "pass": true,
+     "reproduced": 0.5114130434782609
+    },
+    "models.A_fourier_m65__from_projected_t0.2.negative_mass_T_max": {
+     "committed": 0.5487784689687545,
+     "pass": true,
+     "reproduced": 0.5487784689682883
+    },
+    "models.A_fourier_m65__from_projected_t0.2.negative_mass_max": {
+     "committed": 45.29963304930512,
+     "pass": true,
+     "reproduced": 45.29963304908202
+    },
+    "models.A_fourier_m65__from_projected_t0.2.price_full_rms": {
+     "committed": 0.1238848886653599,
+     "pass": true,
+     "reproduced": 0.1238848886651954
+    },
+    "models.A_fourier_m65__from_projected_t0.2.price_interior_rms": {
+     "committed": 0.10369168271834037,
+     "pass": true,
+     "reproduced": 0.1036916827181752
+    },
+    "models.A_fourier_m65__from_projected_t0.2.projection_err_interior_rms": {
+     "committed": 0.0038859906434872762,
+     "pass": true,
+     "reproduced": 0.003885990643381488
+    },
+    "models.A_fourier_m65__from_projected_t0.2.reduced_operator_abscissa": {
+     "committed": 3.925185215026136e-13,
+     "pass": true,
+     "reproduced": -4.557417114504968e-13
+    },
+    "models.A_full256.butterfly_violation_frac_max": {
+     "committed": 0.1608695652173913,
+     "pass": true,
+     "reproduced": 0.1608695652173913
+    },
+    "models.A_full256.butterfly_violation_frac_mean": {
+     "committed": 0.047644927536231875,
+     "pass": true,
+     "reproduced": 0.047644927536231875
+    },
+    "models.A_full256.calendar_violation_frac_max": {
+     "committed": 0.16521739130434782,
+     "pass": true,
+     "reproduced": 0.16521739130434782
+    },
+    "models.A_full256.calendar_violation_frac_mean": {
+     "committed": 0.05434782608695652,
+     "pass": true,
+     "reproduced": 0.05434782608695652
+    },
+    "models.A_full256.density_l2_interior_max": {
+     "committed": 0.0012240171534446487,
+     "pass": true,
+     "reproduced": 0.0012240171499225743
+    },
+    "models.A_full256.density_l2_interior_mean": {
+     "committed": 0.00032034527007818295,
+     "pass": true,
+     "reproduced": 0.0003203452676680231
+    },
+    "models.A_full256.dof": {
+     "committed": 256.0,
+     "pass": true,
+     "reproduced": 256.0
+    },
+    "models.A_full256.inverse_vol_invalid_frac_max": {
+     "committed": 0.3739130434782609,
+     "pass": true,
+     "reproduced": 0.3739130434782609
+    },
+    "models.A_full256.inverse_vol_invalid_frac_mean": {
+     "committed": 0.1394927536231884,
+     "pass": true,
+     "reproduced": 0.1394927536231884
+    },
+    "models.A_full256.inverse_vol_median_relerr_mean": {
+     "committed": 0.0007658504094409192,
+     "pass": true,
+     "reproduced": 0.0007658504095906605
+    },
+    "models.A_full256.mass_T_max": {
+     "committed": 0.8686842930899505,
+     "pass": true,
+     "reproduced": 0.8686842926556426
+    },
+    "models.A_full256.max_phi_rows": {
+     "committed": 0.5341854706827542,
+     "pass": true,
+     "reproduced": 0.5341854706415674
+    },
+    "models.A_full256.min_phi_rows": {
+     "committed": -0.011230310276190814,
+     "pass": true,
+     "reproduced": -0.011230310311123093
+    },
+    "models.A_full256.monotonicity_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.A_full256.negative_mass_T_max": {
+     "committed": 0.015007315729615648,
+     "pass": true,
+     "reproduced": 0.015007315810619136
+    },
+    "models.A_full256.negative_mass_max": {
+     "committed": 0.015007315729615648,
+     "pass": true,
+     "reproduced": 0.015007315810619136
+    },
+    "models.A_full256.price_full_rms": {
+     "committed": 0.0010567760260961898,
+     "pass": true,
+     "reproduced": 0.0010567760275715706
+    },
+    "models.A_full256.price_interior_rms": {
+     "committed": 0.0007310404025937868,
+     "pass": true,
+     "reproduced": 0.0007310404041585623
+    },
+    "models.B_fourier_m33__from_payoff_t0.butterfly_violation_frac_max": {
+     "committed": 0.5391304347826087,
+     "pass": true,
+     "reproduced": 0.5391304347826087
+    },
+    "models.B_fourier_m33__from_payoff_t0.butterfly_violation_frac_mean": {
+     "committed": 0.5134057971014493,
+     "pass": true,
+     "reproduced": 0.5134057971014493
+    },
+    "models.B_fourier_m33__from_payoff_t0.calendar_violation_frac_max": {
+     "committed": 0.5391304347826087,
+     "pass": true,
+     "reproduced": 0.5391304347826087
+    },
+    "models.B_fourier_m33__from_payoff_t0.calendar_violation_frac_mean": {
+     "committed": 0.5090579710144928,
+     "pass": true,
+     "reproduced": 0.5090579710144928
+    },
+    "models.B_fourier_m33__from_payoff_t0.density_l2_interior_max": {
+     "committed": 0.023263550097804734,
+     "pass": true,
+     "reproduced": 0.023263550097814188
+    },
+    "models.B_fourier_m33__from_payoff_t0.density_l2_interior_mean": {
+     "committed": 0.022170601108078586,
+     "pass": true,
+     "reproduced": 0.022170601108066845
+    },
+    "models.B_fourier_m33__from_payoff_t0.dof": {
+     "committed": 33.0,
+     "pass": true,
+     "reproduced": 33.0
+    },
+    "models.B_fourier_m33__from_payoff_t0.inverse_vol_invalid_frac_max": {
+     "committed": 0.5695652173913044,
+     "pass": true,
+     "reproduced": 0.5695652173913044
+    },
+    "models.B_fourier_m33__from_payoff_t0.inverse_vol_invalid_frac_mean": {
+     "committed": 0.5226449275362319,
+     "pass": true,
+     "reproduced": 0.5226449275362319
+    },
+    "models.B_fourier_m33__from_payoff_t0.inverse_vol_median_relerr_mean": {
+     "committed": 0.02992643328709251,
+     "pass": true,
+     "reproduced": 0.029926433287679428
+    },
+    "models.B_fourier_m33__from_payoff_t0.mass_T_max": {
+     "committed": 0.005242524593314549,
+     "pass": true,
+     "reproduced": 0.0052425245932057815
+    },
+    "models.B_fourier_m33__from_payoff_t0.max_phi_rows": {
+     "committed": 0.4467016866826937,
+     "pass": true,
+     "reproduced": 0.4467016866826946
+    },
+    "models.B_fourier_m33__from_payoff_t0.min_phi_rows": {
+     "committed": -0.16563245347696426,
+     "pass": true,
+     "reproduced": -0.16563245347696293
+    },
+    "models.B_fourier_m33__from_payoff_t0.monotonicity_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_fourier_m33__from_payoff_t0.negative_mass_T_max": {
+     "committed": 0.3077717605509958,
+     "pass": true,
+     "reproduced": 0.3077717605510823
+    },
+    "models.B_fourier_m33__from_payoff_t0.negative_mass_max": {
+     "committed": 0.8699837302714071,
+     "pass": true,
+     "reproduced": 0.8699837302713542
+    },
+    "models.B_fourier_m33__from_payoff_t0.price_full_rms": {
+     "committed": 0.05477917133380792,
+     "pass": true,
+     "reproduced": 0.0547791713338073
+    },
+    "models.B_fourier_m33__from_payoff_t0.price_interior_rms": {
+     "committed": 0.04365428132954887,
+     "pass": true,
+     "reproduced": 0.04365428132954814
+    },
+    "models.B_fourier_m33__from_payoff_t0.projection_err_interior_rms": {
+     "committed": 0.0003096478674171481,
+     "pass": true,
+     "reproduced": 0.0003096478674171649
+    },
+    "models.B_fourier_m33__from_payoff_t0.reduced_operator_abscissa": {
+     "committed": 6.755460455285809e-15,
+     "pass": true,
+     "reproduced": -1.2047274692307425e-13
+    },
+    "models.B_fourier_m33__from_projected_t0.2.butterfly_violation_frac_max": {
+     "committed": 0.4826086956521739,
+     "pass": true,
+     "reproduced": 0.4826086956521739
+    },
+    "models.B_fourier_m33__from_projected_t0.2.butterfly_violation_frac_mean": {
+     "committed": 0.45652173913043476,
+     "pass": true,
+     "reproduced": 0.45652173913043476
+    },
+    "models.B_fourier_m33__from_projected_t0.2.calendar_violation_frac_max": {
+     "committed": 0.48695652173913045,
+     "pass": true,
+     "reproduced": 0.48695652173913045
+    },
+    "models.B_fourier_m33__from_projected_t0.2.calendar_violation_frac_mean": {
+     "committed": 0.46068840579710146,
+     "pass": true,
+     "reproduced": 0.46068840579710146
+    },
+    "models.B_fourier_m33__from_projected_t0.2.density_l2_interior_max": {
+     "committed": 0.025956303017383723,
+     "pass": true,
+     "reproduced": 0.025956303017386963
+    },
+    "models.B_fourier_m33__from_projected_t0.2.density_l2_interior_mean": {
+     "committed": 0.020705289294306494,
+     "pass": true,
+     "reproduced": 0.02070528929429848
+    },
+    "models.B_fourier_m33__from_projected_t0.2.dof": {
+     "committed": 33.0,
+     "pass": true,
+     "reproduced": 33.0
+    },
+    "models.B_fourier_m33__from_projected_t0.2.inverse_vol_invalid_frac_max": {
+     "committed": 0.5173913043478261,
+     "pass": true,
+     "reproduced": 0.5173913043478261
+    },
+    "models.B_fourier_m33__from_projected_t0.2.inverse_vol_invalid_frac_mean": {
+     "committed": 0.4824275362318841,
+     "pass": true,
+     "reproduced": 0.4824275362318841
+    },
+    "models.B_fourier_m33__from_projected_t0.2.inverse_vol_median_relerr_mean": {
+     "committed": 0.05438925373578133,
+     "pass": true,
+     "reproduced": 0.0543892537366527
+    },
+    "models.B_fourier_m33__from_projected_t0.2.mass_T_max": {
+     "committed": 0.006104786043161323,
+     "pass": true,
+     "reproduced": 0.006104786043108615
+    },
+    "models.B_fourier_m33__from_projected_t0.2.max_phi_rows": {
+     "committed": 0.5224461736873425,
+     "pass": true,
+     "reproduced": 0.5224461736873423
+    },
+    "models.B_fourier_m33__from_projected_t0.2.min_phi_rows": {
+     "committed": -0.14628121752921663,
+     "pass": true,
+     "reproduced": -0.14628121752921544
+    },
+    "models.B_fourier_m33__from_projected_t0.2.monotonicity_violation_frac_mean": {
+     "committed": 0.012318840579710146,
+     "pass": true,
+     "reproduced": 0.012318840579710146
+    },
+    "models.B_fourier_m33__from_projected_t0.2.negative_mass_T_max": {
+     "committed": 0.3529732475639767,
+     "pass": true,
+     "reproduced": 0.35297324756401116
+    },
+    "models.B_fourier_m33__from_projected_t0.2.negative_mass_max": {
+     "committed": 1.3857654614181216,
+     "pass": true,
+     "reproduced": 1.3857654614180968
+    },
+    "models.B_fourier_m33__from_projected_t0.2.price_full_rms": {
+     "committed": 0.04193286516081829,
+     "pass": true,
+     "reproduced": 0.04193286516081788
+    },
+    "models.B_fourier_m33__from_projected_t0.2.price_interior_rms": {
+     "committed": 0.03254360883682852,
+     "pass": true,
+     "reproduced": 0.03254360883682801
+    },
+    "models.B_fourier_m33__from_projected_t0.2.projection_err_interior_rms": {
+     "committed": 0.0003096478674171481,
+     "pass": true,
+     "reproduced": 0.0003096478674171649
+    },
+    "models.B_fourier_m33__from_projected_t0.2.reduced_operator_abscissa": {
+     "committed": 6.755460455285809e-15,
+     "pass": true,
+     "reproduced": -1.2047274692307425e-13
+    },
+    "models.B_fourier_m65__from_payoff_t0.butterfly_violation_frac_max": {
+     "committed": 0.5217391304347826,
+     "pass": true,
+     "reproduced": 0.5217391304347826
+    },
+    "models.B_fourier_m65__from_payoff_t0.butterfly_violation_frac_mean": {
+     "committed": 0.4878623188405797,
+     "pass": true,
+     "reproduced": 0.4878623188405797
+    },
+    "models.B_fourier_m65__from_payoff_t0.calendar_violation_frac_max": {
+     "committed": 0.5260869565217391,
+     "pass": true,
+     "reproduced": 0.5260869565217391
+    },
+    "models.B_fourier_m65__from_payoff_t0.calendar_violation_frac_mean": {
+     "committed": 0.4923913043478261,
+     "pass": true,
+     "reproduced": 0.4923913043478261
+    },
+    "models.B_fourier_m65__from_payoff_t0.density_l2_interior_max": {
+     "committed": 0.021479043372800443,
+     "pass": true,
+     "reproduced": 0.02147904337277964
+    },
+    "models.B_fourier_m65__from_payoff_t0.density_l2_interior_mean": {
+     "committed": 0.020444918764823104,
+     "pass": true,
+     "reproduced": 0.020444918764811092
+    },
+    "models.B_fourier_m65__from_payoff_t0.dof": {
+     "committed": 65.0,
+     "pass": true,
+     "reproduced": 65.0
+    },
+    "models.B_fourier_m65__from_payoff_t0.inverse_vol_invalid_frac_max": {
+     "committed": 0.5434782608695652,
+     "pass": true,
+     "reproduced": 0.5434782608695652
+    },
+    "models.B_fourier_m65__from_payoff_t0.inverse_vol_invalid_frac_mean": {
+     "committed": 0.49927536231884057,
+     "pass": true,
+     "reproduced": 0.49927536231884057
+    },
+    "models.B_fourier_m65__from_payoff_t0.inverse_vol_median_relerr_mean": {
+     "committed": 0.01740135389067636,
+     "pass": true,
+     "reproduced": 0.017401353891209285
+    },
+    "models.B_fourier_m65__from_payoff_t0.mass_T_max": {
+     "committed": 0.009091049991396719,
+     "pass": true,
+     "reproduced": 0.009091049991390092
+    },
+    "models.B_fourier_m65__from_payoff_t0.max_phi_rows": {
+     "committed": 0.459663721026957,
+     "pass": true,
+     "reproduced": 0.4596637210269575
+    },
+    "models.B_fourier_m65__from_payoff_t0.min_phi_rows": {
+     "committed": -0.15265972028251054,
+     "pass": true,
+     "reproduced": -0.1526597202825103
+    },
+    "models.B_fourier_m65__from_payoff_t0.monotonicity_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_fourier_m65__from_payoff_t0.negative_mass_T_max": {
+     "committed": 0.32997561558888383,
+     "pass": true,
+     "reproduced": 0.32997561558886856
+    },
+    "models.B_fourier_m65__from_payoff_t0.negative_mass_max": {
+     "committed": 0.8819766416058281,
+     "pass": true,
+     "reproduced": 0.8819766416058727
+    },
+    "models.B_fourier_m65__from_payoff_t0.price_full_rms": {
+     "committed": 0.04894221197294439,
+     "pass": true,
+     "reproduced": 0.04894221197294408
+    },
+    "models.B_fourier_m65__from_payoff_t0.price_interior_rms": {
+     "committed": 0.0388985776094759,
+     "pass": true,
+     "reproduced": 0.038898577609475425
+    },
+    "models.B_fourier_m65__from_payoff_t0.projection_err_interior_rms": {
+     "committed": 8.454105069784443e-05,
+     "pass": true,
+     "reproduced": 8.454105069784457e-05
+    },
+    "models.B_fourier_m65__from_payoff_t0.reduced_operator_abscissa": {
+     "committed": 3.857505922324091e-13,
+     "pass": true,
+     "reproduced": 8.488665331035845e-14
+    },
+    "models.B_fourier_m65__from_projected_t0.2.butterfly_violation_frac_max": {
+     "committed": 0.46956521739130436,
+     "pass": true,
+     "reproduced": 0.46956521739130436
+    },
+    "models.B_fourier_m65__from_projected_t0.2.butterfly_violation_frac_mean": {
+     "committed": 0.44130434782608696,
+     "pass": true,
+     "reproduced": 0.44130434782608696
+    },
+    "models.B_fourier_m65__from_projected_t0.2.calendar_violation_frac_max": {
+     "committed": 0.46956521739130436,
+     "pass": true,
+     "reproduced": 0.46956521739130436
+    },
+    "models.B_fourier_m65__from_projected_t0.2.calendar_violation_frac_mean": {
+     "committed": 0.44076086956521743,
+     "pass": true,
+     "reproduced": 0.44076086956521743
+    },
+    "models.B_fourier_m65__from_projected_t0.2.density_l2_interior_max": {
+     "committed": 0.026264684774528372,
+     "pass": true,
+     "reproduced": 0.02626468477452416
+    },
+    "models.B_fourier_m65__from_projected_t0.2.density_l2_interior_mean": {
+     "committed": 0.018350590477411412,
+     "pass": true,
+     "reproduced": 0.018350590477399235
+    },
+    "models.B_fourier_m65__from_projected_t0.2.dof": {
+     "committed": 65.0,
+     "pass": true,
+     "reproduced": 65.0
+    },
+    "models.B_fourier_m65__from_projected_t0.2.inverse_vol_invalid_frac_max": {
+     "committed": 0.47391304347826085,
+     "pass": true,
+     "reproduced": 0.47391304347826085
+    },
+    "models.B_fourier_m65__from_projected_t0.2.inverse_vol_invalid_frac_mean": {
+     "committed": 0.45561594202898553,
+     "pass": true,
+     "reproduced": 0.45561594202898553
+    },
+    "models.B_fourier_m65__from_projected_t0.2.inverse_vol_median_relerr_mean": {
+     "committed": 0.03263233873858251,
+     "pass": true,
+     "reproduced": 0.03263233874080586
+    },
+    "models.B_fourier_m65__from_projected_t0.2.mass_T_max": {
+     "committed": 0.010492888213246981,
+     "pass": true,
+     "reproduced": 0.010492888213288282
+    },
+    "models.B_fourier_m65__from_projected_t0.2.max_phi_rows": {
+     "committed": 0.5262007743405137,
+     "pass": true,
+     "reproduced": 0.5262007743405137
+    },
+    "models.B_fourier_m65__from_projected_t0.2.min_phi_rows": {
+     "committed": -0.13368710168752226,
+     "pass": true,
+     "reproduced": -0.13368710168752024
+    },
+    "models.B_fourier_m65__from_projected_t0.2.monotonicity_violation_frac_mean": {
+     "committed": 0.008876811594202899,
+     "pass": true,
+     "reproduced": 0.008876811594202899
+    },
+    "models.B_fourier_m65__from_projected_t0.2.negative_mass_T_max": {
+     "committed": 0.37457292883432547,
+     "pass": true,
+     "reproduced": 0.3745729288342862
+    },
+    "models.B_fourier_m65__from_projected_t0.2.negative_mass_max": {
+     "committed": 1.4004195515707885,
+     "pass": true,
+     "reproduced": 1.4004195515708606
+    },
+    "models.B_fourier_m65__from_projected_t0.2.price_full_rms": {
+     "committed": 0.036980422363791426,
+     "pass": true,
+     "reproduced": 0.03698042236379077
+    },
+    "models.B_fourier_m65__from_projected_t0.2.price_interior_rms": {
+     "committed": 0.028644038024925367,
+     "pass": true,
+     "reproduced": 0.028644038024924705
+    },
+    "models.B_fourier_m65__from_projected_t0.2.projection_err_interior_rms": {
+     "committed": 8.454105069784443e-05,
+     "pass": true,
+     "reproduced": 8.454105069784457e-05
+    },
+    "models.B_fourier_m65__from_projected_t0.2.reduced_operator_abscissa": {
+     "committed": 3.857505922324091e-13,
+     "pass": true,
+     "reproduced": 8.488665331035845e-14
+    },
+    "models.B_full256.butterfly_violation_frac_max": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_full256.butterfly_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_full256.calendar_violation_frac_max": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_full256.calendar_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_full256.density_l2_interior_max": {
+     "committed": 6.646806435608734e-06,
+     "pass": true,
+     "reproduced": 6.64680643908101e-06
+    },
+    "models.B_full256.density_l2_interior_mean": {
+     "committed": 2.5249064003363408e-06,
+     "pass": true,
+     "reproduced": 2.5249063950263734e-06
+    },
+    "models.B_full256.dof": {
+     "committed": 256.0,
+     "pass": true,
+     "reproduced": 256.0
+    },
+    "models.B_full256.inverse_vol_invalid_frac_max": {
+     "committed": 0.3739130434782609,
+     "pass": true,
+     "reproduced": 0.3739130434782609
+    },
+    "models.B_full256.inverse_vol_invalid_frac_mean": {
+     "committed": 0.07554347826086956,
+     "pass": true,
+     "reproduced": 0.07554347826086956
+    },
+    "models.B_full256.inverse_vol_median_relerr_mean": {
+     "committed": 0.0007986818655611017,
+     "pass": true,
+     "reproduced": 0.0007986818654317007
+    },
+    "models.B_full256.mass_T_max": {
+     "committed": 0.8429910217869382,
+     "pass": true,
+     "reproduced": 0.8429910217868632
+    },
+    "models.B_full256.max_phi_rows": {
+     "committed": 0.5291177332078756,
+     "pass": true,
+     "reproduced": 0.5291177332078756
+    },
+    "models.B_full256.min_phi_rows": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_full256.monotonicity_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_full256.negative_mass_T_max": {
+     "committed": 2.548774423904765e-08,
+     "pass": true,
+     "reproduced": 2.5487744262206074e-08
+    },
+    "models.B_full256.negative_mass_max": {
+     "committed": 3.948932398168995e-07,
+     "pass": true,
+     "reproduced": 3.9489330305484054e-07
+    },
+    "models.B_full256.price_full_rms": {
+     "committed": 3.457368291253255e-06,
+     "pass": true,
+     "reproduced": 3.457368289027609e-06
+    },
+    "models.B_full256.price_interior_rms": {
+     "committed": 3.6301164942865395e-06,
+     "pass": true,
+     "reproduced": 3.630116491919732e-06
+    },
+    "models.B_full512_reference.dof": {
+     "committed": 512.0,
+     "pass": true,
+     "reproduced": 512.0
+    },
+    "models.B_sine_m17__from_payoff_t0.butterfly_violation_frac_max": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m17__from_payoff_t0.butterfly_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m17__from_payoff_t0.calendar_violation_frac_max": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m17__from_payoff_t0.calendar_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m17__from_payoff_t0.density_l2_interior_max": {
+     "committed": 0.0001941474375710356,
+     "pass": true,
+     "reproduced": 0.00019414743759002857
+    },
+    "models.B_sine_m17__from_payoff_t0.density_l2_interior_mean": {
+     "committed": 0.00012657587912953992,
+     "pass": true,
+     "reproduced": 0.00012657587914467934
+    },
+    "models.B_sine_m17__from_payoff_t0.dof": {
+     "committed": 17.0,
+     "pass": true,
+     "reproduced": 17.0
+    },
+    "models.B_sine_m17__from_payoff_t0.inverse_vol_invalid_frac_max": {
+     "committed": 0.3695652173913043,
+     "pass": true,
+     "reproduced": 0.3695652173913043
+    },
+    "models.B_sine_m17__from_payoff_t0.inverse_vol_invalid_frac_mean": {
+     "committed": 0.07608695652173912,
+     "pass": true,
+     "reproduced": 0.07608695652173912
+    },
+    "models.B_sine_m17__from_payoff_t0.inverse_vol_median_relerr_mean": {
+     "committed": 0.0023087898278063555,
+     "pass": true,
+     "reproduced": 0.0023087898276801075
+    },
+    "models.B_sine_m17__from_payoff_t0.mass_T_max": {
+     "committed": 0.8409383528621679,
+     "pass": true,
+     "reproduced": 0.840938352862179
+    },
+    "models.B_sine_m17__from_payoff_t0.max_phi_rows": {
+     "committed": 0.5291177332078756,
+     "pass": true,
+     "reproduced": 0.5291177332078756
+    },
+    "models.B_sine_m17__from_payoff_t0.min_phi_rows": {
+     "committed": -8.948730556568307e-07,
+     "pass": true,
+     "reproduced": -8.948730568641983e-07
+    },
+    "models.B_sine_m17__from_payoff_t0.monotonicity_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m17__from_payoff_t0.negative_mass_T_max": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m17__from_payoff_t0.negative_mass_max": {
+     "committed": 6.573229492620883e-05,
+     "pass": true,
+     "reproduced": 6.573229496918249e-05
+    },
+    "models.B_sine_m17__from_payoff_t0.price_full_rms": {
+     "committed": 1.1136183746339985e-05,
+     "pass": true,
+     "reproduced": 1.1136183746171962e-05
+    },
+    "models.B_sine_m17__from_payoff_t0.price_interior_rms": {
+     "committed": 8.575074555306068e-06,
+     "pass": true,
+     "reproduced": 8.575074555458085e-06
+    },
+    "models.B_sine_m17__from_payoff_t0.projection_err_interior_rms": {
+     "committed": 6.118157543114776e-06,
+     "pass": true,
+     "reproduced": 6.118157543039599e-06
+    },
+    "models.B_sine_m17__from_payoff_t0.reduced_operator_abscissa": {
+     "committed": -0.3320488404097722,
+     "pass": true,
+     "reproduced": -0.3320488404097304
+    },
+    "models.B_sine_m17__from_projected_t0.2.butterfly_violation_frac_max": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m17__from_projected_t0.2.butterfly_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m17__from_projected_t0.2.calendar_violation_frac_max": {
+     "committed": 0.034782608695652174,
+     "pass": true,
+     "reproduced": 0.034782608695652174
+    },
+    "models.B_sine_m17__from_projected_t0.2.calendar_violation_frac_mean": {
+     "committed": 0.0014492753623188406,
+     "pass": true,
+     "reproduced": 0.0014492753623188406
+    },
+    "models.B_sine_m17__from_projected_t0.2.density_l2_interior_max": {
+     "committed": 0.00019285351666741007,
+     "pass": true,
+     "reproduced": 0.00019285351668312003
+    },
+    "models.B_sine_m17__from_projected_t0.2.density_l2_interior_mean": {
+     "committed": 0.0001158828784943173,
+     "pass": true,
+     "reproduced": 0.00011588287850576953
+    },
+    "models.B_sine_m17__from_projected_t0.2.dof": {
+     "committed": 17.0,
+     "pass": true,
+     "reproduced": 17.0
+    },
+    "models.B_sine_m17__from_projected_t0.2.inverse_vol_invalid_frac_max": {
+     "committed": 0.34347826086956523,
+     "pass": true,
+     "reproduced": 0.34347826086956523
+    },
+    "models.B_sine_m17__from_projected_t0.2.inverse_vol_invalid_frac_mean": {
+     "committed": 0.075,
+     "pass": true,
+     "reproduced": 0.075
+    },
+    "models.B_sine_m17__from_projected_t0.2.inverse_vol_median_relerr_mean": {
+     "committed": 0.0023550296454182204,
+     "pass": true,
+     "reproduced": 0.002355029643636978
+    },
+    "models.B_sine_m17__from_projected_t0.2.mass_T_max": {
+     "committed": 0.8408995165638155,
+     "pass": true,
+     "reproduced": 0.840899516563839
+    },
+    "models.B_sine_m17__from_projected_t0.2.max_phi_rows": {
+     "committed": 0.5291177332078756,
+     "pass": true,
+     "reproduced": 0.5291177332078756
+    },
+    "models.B_sine_m17__from_projected_t0.2.min_phi_rows": {
+     "committed": -1.6271051033467376e-06,
+     "pass": true,
+     "reproduced": -1.6271051033328598e-06
+    },
+    "models.B_sine_m17__from_projected_t0.2.monotonicity_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m17__from_projected_t0.2.negative_mass_T_max": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m17__from_projected_t0.2.negative_mass_max": {
+     "committed": 0.00018025822233368153,
+     "pass": true,
+     "reproduced": 0.0001802582223397138
+    },
+    "models.B_sine_m17__from_projected_t0.2.price_full_rms": {
+     "committed": 9.620886157245973e-06,
+     "pass": true,
+     "reproduced": 9.620886156185589e-06
+    },
+    "models.B_sine_m17__from_projected_t0.2.price_interior_rms": {
+     "committed": 6.0715201473027784e-06,
+     "pass": true,
+     "reproduced": 6.071520146059214e-06
+    },
+    "models.B_sine_m17__from_projected_t0.2.projection_err_interior_rms": {
+     "committed": 6.118157543114776e-06,
+     "pass": true,
+     "reproduced": 6.118157543039599e-06
+    },
+    "models.B_sine_m17__from_projected_t0.2.reduced_operator_abscissa": {
+     "committed": -0.3320488404097722,
+     "pass": true,
+     "reproduced": -0.3320488404097304
+    },
+    "models.B_sine_m33__from_payoff_t0.butterfly_violation_frac_max": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m33__from_payoff_t0.butterfly_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m33__from_payoff_t0.calendar_violation_frac_max": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m33__from_payoff_t0.calendar_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m33__from_payoff_t0.density_l2_interior_max": {
+     "committed": 2.924781532590434e-05,
+     "pass": true,
+     "reproduced": 2.924781527866127e-05
+    },
+    "models.B_sine_m33__from_payoff_t0.density_l2_interior_mean": {
+     "committed": 2.0730951419414538e-05,
+     "pass": true,
+     "reproduced": 2.0730951408396744e-05
+    },
+    "models.B_sine_m33__from_payoff_t0.dof": {
+     "committed": 33.0,
+     "pass": true,
+     "reproduced": 33.0
+    },
+    "models.B_sine_m33__from_payoff_t0.inverse_vol_invalid_frac_max": {
+     "committed": 0.3739130434782609,
+     "pass": true,
+     "reproduced": 0.3739130434782609
+    },
+    "models.B_sine_m33__from_payoff_t0.inverse_vol_invalid_frac_mean": {
+     "committed": 0.07536231884057971,
+     "pass": true,
+     "reproduced": 0.07536231884057971
+    },
+    "models.B_sine_m33__from_payoff_t0.inverse_vol_median_relerr_mean": {
+     "committed": 0.0008817745763111572,
+     "pass": true,
+     "reproduced": 0.0008817745792812345
+    },
+    "models.B_sine_m33__from_payoff_t0.mass_T_max": {
+     "committed": 0.8426819340612667,
+     "pass": true,
+     "reproduced": 0.8426819340612411
+    },
+    "models.B_sine_m33__from_payoff_t0.max_phi_rows": {
+     "committed": 0.5291177332078756,
+     "pass": true,
+     "reproduced": 0.5291177332078756
+    },
+    "models.B_sine_m33__from_payoff_t0.min_phi_rows": {
+     "committed": -2.0595771656687833e-17,
+     "pass": true,
+     "reproduced": -2.0595771656688262e-17
+    },
+    "models.B_sine_m33__from_payoff_t0.monotonicity_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m33__from_payoff_t0.negative_mass_T_max": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m33__from_payoff_t0.negative_mass_max": {
+     "committed": 1.8389888532403649e-06,
+     "pass": true,
+     "reproduced": 1.8389888848593355e-06
+    },
+    "models.B_sine_m33__from_payoff_t0.price_full_rms": {
+     "committed": 3.6446968318189518e-06,
+     "pass": true,
+     "reproduced": 3.6446968317143694e-06
+    },
+    "models.B_sine_m33__from_payoff_t0.price_interior_rms": {
+     "committed": 3.7850350183506716e-06,
+     "pass": true,
+     "reproduced": 3.785035018169623e-06
+    },
+    "models.B_sine_m33__from_payoff_t0.projection_err_interior_rms": {
+     "committed": 3.3400273268716814e-07,
+     "pass": true,
+     "reproduced": 3.340027327335977e-07
+    },
+    "models.B_sine_m33__from_payoff_t0.reduced_operator_abscissa": {
+     "committed": -0.332024735523241,
+     "pass": true,
+     "reproduced": -0.3320247355233337
+    },
+    "models.B_sine_m33__from_projected_t0.2.butterfly_violation_frac_max": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m33__from_projected_t0.2.butterfly_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m33__from_projected_t0.2.calendar_violation_frac_max": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m33__from_projected_t0.2.calendar_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m33__from_projected_t0.2.density_l2_interior_max": {
+     "committed": 2.9300237517181718e-05,
+     "pass": true,
+     "reproduced": 2.9300237468986794e-05
+    },
+    "models.B_sine_m33__from_projected_t0.2.density_l2_interior_mean": {
+     "committed": 2.0856339849902402e-05,
+     "pass": true,
+     "reproduced": 2.0856339838156105e-05
+    },
+    "models.B_sine_m33__from_projected_t0.2.dof": {
+     "committed": 33.0,
+     "pass": true,
+     "reproduced": 33.0
+    },
+    "models.B_sine_m33__from_projected_t0.2.inverse_vol_invalid_frac_max": {
+     "committed": 0.3739130434782609,
+     "pass": true,
+     "reproduced": 0.3739130434782609
+    },
+    "models.B_sine_m33__from_projected_t0.2.inverse_vol_invalid_frac_mean": {
+     "committed": 0.07536231884057971,
+     "pass": true,
+     "reproduced": 0.07536231884057971
+    },
+    "models.B_sine_m33__from_projected_t0.2.inverse_vol_median_relerr_mean": {
+     "committed": 0.0009362039122955316,
+     "pass": true,
+     "reproduced": 0.0009362039136163121
+    },
+    "models.B_sine_m33__from_projected_t0.2.mass_T_max": {
+     "committed": 0.8426790070958291,
+     "pass": true,
+     "reproduced": 0.8426790070958545
+    },
+    "models.B_sine_m33__from_projected_t0.2.max_phi_rows": {
+     "committed": 0.5291177332078756,
+     "pass": true,
+     "reproduced": 0.5291177332078756
+    },
+    "models.B_sine_m33__from_projected_t0.2.min_phi_rows": {
+     "committed": -3.2202864767155726e-10,
+     "pass": true,
+     "reproduced": -3.2202863813057814e-10
+    },
+    "models.B_sine_m33__from_projected_t0.2.monotonicity_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m33__from_projected_t0.2.negative_mass_T_max": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m33__from_projected_t0.2.negative_mass_max": {
+     "committed": 1.860899977666004e-06,
+     "pass": true,
+     "reproduced": 1.8609000409039449e-06
+    },
+    "models.B_sine_m33__from_projected_t0.2.price_full_rms": {
+     "committed": 3.481968399360243e-06,
+     "pass": true,
+     "reproduced": 3.481968398522093e-06
+    },
+    "models.B_sine_m33__from_projected_t0.2.price_interior_rms": {
+     "committed": 3.6170637687391717e-06,
+     "pass": true,
+     "reproduced": 3.6170637678200922e-06
+    },
+    "models.B_sine_m33__from_projected_t0.2.projection_err_interior_rms": {
+     "committed": 3.3400273268716814e-07,
+     "pass": true,
+     "reproduced": 3.340027327335977e-07
+    },
+    "models.B_sine_m33__from_projected_t0.2.reduced_operator_abscissa": {
+     "committed": -0.332024735523241,
+     "pass": true,
+     "reproduced": -0.3320247355233337
+    },
+    "models.B_sine_m65__from_payoff_t0.butterfly_violation_frac_max": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m65__from_payoff_t0.butterfly_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m65__from_payoff_t0.calendar_violation_frac_max": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m65__from_payoff_t0.calendar_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m65__from_payoff_t0.density_l2_interior_max": {
+     "committed": 6.638999478249059e-06,
+     "pass": true,
+     "reproduced": 6.638999480916981e-06
+    },
+    "models.B_sine_m65__from_payoff_t0.density_l2_interior_mean": {
+     "committed": 4.338648197825441e-06,
+     "pass": true,
+     "reproduced": 4.338648193112045e-06
+    },
+    "models.B_sine_m65__from_payoff_t0.dof": {
+     "committed": 65.0,
+     "pass": true,
+     "reproduced": 65.0
+    },
+    "models.B_sine_m65__from_payoff_t0.inverse_vol_invalid_frac_max": {
+     "committed": 0.3739130434782609,
+     "pass": true,
+     "reproduced": 0.3739130434782609
+    },
+    "models.B_sine_m65__from_payoff_t0.inverse_vol_invalid_frac_mean": {
+     "committed": 0.0753623188405797,
+     "pass": true,
+     "reproduced": 0.0753623188405797
+    },
+    "models.B_sine_m65__from_payoff_t0.inverse_vol_median_relerr_mean": {
+     "committed": 0.0008302497876282694,
+     "pass": true,
+     "reproduced": 0.0008302497879043519
+    },
+    "models.B_sine_m65__from_payoff_t0.mass_T_max": {
+     "committed": 0.8429392312012994,
+     "pass": true,
+     "reproduced": 0.842939231201355
+    },
+    "models.B_sine_m65__from_payoff_t0.max_phi_rows": {
+     "committed": 0.5291177332078756,
+     "pass": true,
+     "reproduced": 0.5291177332078756
+    },
+    "models.B_sine_m65__from_payoff_t0.min_phi_rows": {
+     "committed": -2.0597042002382117e-17,
+     "pass": true,
+     "reproduced": -2.059704200238178e-17
+    },
+    "models.B_sine_m65__from_payoff_t0.monotonicity_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m65__from_payoff_t0.negative_mass_T_max": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m65__from_payoff_t0.negative_mass_max": {
+     "committed": 1.3525833539483134e-06,
+     "pass": true,
+     "reproduced": 1.352583385567284e-06
+    },
+    "models.B_sine_m65__from_payoff_t0.price_full_rms": {
+     "committed": 3.4536266254456556e-06,
+     "pass": true,
+     "reproduced": 3.4536266228174195e-06
+    },
+    "models.B_sine_m65__from_payoff_t0.price_interior_rms": {
+     "committed": 3.6263805102085483e-06,
+     "pass": true,
+     "reproduced": 3.6263805073642045e-06
+    },
+    "models.B_sine_m65__from_payoff_t0.projection_err_interior_rms": {
+     "committed": 1.4342811322206796e-08,
+     "pass": true,
+     "reproduced": 1.4342811330263874e-08
+    },
+    "models.B_sine_m65__from_payoff_t0.reduced_operator_abscissa": {
+     "committed": -0.3320238637253847,
+     "pass": true,
+     "reproduced": -0.3320238637240144
+    },
+    "models.B_sine_m65__from_projected_t0.2.butterfly_violation_frac_max": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m65__from_projected_t0.2.butterfly_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m65__from_projected_t0.2.calendar_violation_frac_max": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m65__from_projected_t0.2.calendar_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m65__from_projected_t0.2.density_l2_interior_max": {
+     "committed": 6.647855534671453e-06,
+     "pass": true,
+     "reproduced": 6.647855538161463e-06
+    },
+    "models.B_sine_m65__from_projected_t0.2.density_l2_interior_mean": {
+     "committed": 4.335318523040393e-06,
+     "pass": true,
+     "reproduced": 4.335318518963212e-06
+    },
+    "models.B_sine_m65__from_projected_t0.2.dof": {
+     "committed": 65.0,
+     "pass": true,
+     "reproduced": 65.0
+    },
+    "models.B_sine_m65__from_projected_t0.2.inverse_vol_invalid_frac_max": {
+     "committed": 0.3739130434782609,
+     "pass": true,
+     "reproduced": 0.3739130434782609
+    },
+    "models.B_sine_m65__from_projected_t0.2.inverse_vol_invalid_frac_mean": {
+     "committed": 0.0753623188405797,
+     "pass": true,
+     "reproduced": 0.0753623188405797
+    },
+    "models.B_sine_m65__from_projected_t0.2.inverse_vol_median_relerr_mean": {
+     "committed": 0.0008850550852978105,
+     "pass": true,
+     "reproduced": 0.0008850550859550009
+    },
+    "models.B_sine_m65__from_projected_t0.2.mass_T_max": {
+     "committed": 0.8429392844671031,
+     "pass": true,
+     "reproduced": 0.842939284467181
+    },
+    "models.B_sine_m65__from_projected_t0.2.max_phi_rows": {
+     "committed": 0.5291177332078756,
+     "pass": true,
+     "reproduced": 0.5291177332078756
+    },
+    "models.B_sine_m65__from_projected_t0.2.min_phi_rows": {
+     "committed": -2.059704273604955e-17,
+     "pass": true,
+     "reproduced": -2.0597042736049238e-17
+    },
+    "models.B_sine_m65__from_projected_t0.2.monotonicity_violation_frac_mean": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m65__from_projected_t0.2.negative_mass_T_max": {
+     "committed": 0.0,
+     "pass": true,
+     "reproduced": 0.0
+    },
+    "models.B_sine_m65__from_projected_t0.2.negative_mass_max": {
+     "committed": 1.3788489862516739e-06,
+     "pass": true,
+     "reproduced": 1.3788489825259603e-06
+    },
+    "models.B_sine_m65__from_projected_t0.2.price_full_rms": {
+     "committed": 3.456717947281283e-06,
+     "pass": true,
+     "reproduced": 3.4567179449819223e-06
+    },
+    "models.B_sine_m65__from_projected_t0.2.price_interior_rms": {
+     "committed": 3.6296303419858373e-06,
+     "pass": true,
+     "reproduced": 3.6296303394860775e-06
+    },
+    "models.B_sine_m65__from_projected_t0.2.projection_err_interior_rms": {
+     "committed": 1.4342811322206796e-08,
+     "pass": true,
+     "reproduced": 1.4342811330263874e-08
+    },
+    "models.B_sine_m65__from_projected_t0.2.reduced_operator_abscissa": {
+     "committed": -0.3320238637253847,
+     "pass": true,
+     "reproduced": -0.3320238637240144
+    },
+    "uncertainty.grid_256_vs_512_density_l2": {
+     "committed": 2.5249064003363408e-06,
+     "pass": true,
+     "reproduced": 2.5249063950263734e-06
+    },
+    "uncertainty.grid_256_vs_512_interior_rms": {
+     "committed": 3.6301164942865395e-06,
+     "pass": true,
+     "reproduced": 3.630116491919732e-06
+    }
+   },
+   "n_failed": 0,
+   "reproduced_identity": {
+    "K_max": 3000.0,
+    "K_min": 500.0,
+    "algo": 1,
+    "case": "2edeaeb2d64c7aa8",
+    "case_id": "S_seed9",
+    "code": "302d37258262c714",
+    "dims_fourier": [
+     16,
+     32
+    ],
+    "dims_sine": [
+     17,
+     33,
+     65
+    ],
+    "gate": "gate5",
+    "n_k": 256,
+    "n_k_ref": 512,
+    "schema": 2,
+    "sub": 16
+   },
+   "reproduced_wall_seconds": 0.5413854122161865,
+   "status": "done"
+  }
+ },
+ "max_rel_dev": 1.8612740761720894,
+ "max_rel_dev_key": "S_seed9:models.A_fourier_m65__from_payoff_t0.reduced_operator_abscissa",
+ "n_compared": 975,
+ "n_failed": 0,
+ "pass": true,
+ "tolerances": {
+  "abs": 1e-09,
+  "frac_abs": 0.01,
+  "rel": 1e-05
+ }
+}
