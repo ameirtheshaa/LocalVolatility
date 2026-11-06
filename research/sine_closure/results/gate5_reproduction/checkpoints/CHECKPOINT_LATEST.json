@@ -1,0 +1,68 @@
+{
+ "cases": {
+  "done": [
+   "C_sig0.30",
+   "S_seed9",
+   "F_fresh_base0.28_t0.2_x0.05"
+  ],
+  "failed": [],
+  "pending": []
+ },
+ "command": "python3 research/dupire_signed_memory/scripts/gate5_sine_rom.py --resume",
+ "config": {
+  "algo_version": 1,
+  "code_identity": "302d37258262c714",
+  "resume": false,
+  "sub": 16
+ },
+ "environment": {
+  "machine": "AMD64",
+  "numpy": "2.2.6",
+  "platform": "Windows-10-10.0.26200-SP0",
+  "python": "3.11.9",
+  "scipy": "1.13.1"
+ },
+ "exit_code": 0,
+ "extra": {},
+ "gate": "gate5",
+ "git_dirty_tracked_areas": true,
+ "git_head": "unavailable",
+ "next_command": "python3 research/dupire_signed_memory/scripts/gate5_table.py",
+ "result_checksums": {
+  "results\\gate5\\C_sig0.30.json": "a22523174d3f42d733389760fd70339983007e61dad3bb7f26e65547d2a4ce54",
+  "results\\gate5\\F_fresh_base0.28_t0.2_x0.05.json": "c12f5143d4652d1abcce5391c4534e60060f1ce5be00315ad707a0f0870e0444",
+  "results\\gate5\\RUN_MANIFEST.json": "08cb4c1ee68a71b585f6a77a93812071b2324f6ddc0cf05be6b77a1f028c35ab",
+  "results\\gate5\\S_seed9.json": "0863b56ba1b6729d848acf9c9f8e7eabef48ebdbfe9f4b1cd044344f31ecc4c0",
+  "results\\gate5\\summary.json": "68bcbb9fd0530e362b7f451204c65ecf166c2527982f15bfda13efb3394693e2"
+ },
+ "seeds": {},
+ "source_identities": {
+  "Synthetic_Data_Tensorflow_Advanced/analytical_solutions.py": "5a07c411599c25d266318fff81ef15ae98c740af8627e3a7230aa23ccf552392",
+  "Synthetic_Data_Tensorflow_Advanced/config.py": "7342318d6298f38411073f1afaa62cf6f9674dff882a646124e0bed67977c46a",
+  "Synthetic_Data_Tensorflow_Advanced/mz_spectral/fourier_dupire.py": "97a7a59c07a67aa325918097cc8599469de5d81158e90d670eb4c5c494d1e28b",
+  "Synthetic_Data_Tensorflow_Advanced/mz_spectral/mz_decomposition.py": "466fdb95748f7dc19e73bc7029bdd090207175c224f8610cea588c55e6b7f83c",
+  "Synthetic_Data_Tensorflow_Advanced/mz_spectral/quasi_linear.py": "e541b041ab0a6bdfd24f7114dfd9441e7cf3bf584376fc81d5fc2aba64b8f3a3",
+  "Synthetic_Data_Tensorflow_Advanced/mz_spectral/validation.py": "6d2c3d3319f701c477d4d7f56006da63f8ab616f6ad77c45189e970b71379e86",
+  "research\\dupire_signed_memory\\dsm\\__init__.py": "bccc882aba5d9544276c6878926974a4e46265fd819847d71f56c32a8a0b9da1",
+  "research\\dupire_signed_memory\\dsm\\cases.py": "5b2f81ff7e4516520e9580580c12bc2d51c3052136f7673433baf4c3ae056178",
+  "research\\dupire_signed_memory\\dsm\\checkpoint.py": "3b514fcfaced1cf6376b545c67c833d59296eed2e63fef8be9452d78e2aefc53",
+  "research\\dupire_signed_memory\\dsm\\closures.py": "9bb0a4ab5565119c373c4b4ebaac0ee60dc1e2d7ad6c134b59563c2f2bc78b78",
+  "research\\dupire_signed_memory\\dsm\\control.py": "dead46edb45ffe84a960fb37379b3b57a8f0d8d86b90a2cc9daabbf10313bc39",
+  "research\\dupire_signed_memory\\dsm\\metrics.py": "08b4f3ab87308648729ae39d8cb58cf28518f0cb0cad8354d3a082ac367b151b",
+  "research\\dupire_signed_memory\\dsm\\mz.py": "fb1334540f14e0c65965b80fb2b7691bcd3fe3968ea4e4d3041f2cf35ddb4efd",
+  "research\\dupire_signed_memory\\dsm\\operators.py": "3b2d859e5c11b5882537b3eccb2dcaee63c48c4284d5b62ad4109f8e34e94ca9",
+  "research\\dupire_signed_memory\\dsm\\reference.py": "977e92fb55478bc8f24d6b65626da119eb2b9956cbc791dda10f9acf9ba8338d",
+  "research\\dupire_signed_memory\\dsm\\repo.py": "0e1b86ecfe54dc8bb27a412917f7af807dc84d57b94424a1e260314d12729b00",
+  "research\\dupire_signed_memory\\scripts\\gate1_contract.py": "3f83bc92b8848053cf57065164c93d053f535dfa10ad69336058bce7b72de970",
+  "research\\dupire_signed_memory\\scripts\\gate2_reference.py": "5b5bf79b0adb6a8496c30792f76ab31108f6494cf66657bc83cd9bc3dc53a758",
+  "research\\dupire_signed_memory\\scripts\\gate2b_basis_diagnostic.py": "f848e3f27ce95799b578fb8934cb533e0bbc16966322f8285aca994cf4c74186",
+  "research\\dupire_signed_memory\\scripts\\gate3_compare.py": "3f8361b8c3cc8db07fcfa947d8adc1266af57ab07d715cc62bc41db84b2bc9d4",
+  "research\\dupire_signed_memory\\scripts\\gate4_evaluate.py": "919fd66bd92bf74bfd04f0ea2def98ebf2ce30823f5a6696e8af3ad64c5fc700",
+  "research\\dupire_signed_memory\\scripts\\gate5_sine_rom.py": "5b6a49031cf0fd3aa69a4ea24a183b3b2ab14350d3667dc8a8f0891085565c15",
+  "research\\dupire_signed_memory\\scripts\\gate5_table.py": "dad572032e0f82ebae6288cdc9505efc0361413da01f64cf6648f80791ee7b1c",
+  "research\\dupire_signed_memory\\scripts\\run_all.py": "92343d03f4e53ffd355f37e7144b2f8e89e1513634c13910198d0935b8e56f4e",
+  "research\\dupire_signed_memory\\scripts\\stamp_results.py": "701d539621388d2cd4e2a84020915f3b6a869043e624a079227fb984a5aff99b",
+  "research\\dupire_signed_memory\\scripts\\verify_results.py": "a79b5516953d93c2063cab9aaa136da5e1bb9820f92c8b80a9b6685ab774dc99"
+ },
+ "timestamp_utc": "2026-11-05T11:39:55Z"
+}

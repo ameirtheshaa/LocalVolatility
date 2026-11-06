@@ -1,0 +1,109 @@
+{
+ "definition": "Warm-start diagnostic: how much of the exact feedback M(t) after t0 = 0.2 is the unresolved-initial-condition\nterm B(t) \u03a6_D(t,t0) z0 that no deployable closure receives (PLAN.md \u00a76, Addendum 2)?\n\nFor each case and m: z_ic(t) propagated by the same midpoint exponentials as the reference (autonomous: one\nexpm of h D), ic(t) = B(t) z_ic(t); memory(t) = M(t) - ic(t). Reports ||ic||/||M|| at t0+h, t=0.25, t=0.30,\nthe time-integrated ratio over [t0, 1], and the resolved-coordinate error (interior RMS of V(c - c_ref) at the\n24 maturities) of a teacher-forced rollout that receives M - ic (the \"memory-only floor\", i.e. what a closure\nreproducing the memory exactly but starting from a zero hidden state could at best achieve), next to the TF\noracle (full M) and RRR. Writes results/verify/ic_term_warm_start.json.\n\n    python x_ic_term.py [--cases ID ...] [--m 9 17]\n",
+ "results": {
+  "C_sig0.30": {
+   "m17": {
+    "integrated_ratio_t0_to_1": 0.009607287949722043,
+    "norm_M_t0": 0.0006311456439386622,
+    "norm_ic_t0": 0.0006311456439318603,
+    "ratio_at_t0.25": 0.042330819464658755,
+    "ratio_at_t0.30": 0.019656808928014448,
+    "ratio_at_t1": 4.828050371033347e-09,
+    "ratio_ic_over_M_at_t0_plus_h": 0.4673739842910811,
+    "resolved_interior_rms_RRR": 1.9632664033798804e-06,
+    "resolved_interior_rms_TF_full_M": 4.138758259301815e-10,
+    "resolved_interior_rms_TF_memory_only": 4.176752646131772e-08
+   },
+   "m9": {
+    "integrated_ratio_t0_to_1": 0.06458590503501599,
+    "norm_M_t0": 0.03786468394985102,
+    "norm_ic_t0": 0.03786468394985718,
+    "ratio_at_t0.25": 0.02573201525703227,
+    "ratio_at_t0.30": 0.0618296403595224,
+    "ratio_at_t1": 0.0010294155064543352,
+    "ratio_ic_over_M_at_t0_plus_h": 0.8706532392133878,
+    "resolved_interior_rms_RRR": 0.00010128706686488855,
+    "resolved_interior_rms_TF_full_M": 3.814589346419619e-09,
+    "resolved_interior_rms_TF_memory_only": 6.864039130196627e-06
+   }
+  },
+  "D2_seed200": {
+   "m17": {
+    "integrated_ratio_t0_to_1": 0.000698145153078964,
+    "norm_M_t0": 0.0002385780257034095,
+    "norm_ic_t0": 0.00023857802570024212,
+    "ratio_at_t0.25": 0.001586111059846869,
+    "ratio_at_t0.30": 1.5316840994042588e-05,
+    "ratio_at_t1": 5.1064804151499375e-34,
+    "ratio_ic_over_M_at_t0_plus_h": 0.6513370815603762,
+    "resolved_interior_rms_RRR": 7.281065915092949e-06,
+    "resolved_interior_rms_TF_full_M": 2.4604504954250053e-09,
+    "resolved_interior_rms_TF_memory_only": 2.0025565761551977e-08
+   },
+   "m9": {
+    "integrated_ratio_t0_to_1": 0.01366782096547527,
+    "norm_M_t0": 0.07406623443255585,
+    "norm_ic_t0": 0.07406623443255572,
+    "ratio_at_t0.25": 0.08619343959370142,
+    "ratio_at_t0.30": 0.005213118539076458,
+    "ratio_at_t1": 4.418612952822526e-14,
+    "ratio_ic_over_M_at_t0_plus_h": 0.8439558857558289,
+    "resolved_interior_rms_RRR": 0.00013691788792264035,
+    "resolved_interior_rms_TF_full_M": 1.8034922042693912e-08,
+    "resolved_interior_rms_TF_memory_only": 3.3968536169768944e-06
+   }
+  },
+  "M_seed300": {
+   "m17": {
+    "integrated_ratio_t0_to_1": 0.004629860516684613,
+    "norm_M_t0": 0.0007289170074938524,
+    "norm_ic_t0": 0.0007289170075032369,
+    "ratio_at_t0.25": 0.12811438695105543,
+    "ratio_at_t0.30": 0.020567353681623293,
+    "ratio_at_t1": 4.766670352007108e-11,
+    "ratio_ic_over_M_at_t0_plus_h": 0.828596051793706,
+    "resolved_interior_rms_RRR": 2.3287243544358216e-06,
+    "resolved_interior_rms_TF_full_M": 1.7848181781268044e-10,
+    "resolved_interior_rms_TF_memory_only": 2.0639824840333633e-08
+   },
+   "m9": {
+    "integrated_ratio_t0_to_1": 0.13828692582141588,
+    "norm_M_t0": 0.06102390185356093,
+    "norm_ic_t0": 0.061023901853562226,
+    "ratio_at_t0.25": 0.23491745046631327,
+    "ratio_at_t0.30": 0.1159026018434805,
+    "ratio_at_t1": 0.00013238899668157047,
+    "ratio_ic_over_M_at_t0_plus_h": 0.9043773217695075,
+    "resolved_interior_rms_RRR": 5.053005930615821e-05,
+    "resolved_interior_rms_TF_full_M": 2.6341833806697142e-09,
+    "resolved_interior_rms_TF_memory_only": 1.2990834766918564e-05
+   }
+  },
+  "S2_seed100": {
+   "m17": {
+    "integrated_ratio_t0_to_1": 0.00443412252794679,
+    "norm_M_t0": 0.0010930843005613946,
+    "norm_ic_t0": 0.0010930843005516773,
+    "ratio_at_t0.25": 0.3004267205971221,
+    "ratio_at_t0.30": 0.019817051241992997,
+    "ratio_at_t1": 8.303012589735227e-15,
+    "ratio_ic_over_M_at_t0_plus_h": 0.8318952380663694,
+    "resolved_interior_rms_RRR": 3.2539544321606732e-06,
+    "resolved_interior_rms_TF_full_M": 3.0026004888015464e-10,
+    "resolved_interior_rms_TF_memory_only": 3.2163548896001746e-08
+   },
+   "m9": {
+    "integrated_ratio_t0_to_1": 0.08898920579981548,
+    "norm_M_t0": 0.05297581772812132,
+    "norm_ic_t0": 0.05297581772812825,
+    "ratio_at_t0.25": 0.2199645328368473,
+    "ratio_at_t0.30": 0.09358927640616614,
+    "ratio_at_t1": 3.2925306089830375e-06,
+    "ratio_ic_over_M_at_t0_plus_h": 0.9120191411687718,
+    "resolved_interior_rms_RRR": 5.978241499732651e-05,
+    "resolved_interior_rms_TF_full_M": 3.2935020116004393e-09,
+    "resolved_interior_rms_TF_memory_only": 1.1280519660558673e-05
+   }
+  }
+ }
+}

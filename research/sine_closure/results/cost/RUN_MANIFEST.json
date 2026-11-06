@@ -1,0 +1,21 @@
+{
+ "completed": [
+  "C_sig0.205",
+  "S2_seed120",
+  "D2_seed220",
+  "M_seed320"
+ ],
+ "failed": [],
+ "finished": true,
+ "in_progress": [],
+ "pid": 10468,
+ "planned": [
+  "C_sig0.205",
+  "S2_seed120",
+  "D2_seed220",
+  "M_seed320"
+ ],
+ "previous_interrupted": {},
+ "stage": "cost",
+ "started_utc": "2026-11-05T12:41:53Z"
+}
